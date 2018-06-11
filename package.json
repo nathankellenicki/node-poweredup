@@ -1,0 +1,14 @@
+{
+  "name": "node-lpf2",
+  "version": "1.0.0",
+  "description": "A Node.js module to interface with Lego Power Functions 2.0 components.",
+  "main": "lpf2.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nathan Kunicki <me@nathankunicki.com>",
+  "license": "MIT",
+  "dependencies": {
+    "noble": "^1.9.1"
+  }
+}
