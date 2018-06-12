@@ -5,7 +5,9 @@ const lpf2 = new LPF2();
 lpf2.scan();
 
 lpf2.on("discover", (hub) => {
-    hub.connect();
+    hub.connect(() => {
+        console.log(`Connected to ${hub.uuid}`);
+    });
     hub.on("distance", (port, distance) => {
         console.log(`Distance ${distance} received on port ${port}`);
     });

@@ -34,6 +34,9 @@ class BoostHub extends Hub {
         super.connect(() => {
             this._subscribeToCharacteristic(this._characteristics[Consts.BLE.Characteristics.Boost.ALL], this._parseMessage.bind(this));
             debug("Connect completed");
+            if (callback) {
+                callback();
+            }
         })
     }
 

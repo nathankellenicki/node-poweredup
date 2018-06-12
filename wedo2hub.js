@@ -33,6 +33,9 @@ class WeDo2Hub extends Hub {
             this._subscribeToCharacteristic(this._characteristics[Consts.BLE.Characteristics.WeDo2.PORT_TYPE], this._parsePortMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLE.Characteristics.WeDo2.SENSOR_VALUE], this._parseSensorMessage.bind(this));
             debug("Connect completed");
+            if (callback) {
+                callback();
+            }
         })
     }
 
@@ -140,7 +143,7 @@ class WeDo2Hub extends Hub {
                     if (data[3] === 1) {
                         distance = data[2] + 255;
                     }
-                    this.emit("distance", port.id, distance);
+                    this.emit("distance", port.id, distance * 10);
                     break;
                 }
                 case Consts.Devices.BOOST_DISTANCE:
