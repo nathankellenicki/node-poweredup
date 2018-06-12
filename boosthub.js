@@ -203,20 +203,14 @@ class BoostHub extends Hub {
 
                     this.emit("color", port.id, data[4]);
 
-                    let distance;
-                    if (data[7] > 0 && data[5] < 2) {
-                        distance = Math.floor(20 - (data[7] * 2.85));
-                    } else if (data[5] > 9) {
-                        distance = 10;
-                    } else {
-                        distance = Math.floor((20 + (data[5] * 18)));
-                    }
+                    let distance = data[5],
+                        partial = data[7];
 
-                    if (distance > 130) {
-                        distance = 130;
+                    if (partial > 0) {
+                        distance += 1 / partial;
                     }
                     
-                    this.emit("distance", port.id, distance);
+                    this.emit("distance", port.id, distance * 25.4);
                     break;
                 }
                 case Consts.Devices.WEDO2_TILT:
