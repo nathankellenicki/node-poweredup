@@ -15,6 +15,8 @@ class BoostHub extends Hub {
         this.ports = {
             "A": new Port("A", 55),
             "B": new Port("B", 56),
+            "AB": new Port("AB", 57),
+            "TILT": new Port("TILT", 58),
             "C": new Port("C", 1),
             "D": new Port("D", 2)
         };
@@ -86,6 +88,10 @@ class BoostHub extends Hub {
             port = this.ports["A"];
         } else if (data[3] === 56) {
             port = this.ports["B"];
+        } else if (data[3] === 57) {
+            port = this.ports["AB"];
+        } else if (data[3] === 58) {
+            port = this.ports["TILT"];
         } else {
             return;
         }
@@ -136,6 +142,13 @@ class BoostHub extends Hub {
                     this._activatePortDevice(port.value, port.type, 0x02, 0x00);
                     break;
                 }
+                case Consts.Devices.BOOST_TILT:
+                {
+                    port.type = Consts.Devices.BOOST_MOVE_HUB_MOTOR;
+                    debug(`Port ${port.id} connected, detected BOOST_TILT`);
+                    this._activatePortDevice(port.value, port.type, 0x00, 0x00);
+                    break;
+                }
             }
         } else {
             port.type = null;
@@ -165,6 +178,10 @@ class BoostHub extends Hub {
             port = this.ports["A"];
         } else if (data[3] === 56) {
             port = this.ports["B"];
+        } else if (data[3] === 57) {
+            port = this.ports["AB"];
+        } else if (data[3] === 58) {
+            port = this.ports["TILT"];
         } else {
             return;
         }
@@ -218,6 +235,12 @@ class BoostHub extends Hub {
                 {
                     const rotation = data.readInt32LE(2);
                     this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.Devices.BOOST_TILT:
+                {
+                    this.emit("tilt", port.id, data[4], data[5]);
+                    break;
                 }
             }
         }
