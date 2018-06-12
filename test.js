@@ -6,13 +6,22 @@ lpf2.scan();
 
 lpf2.on("discover", (hub) => {
     hub.connect();
-    /*hub.on("tilt", (port, x, y) => {
-        hub.setMotorSpeed(0, y);
-    });*/
-    let speed = 0;
-    // setInterval(() => {
-    //     console.log(speed);
-    //     hub.setMotorSpeed(0, speed);
-    //     speed += 1;
-    // }, 500);
+    hub.on("distance", (port, distance) => {
+        console.log(`Distance ${distance} received on port ${port}`);
+    });
+    hub.on("color", (port, color) => {
+        console.log(`Color ${color} received on port ${port}`);
+    });
+    hub.on("tilt", (port, x, y) => {
+        console.log(`Tilt ${x}, ${y} received on port ${port}`);
+    });
+    hub.on("rotate", (port, rotate) => {
+        console.log(`Rotate ${rotate} received on port ${port}`);
+    });
+    // setTimeout(() => {
+    //      hub.setMotorSpeed("C", 30);
+    //         setTimeout(() => {
+    //             hub.setMotorSpeed("C", 0);
+    //         }, 3000);
+    // }, 3000);
 });

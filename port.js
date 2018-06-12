@@ -1,7 +1,8 @@
 class Port {
 
-    constructor (id) {
+    constructor (id, value) {
         this.id = id;
+        this.value = value;
         this.connected = false;
         this.type = null;
     }
