@@ -43,14 +43,25 @@ class BoostHub extends Hub {
     }
 
 
-    setMotorSpeed (port, speed, seconds) {
+    setMotorSpeed (port, speed, time) {
         const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
         if (characteristic) {
-            /*const data = Buffer.from([0x0c, 0x00, 0x81, this.ports[port].value, 0x11, 0x09, 0xff, 0xff, speed, 0x64, 0x7f, 0x03]);
-            if (seconds) {
-                data.writeUInt16LE(seconds * 1000, 6);
-            }*/
             const data = Buffer.from([0x0c, 0x00, 0x81, this.ports[port].value, 0x11, 0x01, 0x00, 0x00, speed, 0x64, 0x7f, 0x03]);
+            if (seconds) {
+                data.writeInt8(0x09, 5);
+                data.writeUInt16LE(time, 6);
+            }
+            characteristic.write(data);
+        }
+    }
+
+
+    setMotorAngle (port, angle, speed = 100) {
+        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        if (characteristic) {
+            const data = Buffer.from([0x0e, 0x00, 0x81, this.ports[port].value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);;
+            data.writeUInt32LE(angle, 6);
+            data.writeInt8(speed, 10);
             characteristic.write(data);
         }
     }
