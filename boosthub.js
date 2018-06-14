@@ -34,12 +34,26 @@ class BoostHub extends Hub {
     connect (callback) {
         debug("Connecting to Boost Move Hub");
         super.connect(() => {
-            this._subscribeToCharacteristic(this._characteristics[Consts.BLE.Characteristics.Boost.ALL], this._parseMessage.bind(this));
+            const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+            this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
+            characteristic.write(Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]));
             debug("Connect completed");
             if (callback) {
                 callback();
             }
         })
+    }
+
+
+    setLEDColor (color) {
+        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        if (characteristic) {
+            if (color === false) {
+                color = 0;
+            }
+            const data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            characteristic.write(data);
+        }
     }
 
 
@@ -70,6 +84,11 @@ class BoostHub extends Hub {
     _parseMessage (data) {
 
         switch (data[2]) {
+            case 0x01:
+            {
+                this._parseDeviceInfo(data);
+                break;
+            }
             case 0x04:
             {
                 this._parsePortMessage(data);
@@ -81,6 +100,21 @@ class BoostHub extends Hub {
                 break;
             }
         }
+    }
+
+
+    _parseDeviceInfo (data) {
+        
+        if (data[3] === 2) {
+            if (data[5] === 1) {
+                this.emit("button", Consts.Button.PRESSED);
+                return;
+            } else if (data[5] === 0) {
+                this.emit("button", Consts.Button.RELEASED);
+                return;
+            }
+        }
+
     }
 
 

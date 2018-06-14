@@ -32,11 +32,24 @@ class WeDo2Hub extends Hub {
         super.connect(() => {
             this._subscribeToCharacteristic(this._characteristics[Consts.BLE.Characteristics.WeDo2.PORT_TYPE], this._parsePortMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLE.Characteristics.WeDo2.SENSOR_VALUE], this._parseSensorMessage.bind(this));
+            this._subscribeToCharacteristic(this._characteristics[Consts.BLE.Characteristics.WeDo2.BUTTON], this._parseSensorMessage.bind(this));
             debug("Connect completed");
             if (callback) {
                 callback();
             }
         })
+    }
+
+    
+    setLEDColor (color) {
+        const characteristic = this._characteristics[Consts.BLE.Characteristics.WeDo2.MOTOR_VALUE_WRITE];
+        if (characteristic) {
+            if (color === false) {
+                color = 0;
+            }
+            const data = Buffer.from([0x06, 0x04, 0x01, color]);
+            characteristic.write(data);
+        }
     }
 
 
@@ -124,6 +137,15 @@ class WeDo2Hub extends Hub {
 
 
     _parseSensorMessage (data) {
+
+
+        if (data[0] === 1) {
+            this.emit("button", Consts.Button.PRESSED);
+            return;
+        } else if (data[0] === 0) {
+            this.emit("button", Consts.Button.RELEASED);
+            return;
+        }
         
         let port = null;
 

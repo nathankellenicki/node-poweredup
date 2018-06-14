@@ -15,6 +15,23 @@ const Consts = {
         BOOST_MOVE_HUB_MOTOR: 39,
         BOOST_TILT: 40
     },
+    Colors: {
+        NONE: 0,
+        PINK: 1,
+        PURPLE: 2,
+        BLUE: 3,
+        LIGHT_BLUE: 4,
+        CYAN: 5,
+        GREEN: 6,
+        YELLOW: 7,
+        ORANGE: 8,
+        RED: 9,
+        WHITE: 10
+    },
+    Button: {
+        PRESSED: 0,
+        RELEASED: 1
+    },
     BLE: {
         Name: {
             WEDO2_SMART_HUB_NAME: "LPF2 Smart Hub 2 I/O",
