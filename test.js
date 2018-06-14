@@ -18,7 +18,7 @@ lpf2.on("discover", (hub) => {
 
             moveHub.on("distance", (port, distance) => {
                 console.log(`Distance ${distance} received on port ${port}`);
-                if (distance < 100) {
+                if (distance < 90) {
                     moveHub.setMotorSpeed("D", 40);
                 } else {
                     moveHub.setMotorSpeed("D", 0);
@@ -31,7 +31,7 @@ lpf2.on("discover", (hub) => {
 
             wedoHub.on("distance", (port, distance) => {
                 console.log(`Distance ${distance} received on port ${port}`);
-                if (distance < 100) {
+                if (distance < 90) {
                     wedoHub.setMotorSpeed("B", 40);
                 } else {
                     wedoHub.setMotorSpeed("B", 0);
