@@ -47,9 +47,9 @@ class BoostHub extends Hub {
         const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
         if (characteristic) {
             const data = Buffer.from([0x0c, 0x00, 0x81, this.ports[port].value, 0x11, 0x01, 0x00, 0x00, speed, 0x64, 0x7f, 0x03]);
-            if (seconds) {
+            if (time) {
                 data.writeInt8(0x09, 5);
-                data.writeUInt16LE(time, 6);
+                data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
             }
             characteristic.write(data);
         }
@@ -88,10 +88,6 @@ class BoostHub extends Hub {
 
         let port = null;
 
-        if (data[4] !== 1) { // NK: This doesn't support groups...yet.
-            return;
-        }
-
         if (data[3] === 1) {
             port = this.ports["C"];
         } else if (data[3] === 2) {
@@ -108,7 +104,7 @@ class BoostHub extends Hub {
             return;
         }
 
-        port.connected = data[4] === 1 ? true : false;
+        port.connected = (data[4] === 1 || data[4] === 2) ? true : false;
         
         if (port.connected) {
             switch (data[5]) {
@@ -156,7 +152,7 @@ class BoostHub extends Hub {
                 }
                 case Consts.Devices.BOOST_TILT:
                 {
-                    port.type = Consts.Devices.BOOST_MOVE_HUB_MOTOR;
+                    port.type = Consts.Devices.BOOST_TILT;
                     debug(`Port ${port.id} connected, detected BOOST_TILT`);
                     this._activatePortDevice(port.value, port.type, 0x00, 0x00);
                     break;
@@ -221,7 +217,7 @@ class BoostHub extends Hub {
                         distance += 1 / partial;
                     }
                     
-                    this.emit("distance", port.id, distance * 25.4);
+                    this.emit("distance", port.id, Math.floor(distance * 25.4));
                     break;
                 }
                 case Consts.Devices.WEDO2_TILT:
@@ -245,7 +241,9 @@ class BoostHub extends Hub {
                 }
                 case Consts.Devices.BOOST_TILT:
                 {
-                    this.emit("tilt", port.id, data[4], data[5]);
+                    let tiltX = data[4] > 160 ? data[4] - 255 : data[4];
+                    let tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    this.emit("tilt", port.id, tiltX, tiltY);
                     break;
                 }
             }
