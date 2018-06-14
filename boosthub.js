@@ -48,13 +48,26 @@ class BoostHub extends Hub {
     setLEDColor (color) {
         const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
         if (characteristic) {
+            let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
+            characteristic.write(data);
             if (color === false) {
                 color = 0;
             }
-            const data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
             characteristic.write(data);
         }
     }
+
+
+    // setLEDRGB (red, green, blue) {
+    //     const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+    //     if (characteristic) {
+    //         let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x03]);
+    //         characteristic.write(data);
+    //         data = Buffer.from([0x0a, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, red, green, blue]);
+    //         characteristic.write(data);
+    //     }
+    // }
 
 
     setMotorSpeed (port, speed, time) {

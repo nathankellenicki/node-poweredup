@@ -42,13 +42,29 @@ class WeDo2Hub extends Hub {
 
     
     setLEDColor (color) {
-        const characteristic = this._characteristics[Consts.BLE.Characteristics.WeDo2.MOTOR_VALUE_WRITE];
-        if (characteristic) {
+        const motorCharacteristic = this._characteristics[Consts.BLE.Characteristics.WeDo2.MOTOR_VALUE_WRITE];
+        const portCharacteristic = this._characteristics[Consts.BLE.Characteristics.WeDo2.PORT_TYPE_WRITE];
+        if (motorCharacteristic && portCharacteristic) {
+            let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
+            portCharacteristic.write(data);
             if (color === false) {
                 color = 0;
             }
-            const data = Buffer.from([0x06, 0x04, 0x01, color]);
-            characteristic.write(data);
+            data = Buffer.from([0x06, 0x04, 0x01, color]);
+            motorCharacteristic.write(data);
+        }
+    }
+
+
+    setLEDRGB (red, green, blue) {
+        const motorCharacteristic = this._characteristics[Consts.BLE.Characteristics.WeDo2.MOTOR_VALUE_WRITE];
+        const portCharacteristic = this._characteristics[Consts.BLE.Characteristics.WeDo2.PORT_TYPE_WRITE];
+        if (motorCharacteristic && portCharacteristic) {
+            let data1 = Buffer.from([0x01, 0x02, 0x06, 0x17, 0x01, 0x02]);
+            portCharacteristic.write(data1);
+            let data2 = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
+            console.log(data2);
+            motorCharacteristic.write(data2);
         }
     }
 
