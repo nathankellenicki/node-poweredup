@@ -77,15 +77,28 @@ class WeDo2Hub extends Hub {
     }
 
 
-    _parsePortMessage (data) {
+    _getPortForPortNumber (num) {
 
         let port = null;
 
-        if (data[0] === 1) {
+        if (num === 1) {
             port = this.ports["A"];
-        } else if (data[0] === 2) {
+        } else if (num === 2) {
             port = this.ports["B"];
         } else {
+            return;
+        }
+
+        return port;
+
+    }
+
+
+    _parsePortMessage (data) {
+
+        let port = this._getPortForPortNumber(data[0]);
+
+        if (!port) {
             return;
         }
 
@@ -164,13 +177,9 @@ class WeDo2Hub extends Hub {
             return;
         }
         
-        let port = null;
+        let port = this._getPortForPortNumber(data[1]);
 
-        if (data[1] === 1) {
-            port = this.ports["A"];
-        } else if (data[1] === 2) {
-            port = this.ports["B"];
-        } else {
+        if (!port) {
             return;
         }
 

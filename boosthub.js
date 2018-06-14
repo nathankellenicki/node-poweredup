@@ -96,6 +96,31 @@ class BoostHub extends Hub {
     }
 
 
+    _getPortForPortNumber (num) {
+
+        let port = null;
+
+        if (num === 1) {
+            port = this.ports["C"];
+        } else if (num === 2) {
+            port = this.ports["D"];
+        } else if (num === 55) {
+            port = this.ports["A"];
+        } else if (num === 56) {
+            port = this.ports["B"];
+        } else if (num === 57) {
+            port = this.ports["AB"];
+        } else if (num === 58) {
+            port = this.ports["TILT"];
+        } else {
+            return false;
+        }
+
+        return port;
+
+    }
+
+
     _parseMessage (data) {
 
         switch (data[2]) {
@@ -113,6 +138,10 @@ class BoostHub extends Hub {
             {
                 this._parseSensorMessage(data);
                 break;
+            }
+            case 0x82:
+            {
+                this._parsePortAction(data);
             }
         }
     }
@@ -135,21 +164,9 @@ class BoostHub extends Hub {
 
     _parsePortMessage (data) {
 
-        let port = null;
+        let port = this._getPortForPortNumber(data[3]);
 
-        if (data[3] === 1) {
-            port = this.ports["C"];
-        } else if (data[3] === 2) {
-            port = this.ports["D"];
-        } else if (data[3] === 55) {
-            port = this.ports["A"];
-        } else if (data[3] === 56) {
-            port = this.ports["B"];
-        } else if (data[3] === 57) {
-            port = this.ports["AB"];
-        } else if (data[3] === 58) {
-            port = this.ports["TILT"];
-        } else {
+        if (!port) {
             return;
         }
 
@@ -215,6 +232,19 @@ class BoostHub extends Hub {
     }
 
 
+    _parsePortAction (data) {
+
+        let port = this._getPortForPortNumber(data[3]);
+
+        if (!port) {
+            return;
+        }
+
+        // NK: Handle callbacks when port finished here.
+
+    }
+
+
     _activatePortDevice (port, type, mode, format, callback) {
         const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
         if (characteristic) {
@@ -225,21 +255,9 @@ class BoostHub extends Hub {
 
     _parseSensorMessage (data) {
         
-        let port = null;
+        let port = this._getPortForPortNumber(data[3]);
 
-        if (data[3] === 1) {
-            port = this.ports["C"];
-        } else if (data[3] === 2) {
-            port = this.ports["D"];
-        } else if (data[3] === 55) {
-            port = this.ports["A"];
-        } else if (data[3] === 56) {
-            port = this.ports["B"];
-        } else if (data[3] === 57) {
-            port = this.ports["AB"];
-        } else if (data[3] === 58) {
-            port = this.ports["TILT"];
-        } else {
+        if (!port) {
             return;
         }
 
