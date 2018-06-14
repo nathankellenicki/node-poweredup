@@ -284,7 +284,7 @@ class BoostHub extends Hub {
                         distance += 1 / partial;
                     }
                     
-                    this.emit("distance", port.id, Math.floor(distance * 25.4));
+                    this.emit("distance", port.id, Math.floor(distance * 25.4) - 20);
                     break;
                 }
                 case Consts.Devices.WEDO2_TILT:
