@@ -102,7 +102,8 @@ class WeDo2Hub extends Hub {
                 {
                     port.type = Consts.Devices.BOOST_DISTANCE;
                     debug(`Port ${port.id} connected, detected BOOST_DISTANCE`);
-                    this._activatePortDevice(data[0], port.type, 0x02, 0x00);
+                    // NK: BOOST_DISTANCE only supports color when connected to WeDo 2.0 Smart Hub
+                    this._activatePortDevice(data[0], port.type, 0x00, 0x00);
                     break;
                 }
                 case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
@@ -171,7 +172,7 @@ class WeDo2Hub extends Hub {
                 case Consts.Devices.BOOST_DISTANCE:
                 {
                     let distance = data[2];
-                    this.emit("distance", port.id, distance);
+                    this.emit("color", port.id, distance);
                     break;
                 }
                 case Consts.Devices.WEDO2_TILT:

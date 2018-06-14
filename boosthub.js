@@ -190,7 +190,7 @@ class BoostHub extends Hub {
                 {
                     port.type = Consts.Devices.BOOST_TILT;
                     debug(`Port ${port.id} connected, detected BOOST_TILT`);
-                    this._activatePortDevice(port.value, port.type, 0x00, 0x00);
+                    this._activatePortDevice(port.value, port.type, 0x04, 0x00);
                     break;
                 }
             }
@@ -258,14 +258,10 @@ class BoostHub extends Hub {
                 }
                 case Consts.Devices.WEDO2_TILT:
                 {
-                    this._lastTiltX = data[4];
-                    if (this._lastTiltX > 100) {
-                        this._lastTiltX = -(255 - this._lastTiltX);
-                    }
-                    this._lastTiltY = data[5];
-                    if (this._lastTiltY > 100) {
-                        this._lastTiltY = -(255 - this._lastTiltY);
-                    }
+                    let tiltX = data[4] > 160 ? data[4] - 255 : data[4] - (data[4] * 2);
+                    let tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    this._lastTiltX = tiltX;
+                    this._lastTiltY = tiltY;
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
                     break;
                 }
