@@ -4,26 +4,53 @@ const lpf2 = new LPF2();
 
 lpf2.scan();
 
+let moveHub = null,
+    moveHubUUID = "782a5fbbcef64c5cb31ab4791c191f5d";
+    wedoHub = null,
+    wedoHubUUID = "0ae95acf801e47f9bda4752392756eed";
+
 lpf2.on("discover", (hub) => {
     hub.connect(() => {
-        console.log(`Connected to ${hub.uuid}`);
+        
+        if (hub.uuid === moveHubUUID) {
+            moveHub = hub;
+            console.log("Connected to Move Hub");
+
+            moveHub.on("distance", (port, distance) => {
+                console.log(`Distance ${distance} received on port ${port}`);
+                if (distance < 80) {
+                    moveHub.setMotorSpeed("D", 40);
+                } else {
+                    moveHub.setMotorSpeed("D", 0);
+                }
+            });
+
+        } else if (hub.uuid === wedoHubUUID) {
+            wedoHub = hub;
+            console.log("Connected to Smart Hub");
+
+            wedoHub.on("distance", (port, distance) => {
+                console.log(`Distance ${distance} received on port ${port}`);
+                if (distance < 80) {
+                    wedoHub.setMotorSpeed("B", 40);
+                } else {
+                    wedoHub.setMotorSpeed("B", 0);
+                }
+            });
+
+        }
+
     });
-    hub.on("distance", (port, distance) => {
-        console.log(`Distance ${distance} received on port ${port}`);
-    });
-    hub.on("color", (port, color) => {
-        console.log(`Color ${color} received on port ${port}`);
-    });
-    hub.on("tilt", (port, x, y) => {
-        console.log(`Tilt ${x}, ${y} received on port ${port}`);
-    });
-    hub.on("rotate", (port, rotate) => {
-        console.log(`Rotate ${rotate} received on port ${port}`);
-    });
-    // setTimeout(() => {
-    //      hub.setMotorSpeed("C", 30);
-    //         setTimeout(() => {
-    //             hub.setMotorSpeed("C", 0);
-    //         }, 3000);
-    // }, 3000);
+
 });
+
+
+let color = 0;
+
+setInterval(() => {
+
+    color = color > 10 ? 1 : color + 1;
+    if (moveHub) moveHub.setLEDColor(color);
+    if (wedoHub) wedoHub.setLEDColor(color);
+
+}, 2000);
