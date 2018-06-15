@@ -103,57 +103,7 @@ class WeDo2Hub extends Hub {
         }
 
         port.connected = data[1] === 1 ? true : false;
-        
-        if (port.connected) {
-            switch (data[3]) {
-                case Consts.Devices.WEDO2_TILT:
-                {
-                    port.type = Consts.Devices.WEDO2_TILT;
-                    debug(`Port ${port.id} connected, detected WEDO2_TILT`);
-                    this._activatePortDevice(data[0], port.type, 0x00, 0x00);
-                    break;
-                }
-                case Consts.Devices.WEDO2_DISTANCE:
-                {
-                    port.type = Consts.Devices.WEDO2_DISTANCE;
-                    debug(`Port ${port.id} connected, detected WEDO2_DISTANCE`);
-                    this._activatePortDevice(data[0], port.type, 0x00, 0x00);
-                    break;
-                }
-                case Consts.Devices.WEDO2_MOTOR:
-                {
-                    port.type = Consts.Devices.WEDO2_MOTOR;
-                    debug(`Port ${port.id} connected, detected WEDO2_MOTOR`);
-                    this._activatePortDevice(data[0], port.type, 0x02, 0x00);
-                    break;
-                }
-                case Consts.Devices.BOOST_DISTANCE:
-                {
-                    port.type = Consts.Devices.BOOST_DISTANCE;
-                    debug(`Port ${port.id} connected, detected BOOST_DISTANCE`);
-                    // NK: BOOST_DISTANCE only supports color when connected to WeDo 2.0 Smart Hub
-                    this._activatePortDevice(data[0], port.type, 0x00, 0x00);
-                    break;
-                }
-                case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
-                {
-                    port.type = Consts.Devices.BOOST_INTERACTIVE_MOTOR;
-                    debug(`Port ${port.id} connected, detected BOOST_INTERACTIVE_MOTOR`);
-                    this._activatePortDevice(data[0], port.type, 0x02, 0x00);
-                    break;
-                }
-                case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
-                {
-                    port.type = Consts.Devices.BOOST_MOVE_HUB_MOTOR;
-                    debug(`Port ${port.id} connected, detected BOOST_MOVE_HUB_MOTOR`);
-                    this._activatePortDevice(data[0], port.type, 0x02, 0x00);
-                    break;
-                }
-            }
-        } else {
-            port.type = null;
-            debug(`Port ${port.id} disconnected`);
-        }
+        this._registerDeviceAttachment(port, data[3]);
 
     }
 
