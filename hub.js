@@ -114,10 +114,10 @@ class Hub extends EventEmitter {
                     this._activatePortDevice(port.value, port.type, 0x00, 0x00);
                     break;
                 }
-                case Consts.Devices.WEDO2_MOTOR:
+                case Consts.Devices.BASIC_MOTOR:
                 {
-                    port.type = Consts.Devices.WEDO2_MOTOR;
-                    debug(`Port ${port.id} connected, detected WEDO2_MOTOR`);
+                    port.type = Consts.Devices.BASIC_MOTOR;
+                    debug(`Port ${port.id} connected, detected BASIC_MOTOR`);
                     this._activatePortDevice(port.value, port.type, 0x02, 0x00);
                     break;
                 }

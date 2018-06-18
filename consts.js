@@ -6,7 +6,7 @@ const Consts = {
         POWERED_UP_HUB: 3
     },
     Devices: {
-        WEDO2_MOTOR: 1,
+        BASIC_MOTOR: 1,
         BOOST_LED: 22,
         WEDO2_TILT: 34,
         WEDO2_DISTANCE: 35,
@@ -35,7 +35,9 @@ const Consts = {
     BLE: {
         Name: {
             WEDO2_SMART_HUB_NAME: "LPF2 Smart Hub 2 I/O",
-            BOOST_MOVE_HUB_NAME: "LEGO Move Hub"
+            BOOST_MOVE_HUB_NAME: "LEGO Move Hub",
+            POWERED_UP_HUB_NAME: "HUB NO.4",
+            POWERED_UP_REMOTE_NAME: "Handset"
         },
         Services: {
             WEDO2_SMART_HUB: "000015231212efde1523785feabcd123",
