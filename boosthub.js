@@ -197,6 +197,14 @@ class BoostHub extends Hub {
     }
 
 
+    _deactivatePortDevice (port, type, mode, format, callback) {
+        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        if (characteristic) {
+            characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+        }
+    }
+
+
     _parseSensorMessage (data) {
         
         let port = this._getPortForPortNumber(data[3]);

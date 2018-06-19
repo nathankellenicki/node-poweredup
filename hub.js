@@ -112,6 +112,33 @@ class Hub extends EventEmitter {
     }
 
 
+    unsubscribe (port, mode = false) {
+        if (!mode) {
+            switch (this.ports[port].type) {
+                case Consts.Devices.BASIC_MOTOR:
+                    mode = 0x02;
+                    break;
+                case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
+                    mode = 0x02;
+                    break;
+                case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
+                    mode = 0x02;
+                    break;
+                case Consts.Devices.BOOST_DISTANCE:
+                    mode = Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08
+                    break;
+                case Consts.Devices.BOOST_TILT:
+                    mode = 0x04;
+                    break;
+                default:
+                    mode = 0x00;
+                    break;
+            }
+        }
+        this._deactivatePortDevice(this.ports[port].value, this.ports[port].type, mode, 0x00);
+    }
+
+
     _subscribeToCharacteristic (characteristic, callback) {
         characteristic.on("data", (data, isNotification) => {
             return callback(data);

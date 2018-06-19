@@ -116,6 +116,14 @@ class WeDo2Hub extends Hub {
     }
 
 
+    _deactivatePortDevice (port, type, mode, format, callback) {
+        const characteristic = this._characteristics[Consts.BLE.Characteristics.WeDo2.PORT_TYPE_WRITE];
+        if (characteristic) {
+            characteristic.write(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), callback);
+        }
+    }
+
+
     _parseSensorMessage (data) {
 
 
