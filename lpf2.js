@@ -39,9 +39,9 @@ class LPF2 extends EventEmitter {
             let hub = null;
 
             if (WeDo2Hub.isWeDo2Hub(peripheral)) {
-                hub = new WeDo2Hub(peripheral, autoSubscribe);
+                hub = new WeDo2Hub(peripheral, this.autoSubscribe);
             } else if (BoostHub.isBoostHub(peripheral)) {
-                hub = new BoostHub(peripheral autoSubscribe);
+                hub = new BoostHub(peripheral, this.autoSubscribe);
             } else {
                 return;
             }

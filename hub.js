@@ -10,7 +10,7 @@ class Hub extends EventEmitter {
 
     constructor (peripheral, autoSubscribe) {
         super();
-        this.autoSubscribe = autoSubscribe || true;
+        this.autoSubscribe = !!autoSubscribe;
         this._peripheral = peripheral;
         this._characteristics = {};
         this._batteryLevel = 100;
@@ -110,7 +110,7 @@ class Hub extends EventEmitter {
             case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
                 return 0x02;
             case Consts.Devices.BOOST_DISTANCE:
-                return (Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08);
+                return (this.type == Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08);
             case Consts.Devices.BOOST_TILT:
                 return 0x04;
             default:
@@ -134,8 +134,9 @@ class Hub extends EventEmitter {
     _registerDeviceAttachment (port, type) {
         
         if (port.connected) {
+            port.type = type;
             if (this.autoSubscribe) {
-                this._activatePortDevice(port.value, this._getModeForDeviceType(port.type), 0x00, 0x00);
+                this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
             }
         } else {
             port.type = null;
