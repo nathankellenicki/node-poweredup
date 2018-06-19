@@ -157,7 +157,7 @@ class Hub extends EventEmitter {
             switch (type) {
                 case Consts.Devices.WEDO2_TILT:
                 {
-                    port.type = Consts.Devices.WEDO2_TILT;
+                    port.type = type;
                     debug(`Port ${port.id} connected, detected WEDO2_TILT`);
                     if (this.autoSubscribe) {
                         this._activatePortDevice(port.value, port.type, 0x00, 0x00);
@@ -166,7 +166,7 @@ class Hub extends EventEmitter {
                 }
                 case Consts.Devices.WEDO2_DISTANCE:
                 {
-                    port.type = Consts.Devices.WEDO2_DISTANCE;
+                    port.type = type;
                     debug(`Port ${port.id} connected, detected WEDO2_DISTANCE`);
                     if (this.autoSubscribe) {
                         this._activatePortDevice(port.value, port.type, 0x00, 0x00);
@@ -175,7 +175,7 @@ class Hub extends EventEmitter {
                 }
                 case Consts.Devices.BASIC_MOTOR:
                 {
-                    port.type = Consts.Devices.BASIC_MOTOR;
+                    port.type = type;
                     debug(`Port ${port.id} connected, detected BASIC_MOTOR`);
                     if (this.autoSubscribe) {
                         this._activatePortDevice(port.value, port.type, 0x02, 0x00);
@@ -184,7 +184,7 @@ class Hub extends EventEmitter {
                 }
                 case Consts.Devices.BOOST_DISTANCE:
                 {
-                    port.type = Consts.Devices.BOOST_DISTANCE;
+                    port.type = type;
                     debug(`Port ${port.id} connected, detected BOOST_DISTANCE`);
                     if (this.autoSubscribe) {
                         this._activatePortDevice(port.value, port.type, this.type == Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08, 0x00); // NK: 0x00 for WeDo 2.0 Smart hub, 0x08 for Boost Move Hub
@@ -193,7 +193,7 @@ class Hub extends EventEmitter {
                 }
                 case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
                 {
-                    port.type = Consts.Devices.BOOST_INTERACTIVE_MOTOR;
+                    port.type = type;
                     debug(`Port ${port.id} connected, detected BOOST_INTERACTIVE_MOTOR`);
                     if (this.autoSubscribe) {
                         this._activatePortDevice(port.value, port.type, 0x02, 0x00);
@@ -202,7 +202,7 @@ class Hub extends EventEmitter {
                 }
                 case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
                 {
-                    port.type = Consts.Devices.BOOST_MOVE_HUB_MOTOR;
+                    port.type = type;
                     debug(`Port ${port.id} connected, detected BOOST_MOVE_HUB_MOTOR`);
                     if (this.autoSubscribe) {
                         this._activatePortDevice(port.value, port.type, 0x02, 0x00);
@@ -211,7 +211,7 @@ class Hub extends EventEmitter {
                 }
                 case Consts.Devices.BOOST_TILT:
                 {
-                    port.type = Consts.Devices.BOOST_TILT;
+                    port.type = type;
                     debug(`Port ${port.id} connected, detected BOOST_TILT`);
                     if (this.autoSubscribe) {
                         this._activatePortDevice(port.value, port.type, 0x04, 0x00);
