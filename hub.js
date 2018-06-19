@@ -8,8 +8,9 @@ const Port = require("./port.js"),
 class Hub extends EventEmitter {
 
 
-    constructor (peripheral) {
+    constructor (peripheral, autoSubscribe) {
         super();
+        this.autoSubscribe = autoSubscribe || true;
         this._peripheral = peripheral;
         this._characteristics = {};
         this._batteryLevel = 100;
@@ -84,6 +85,33 @@ class Hub extends EventEmitter {
     }
 
 
+    subscribe (port, mode = false) {
+        if (!mode) {
+            switch (this.ports[port].type) {
+                case Consts.Devices.BASIC_MOTOR:
+                    mode = 0x02;
+                    break;
+                case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
+                    mode = 0x02;
+                    break;
+                case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
+                    mode = 0x02;
+                    break;
+                case Consts.Devices.BOOST_DISTANCE:
+                    mode = Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08
+                    break;
+                case Consts.Devices.BOOST_TILT:
+                    mode = 0x04;
+                    break;
+                default:
+                    mode = 0x00;
+                    break;
+            }
+        }
+        this._activatePortDevice(this.ports[port].value, this.ports[port].type, mode, 0x00);
+    }
+
+
     _subscribeToCharacteristic (characteristic, callback) {
         characteristic.on("data", (data, isNotification) => {
             return callback(data);
@@ -104,49 +132,63 @@ class Hub extends EventEmitter {
                 {
                     port.type = Consts.Devices.WEDO2_TILT;
                     debug(`Port ${port.id} connected, detected WEDO2_TILT`);
-                    this._activatePortDevice(port.value, port.type, 0x00, 0x00);
+                    if (this.autoSubscribe) {
+                        this._activatePortDevice(port.value, port.type, 0x00, 0x00);
+                    }
                     break;
                 }
                 case Consts.Devices.WEDO2_DISTANCE:
                 {
                     port.type = Consts.Devices.WEDO2_DISTANCE;
                     debug(`Port ${port.id} connected, detected WEDO2_DISTANCE`);
-                    this._activatePortDevice(port.value, port.type, 0x00, 0x00);
+                    if (this.autoSubscribe) {
+                        this._activatePortDevice(port.value, port.type, 0x00, 0x00);
+                    }
                     break;
                 }
                 case Consts.Devices.BASIC_MOTOR:
                 {
                     port.type = Consts.Devices.BASIC_MOTOR;
                     debug(`Port ${port.id} connected, detected BASIC_MOTOR`);
-                    this._activatePortDevice(port.value, port.type, 0x02, 0x00);
+                    if (this.autoSubscribe) {
+                        this._activatePortDevice(port.value, port.type, 0x02, 0x00);
+                    }
                     break;
                 }
                 case Consts.Devices.BOOST_DISTANCE:
                 {
                     port.type = Consts.Devices.BOOST_DISTANCE;
                     debug(`Port ${port.id} connected, detected BOOST_DISTANCE`);
-                    this._activatePortDevice(port.value, port.type, this.type == Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08, 0x00); // NK: 0x00 for WeDo 2.0 Smart hub, 0x08 for Boost Move Hub
+                    if (this.autoSubscribe) {
+                        this._activatePortDevice(port.value, port.type, this.type == Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08, 0x00); // NK: 0x00 for WeDo 2.0 Smart hub, 0x08 for Boost Move Hub
+                    }
                     break;
                 }
                 case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
                 {
                     port.type = Consts.Devices.BOOST_INTERACTIVE_MOTOR;
                     debug(`Port ${port.id} connected, detected BOOST_INTERACTIVE_MOTOR`);
-                    this._activatePortDevice(port.value, port.type, 0x02, 0x00);
+                    if (this.autoSubscribe) {
+                        this._activatePortDevice(port.value, port.type, 0x02, 0x00);
+                    }
                     break;
                 }
                 case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
                 {
                     port.type = Consts.Devices.BOOST_MOVE_HUB_MOTOR;
                     debug(`Port ${port.id} connected, detected BOOST_MOVE_HUB_MOTOR`);
-                    this._activatePortDevice(port.value, port.type, 0x02, 0x00);
+                    if (this.autoSubscribe) {
+                        this._activatePortDevice(port.value, port.type, 0x02, 0x00);
+                    }
                     break;
                 }
                 case Consts.Devices.BOOST_TILT:
                 {
                     port.type = Consts.Devices.BOOST_TILT;
                     debug(`Port ${port.id} connected, detected BOOST_TILT`);
-                    this._activatePortDevice(port.value, port.type, 0x04, 0x00);
+                    if (this.autoSubscribe) {
+                        this._activatePortDevice(port.value, port.type, 0x04, 0x00);
+                    }
                     break;
                 }
             }

@@ -9,8 +9,8 @@ const Hub = require("./hub.js"),
 class WeDo2Hub extends Hub {
 
 
-    constructor (peripheral) {
-        super(peripheral);
+    constructor (peripheral, autoSubscribe) {
+        super(peripheral, autoSubscribe);
         this.type = Consts.Hubs.WEDO2_SMART_HUB;
         this.ports = {
             "A": new Port("A", 1),

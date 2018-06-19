@@ -9,8 +9,8 @@ const Hub = require("./hub.js"),
 class BoostHub extends Hub {
 
 
-    constructor (peripheral) {
-        super(peripheral);
+    constructor (peripheral, autoSubscribe) {
+        super(peripheral, autoSubscribe);
         this.type = Consts.Hubs.BOOST_MOVE_HUB;
         this.ports = {
             "A": new Port("A", 55),
