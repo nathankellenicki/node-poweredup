@@ -3,11 +3,11 @@
 <dl>
 <dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
 <dd></dd>
-<dt><a href="#Hub">Hub</a> ⇐ <code>EventEmitter</code></dt>
-<dd></dd>
 <dt><a href="#BoostHub">BoostHub</a> ⇐ <code><a href="#Hub">Hub</a></code></dt>
 <dd></dd>
 <dt><a href="#WeDo2Hub">WeDo2Hub</a> ⇐ <code><a href="#Hub">Hub</a></code></dt>
+<dd></dd>
+<dt><a href="#Hub">Hub</a> ⇐ <code>EventEmitter</code></dt>
 <dd></dd>
 </dl>
 
@@ -37,51 +37,6 @@ Emits when a LPF2 Hub device is found.
 | Param | Type |
 | --- | --- |
 | hub | [<code>Hub</code>](#Hub) | 
-
-<a name="Hub"></a>
-
-## Hub ⇐ <code>EventEmitter</code>
-**Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
-
-* [Hub](#Hub) ⇐ <code>EventEmitter</code>
-    * [.connect([callback])](#Hub+connect)
-    * [.subscribe(port, [mode])](#Hub+subscribe)
-    * [.unsubscribe(port)](#Hub+unsubscribe)
-
-<a name="Hub+connect"></a>
-
-### hub.connect([callback])
-Connect to the Hub.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-
-| Param | Type |
-| --- | --- |
-| [callback] | <code>function</code> | 
-
-<a name="Hub+subscribe"></a>
-
-### hub.subscribe(port, [mode])
-Subscribe to sensor notifications on a given port.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| port | <code>string</code> |  |  |
-| [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
-
-<a name="Hub+unsubscribe"></a>
-
-### hub.unsubscribe(port)
-Unsubscribe to sensor notifications on a given port.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
 
 <a name="BoostHub"></a>
 
@@ -383,4 +338,49 @@ Emits when a rotation sensor is activated.
 | --- | --- |
 | port | <code>string</code> | 
 | rotation | <code>number</code> | 
+
+<a name="Hub"></a>
+
+## Hub ⇐ <code>EventEmitter</code>
+**Kind**: global class  
+**Extends**: <code>EventEmitter</code>  
+
+* [Hub](#Hub) ⇐ <code>EventEmitter</code>
+    * [.connect([callback])](#Hub+connect)
+    * [.subscribe(port, [mode])](#Hub+subscribe)
+    * [.unsubscribe(port)](#Hub+unsubscribe)
+
+<a name="Hub+connect"></a>
+
+### hub.connect([callback])
+Connect to the Hub.
+
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| [callback] | <code>function</code> | 
+
+<a name="Hub+subscribe"></a>
+
+### hub.subscribe(port, [mode])
+Subscribe to sensor notifications on a given port.
+
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| port | <code>string</code> |  |  |
+| [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
+
+<a name="Hub+unsubscribe"></a>
+
+### hub.unsubscribe(port)
+Unsubscribe to sensor notifications on a given port.
+
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
