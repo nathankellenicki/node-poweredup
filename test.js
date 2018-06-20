@@ -1,6 +1,6 @@
-const LPF2 = require("./lpf2.js");
+const LPF2 = require("./dist/lpf2.js");
 
-const lpf2 = new LPF2();
+const lpf2 = new LPF2.LPF2();
 
 //lpf2.autoSubscribe = false;
 lpf2.scan();
