@@ -5,7 +5,8 @@
   "main": "dist/lpf2.js",
   "types": "dist/lpf2.d.ts",
   "scripts": {
-    "build": "tslint -c tslint.json \"*.ts\" && tsc"
+    "build": "tslint -c tslint.json \"*.ts\" && tsc",
+    "docs": "jsdoc2md dist/*.js > README.md"
   },
   "author": "Nathan Kunicki <me@nathankunicki.com>",
   "license": "MIT",
