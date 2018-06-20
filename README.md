@@ -47,7 +47,7 @@ Emits when a LPF2 Hub device is found.
 * [Hub](#Hub) ⇐ <code>EventEmitter</code>
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
-    * [.subscribe(port)](#Hub+subscribe)
+    * [.unsubscribe(port)](#Hub+unsubscribe)
     * [.connectCallback](#Hub+connectCallback) : <code>function</code>
 
 <a name="Hub+connect"></a>
@@ -73,9 +73,9 @@ Subscribe to sensor notifications on a given port.
 | port | <code>string</code> |  |  |
 | [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
 
-<a name="Hub+subscribe"></a>
+<a name="Hub+unsubscribe"></a>
 
-### hub.subscribe(port)
+### hub.unsubscribe(port)
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
@@ -100,6 +100,7 @@ Unsubscribe to sensor notifications on a given port.
     * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed)
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
+    * [.unsubscribe(port)](#Hub+unsubscribe)
     * [.connectCallback](#Hub+connectCallback) : <code>function</code>
 
 <a name="WeDo2Hub+setLEDColor"></a>
@@ -156,12 +157,22 @@ Connect to the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | port | <code>string</code> |  |  |
 | [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
+
+<a name="Hub+unsubscribe"></a>
+
+### weDo2Hub.unsubscribe(port)
+Unsubscribe to sensor notifications on a given port.
+
+**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="Hub+connectCallback"></a>
 
@@ -179,6 +190,7 @@ Subscribe to sensor notifications on a given port.
     * [.setMotorAngle(port, angle, [speed])](#BoostHub+setMotorAngle)
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
+    * [.unsubscribe(port)](#Hub+unsubscribe)
     * [.connectCallback](#Hub+connectCallback) : <code>function</code>
 
 <a name="BoostHub+setLEDColor"></a>
@@ -236,12 +248,22 @@ Connect to the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | port | <code>string</code> |  |  |
 | [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
+
+<a name="Hub+unsubscribe"></a>
+
+### boostHub.unsubscribe(port)
+Unsubscribe to sensor notifications on a given port.
+
+**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="Hub+connectCallback"></a>
 
