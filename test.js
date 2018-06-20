@@ -1,4 +1,4 @@
-const LPF2 = require("./dist/lpf2.js");
+const LPF2 = require(".");
 
 const lpf2 = new LPF2.LPF2();
 
