@@ -48,7 +48,6 @@ Emits when a LPF2 Hub device is found.
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
-    * [.connectCallback](#Hub+connectCallback) : <code>function</code>
 
 <a name="Hub+connect"></a>
 
@@ -59,7 +58,7 @@ Connect to the Hub.
 
 | Param | Type |
 | --- | --- |
-| [callback] | [<code>connectCallback</code>](#Hub+connectCallback) | 
+| [callback] | <code>function</code> | 
 
 <a name="Hub+subscribe"></a>
 
@@ -84,10 +83,6 @@ Unsubscribe to sensor notifications on a given port.
 | --- | --- |
 | port | <code>string</code> | 
 
-<a name="Hub+connectCallback"></a>
-
-### hub.connectCallback : <code>function</code>
-**Kind**: instance typedef of [<code>Hub</code>](#Hub)  
 <a name="WeDo2Hub"></a>
 
 ## WeDo2Hub ⇐ [<code>Hub</code>](#Hub)
@@ -101,7 +96,11 @@ Unsubscribe to sensor notifications on a given port.
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
-    * [.connectCallback](#Hub+connectCallback) : <code>function</code>
+    * ["button" (state)](#WeDo2Hub+event_button)
+    * ["distance" (port, distance)](#WeDo2Hub+event_distance)
+    * ["color" (port, color)](#WeDo2Hub+event_color)
+    * ["tilt" (port, x, y)](#WeDo2Hub+event_tilt)
+    * ["rotate" (port, rotation)](#WeDo2Hub+event_rotate)
 
 <a name="WeDo2Hub+setLEDColor"></a>
 
@@ -149,7 +148,7 @@ Connect to the Hub.
 
 | Param | Type |
 | --- | --- |
-| [callback] | [<code>connectCallback</code>](#Hub+connectCallback) | 
+| [callback] | <code>function</code> | 
 
 <a name="Hub+subscribe"></a>
 
@@ -174,10 +173,66 @@ Unsubscribe to sensor notifications on a given port.
 | --- | --- |
 | port | <code>string</code> | 
 
-<a name="Hub+connectCallback"></a>
+<a name="WeDo2Hub+event_button"></a>
 
-### weDo2Hub.connectCallback : <code>function</code>
-**Kind**: instance typedef of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+### "button" (state)
+Emits when a button is pressed.
+
+**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| state | <code>number</code> | A number representing one of the button state consts. |
+
+<a name="WeDo2Hub+event_distance"></a>
+
+### "distance" (port, distance)
+Emits when a distance sensor is activated.
+
+**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| distance | <code>number</code> | Distance, in millimeters. |
+
+<a name="WeDo2Hub+event_color"></a>
+
+### "color" (port, color)
+Emits when a color sensor is activated.
+
+**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="WeDo2Hub+event_tilt"></a>
+
+### "tilt" (port, x, y)
+Emits when a tilt sensor is activated.
+
+**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| x | <code>number</code> | 
+| y | <code>number</code> | 
+
+<a name="WeDo2Hub+event_rotate"></a>
+
+### "rotate" (port, rotation)
+Emits when a rotation sensor is activated.
+
+**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| rotation | <code>number</code> | 
+
 <a name="BoostHub"></a>
 
 ## BoostHub ⇐ [<code>Hub</code>](#Hub)
@@ -191,7 +246,11 @@ Unsubscribe to sensor notifications on a given port.
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
-    * [.connectCallback](#Hub+connectCallback) : <code>function</code>
+    * ["button" (state)](#BoostHub+event_button)
+    * ["distance" (port, distance)](#BoostHub+event_distance)
+    * ["color" (port, color)](#BoostHub+event_color)
+    * ["tilt" (port, x, y)](#BoostHub+event_tilt)
+    * ["rotate" (port, rotation)](#BoostHub+event_rotate)
 
 <a name="BoostHub+setLEDColor"></a>
 
@@ -240,7 +299,7 @@ Connect to the Hub.
 
 | Param | Type |
 | --- | --- |
-| [callback] | [<code>connectCallback</code>](#Hub+connectCallback) | 
+| [callback] | <code>function</code> | 
 
 <a name="Hub+subscribe"></a>
 
@@ -265,7 +324,63 @@ Unsubscribe to sensor notifications on a given port.
 | --- | --- |
 | port | <code>string</code> | 
 
-<a name="Hub+connectCallback"></a>
+<a name="BoostHub+event_button"></a>
 
-### boostHub.connectCallback : <code>function</code>
-**Kind**: instance typedef of [<code>BoostHub</code>](#BoostHub)  
+### "button" (state)
+Emits when a button is pressed.
+
+**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| state | <code>number</code> | A number representing one of the button state consts. |
+
+<a name="BoostHub+event_distance"></a>
+
+### "distance" (port, distance)
+Emits when a distance sensor is activated.
+
+**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| distance | <code>number</code> | Distance, in millimeters. |
+
+<a name="BoostHub+event_color"></a>
+
+### "color" (port, color)
+Emits when a color sensor is activated.
+
+**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="BoostHub+event_tilt"></a>
+
+### "tilt" (port, x, y)
+Emits when a tilt sensor is activated.
+
+**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| x | <code>number</code> | 
+| y | <code>number</code> | 
+
+<a name="BoostHub+event_rotate"></a>
+
+### "rotate" (port, rotation)
+Emits when a rotation sensor is activated.
+
+**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| rotation | <code>number</code> | 
+
