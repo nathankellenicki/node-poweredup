@@ -11,33 +11,6 @@
 <dd></dd>
 </dl>
 
-## Members
-
-<dl>
-<dt><a href="#NONE">NONE</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#PINK">PINK</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#PURPLE">PURPLE</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#BLUE">BLUE</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#LIGHT_BLUE">LIGHT_BLUE</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#CYAN">CYAN</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#GREEN">GREEN</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#YELLOW">YELLOW</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#ORANGE">ORANGE</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#RED">RED</a> : <code>number</code></dt>
-<dd></dd>
-<dt><a href="#WHITE">WHITE</a> : <code>number</code></dt>
-<dd></dd>
-</dl>
-
 <a name="LPF2"></a>
 
 ## LPF2 ⇐ <code>EventEmitter</code>
@@ -411,54 +384,3 @@ Unsubscribe to sensor notifications on a given port.
 | --- | --- |
 | port | <code>string</code> | 
 
-<a name="NONE"></a>
-
-## NONE : <code>number</code>
-**Kind**: global variable  
-<a name="PINK"></a>
-
-## PINK : <code>number</code>
-**Kind**: global variable  
-<a name="PURPLE"></a>
-
-## PURPLE : <code>number</code>
-**Kind**: global variable  
-<a name="BLUE"></a>
-
-## BLUE : <code>number</code>
-**Kind**: global variable  
-<a name="LIGHT_BLUE"></a>
-
-## LIGHT_BLUE : <code>number</code>
-**Kind**: global variable  
-<a name="CYAN"></a>
-
-## CYAN : <code>number</code>
-**Kind**: global variable  
-<a name="GREEN"></a>
-
-## GREEN : <code>number</code>
-**Kind**: global variable  
-<a name="YELLOW"></a>
-
-## YELLOW : <code>number</code>
-**Kind**: global variable  
-<a name="ORANGE"></a>
-
-## ORANGE : <code>number</code>
-**Kind**: global variable  
-<a name="RED"></a>
-
-## RED : <code>number</code>
-**Kind**: global variable  
-<a name="WHITE"></a>
-
-## WHITE : <code>number</code>
-**Kind**: global variable  
-<a name="Colors"></a>
-
-## Colors : <code>enum</code>
-Enum for colors.
-
-**Kind**: global enum  
-**Read only**: true  

@@ -19,33 +19,17 @@ export enum Devices {
 }
 
 
-/**
- * Enum for colors.
- * @readonly
- * @enum {number}
- */
 export enum Colors {
-    /** @member {number} NONE */
     NONE = 0,
-    /** @member {number} PINK */
     PINK = 1,
-    /** @member {number} PURPLE */
     PURPLE = 2,
-    /** @member {number} BLUE */
     BLUE = 3,
-    /** @member {number} LIGHT_BLUE */
     LIGHT_BLUE = 4,
-    /** @member {number} CYAN */
     CYAN = 5,
-    /** @member {number} GREEN */
     GREEN = 6,
-    /** @member {number} YELLOW */
     YELLOW = 7,
-    /** @member {number} ORANGE */
     ORANGE = 8,
-    /** @member {number} RED */
     RED = 9,
-    /** @member {number} WHITE */
     WHITE = 10
 }
 
