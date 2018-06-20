@@ -6,7 +6,7 @@ import { Port } from "./port.js";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-const debug = Debug("lpf2");
+const debug = Debug("wedo2hub");
 
 
 /**
