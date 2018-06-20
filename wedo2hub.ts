@@ -36,7 +36,7 @@ export class WeDo2Hub extends Hub {
     }
 
 
-    public connect (callback: () => void) {
+    public connect (callback?: () => void) {
         debug("Connecting to WeDo 2.0 Smart Hub");
         super.connect(() => {
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE], this._parsePortMessage.bind(this));
@@ -60,12 +60,12 @@ export class WeDo2Hub extends Hub {
         const portCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
         if (motorCharacteristic && portCharacteristic) {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
-            portCharacteristic.write(data);
+            portCharacteristic.write(data, false);
             if (color === false) {
                 color = 0;
             }
             data = Buffer.from([0x06, 0x04, 0x01, color]);
-            motorCharacteristic.write(data);
+            motorCharacteristic.write(data, false);
         }
     }
 
@@ -82,9 +82,9 @@ export class WeDo2Hub extends Hub {
         const portCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
         if (motorCharacteristic && portCharacteristic) {
             const data1 = Buffer.from([0x01, 0x02, 0x06, 0x17, 0x01, 0x02]);
-            portCharacteristic.write(data1);
+            portCharacteristic.write(data1, false);
             const data2 = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
-            motorCharacteristic.write(data2);
+            motorCharacteristic.write(data2, false);
         }
     }
 
@@ -98,7 +98,7 @@ export class WeDo2Hub extends Hub {
     public setMotorSpeed (port: string, speed: number) {
         const characteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
         if (characteristic) {
-            characteristic.write(Buffer.from([this._ports[port].value, 0x01, 0x02, speed]));
+            characteristic.write(Buffer.from([this._ports[port].value, 0x01, 0x02, speed]), false);
         }
     }
 
@@ -106,7 +106,7 @@ export class WeDo2Hub extends Hub {
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
         const characteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
         if (characteristic) {
-            characteristic.write(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
+            characteristic.write(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), false, callback);
         }
     }
 
@@ -114,7 +114,7 @@ export class WeDo2Hub extends Hub {
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
         const characteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
         if (characteristic) {
-            characteristic.write(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), callback);
+            characteristic.write(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), false, callback);
         }
     }
 

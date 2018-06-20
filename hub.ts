@@ -40,7 +40,7 @@ export class Hub extends EventEmitter {
      * @method Hub#connect
      * @param {function} [callback]
      */
-    public connect (callback: () => void) {
+    public connect (callback?: () => void) {
 
         const self = this;
 
@@ -165,7 +165,7 @@ export class Hub extends EventEmitter {
                 this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
             }
         } else {
-            port.type = null;
+            port.type = Consts.Devices.UNKNOWN;
             debug(`Port ${port.id} disconnected`);
         }
 

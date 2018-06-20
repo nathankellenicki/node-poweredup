@@ -40,12 +40,12 @@ export class BoostHub extends Hub {
     }
 
 
-    public connect (callback: () => void) {
+    public connect (callback?: () => void) {
         debug("Connecting to Boost Move Hub");
         super.connect(() => {
             const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
-            characteristic.write(Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]));
+            characteristic.write(Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]), false);
             debug("Connect completed");
             if (callback) {
                 callback();
@@ -63,12 +63,12 @@ export class BoostHub extends Hub {
         const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
             let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
-            characteristic.write(data);
+            characteristic.write(data, false);
             if (color === false) {
                 color = 0;
             }
             data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
-            characteristic.write(data);
+            characteristic.write(data, false);
         }
     }
 
@@ -97,10 +97,10 @@ export class BoostHub extends Hub {
             if (time) {
                 const data = Buffer.from([0x0c, 0x00, 0x81, this._ports[port].value, 0x11, 0x09, 0x00, 0x00, speed, 0x64, 0x7f, 0x03]);
                 data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
-                characteristic.write(data);
+                characteristic.write(data, false);
             } else {
                 const data = Buffer.from([0x0a, 0x00, 0x81, this._ports[port].value, 0x11, 0x01, speed, 0x64, 0x7f, 0x03]);
-                characteristic.write(data);
+                characteristic.write(data, false);
             }
         }
     }
@@ -119,7 +119,7 @@ export class BoostHub extends Hub {
             const data = Buffer.from([0x0e, 0x00, 0x81, this._ports[port].value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
             data.writeUInt32LE(angle, 6);
             data.writeInt8(speed, 10);
-            characteristic.write(data);
+            characteristic.write(data, false);
         }
     }
 
@@ -127,7 +127,7 @@ export class BoostHub extends Hub {
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
         const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
-            characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+            characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), false, callback);
         }
     }
 
@@ -135,7 +135,7 @@ export class BoostHub extends Hub {
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
         const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
-            characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+            characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), false, callback);
         }
     }
 

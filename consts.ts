@@ -7,6 +7,7 @@ export enum Hubs {
 }
 
 export enum Devices {
+    UNKNOWN = 0,
     BASIC_MOTOR = 1,
     BOOST_LED = 22,
     WEDO2_TILT = 34,
