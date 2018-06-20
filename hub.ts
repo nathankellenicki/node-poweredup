@@ -3,9 +3,10 @@ import { EventEmitter } from "events";
 import { Characteristic, Peripheral, Service } from "noble";
 import { Port } from "./port";
 
+import * as Consts from "./consts";
+
 import Debug = require("debug");
 const debug = Debug("lpf2");
-import { Consts } from "./consts.js";
 
 
 /**
@@ -16,7 +17,7 @@ export class Hub extends EventEmitter {
 
 
     public autoSubscribe: boolean;
-    public type: number = Consts.Hubs.UNKNOWN;
+    public type: Consts.Hubs = Consts.Hubs.UNKNOWN;
     public uuid: string;
 
     protected _ports: any = {};
@@ -171,7 +172,7 @@ export class Hub extends EventEmitter {
     }
 
 
-    private _getModeForDeviceType (type: number) {
+    private _getModeForDeviceType (type: Consts.Devices) {
         switch (type) {
             case Consts.Devices.BASIC_MOTOR:
                 return 0x02;

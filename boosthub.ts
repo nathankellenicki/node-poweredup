@@ -3,9 +3,10 @@ import { Peripheral } from "noble";
 import { Hub } from "./hub.js";
 import { Port } from "./port.js";
 
+import * as Consts from "./consts";
+
 import Debug = require("debug");
 const debug = Debug("lpf2");
-import { Consts } from "./consts.js";
 
 
 /**
@@ -16,7 +17,7 @@ export class BoostHub extends Hub {
 
 
     public static IsBoostHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.localName === Consts.BLE.Name.BOOST_MOVE_HUB_NAME && peripheral.advertisement.serviceUuids.indexOf(Consts.BLE.Services.BOOST_MOVE_HUB) >= 0);
+        return (peripheral.advertisement.localName === Consts.BLENames.BOOST_MOVE_HUB_NAME && peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0);
     }
 
 
@@ -42,7 +43,7 @@ export class BoostHub extends Hub {
     public connect (callback: () => void) {
         debug("Connecting to Boost Move Hub");
         super.connect(() => {
-            const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+            const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
             characteristic.write(Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]));
             debug("Connect completed");
@@ -59,7 +60,7 @@ export class BoostHub extends Hub {
      * @param {number} color - A number representing one of the LED color consts.
      */
     public setLEDColor (color: number | boolean) {
-        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
             let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
             characteristic.write(data);
@@ -91,7 +92,7 @@ export class BoostHub extends Hub {
      * @param {number} [time] - How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
      */
     public setMotorSpeed (port: string, speed: number, time: number) {
-        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
             if (time) {
                 const data = Buffer.from([0x0c, 0x00, 0x81, this._ports[port].value, 0x11, 0x09, 0x00, 0x00, speed, 0x64, 0x7f, 0x03]);
@@ -113,7 +114,7 @@ export class BoostHub extends Hub {
      * @param {number} [speed=100] - How fast the motor should be rotated.
      */
     public setMotorAngle (port: string, angle: number, speed: number = 100) {
-        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
             const data = Buffer.from([0x0e, 0x00, 0x81, this._ports[port].value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
             data.writeUInt32LE(angle, 6);
@@ -124,7 +125,7 @@ export class BoostHub extends Hub {
 
 
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
-        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
             characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
         }
@@ -132,7 +133,7 @@ export class BoostHub extends Hub {
 
 
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
-        const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
+        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
         if (characteristic) {
             characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
         }
@@ -199,10 +200,10 @@ export class BoostHub extends Hub {
                  * @event BoostHub#button
                  * @param {number} state - A number representing one of the button state consts.
                  */
-                this.emit("button", Consts.Button.PRESSED);
+                this.emit("button", Consts.ButtonStates.PRESSED);
                 return;
             } else if (data[5] === 0) {
-                this.emit("button", Consts.Button.RELEASED);
+                this.emit("button", Consts.ButtonStates.RELEASED);
                 return;
             }
         }
