@@ -1,4 +1,6 @@
-const Consts = {
+/* tslint:disable */
+
+export const Consts = {
     Hubs: {
         UNKNOWN: 0,
         WEDO2_SMART_HUB: 1,
@@ -64,5 +66,3 @@ const Consts = {
         }
     }
 }
-
-module.exports = Consts;

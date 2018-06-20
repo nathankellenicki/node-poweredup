@@ -1,15 +1,19 @@
-const noble = require("noble"),
-    debug = require("debug")("lpf2"),
-    EventEmitter = require("events").EventEmitter;
+import { Peripheral } from "noble";
 
-const WeDo2Hub = require("./wedo2hub.js"),
-    BoostHub = require("./boosthub.js"),
-    Consts = require("./consts.js");
+import { BoostHub } from "./boosthub";
+import { Hub } from "./hub";
+import { WeDo2Hub } from "./wedo2hub";
 
-let ready = false,
-    wantScan = false;
+import { EventEmitter} from "events";
 
-noble.on("stateChange", (state) => {
+import Debug = require("debug");
+const debug = Debug("lpf2");
+import noble = require("noble");
+
+let ready = false;
+let wantScan = false;
+
+noble.on("stateChange", (state: string) => {
     ready = (state === "poweredOn");
     if (ready) {
         if (wantScan) {
@@ -21,26 +25,38 @@ noble.on("stateChange", (state) => {
     }
 });
 
-class LPF2 extends EventEmitter {
+/**
+ * @class LPF2
+ * @extends EventEmitter
+ */
+export class LPF2 extends EventEmitter {
+
+
+    public autoSubscribe: boolean = true;
+
+
+    private _connectedDevices: any = {};
 
 
     constructor () {
         super();
-        this.autoSubscribe = true;
-        this._connectedDevices = {};
     }
 
 
-    scan () {
+    /**
+     * Begin scanning for LPF2 Hub devices.
+     * @method LPF2#scan
+     */
+    public scan () {
         wantScan = true;
 
-        noble.on("discover", (peripheral) => {
+        noble.on("discover", (peripheral: Peripheral) => {
 
-            let hub = null;
+            let hub: Hub;
 
-            if (WeDo2Hub.isWeDo2Hub(peripheral)) {
+            if (WeDo2Hub.IsWeDo2Hub(peripheral)) {
                 hub = new WeDo2Hub(peripheral, this.autoSubscribe);
-            } else if (BoostHub.isBoostHub(peripheral)) {
+            } else if (BoostHub.IsBoostHub(peripheral)) {
                 hub = new BoostHub(peripheral, this.autoSubscribe);
             } else {
                 return;
@@ -50,12 +66,12 @@ class LPF2 extends EventEmitter {
             noble.stopScanning();
             noble.startScanning();
 
-            hub._peripheral.on("connect", () => {
+            hub.on("connect", () => {
                 debug(`Hub ${hub.uuid} connected`);
                 this._connectedDevices[hub.uuid] = hub;
             });
 
-            hub._peripheral.on("disconnect", () => {
+            hub.on("disconnect", () => {
                 debug(`Hub ${hub.uuid} disconnected`);
                 delete this._connectedDevices[hub.uuid];
 
@@ -67,6 +83,11 @@ class LPF2 extends EventEmitter {
             });
 
             debug(`Hub ${hub.uuid} discovered`);
+            /**
+             * Emits when a LPF2 Hub device is found.
+             * @event LPF2#discover
+             * @param {Hub} hub
+             */
             this.emit("discover", hub);
 
         });
@@ -79,6 +100,3 @@ class LPF2 extends EventEmitter {
 
 
 }
-
-
-module.exports = LPF2;

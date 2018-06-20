@@ -2,13 +2,22 @@
   "name": "node-lpf2",
   "version": "1.0.0",
   "description": "A Node.js module to interface with Lego Power Functions 2.0 components.",
-  "main": "lpf2.js",
+  "main": "dist/lpf2.js",
+  "types": "dist/lpf2.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tslint -c tslint.json \"*.ts\" && tsc"
   },
   "author": "Nathan Kunicki <me@nathankunicki.com>",
   "license": "MIT",
   "dependencies": {
-    "noble": "^1.9.1"
+    "@types/debug": "0.0.30",
+    "@types/noble": "0.0.37",
+    "@types/node": "^10.3.4",
+    "noble": "^1.9.1",
+    "typescript": "^2.9.2"
+  },
+  "devDependencies": {
+    "jsdoc-to-markdown": "^4.0.1",
+    "tslint": "^5.10.0"
   }
 }
