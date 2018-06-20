@@ -3,7 +3,8 @@ const Consts = {
         UNKNOWN: 0,
         WEDO2_SMART_HUB: 1,
         BOOST_MOVE_HUB: 2,
-        POWERED_UP_HUB: 3
+        POWERED_UP_HUB: 3,
+        POWERED_UP_REMOTE: 4
     },
     Devices: {
         BASIC_MOTOR: 1,
