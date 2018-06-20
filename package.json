@@ -11,14 +11,14 @@
   "author": "Nathan Kunicki <me@nathankunicki.com>",
   "license": "MIT",
   "dependencies": {
-    "@types/debug": "0.0.30",
-    "@types/noble": "0.0.37",
-    "@types/node": "^10.3.4",
-    "noble": "^1.9.1",
-    "typescript": "^2.9.2"
+    "noble": "^1.9.1"
   },
   "devDependencies": {
     "jsdoc-to-markdown": "^4.0.1",
-    "tslint": "^5.10.0"
+    "typescript": "^2.9.2",
+    "tslint": "^5.10.0",
+    "@types/debug": "0.0.30",
+    "@types/noble": "0.0.37",
+    "@types/node": "^10.3.4"
   }
 }
