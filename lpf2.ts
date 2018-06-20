@@ -35,7 +35,7 @@ export class LPF2 extends EventEmitter {
     public autoSubscribe: boolean = true;
 
 
-    private _connectedDevices: any = {};
+    private _connectedDevices: {[uuid: string]: Hub} = {};
 
 
     constructor () {

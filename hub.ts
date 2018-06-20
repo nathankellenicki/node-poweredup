@@ -20,8 +20,8 @@ export class Hub extends EventEmitter {
     public type: Consts.Hubs = Consts.Hubs.UNKNOWN;
     public uuid: string;
 
-    protected _ports: any = {};
-    protected _characteristics: any = {};
+    protected _ports: {[port: string]: Port} = {};
+    protected _characteristics: {[uuid: string]: Characteristic} = {};
 
     private _peripheral: Peripheral;
     private _rssi: number = -100;
