@@ -53,8 +53,8 @@ export class WeDo2Hub extends Hub {
     /**
      * Set the color of the LED on the Hub via a color value.
      * @method WeDo2Hub#setLEDColor
-     * @param {number} color - A number representing one of the LED color consts.
-     * @returns {Promise} - Resolved upon successful completion of command.
+     * @param {number} color A number representing one of the LED color consts.
+     * @returns {Promise} Resolved upon successful completion of command.
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
@@ -80,7 +80,7 @@ export class WeDo2Hub extends Hub {
      * @param {number} red
      * @param {number} green
      * @param {number} blue
-     * @returns {Promise} - Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful completion of command.
      */
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
@@ -101,8 +101,8 @@ export class WeDo2Hub extends Hub {
      * Set the motor speed on a given port.
      * @method WeDo2Hub#setMotorSpeed
      * @param {string} port
-     * @param {number} speed - For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @returns {Promise} - Resolved upon successful completion of command.
+     * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @returns {Promise} Resolved upon successful completion of command.
      */
     public setMotorSpeed (port: string, speed: number) {
         return new Promise((resolve, reject) => {
@@ -169,7 +169,7 @@ export class WeDo2Hub extends Hub {
             /**
              * Emits when a button is pressed.
              * @event WeDo2Hub#button
-             * @param {number} state - A number representing one of the button state consts.
+             * @param {number} state A number representing one of the button state consts.
              */
             this.emit("button", Consts.ButtonStates.PRESSED);
             return;
@@ -196,7 +196,7 @@ export class WeDo2Hub extends Hub {
                      * Emits when a distance sensor is activated.
                      * @event WeDo2Hub#distance
                      * @param {string} port
-                     * @param {number} distance - Distance, in millimeters.
+                     * @param {number} distance Distance, in millimeters.
                      */
                     this.emit("distance", port.id, distance * 10);
                     break;
@@ -208,7 +208,7 @@ export class WeDo2Hub extends Hub {
                      * Emits when a color sensor is activated.
                      * @event WeDo2Hub#color
                      * @param {string} port
-                     * @param {number} color - A number representing one of the LED color consts.
+                     * @param {number} color A number representing one of the LED color consts.
                      */
                     this.emit("color", port.id, distance);
                     break;

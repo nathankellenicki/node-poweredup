@@ -63,7 +63,7 @@ Emits when a LPF2 Hub device is found.
 Set the color of the LED on the Hub via a color value.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Returns**: <code>Promise</code> - - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -75,7 +75,7 @@ Set the color of the LED on the Hub via a color value.
 Set the motor speed on a given port.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Returns**: <code>Promise</code> - - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -89,7 +89,7 @@ Set the motor speed on a given port.
 Rotate a motor by a given angle.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Returns**: <code>Promise</code> - - Resolved upon successful completion of command (ie. once the motor is finished).  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the motor is finished).  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -217,7 +217,7 @@ Emits when a rotation sensor is activated.
 Set the color of the LED on the Hub via a color value.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -229,7 +229,7 @@ Set the color of the LED on the Hub via a color value.
 Set the color of the LED on the Hub via RGB values.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type |
 | --- | --- |
@@ -243,7 +243,7 @@ Set the color of the LED on the Hub via RGB values.
 Set the motor speed on a given port.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |

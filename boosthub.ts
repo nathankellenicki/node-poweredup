@@ -57,8 +57,8 @@ export class BoostHub extends Hub {
     /**
      * Set the color of the LED on the Hub via a color value.
      * @method BoostHub#setLEDColor
-     * @param {number} color - A number representing one of the LED color consts.
-     * @returns {Promise} - Resolved upon successful completion of command.
+     * @param {number} color A number representing one of the LED color consts.
+     * @returns {Promise} Resolved upon successful completion of command.
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
@@ -92,9 +92,9 @@ export class BoostHub extends Hub {
      * Set the motor speed on a given port.
      * @method BoostHub#setMotorSpeed
      * @param {string} port
-     * @param {number} speed - For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @param {number} [time] - How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
-     * @returns {Promise} - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
+     * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
+     * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
     public setMotorSpeed (port: string, speed: number, time: number) {
         return new Promise((resolve, reject) => {
@@ -123,9 +123,9 @@ export class BoostHub extends Hub {
      * Rotate a motor by a given angle.
      * @method BoostHub#setMotorAngle
      * @param {string} port
-     * @param {number} angle - How much the motor should be rotated (in degrees).
-     * @param {number} [speed=100] - How fast the motor should be rotated.
-     * @returns {Promise} - Resolved upon successful completion of command (ie. once the motor is finished).
+     * @param {number} angle How much the motor should be rotated (in degrees).
+     * @param {number} [speed=100] How fast the motor should be rotated.
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
     public setMotorAngle (port: string, angle: number, speed: number = 100) {
         return new Promise((resolve, reject) => {
@@ -220,7 +220,7 @@ export class BoostHub extends Hub {
                 /**
                  * Emits when a button is pressed.
                  * @event BoostHub#button
-                 * @param {number} state - A number representing one of the button state consts.
+                 * @param {number} state A number representing one of the button state consts.
                  */
                 this.emit("button", Consts.ButtonStates.PRESSED);
                 return;
@@ -286,7 +286,7 @@ export class BoostHub extends Hub {
                      * Emits when a distance sensor is activated.
                      * @event BoostHub#distance
                      * @param {string} port
-                     * @param {number} distance - Distance, in millimeters.
+                     * @param {number} distance Distance, in millimeters.
                      */
                     this.emit("distance", port.id, distance * 10);
                     break;
@@ -298,7 +298,7 @@ export class BoostHub extends Hub {
                      * Emits when a color sensor is activated.
                      * @event BoostHub#color
                      * @param {string} port
-                     * @param {number} color - A number representing one of the LED color consts.
+                     * @param {number} color A number representing one of the LED color consts.
                      */
                     this.emit("color", port.id, data[4]);
 
