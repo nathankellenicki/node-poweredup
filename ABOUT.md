@@ -14,7 +14,7 @@ Note: node-lpf2 has been tested on macOS 10.13 and Debian/Raspbian on the Raspbe
 
 ### Compatibility
 
-While most Powered Up and Boost components are compatible, there is limited backwards compatibility with between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
+While most LPF2 components and Hubs are compatible with each other, there are exceptions. There is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
 
 |                                 |  Type  | WeDo 2.0 Smart Hub | Boost Move Hub | Powered Up Hub |
 | ------------------------------- | ------ | ------------------ | -------------- | -------------- |
