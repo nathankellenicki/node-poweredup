@@ -25,8 +25,8 @@ While most Powered Up and Boost components are compatible, there is limited back
 | Boost Interactive Medium Motor  | Motor  |      *Some(2)*     |       Yes      |       Yes      |
 | Powered Up Train Motor          | Motor  |         Yes        |       Yes      |       Yes      |
 
-<small>(1) Only color mode is supported on the WeDo 2.0 Smart Hub at this point.</small>
-<small>Only basic motor functionality is supported on the WeDo 2.0 Smart Hub at this point. No interactive functionality. In short, it functions like the WeDo 2.0 Medium Motor.</small>
+<sub>(1) Only color mode is supported on the WeDo 2.0 Smart Hub at this point.</sub>
+<sub>(2) Only basic motor functionality is supported on the WeDo 2.0 Smart Hub at this point. No interactive functionality. In short, it functions like the WeDo 2.0 Medium Motor.</sub>
 
 ### Usage
 
