@@ -16,14 +16,17 @@ Note: node-lpf2 has been tested on macOS 10.11 and Debian/Raspbian on the Raspbe
 
 While most Powered Up and Boost components are compatible, there is limited backwards compatibility with WeDo 2.0. WeDo 2.0 components are fully forwards compatible.
 
-|                                 |  Type  | WeDo 2.0 Smart Hub | Boost Move Hub | Powered Up Hub | Notes                                                                                                |
-| ------------------------------- | ------ | ------------------ | -------------- | -------------- | ---------------------------------------------------------------------------------------------------- |
-| WeDo 2.0 Tilt Sensor            | Sensor |         Yes        |       Yes      |       Yes      |                                                                                                      |
-| WeDo 2.0 Distance Sensor        | Sensor |         Yes        |       Yes      |       Yes      |                                                                                                      |
-| WeDo 2.0 Medium Motor           | Motor  |         Yes        |       Yes      |       Yes      |                                                                                                      |
-| Boost Color and Distance Sensor | Sensor |     **Some(1)**    |       Yes      |       Yes      | Only color mode is supported on the WeDo 2.0 Smart Hub.                                              |
-| Boost Interactive Medium Motor  | Motor  |     **Some(2)**    |       Yes      |       Yes      | Only basic motor functionality is supported on the WeDo 2.0 Smart Hub. No interactive functionality. |
-| Powered Up Train Motor          | Motor  |         Yes        |       Yes      |       Yes      |                                                                                                      |
+|                                 |  Type  | WeDo 2.0 Smart Hub | Boost Move Hub | Powered Up Hub |
+| ------------------------------- | ------ | ------------------ | -------------- | -------------- |
+| WeDo 2.0 Tilt Sensor            | Sensor |         Yes        |       Yes      |       Yes      |
+| WeDo 2.0 Distance Sensor        | Sensor |         Yes        |       Yes      |       Yes      |
+| WeDo 2.0 Medium Motor           | Motor  |         Yes        |       Yes      |       Yes      |
+| Boost Color and Distance Sensor | Sensor |      *Some(1)*     |       Yes      |       Yes      |
+| Boost Interactive Medium Motor  | Motor  |      *Some(2)*     |       Yes      |       Yes      |
+| Powered Up Train Motor          | Motor  |         Yes        |       Yes      |       Yes      |
+
+<small>(1) Only color mode is supported on the WeDo 2.0 Smart Hub at this point.</small>
+<small>Only basic motor functionality is supported on the WeDo 2.0 Smart Hub at this point. No interactive functionality. In short, it functions like the WeDo 2.0 Medium Motor.</small>
 
 ### Usage
 
