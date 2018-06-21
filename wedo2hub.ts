@@ -56,17 +56,20 @@ export class WeDo2Hub extends Hub {
      * @param {number} color - A number representing one of the LED color consts.
      */
     public setLEDColor (color: number | boolean) {
-        const motorCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
-        const portCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
-        if (motorCharacteristic && portCharacteristic) {
-            let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
-            portCharacteristic.write(data, false);
-            if (color === false) {
-                color = 0;
+        return new Promise((resolve, reject) => {
+            const motorCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
+            const portCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
+            if (motorCharacteristic && portCharacteristic) {
+                let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
+                portCharacteristic.write(data, false);
+                if (color === false) {
+                    color = 0;
+                }
+                data = Buffer.from([0x06, 0x04, 0x01, color]);
+                motorCharacteristic.write(data, false);
+                return resolve();
             }
-            data = Buffer.from([0x06, 0x04, 0x01, color]);
-            motorCharacteristic.write(data, false);
-        }
+        });
     }
 
 
@@ -78,14 +81,17 @@ export class WeDo2Hub extends Hub {
      * @param {number} blue
      */
     public setLEDRGB (red: number, green: number, blue: number) {
-        const motorCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
-        const portCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
-        if (motorCharacteristic && portCharacteristic) {
-            const data1 = Buffer.from([0x01, 0x02, 0x06, 0x17, 0x01, 0x02]);
-            portCharacteristic.write(data1, false);
-            const data2 = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
-            motorCharacteristic.write(data2, false);
-        }
+        return new Promise((resolve, reject) => {
+            const motorCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
+            const portCharacteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE];
+            if (motorCharacteristic && portCharacteristic) {
+                const data1 = Buffer.from([0x01, 0x02, 0x06, 0x17, 0x01, 0x02]);
+                portCharacteristic.write(data1, false);
+                const data2 = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
+                motorCharacteristic.write(data2, false);
+                return resolve();
+            }
+        });
     }
 
 
@@ -96,10 +102,13 @@ export class WeDo2Hub extends Hub {
      * @param {number} speed - For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      */
     public setMotorSpeed (port: string, speed: number) {
-        const characteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
-        if (characteristic) {
-            characteristic.write(Buffer.from([this._ports[port].value, 0x01, 0x02, speed]), false);
-        }
+        return new Promise((resolve, reject) => {
+            const characteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
+            if (characteristic) {
+                characteristic.write(Buffer.from([this._ports[port].value, 0x01, 0x02, speed]), false);
+                return resolve();
+            }
+        });
     }
 
 

@@ -60,16 +60,19 @@ export class BoostHub extends Hub {
      * @param {number} color - A number representing one of the LED color consts.
      */
     public setLEDColor (color: number | boolean) {
-        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
-        if (characteristic) {
-            let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
-            characteristic.write(data, false);
-            if (color === false) {
-                color = 0;
+        return new Promise((resolve, reject) => {
+            const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
+            if (characteristic) {
+                let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
+                characteristic.write(data, false);
+                if (color === false) {
+                    color = 0;
+                }
+                data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
+                characteristic.write(data, false);
             }
-            data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
-            characteristic.write(data, false);
-        }
+            return resolve();
+        });
     }
 
 
@@ -92,17 +95,25 @@ export class BoostHub extends Hub {
      * @param {number} [time] - How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
      */
     public setMotorSpeed (port: string, speed: number, time: number) {
-        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
-        if (characteristic) {
-            if (time) {
-                const data = Buffer.from([0x0c, 0x00, 0x81, this._ports[port].value, 0x11, 0x09, 0x00, 0x00, speed, 0x64, 0x7f, 0x03]);
-                data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
-                characteristic.write(data, false);
-            } else {
-                const data = Buffer.from([0x0a, 0x00, 0x81, this._ports[port].value, 0x11, 0x01, speed, 0x64, 0x7f, 0x03]);
-                characteristic.write(data, false);
+        return new Promise((resolve, reject) => {
+            const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
+            if (characteristic) {
+                const portObj = this._ports[port];
+                if (time) {
+                    portObj.busy = true;
+                    const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, speed, 0x64, 0x7f, 0x03]);
+                    data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
+                    characteristic.write(data, false);
+                    portObj.finished = () => {
+                        return resolve();
+                    };
+                } else {
+                    const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x01, speed, 0x64, 0x7f, 0x03]);
+                    characteristic.write(data, false);
+                    return resolve();
+                }
             }
-        }
+        });
     }
 
 
@@ -114,13 +125,20 @@ export class BoostHub extends Hub {
      * @param {number} [speed=100] - How fast the motor should be rotated.
      */
     public setMotorAngle (port: string, angle: number, speed: number = 100) {
-        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
-        if (characteristic) {
-            const data = Buffer.from([0x0e, 0x00, 0x81, this._ports[port].value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
-            data.writeUInt32LE(angle, 6);
-            data.writeInt8(speed, 10);
-            characteristic.write(data, false);
-        }
+        return new Promise((resolve, reject) => {
+            const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
+            if (characteristic) {
+                const portObj = this._ports[port];
+                portObj.busy = true;
+                const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
+                data.writeUInt32LE(angle, 6);
+                data.writeInt8(speed, 10);
+                characteristic.write(data, false);
+                portObj.finished = () => {
+                    return resolve();
+                };
+            }
+        });
     }
 
 
@@ -186,6 +204,7 @@ export class BoostHub extends Hub {
             case 0x82:
             {
                 this._parsePortAction(data);
+                break;
             }
         }
     }
@@ -233,7 +252,13 @@ export class BoostHub extends Hub {
             return;
         }
 
-        // NK: Handle callbacks when port finished here.
+        if (data[4] === 0x0a) {
+            port.busy = false;
+            if (port.finished) {
+                port.finished();
+                port.finished = null;
+            }
+        }
 
     }
 
