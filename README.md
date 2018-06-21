@@ -1,4 +1,4 @@
-# **node-lpf2** - A Node.js module to interface with Lego Power Functions 2.0 components.
+# **node-lpf2** - A Node.js module to interface with LEGO Power Functions 2.0 components.
 
 ### Installation
 
@@ -8,13 +8,13 @@ Node.js v8.0+ required.
 npm install node-lpf2 --save
 ```
 
-node-lpf2 uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/sandeepmistry/noble#prerequisites).
+node-lpf2 uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/noble/noble#prerequisites).
 
-Note: node-lpf2 has been tested on macOS 10.11 and Debian/Raspbian on the Raspberry Pi 3 Model B.
+Note: node-lpf2 has been tested on macOS 10.13 and Debian/Raspbian on the Raspberry Pi 3 Model B.
 
 ### Compatibility
 
-While most Powered Up and Boost components are compatible, there is limited backwards compatibility with WeDo 2.0. WeDo 2.0 components are fully forwards compatible.
+While most Powered Up and Boost components are compatible, there is limited backwards compatibility with between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
 
 |                                 |  Type  | WeDo 2.0 Smart Hub | Boost Move Hub | Powered Up Hub |
 | ------------------------------- | ------ | ------------------ | -------------- | -------------- |
