@@ -51,7 +51,7 @@ Emits when a LPF2 Hub device is found.
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
-    * ["button" (state)](#BoostHub+event_button)
+    * ["button" (button, state)](#BoostHub+event_button)
     * ["distance" (port, distance)](#BoostHub+event_distance)
     * ["color" (port, color)](#BoostHub+event_color)
     * ["tilt" (port, x, y)](#BoostHub+event_tilt)
@@ -134,13 +134,14 @@ Unsubscribe to sensor notifications on a given port.
 
 <a name="BoostHub+event_button"></a>
 
-### "button" (state)
+### "button" (button, state)
 Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
 <a name="BoostHub+event_distance"></a>
@@ -205,7 +206,7 @@ Emits when a rotation sensor is activated.
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
-    * ["button" (state)](#WeDo2Hub+event_button)
+    * ["button" (button, state)](#WeDo2Hub+event_button)
     * ["distance" (port, distance)](#WeDo2Hub+event_distance)
     * ["color" (port, color)](#WeDo2Hub+event_color)
     * ["tilt" (port, x, y)](#WeDo2Hub+event_tilt)
@@ -287,13 +288,14 @@ Unsubscribe to sensor notifications on a given port.
 
 <a name="WeDo2Hub+event_button"></a>
 
-### "button" (state)
+### "button" (button, state)
 Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
 <a name="WeDo2Hub+event_distance"></a>

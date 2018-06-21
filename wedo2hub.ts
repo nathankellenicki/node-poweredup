@@ -169,12 +169,13 @@ export class WeDo2Hub extends Hub {
             /**
              * Emits when a button is pressed.
              * @event WeDo2Hub#button
+             * @param {string} button
              * @param {number} state A number representing one of the button state consts.
              */
-            this.emit("button", Consts.ButtonStates.PRESSED);
+            this.emit("button", "GREEN", Consts.ButtonStates.PRESSED);
             return;
         } else if (data[0] === 0) {
-            this.emit("button", Consts.ButtonStates.RELEASED);
+            this.emit("button", "GREEN", Consts.ButtonStates.RELEASED);
             return;
         }
 
