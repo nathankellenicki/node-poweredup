@@ -58,6 +58,7 @@ export class BoostHub extends Hub {
      * Set the color of the LED on the Hub via a color value.
      * @method BoostHub#setLEDColor
      * @param {number} color - A number representing one of the LED color consts.
+     * @returns {Promise} - Resolved upon successful completion of command.
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
@@ -93,6 +94,7 @@ export class BoostHub extends Hub {
      * @param {string} port
      * @param {number} speed - For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} [time] - How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
+     * @returns {Promise} - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
     public setMotorSpeed (port: string, speed: number, time: number) {
         return new Promise((resolve, reject) => {
@@ -123,6 +125,7 @@ export class BoostHub extends Hub {
      * @param {string} port
      * @param {number} angle - How much the motor should be rotated (in degrees).
      * @param {number} [speed=100] - How fast the motor should be rotated.
+     * @returns {Promise} - Resolved upon successful completion of command (ie. once the motor is finished).
      */
     public setMotorAngle (port: string, angle: number, speed: number = 100) {
         return new Promise((resolve, reject) => {
