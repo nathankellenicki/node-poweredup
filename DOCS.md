@@ -45,13 +45,13 @@ Emits when a LPF2 Hub device is found.
 **Extends**: [<code>Hub</code>](#Hub)  
 
 * [BoostHub](#BoostHub) ⇐ [<code>Hub</code>](#Hub)
-    * [.setLEDColor(color)](#BoostHub+setLEDColor) ⇒ <code>Promise</code>
-    * [.setMotorSpeed(port, speed, [time])](#BoostHub+setMotorSpeed) ⇒ <code>Promise</code>
-    * [.setMotorAngle(port, angle, [speed])](#BoostHub+setMotorAngle) ⇒ <code>Promise</code>
+    * [.setLEDColor(color)](#BoostHub+setLEDColor)
+    * [.setMotorSpeed(port, speed, [time])](#BoostHub+setMotorSpeed)
+    * [.setMotorAngle(port, angle, [speed])](#BoostHub+setMotorAngle)
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
-    * ["button" (button, state)](#BoostHub+event_button)
+    * ["button" (state)](#BoostHub+event_button)
     * ["distance" (port, distance)](#BoostHub+event_distance)
     * ["color" (port, color)](#BoostHub+event_color)
     * ["tilt" (port, x, y)](#BoostHub+event_tilt)
@@ -59,11 +59,10 @@ Emits when a LPF2 Hub device is found.
 
 <a name="BoostHub+setLEDColor"></a>
 
-### boostHub.setLEDColor(color) ⇒ <code>Promise</code>
+### boostHub.setLEDColor(color)
 Set the color of the LED on the Hub via a color value.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -71,11 +70,10 @@ Set the color of the LED on the Hub via a color value.
 
 <a name="BoostHub+setMotorSpeed"></a>
 
-### boostHub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
+### boostHub.setMotorSpeed(port, speed, [time])
 Set the motor speed on a given port.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -85,11 +83,10 @@ Set the motor speed on a given port.
 
 <a name="BoostHub+setMotorAngle"></a>
 
-### boostHub.setMotorAngle(port, angle, [speed]) ⇒ <code>Promise</code>
+### boostHub.setMotorAngle(port, angle, [speed])
 Rotate a motor by a given angle.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the motor is finished).  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
@@ -134,14 +131,13 @@ Unsubscribe to sensor notifications on a given port.
 
 <a name="BoostHub+event_button"></a>
 
-### "button" (button, state)
+### "button" (state)
 Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
 <a name="BoostHub+event_distance"></a>
@@ -200,13 +196,13 @@ Emits when a rotation sensor is activated.
 **Extends**: [<code>Hub</code>](#Hub)  
 
 * [WeDo2Hub](#WeDo2Hub) ⇐ [<code>Hub</code>](#Hub)
-    * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
-    * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
-    * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.setLEDColor(color)](#WeDo2Hub+setLEDColor)
+    * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB)
+    * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed)
     * [.connect([callback])](#Hub+connect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
-    * ["button" (button, state)](#WeDo2Hub+event_button)
+    * ["button" (state)](#WeDo2Hub+event_button)
     * ["distance" (port, distance)](#WeDo2Hub+event_distance)
     * ["color" (port, color)](#WeDo2Hub+event_color)
     * ["tilt" (port, x, y)](#WeDo2Hub+event_tilt)
@@ -214,11 +210,10 @@ Emits when a rotation sensor is activated.
 
 <a name="WeDo2Hub+setLEDColor"></a>
 
-### weDo2Hub.setLEDColor(color) ⇒ <code>Promise</code>
+### weDo2Hub.setLEDColor(color)
 Set the color of the LED on the Hub via a color value.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -226,11 +221,10 @@ Set the color of the LED on the Hub via a color value.
 
 <a name="WeDo2Hub+setLEDRGB"></a>
 
-### weDo2Hub.setLEDRGB(red, green, blue) ⇒ <code>Promise</code>
+### weDo2Hub.setLEDRGB(red, green, blue)
 Set the color of the LED on the Hub via RGB values.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type |
 | --- | --- |
@@ -240,11 +234,10 @@ Set the color of the LED on the Hub via RGB values.
 
 <a name="WeDo2Hub+setMotorSpeed"></a>
 
-### weDo2Hub.setMotorSpeed(port, speed) ⇒ <code>Promise</code>
+### weDo2Hub.setMotorSpeed(port, speed)
 Set the motor speed on a given port.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -288,14 +281,13 @@ Unsubscribe to sensor notifications on a given port.
 
 <a name="WeDo2Hub+event_button"></a>
 
-### "button" (button, state)
+### "button" (state)
 Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
 <a name="WeDo2Hub+event_distance"></a>
