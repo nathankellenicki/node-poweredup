@@ -1,4 +1,5 @@
-# node-lpf2 - A Node.js module to interface with Lego Power Functions 2.0 components.
+# node-lpf2
+## A Node.js module to interface with Lego Power Functions 2.0 components.
 
 ### Installation
 
