@@ -6,7 +6,8 @@
   "types": "dist/lpf2.d.ts",
   "scripts": {
     "build": "tslint -c tslint.json \"*.ts\" && tsc",
-    "docs": "jsdoc2md dist/lpf2.js dist/boosthub.js dist/wedo2hub.js dist/hub.js dist/consts.js > README.md"
+    "docs": "jsdoc2md dist/lpf2.js dist/boosthub.js dist/wedo2hub.js dist/hub.js dist/consts.js > README.md",
+    "prepublishOnly": "tsc"
   },
   "author": "Nathan Kunicki <me@nathankunicki.com>",
   "license": "MIT",
