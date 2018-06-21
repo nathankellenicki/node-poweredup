@@ -21,7 +21,9 @@ const lpf2 = new LPF2();
 
 Examples are available in the "examples" directory.
 
-### API## Classes
+### API
+
+## Classes
 
 <dl>
 <dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
