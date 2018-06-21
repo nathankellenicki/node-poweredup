@@ -21,5 +21,3 @@ const lpf2 = new LPF2();
 
 Examples are available in the "examples" directory.
 
-### API
-
