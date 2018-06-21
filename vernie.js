@@ -1,6 +1,6 @@
-const LPF2 = require(".");
+const LPF2 = require(".").LPF2;
 
-const lpf2 = new LPF2.LPF2();
+const lpf2 = new LPF2();
 lpf2.scan();
 
 lpf2.on("discover", (hub) => {

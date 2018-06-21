@@ -100,3 +100,6 @@ export class LPF2 extends EventEmitter {
 
 
 }
+
+export default LPF2;
+export { Hub, WeDo2Hub, BoostHub };
