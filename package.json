@@ -8,6 +8,7 @@
     "build": "tslint -c tslint.json \"*.ts\" && tsc",
     "docs": "jsdoc2md dist/lpf2.js dist/boosthub.js dist/wedo2hub.js dist/hub.js dist/consts.js > DOCS.md",
     "readme": "cat ABOUT.md DOCS.md > README.md",
+    "all": "npm run build && npm run docs && npm run readme",
     "prepublishOnly": "tsc"
   },
   "author": "Nathan Kunicki <me@nathankunicki.com>",
