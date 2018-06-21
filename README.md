@@ -19,7 +19,9 @@ const LPF2 = require("node-lpf2").LPF2;
 const lpf2 = new LPF2();
 ```
 
-Examples are available in the "examples" directory.## Classes
+Examples are available in the "examples" directory.
+
+### API## Classes
 
 <dl>
 <dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
