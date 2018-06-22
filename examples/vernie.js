@@ -7,11 +7,11 @@ console.log("Looking for Vernie (Please turn the Hub on now)...");
 
 lpf2.on("discover", async (vernie) => { // Wait to discover Vernie
 
-    lpf2.stop(); // Stop scanning for Vernie (We've already found him!)
+    lpf2.stop(); // Stop scanning for Vernie (We've just found him!)
     await vernie.connect(); // Connect to Vernie
 
     console.log("Connected to Vernie!");
-    await vernie.wait(3000); // Wait for 2 seconds before starting
+    await vernie.wait(3000); // Wait for 3 seconds before starting
 
     console.log("We're going on an adventure!");
     await vernie.setMotorSpeed("AB", 50, 2000); // Move forward for 2 seconds
