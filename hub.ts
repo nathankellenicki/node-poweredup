@@ -120,14 +120,14 @@ export class Hub extends EventEmitter {
      * Subscribe to sensor notifications on a given port.
      * @method Hub#subscribe
      * @param {string} port
-     * @param {number|boolean} [mode=false] - The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
+     * @param {number} [mode] The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
      */
-    public subscribe (port: string, mode: number | boolean = false, callback?: () => void) {
+    public subscribe (port: string, mode?: number) {
         let newMode = 0x00;
-        if (!mode) {
+        if (mode && !(typeof mode === "number")) {
             newMode = this._getModeForDeviceType(this._ports[port].type);
         }
-        this._activatePortDevice(this._ports[port].value, this._ports[port].type, newMode, 0x00, callback);
+        this._activatePortDevice(this._ports[port].value, this._ports[port].type, newMode, 0x00);
     }
 
     /**
@@ -135,9 +135,9 @@ export class Hub extends EventEmitter {
      * @method Hub#unsubscribe
      * @param {string} port
      */
-    public unsubscribe (port: string, callback?: () => void) {
+    public unsubscribe (port: string) {
         const mode = this._getModeForDeviceType(this._ports[port].type);
-        this._deactivatePortDevice(this._ports[port].value, this._ports[port].type, mode, 0x00, callback);
+        this._deactivatePortDevice(this._ports[port].value, this._ports[port].type, mode, 0x00);
     }
 
 

@@ -101,7 +101,7 @@ export class LPF2 extends EventEmitter {
 
     /**
      * Stop scanning for LPF2 Hub devices.
-     * @method LPF2#scan
+     * @method LPF2#stop
      */
     public stop () {
         wantScan = false;

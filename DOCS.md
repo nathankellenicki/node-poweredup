@@ -19,7 +19,7 @@
 
 * [LPF2](#LPF2) ⇐ <code>EventEmitter</code>
     * [.scan()](#LPF2+scan)
-    * [.scan()](#LPF2+scan)
+    * [.stop()](#LPF2+stop)
     * [.getConnectedDeviceByUUID(uuid)](#LPF2+getConnectedDeviceByUUID) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
     * [.getConnectedDevices()](#LPF2+getConnectedDevices) ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
     * ["discover" (hub)](#LPF2+event_discover)
@@ -30,9 +30,9 @@
 Begin scanning for LPF2 Hub devices.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+scan"></a>
+<a name="LPF2+stop"></a>
 
-### lpF2.scan()
+### lpF2.stop()
 Stop scanning for LPF2 Hub devices.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
@@ -145,10 +145,10 @@ Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| port | <code>string</code> |  |  |
-| [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| [mode] | <code>number</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
 
 <a name="Hub+unsubscribe"></a>
 
@@ -302,10 +302,10 @@ Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| port | <code>string</code> |  |  |
-| [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| [mode] | <code>number</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
 
 <a name="Hub+unsubscribe"></a>
 
@@ -411,10 +411,10 @@ Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| port | <code>string</code> |  |  |
-| [mode] | <code>number</code> \| <code>boolean</code> | <code>false</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| [mode] | <code>number</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
 
 <a name="Hub+unsubscribe"></a>
 
