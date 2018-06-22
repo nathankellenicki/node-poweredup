@@ -79,7 +79,7 @@ Stop scanning for LPF2 Hub devices.
 <a name="LPF2+getConnectedDeviceByUUID"></a>
 
 ### lpF2.getConnectedDeviceByUUID(uuid) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
-Retrieve a LPF2 Hub device by UUID
+Retrieve a LPF2 Hub device by UUID.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
 
@@ -90,7 +90,7 @@ Retrieve a LPF2 Hub device by UUID
 <a name="LPF2+getConnectedDevices"></a>
 
 ### lpF2.getConnectedDevices() ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
-Retrieve a list of LPF2 Hub devices
+Retrieve a list of LPF2 Hub devices.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
 <a name="LPF2+event_discover"></a>
@@ -102,7 +102,7 @@ Emits when a LPF2 Hub device is found.
 
 | Param | Type |
 | --- | --- |
-| hub | [<code>Hub</code>](#Hub) | 
+| hub | [<code>WeDo2Hub</code>](#WeDo2Hub) \| [<code>BoostHub</code>](#BoostHub) | 
 
 <a name="BoostHub"></a>
 
@@ -130,7 +130,7 @@ Emits when a LPF2 Hub device is found.
 Set the color of the LED on the Hub via a color value.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -288,7 +288,7 @@ Emits when a rotation sensor is activated.
 Set the color of the LED on the Hub via a color value.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -300,7 +300,7 @@ Set the color of the LED on the Hub via a color value.
 Set the color of the LED on the Hub via RGB values.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
 | --- | --- |
@@ -314,7 +314,7 @@ Set the color of the LED on the Hub via RGB values.
 Set the motor speed on a given port.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |

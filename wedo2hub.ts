@@ -53,7 +53,7 @@ export class WeDo2Hub extends Hub {
      * Set the color of the LED on the Hub via a color value.
      * @method WeDo2Hub#setLEDColor
      * @param {number} color A number representing one of the LED color consts.
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
@@ -79,7 +79,7 @@ export class WeDo2Hub extends Hub {
      * @param {number} red
      * @param {number} green
      * @param {number} blue
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
@@ -101,7 +101,7 @@ export class WeDo2Hub extends Hub {
      * @method WeDo2Hub#setMotorSpeed
      * @param {string} port
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setMotorSpeed (port: string, speed: number) {
         return new Promise((resolve, reject) => {

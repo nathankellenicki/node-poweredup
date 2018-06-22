@@ -123,11 +123,15 @@ export class Hub extends EventEmitter {
      * @param {number} [mode] The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
      */
     public subscribe (port: string, mode?: number) {
-        let newMode = 0x00;
-        if (mode && !(typeof mode === "number")) {
-            newMode = this._getModeForDeviceType(this._ports[port].type);
-        }
-        this._activatePortDevice(this._ports[port].value, this._ports[port].type, newMode, 0x00);
+        return new Promise((resolve, reject) => {
+            let newMode = 0x00;
+            if (mode && !(typeof mode === "number")) {
+                newMode = this._getModeForDeviceType(this._ports[port].type);
+            }
+            this._activatePortDevice(this._ports[port].value, this._ports[port].type, newMode, 0x00, () => {
+                return resolve();
+            });
+        });
     }
 
     /**
@@ -136,8 +140,12 @@ export class Hub extends EventEmitter {
      * @param {string} port
      */
     public unsubscribe (port: string) {
-        const mode = this._getModeForDeviceType(this._ports[port].type);
-        this._deactivatePortDevice(this._ports[port].value, this._ports[port].type, mode, 0x00);
+        return new Promise((resolve, reject) => {
+            const mode = this._getModeForDeviceType(this._ports[port].type);
+            this._deactivatePortDevice(this._ports[port].value, this._ports[port].type, mode, 0x00, () => {
+                return resolve();
+            });
+        });
     }
 
 

@@ -86,7 +86,7 @@ export class LPF2 extends EventEmitter {
             /**
              * Emits when a LPF2 Hub device is found.
              * @event LPF2#discover
-             * @param {Hub} hub
+             * @param {WeDo2Hub | BoostHub} hub
              */
             this.emit("discover", hub);
 
@@ -110,7 +110,7 @@ export class LPF2 extends EventEmitter {
 
 
     /**
-     * Retrieve a LPF2 Hub device by UUID
+     * Retrieve a LPF2 Hub device by UUID.
      * @method LPF2#getConnectedDeviceByUUID
      * @param {string} uuid
      * @returns {Hub | null}
@@ -121,7 +121,7 @@ export class LPF2 extends EventEmitter {
 
 
     /**
-     * Retrieve a list of LPF2 Hub devices
+     * Retrieve a list of LPF2 Hub devices.
      * @method LPF2#getConnectedDevices
      * @returns {Hub[]}
      */

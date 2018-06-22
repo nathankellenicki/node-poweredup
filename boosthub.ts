@@ -57,7 +57,7 @@ export class BoostHub extends Hub {
      * Set the color of the LED on the Hub via a color value.
      * @method BoostHub#setLEDColor
      * @param {number} color A number representing one of the LED color consts.
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
