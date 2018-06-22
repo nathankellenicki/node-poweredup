@@ -115,7 +115,7 @@ Emits when a LPF2 Hub device is found.
     * [.setMotorSpeed(port, speed, [time])](#BoostHub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.setMotorAngle(port, angle, [speed])](#BoostHub+setMotorAngle) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
-    * [.disconnect()](#Hub+disconnect)
+    * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * ["button" (button, state)](#BoostHub+event_button)
@@ -171,13 +171,14 @@ Connect to the Hub.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
 **Overrides**: [<code>connect</code>](#Hub+connect)  
-**Returns**: <code>Promise</code> - Resolved when successfully connected.  
+**Returns**: <code>Promise</code> - Resolved upon successful connect.  
 <a name="Hub+disconnect"></a>
 
-### boostHub.disconnect()
+### boostHub.disconnect() ⇒ <code>Promise</code>
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
 ### boostHub.subscribe(port, [mode]) ⇒ <code>Promise</code>
@@ -275,7 +276,7 @@ Emits when a rotation sensor is activated.
     * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
-    * [.disconnect()](#Hub+disconnect)
+    * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * ["button" (button, state)](#WeDo2Hub+event_button)
@@ -330,13 +331,14 @@ Connect to the Hub.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
 **Overrides**: [<code>connect</code>](#Hub+connect)  
-**Returns**: <code>Promise</code> - Resolved when successfully connected.  
+**Returns**: <code>Promise</code> - Resolved upon successful connect.  
 <a name="Hub+disconnect"></a>
 
-### weDo2Hub.disconnect()
+### weDo2Hub.disconnect() ⇒ <code>Promise</code>
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
 ### weDo2Hub.subscribe(port, [mode]) ⇒ <code>Promise</code>
@@ -431,7 +433,7 @@ Emits when a rotation sensor is activated.
 
 * [Hub](#Hub) ⇐ <code>EventEmitter</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
-    * [.disconnect()](#Hub+disconnect)
+    * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
 
@@ -441,13 +443,14 @@ Emits when a rotation sensor is activated.
 Connect to the Hub.
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
-**Returns**: <code>Promise</code> - Resolved when successfully connected.  
+**Returns**: <code>Promise</code> - Resolved upon successful connect.  
 <a name="Hub+disconnect"></a>
 
-### hub.disconnect()
+### hub.disconnect() ⇒ <code>Promise</code>
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
 ### hub.subscribe(port, [mode]) ⇒ <code>Promise</code>

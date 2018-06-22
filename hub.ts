@@ -38,7 +38,7 @@ export class Hub extends EventEmitter {
     /**
      * Connect to the Hub.
      * @method Hub#connect
-     * @returns {Promise} Resolved when successfully connected.
+     * @returns {Promise} Resolved upon successful connect.
      */
     public connect () {
         return new Promise((connectResolve, connectReject) => {
@@ -110,9 +110,14 @@ export class Hub extends EventEmitter {
     /**
      * Disconnect the Hub.
      * @method Hub#disconnect
+     * @returns {Promise} Resolved upon successful disconnect.
      */
     public disconnect () {
-        this._peripheral.disconnect();
+        return new Promise((resolve, reject) => {
+            this._peripheral.disconnect(() => {
+                return resolve();
+            });
+        });
     }
 
 
