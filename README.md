@@ -21,13 +21,13 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 | WeDo 2.0 Tilt Sensor            | Sensor |         Yes        |       Yes      |       Yes      |
 | WeDo 2.0 Distance Sensor        | Sensor |         Yes        |       Yes      |       Yes      |
 | WeDo 2.0 Medium Motor           | Motor  |         Yes        |       Yes      |       Yes      |
-| Boost Color and Distance Sensor | Sensor |      *Some (<a href="#compatibility-note-1">1</a>)*    |       Yes      |       Yes      |
-| Boost Interactive Medium Motor  | Motor  |      *Some (<a href="#compatibility-note-2">2</a>)*    |       Yes      |       Yes      |
+| Boost Color and Distance Sensor | Sensor |     *Partial (<a href="#compatibility-note-1">1</a>)*    |       Yes      |       Yes      |
+| Boost Interactive Medium Motor  | Motor  |     *Partial (<a href="#compatibility-note-2">2</a>)*    |       Yes      |       Yes      |
 | Powered Up Train Motor          | Motor  |         Yes        |       Yes      |       Yes      |
 
 <a name="compatibility-note-1"></a><sub>(1) Only color mode is supported on the WeDo 2.0 Smart Hub at this point.</sub>
 
-<a name="compatibility-note-2"></a><sub>(2) Only basic motor functionality is supported on the WeDo 2.0 Smart Hub at this point. No interactive functionality. In short, it functions like the WeDo 2.0 Medium Motor.</sub>
+<a name="compatibility-note-2"></a><sub>(2) When used with the WeDo 2.0 Smart Hub, the Boost Interactive Medium Motor functions like the WeDo 2.0 Medium Motor - that is, only basic constant speed is possible. However the rotation sensing functionality is supported.</sub>
 
 ### Usage
 
@@ -213,15 +213,13 @@ Emits when a color sensor is activated.
 ### "tilt" (port, x, y)
 Emits when a tilt sensor is activated.
 
-**Note**: If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.
-
 **Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
 
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
-| x | <code>number</code> | 
-| y | <code>number</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> | If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used. |
+| x | <code>number</code> |  |
+| y | <code>number</code> |  |
 
 <a name="BoostHub+event_rotate"></a>
 

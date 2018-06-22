@@ -321,10 +321,8 @@ export class BoostHub extends Hub {
                     this._lastTiltY = tiltY;
                     /**
                      * Emits when a tilt sensor is activated.
-                     *
-                     * **Note**: If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.
                      * @event BoostHub#tilt
-                     * @param {string} port
+                     * @param {string} port If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.
                      * @param {number} x
                      * @param {number} y
                      */

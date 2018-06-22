@@ -173,15 +173,13 @@ Emits when a color sensor is activated.
 ### "tilt" (port, x, y)
 Emits when a tilt sensor is activated.
 
-**Note**: If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.
-
 **Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
 
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
-| x | <code>number</code> | 
-| y | <code>number</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> | If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used. |
+| x | <code>number</code> |  |
+| y | <code>number</code> |  |
 
 <a name="BoostHub+event_rotate"></a>
 
