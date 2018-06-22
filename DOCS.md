@@ -76,8 +76,8 @@ Emits when a LPF2 Hub device is found.
     * [.setMotorAngle(port, angle, [speed])](#BoostHub+setMotorAngle) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect)
-    * [.subscribe(port, [mode])](#Hub+subscribe)
-    * [.unsubscribe(port)](#Hub+unsubscribe)
+    * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
+    * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * ["button" (button, state)](#BoostHub+event_button)
     * ["distance" (port, distance)](#BoostHub+event_distance)
     * ["color" (port, color)](#BoostHub+event_color)
@@ -140,10 +140,11 @@ Disconnect the Hub.
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
 <a name="Hub+subscribe"></a>
 
-### boostHub.subscribe(port, [mode])
+### boostHub.subscribe(port, [mode]) ⇒ <code>Promise</code>
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -152,10 +153,11 @@ Subscribe to sensor notifications on a given port.
 
 <a name="Hub+unsubscribe"></a>
 
-### boostHub.unsubscribe(port)
+### boostHub.unsubscribe(port) ⇒ <code>Promise</code>
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
 | --- | --- |
@@ -234,8 +236,8 @@ Emits when a rotation sensor is activated.
     * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect)
-    * [.subscribe(port, [mode])](#Hub+subscribe)
-    * [.unsubscribe(port)](#Hub+unsubscribe)
+    * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
+    * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * ["button" (button, state)](#WeDo2Hub+event_button)
     * ["distance" (port, distance)](#WeDo2Hub+event_distance)
     * ["color" (port, color)](#WeDo2Hub+event_color)
@@ -297,10 +299,11 @@ Disconnect the Hub.
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
 <a name="Hub+subscribe"></a>
 
-### weDo2Hub.subscribe(port, [mode])
+### weDo2Hub.subscribe(port, [mode]) ⇒ <code>Promise</code>
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -309,10 +312,11 @@ Subscribe to sensor notifications on a given port.
 
 <a name="Hub+unsubscribe"></a>
 
-### weDo2Hub.unsubscribe(port)
+### weDo2Hub.unsubscribe(port) ⇒ <code>Promise</code>
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
 | --- | --- |
@@ -388,8 +392,8 @@ Emits when a rotation sensor is activated.
 * [Hub](#Hub) ⇐ <code>EventEmitter</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect)
-    * [.subscribe(port, [mode])](#Hub+subscribe)
-    * [.unsubscribe(port)](#Hub+unsubscribe)
+    * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
+    * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
 
 <a name="Hub+connect"></a>
 
@@ -406,10 +410,11 @@ Disconnect the Hub.
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
 <a name="Hub+subscribe"></a>
 
-### hub.subscribe(port, [mode])
+### hub.subscribe(port, [mode]) ⇒ <code>Promise</code>
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -418,10 +423,11 @@ Subscribe to sensor notifications on a given port.
 
 <a name="Hub+unsubscribe"></a>
 
-### hub.unsubscribe(port)
+### hub.unsubscribe(port) ⇒ <code>Promise</code>
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
 | --- | --- |

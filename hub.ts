@@ -121,6 +121,7 @@ export class Hub extends EventEmitter {
      * @method Hub#subscribe
      * @param {string} port
      * @param {number} [mode] The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
+     * @returns {Promise} Resolved upon successful issuance of command.
      */
     public subscribe (port: string, mode?: number) {
         return new Promise((resolve, reject) => {
@@ -138,6 +139,7 @@ export class Hub extends EventEmitter {
      * Unsubscribe to sensor notifications on a given port.
      * @method Hub#unsubscribe
      * @param {string} port
+     * @returns {Promise} Resolved upon successful issuance of command.
      */
     public unsubscribe (port: string) {
         return new Promise((resolve, reject) => {
