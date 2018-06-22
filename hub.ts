@@ -156,6 +156,21 @@ export class Hub extends EventEmitter {
     }
 
 
+    /**
+     * Wait a given amount of time.
+     *
+     * This is a helper method to make it easier to add delays into a chain of commands.
+     * @method Hub#wait
+     * @param {number} delay How long to wait (in milliseconds).
+     * @returns {Promise} Resolved after the delay is finished.
+     */
+    public wait (delay: number) {
+        return new Promise((resolve) => {
+            setTimeout(resolve, delay);
+        });
+     }
+
+
     protected _subscribeToCharacteristic (characteristic: Characteristic, callback: (data: Buffer) => void) {
         characteristic.on("data", (data: Buffer) => {
             return callback(data);

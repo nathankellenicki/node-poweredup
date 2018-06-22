@@ -118,6 +118,7 @@ Emits when a LPF2 Hub device is found.
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
+    * [.wait(delay)](#Hub+wait) ⇒ <code>Promise</code>
     * ["button" (button, state)](#BoostHub+event_button)
     * ["distance" (port, distance)](#BoostHub+event_distance)
     * ["color" (port, color)](#BoostHub+event_color)
@@ -204,6 +205,20 @@ Unsubscribe to sensor notifications on a given port.
 | --- | --- |
 | port | <code>string</code> | 
 
+<a name="Hub+wait"></a>
+
+### boostHub.wait(delay) ⇒ <code>Promise</code>
+Wait a given amount of time.
+
+This is a helper method to make it easier to add delays into a chain of commands.
+
+**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Returns**: <code>Promise</code> - Resolved after the delay is finished.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| delay | <code>number</code> | How long to wait (in milliseconds). |
+
 <a name="BoostHub+event_button"></a>
 
 ### "button" (button, state)
@@ -279,6 +294,7 @@ Emits when a rotation sensor is activated.
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
+    * [.wait(delay)](#Hub+wait) ⇒ <code>Promise</code>
     * ["button" (button, state)](#WeDo2Hub+event_button)
     * ["distance" (port, distance)](#WeDo2Hub+event_distance)
     * ["color" (port, color)](#WeDo2Hub+event_color)
@@ -364,6 +380,20 @@ Unsubscribe to sensor notifications on a given port.
 | --- | --- |
 | port | <code>string</code> | 
 
+<a name="Hub+wait"></a>
+
+### weDo2Hub.wait(delay) ⇒ <code>Promise</code>
+Wait a given amount of time.
+
+This is a helper method to make it easier to add delays into a chain of commands.
+
+**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Returns**: <code>Promise</code> - Resolved after the delay is finished.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| delay | <code>number</code> | How long to wait (in milliseconds). |
+
 <a name="WeDo2Hub+event_button"></a>
 
 ### "button" (button, state)
@@ -436,6 +466,7 @@ Emits when a rotation sensor is activated.
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
+    * [.wait(delay)](#Hub+wait) ⇒ <code>Promise</code>
 
 <a name="Hub+connect"></a>
 
@@ -475,4 +506,18 @@ Unsubscribe to sensor notifications on a given port.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
+
+<a name="Hub+wait"></a>
+
+### hub.wait(delay) ⇒ <code>Promise</code>
+Wait a given amount of time.
+
+This is a helper method to make it easier to add delays into a chain of commands.
+
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
+**Returns**: <code>Promise</code> - Resolved after the delay is finished.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| delay | <code>number</code> | How long to wait (in milliseconds). |
 
