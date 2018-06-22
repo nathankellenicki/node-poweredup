@@ -3,7 +3,7 @@ const LPF2 = require("..").LPF2;
 const lpf2 = new LPF2();
 lpf2.scan(); // Start scanning for Vernie
 
-console.log("Looking for Vernie (Please turn the Hub on now)...");
+console.log("Looking for Vernie (Please turn on the Hub now)...");
 
 lpf2.on("discover", async (vernie) => { // Wait to discover Vernie
 
