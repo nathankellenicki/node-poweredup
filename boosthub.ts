@@ -300,7 +300,9 @@ export class BoostHub extends Hub {
                      * @param {string} port
                      * @param {number} color A number representing one of the LED color consts.
                      */
-                    this.emit("color", port.id, data[4]);
+                    if (data[4] <= 10) {
+                        this.emit("color", port.id, data[4]);
+                    }
 
                     let distance = data[5];
                     const partial = data[7];
