@@ -36,16 +36,15 @@ export class WeDo2Hub extends Hub {
     }
 
 
-    public connect (callback?: () => void) {
-        debug("Connecting to WeDo 2.0 Smart Hub");
-        super.connect(() => {
+    public connect () {
+        return new Promise(async (resolve, reject) => {
+            debug("Connecting to WeDo 2.0 Smart Hub");
+            await super.connect();
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE], this._parsePortMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_SENSOR_VALUE], this._parseSensorMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_BUTTON], this._parseSensorMessage.bind(this));
             debug("Connect completed");
-            if (callback) {
-                callback();
-            }
+            return resolve();
         });
     }
 

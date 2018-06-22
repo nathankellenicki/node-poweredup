@@ -99,6 +99,39 @@ export class LPF2 extends EventEmitter {
     }
 
 
+    /**
+     * Stop scanning for LPF2 Hub devices.
+     * @method LPF2#scan
+     */
+    public stop () {
+        wantScan = false;
+        noble.stopScanning();
+    }
+
+
+    /**
+     * Retrieve a LPF2 Hub device by UUID
+     * @method LPF2#getConnectedDeviceByUUID
+     * @param {string} uuid
+     * @returns {Hub | null}
+     */
+    public getConnectedDeviceByUUID (uuid: string) {
+        return this._connectedDevices[uuid];
+    }
+
+
+    /**
+     * Retrieve a list of LPF2 Hub devices
+     * @method LPF2#getConnectedDevices
+     * @returns {Hub[]}
+     */
+    public getConnectedDevices () {
+        return Object.keys(this._connectedDevices).map((uuid) => {
+            return this._connectedDevices[uuid];
+        });
+    }
+
+
 }
 
 export default LPF2;

@@ -19,12 +19,38 @@
 
 * [LPF2](#LPF2) ⇐ <code>EventEmitter</code>
     * [.scan()](#LPF2+scan)
+    * [.scan()](#LPF2+scan)
+    * [.getConnectedDeviceByUUID(uuid)](#LPF2+getConnectedDeviceByUUID) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
+    * [.getConnectedDevices()](#LPF2+getConnectedDevices) ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
     * ["discover" (hub)](#LPF2+event_discover)
 
 <a name="LPF2+scan"></a>
 
 ### lpF2.scan()
 Begin scanning for LPF2 Hub devices.
+
+**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
+<a name="LPF2+scan"></a>
+
+### lpF2.scan()
+Stop scanning for LPF2 Hub devices.
+
+**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
+<a name="LPF2+getConnectedDeviceByUUID"></a>
+
+### lpF2.getConnectedDeviceByUUID(uuid) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
+Retrieve a LPF2 Hub device by UUID
+
+**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
+
+| Param | Type |
+| --- | --- |
+| uuid | <code>string</code> | 
+
+<a name="LPF2+getConnectedDevices"></a>
+
+### lpF2.getConnectedDevices() ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
+Retrieve a list of LPF2 Hub devices
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
 <a name="LPF2+event_discover"></a>
@@ -48,7 +74,8 @@ Emits when a LPF2 Hub device is found.
     * [.setLEDColor(color)](#BoostHub+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#BoostHub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.setMotorAngle(port, angle, [speed])](#BoostHub+setMotorAngle) ⇒ <code>Promise</code>
-    * [.connect([callback])](#Hub+connect)
+    * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
+    * [.disconnect()](#Hub+disconnect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
     * ["button" (button, state)](#BoostHub+event_button)
@@ -99,16 +126,18 @@ Rotate a motor by a given angle.
 
 <a name="Hub+connect"></a>
 
-### boostHub.connect([callback])
+### boostHub.connect() ⇒ <code>Promise</code>
 Connect to the Hub.
 
 **Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
 **Overrides**: [<code>connect</code>](#Hub+connect)  
+**Returns**: <code>Promise</code> - Resolved when successfully connected.  
+<a name="Hub+disconnect"></a>
 
-| Param | Type |
-| --- | --- |
-| [callback] | <code>function</code> | 
+### boostHub.disconnect()
+Disconnect the Hub.
 
+**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
 <a name="Hub+subscribe"></a>
 
 ### boostHub.subscribe(port, [mode])
@@ -203,7 +232,8 @@ Emits when a rotation sensor is activated.
     * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
-    * [.connect([callback])](#Hub+connect)
+    * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
+    * [.disconnect()](#Hub+disconnect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
     * ["button" (button, state)](#WeDo2Hub+event_button)
@@ -253,16 +283,18 @@ Set the motor speed on a given port.
 
 <a name="Hub+connect"></a>
 
-### weDo2Hub.connect([callback])
+### weDo2Hub.connect() ⇒ <code>Promise</code>
 Connect to the Hub.
 
 **Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
 **Overrides**: [<code>connect</code>](#Hub+connect)  
+**Returns**: <code>Promise</code> - Resolved when successfully connected.  
+<a name="Hub+disconnect"></a>
 
-| Param | Type |
-| --- | --- |
-| [callback] | <code>function</code> | 
+### weDo2Hub.disconnect()
+Disconnect the Hub.
 
+**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
 <a name="Hub+subscribe"></a>
 
 ### weDo2Hub.subscribe(port, [mode])
@@ -354,21 +386,24 @@ Emits when a rotation sensor is activated.
 **Extends**: <code>EventEmitter</code>  
 
 * [Hub](#Hub) ⇐ <code>EventEmitter</code>
-    * [.connect([callback])](#Hub+connect)
+    * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
+    * [.disconnect()](#Hub+disconnect)
     * [.subscribe(port, [mode])](#Hub+subscribe)
     * [.unsubscribe(port)](#Hub+unsubscribe)
 
 <a name="Hub+connect"></a>
 
-### hub.connect([callback])
+### hub.connect() ⇒ <code>Promise</code>
 Connect to the Hub.
 
 **Kind**: instance method of [<code>Hub</code>](#Hub)  
+**Returns**: <code>Promise</code> - Resolved when successfully connected.  
+<a name="Hub+disconnect"></a>
 
-| Param | Type |
-| --- | --- |
-| [callback] | <code>function</code> | 
+### hub.disconnect()
+Disconnect the Hub.
 
+**Kind**: instance method of [<code>Hub</code>](#Hub)  
 <a name="Hub+subscribe"></a>
 
 ### hub.subscribe(port, [mode])

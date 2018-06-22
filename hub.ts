@@ -38,71 +38,81 @@ export class Hub extends EventEmitter {
     /**
      * Connect to the Hub.
      * @method Hub#connect
-     * @param {function} [callback]
+     * @returns {Promise} Resolved when successfully connected.
      */
-    public connect (callback?: () => void) {
+    public connect () {
+        return new Promise((connectResolve, connectReject) => {
 
-        const self = this;
+            const self = this;
 
-        this._peripheral.connect((err: string) => {
+            this._peripheral.connect((err: string) => {
 
-            this._rssi = this._peripheral.rssi;
+                this._rssi = this._peripheral.rssi;
 
-            const rssiUpdateInterval = setInterval(() => {
-                this._peripheral.updateRssi((err: string, rssi: number) => {
-                    if (!err) {
-                        if (this._rssi !== rssi) {
-                            this._rssi = rssi;
-                            debug(`RSSI change ${rssi}`);
-                            self.emit("rssiChange", rssi);
+                const rssiUpdateInterval = setInterval(() => {
+                    this._peripheral.updateRssi((err: string, rssi: number) => {
+                        if (!err) {
+                            if (this._rssi !== rssi) {
+                                this._rssi = rssi;
+                                debug(`RSSI change ${rssi}`);
+                                self.emit("rssiChange", rssi);
+                            }
                         }
-                    }
+                    });
+                }, 2000);
+
+                self._peripheral.on("disconnect", () => {
+                clearInterval(rssiUpdateInterval);
+                this.emit("disconnect");
                 });
-            }, 2000);
 
-            self._peripheral.on("disconnect", () => {
-               clearInterval(rssiUpdateInterval);
-               this.emit("disconnect");
-            });
+                self._peripheral.discoverServices([], (err: string, services: Service[]) => {
 
-            self._peripheral.discoverServices([], (err: string, services: Service[]) => {
+                    if (err) {
+                        this.emit("error", err);
+                        return;
+                    }
 
-                if (err) {
-                    this.emit("error", err);
-                    return;
-                }
+                    debug("Service/characteristic discovery started");
 
-                debug("Service/characteristic discovery started");
+                    const servicePromises: Array<Promise<null>> = [];
 
-                const servicePromises: Array<Promise<null>> = [];
+                    services.forEach((service) => {
 
-                services.forEach((service) => {
+                        servicePromises.push(new Promise((resolve, reject) => {
 
-                    servicePromises.push(new Promise((resolve, reject) => {
-
-                        service.discoverCharacteristics([], (err, characteristics) => {
-                            characteristics.forEach((characteristic) => {
-                                this._characteristics[characteristic.uuid] = characteristic;
+                            service.discoverCharacteristics([], (err, characteristics) => {
+                                characteristics.forEach((characteristic) => {
+                                    this._characteristics[characteristic.uuid] = characteristic;
+                                });
+                                return resolve();
                             });
-                            return resolve();
-                        });
 
-                    }));
+                        }));
 
-                });
+                    });
 
-                Promise.all(servicePromises).then(() => {
-                    debug("Service/characteristic discovery finished");
-                    this.emit("connect");
-                    if (callback) {
-                        callback();
-                    }
+                    Promise.all(servicePromises).then(() => {
+                        debug("Service/characteristic discovery finished");
+                        this.emit("connect");
+                        return connectResolve();
+                    });
+
                 });
 
             });
 
         });
 
+    }
+
+
+    /**
+     * Disconnect the Hub.
+     * @method Hub#disconnect
+     */
+    public disconnect () {
+        this._peripheral.disconnect();
     }
 
 

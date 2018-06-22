@@ -40,16 +40,15 @@ export class BoostHub extends Hub {
     }
 
 
-    public connect (callback?: () => void) {
-        debug("Connecting to Boost Move Hub");
-        super.connect(() => {
+    public connect () {
+        return new Promise(async (resolve, reject) => {
+            debug("Connecting to Boost Move Hub");
+            await super.connect();
             const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
             characteristic.write(Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]), false);
             debug("Connect completed");
-            if (callback) {
-                callback();
-            }
+            return resolve();
         });
     }
 
