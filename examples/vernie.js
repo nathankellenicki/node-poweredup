@@ -11,19 +11,52 @@ lpf2.on("discover", async (vernie) => { // Wait to discover Vernie
     await vernie.connect(); // Connect to Vernie
 
     console.log("Connected to Vernie!");
-    await vernie.wait(3000); // Wait for 3 seconds before starting
+    
+    await vernie.wait(500);
 
-    console.log("We're going on an adventure!");
-    await vernie.setMotorSpeed("AB", 50, 2000); // Move forward for 2 seconds
-    await vernie.setMotorAngle("B", 360, 50); // Turn right
-    await vernie.setMotorSpeed("AB", 50, 2000); // Move forward for 2 seconds
-    await vernie.wait(1000); // Wait for 1 second
+    // Shake head
+    await vernie.setMotorAngle("D", 40, 30);
+    await vernie.setMotorAngle("D", 80, -30);
+    await vernie.setMotorAngle("D", 40, 30);
 
-    console.log("Better go home now...");
-    await vernie.setMotorAngle("A", 720, 50); // Turn around
-    await vernie.setMotorSpeed("AB", 50, 2000);  // Move forward for 2 seconds
-    await vernie.setMotorAngle("A", 360, 50); // Turn left
-    await vernie.setMotorSpeed("AB", 50, 2000);  // Move forward for 2 seconds
-    await vernie.setMotorAngle("A", 720, 50); // Turn around - Vernie should now be back in his original position!
+    await vernie.wait(500);
+
+    // Turn right
+    vernie.setMotorAngle("A", 50, 50);
+    await vernie.setMotorAngle("B", 50, -50);
+
+    // Shake head
+    await vernie.setMotorAngle("D", 40, 30);
+
+    await vernie.wait(500);
+
+    // Turn left
+    vernie.setMotorAngle("A", 100, -50);
+    await vernie.setMotorAngle("B", 100, 50);
+
+    // Shake head
+    await vernie.setMotorAngle("D", 80, -30);
+
+    await vernie.wait(500);
+
+    // Turn right
+    vernie.setMotorAngle("A", 50, 50);
+    await vernie.setMotorAngle("B", 50, -50);
+
+    // Shake head
+    await vernie.setMotorAngle("D", 80, 30);
+    await vernie.setMotorAngle("D", 40, -30);
+
+    await vernie.wait(500);
+
+    // Move forward
+    await vernie.setMotorAngle("AB", 100, 30);
+
+    // FIRE!
+    await vernie.setMotorAngle("D", 90, 30);
+    await vernie.setMotorAngle("D", 90, -30);
+
+    // Move back
+    await vernie.setMotorAngle("AB", 100, -30);
 
 });
