@@ -24,6 +24,7 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 | Boost Color and Distance Sensor | Sensor        |     *Partial (<a href="#compatibility-note-1">1</a>)*    |       Yes      |       Yes      |
 | Boost Interactive Medium Motor  | Motor/Sensor  |     *Partial (<a href="#compatibility-note-2">2</a>)*    |       Yes      |       Yes      |
 | Powered Up Train Motor          | Motor         |         Yes        |       Yes      |       Yes      |
+| Powered Up LED Lights           | Lights        |         Yes        |       Yes      |       Yes      |
 
 <a name="compatibility-note-1"></a><sub>(1) Only color mode is supported on the WeDo 2.0 Smart Hub at this point.</sub>
 
