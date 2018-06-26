@@ -157,18 +157,31 @@ export class Hub extends EventEmitter {
 
 
     /**
-     * Wait a given amount of time.
+     * Sleep a given amount of time.
      *
      * This is a helper method to make it easier to add delays into a chain of commands.
-     * @method Hub#wait
-     * @param {number} delay How long to wait (in milliseconds).
+     * @method Hub#sleep
+     * @param {number} delay How long to sleep (in milliseconds).
      * @returns {Promise} Resolved after the delay is finished.
      */
-    public wait (delay: number) {
+    public sleep (delay: number) {
         return new Promise((resolve) => {
             setTimeout(resolve, delay);
         });
-     }
+    }
+
+
+    /**
+     * Wait until a given list of concurrently running commands are complete.
+     *
+     * This is a helper method to make it easier to wait for concurrent commands to complete.
+     * @method Hub#wait
+     * @param {Array<Promise<any>>} commands Array of executing commands.
+     * @returns {Promise} Resolved after the commands are finished.
+     */
+    public wait (commands: Array<Promise<any>>) {
+        return Promise.all(commands);
+    }
 
 
     protected _subscribeToCharacteristic (characteristic: Characteristic, callback: (data: Buffer) => void) {
