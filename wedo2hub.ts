@@ -107,7 +107,7 @@ export class WeDo2Hub extends Hub {
         return new Promise((resolve, reject) => {
             const characteristic = this._characteristics[Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE];
             if (characteristic) {
-                characteristic.write(Buffer.from([this._ports[port].value, 0x01, 0x02, speed]), false);
+                characteristic.write(Buffer.from([this._ports[port].value, 0x01, 0x02, this._mapSpeed(speed)]), false);
                 return resolve();
             }
         });

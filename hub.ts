@@ -6,6 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { METHODS } from "http";
 const debug = Debug("hub");
 
 
@@ -16,7 +17,8 @@ const debug = Debug("hub");
 export class Hub extends EventEmitter {
 
 
-    public autoSubscribe: boolean;
+    public autoSubscribe: boolean = true;
+    public useSpeedMap: boolean = true;
     public type: Consts.Hubs = Consts.Hubs.UNKNOWN;
     public uuid: string;
 
@@ -222,6 +224,26 @@ export class Hub extends EventEmitter {
             debug(`Port ${port.id} disconnected`);
         }
 
+    }
+
+
+    protected _mapSpeed (speed: number) {
+        if (!this.useSpeedMap) {
+            return speed;
+        }
+        if (speed >= 1) {
+            if (speed > 100) {
+                speed = 100;
+            }
+            return Math.round((speed - 1) * (97 - 15) / (100 - 1) + 15);
+        } else if (speed <= -1) {
+            if (speed < -100) {
+                speed = -100;
+            }
+            return Math.round((speed - -100) * (245 - 160) / (-1 - -100) + 160);
+        } else {
+            return 0;
+        }
     }
 
 
