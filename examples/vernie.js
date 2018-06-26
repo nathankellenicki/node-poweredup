@@ -7,62 +7,77 @@ console.log("Looking for Vernie (Please turn on the Hub now)...");
 
 lpf2.on("discover", async (vernie) => { // Wait to discover Vernie
 
+    let running = false;
+
     lpf2.stop(); // Stop scanning for Vernie (We've just found him!)
     await vernie.connect(); // Connect to Vernie
 
     console.log("Connected to Vernie!");
     
-    await vernie.sleep(500);
+    // Waiting for a hand wave
+    vernie.on("distance", async (port, distance) => {
 
-    // Shake head
-    await vernie.setMotorAngle("D", 40, 30);
-    await vernie.setMotorAngle("D", 80, -30);
-    await vernie.setMotorAngle("D", 40, 30);
+        if (running || distance > 100) {
+            return;
+        }
 
-    await vernie.sleep(500);
+        running = true;
 
-    // Turn right
-    await vernie.wait([
-        vernie.setMotorAngle("A", 50, 50),
-        vernie.setMotorAngle("B", 50, -50)
-    ]);
+        await vernie.sleep(500);
 
-    // Shake head
-    await vernie.setMotorAngle("D", 40, 30);
+        // Shake head
+        await vernie.setMotorAngle("D", 40, 20);
+        await vernie.setMotorAngle("D", 80, -20);
+        await vernie.setMotorAngle("D", 40, 20);
 
-    await vernie.sleep(500);
+        await vernie.sleep(500);
 
-    // Turn left
-    await vernie.wait([
-        vernie.setMotorAngle("A", 100, -50),
-        vernie.setMotorAngle("B", 100, 50)
-    ]);
+        // Turn right
+        await vernie.wait([
+            vernie.setMotorAngle("A", 50, 10),
+            vernie.setMotorAngle("B", 50, -10)
+        ]);
 
-    // Shake head
-    await vernie.setMotorAngle("D", 80, -30);
+        // Shake head
+        await vernie.setMotorAngle("D", 40, 20);
 
-    await vernie.sleep(500);
+        await vernie.sleep(500);
 
-    // Turn right
-    await vernie.wait([
-        vernie.setMotorAngle("A", 50, 50),
-        vernie.setMotorAngle("B", 50, -50)
-    ]);
+        // Turn left
+        await vernie.wait([
+            vernie.setMotorAngle("A", 100, -10),
+            vernie.setMotorAngle("B", 100, 10)
+        ]);
 
-    // Shake head
-    await vernie.setMotorAngle("D", 80, 30);
-    await vernie.setMotorAngle("D", 40, -30);
+        // Shake head
+        await vernie.setMotorAngle("D", 80, -20);
 
-    await vernie.sleep(500);
+        await vernie.sleep(500);
 
-    // Move forward
-    await vernie.setMotorAngle("AB", 100, 30);
+        // Turn right
+        await vernie.wait([
+            vernie.setMotorAngle("A", 50, 10),
+            vernie.setMotorAngle("B", 50, -10)
+        ]);
 
-    // FIRE!
-    await vernie.setMotorAngle("D", 90, 30);
-    await vernie.setMotorAngle("D", 90, -30);
+        // Shake head
+        await vernie.setMotorAngle("D", 80, 20);
+        await vernie.setMotorAngle("D", 40, -20);
 
-    // Move back
-    await vernie.setMotorAngle("AB", 100, -30);
+        await vernie.sleep(500);
+
+        // Move forward
+        await vernie.setMotorAngle("AB", 200, 10);
+
+        // FIRE!
+        await vernie.setMotorAngle("D", 80, 20);
+        await vernie.setMotorAngle("D", 80, -20);
+
+        // Move back
+        await vernie.setMotorAngle("AB", 200, -10);
+
+        running = false;
+
+    });
 
 });
