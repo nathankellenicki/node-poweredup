@@ -227,20 +227,20 @@ export class Hub extends EventEmitter {
     }
 
 
-    protected _mapSpeed (speed: number) {
+    protected _mapSpeed (speed: number) { // Speed range of -100 to 100 is supported unless speed mapping is turned off, in which case, you're on your own!
         if (!this.useSpeedMap) {
             return speed;
         }
-        if (speed >= 1) {
+        if (speed > 0) {
             if (speed > 100) {
                 speed = 100;
             }
-            return Math.round((speed - 1) * (97 - 15) / (100 - 1) + 15);
-        } else if (speed <= -1) {
+            return Math.round((speed - 1) * (97 - 15) / (100 - 1) + 15); // Forward, minimum speed is 15, maximum speed is 97
+        } else if (speed < 0) {
             if (speed < -100) {
                 speed = -100;
             }
-            return Math.round((speed - -100) * (245 - 160) / (-1 - -100) + 160);
+            return Math.round((speed - -100) * (245 - 160) / (-1 - -100) + 160); // In reverse, minimum speed is 245, maximum speed is 160
         } else {
             return 0;
         }
