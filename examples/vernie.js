@@ -22,7 +22,7 @@ lpf2.on("discover", async (vernie) => { // Wait to discover Vernie
     await vernie.sleep(500);
 
     // Turn right
-    vernie.wait([
+    await vernie.wait([
         vernie.setMotorAngle("A", 50, 50),
         vernie.setMotorAngle("B", 50, -50)
     ]);
@@ -33,7 +33,7 @@ lpf2.on("discover", async (vernie) => { // Wait to discover Vernie
     await vernie.sleep(500);
 
     // Turn left
-    vernie.wait([
+    await vernie.wait([
         vernie.setMotorAngle("A", 100, -50),
         vernie.setMotorAngle("B", 100, 50)
     ]);
@@ -44,7 +44,7 @@ lpf2.on("discover", async (vernie) => { // Wait to discover Vernie
     await vernie.sleep(500);
 
     // Turn right
-    vernie.wait([
+    await vernie.wait([
         vernie.setMotorAngle("A", 50, 50),
         vernie.setMotorAngle("B", 50, -50)
     ]);
