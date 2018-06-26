@@ -16,15 +16,15 @@ Note: node-lpf2 has been tested on macOS 10.13 and Debian/Raspbian on the Raspbe
 
 While most LPF2 components and Hubs are compatible with each other, there are exceptions. There is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
 
-|                                 |  Type         | WeDo 2.0 Smart Hub | Boost Move Hub | Powered Up Hub |
-| ------------------------------- | ------------- | ------------------ | -------------- | -------------- |
-| WeDo 2.0 Tilt Sensor            | Sensor        |         Yes        |       Yes      |       Yes      |
-| WeDo 2.0 Distance Sensor        | Sensor        |         Yes        |       Yes      |       Yes      |
-| WeDo 2.0 Medium Motor           | Motor         |         Yes        |       Yes      |       Yes      |
-| Boost Color and Distance Sensor | Sensor        |     *Partial (<a href="#compatibility-note-1">1</a>)*    |       Yes      |       Yes      |
-| Boost Interactive Medium Motor  | Motor/Sensor  |     *Partial (<a href="#compatibility-note-2">2</a>)*    |       Yes      |       Yes      |
-| Powered Up Train Motor          | Motor         |         Yes        |       Yes      |       Yes      |
-| Powered Up LED Lights           | Lights        |         Yes        |       Yes      |       Yes      |
+| Name                            | Type          | WeDo 2.0 Smart Hub | Boost Move Hub | Powered Up Hub | Availability |
+| ------------------------------- | ------------- | ------------------ | -------------- | -------------- | ------------ |
+| WeDo 2.0 Tilt Sensor            | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| WeDo 2.0 Motion Sensor          | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| WeDo 2.0 Medium Motor           | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a>, <a href="https://brickset.com/sets/76112-1/">76112</a> |
+| Boost Color and Distance Sensor | Sensor        |     *Partial (<a href="#compatibility-note-1">1</a>)*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Boost Interactive Motor  | Motor/Sensor  |     *Partial (<a href="#compatibility-note-2">2</a>)*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Powered Up Train Motor          | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a>, <a href="https://brickset.com/sets/60198-1/">60198</a> |
+| Powered Up LED Lights           | Lights        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60198-1/">60198</a> |
 
 <a name="compatibility-note-1"></a><sub>(1) Only color mode is supported on the WeDo 2.0 Smart Hub at this point.</sub>
 
