@@ -3,7 +3,7 @@
 <dl>
 <dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
 <dd></dd>
-<dt><a href="#BoostHub">BoostHub</a> ⇐ <code><a href="#Hub">Hub</a></code></dt>
+<dt><a href="#LPF2Hub">LPF2Hub</a> ⇐ <code><a href="#Hub">Hub</a></code></dt>
 <dd></dd>
 <dt><a href="#WeDo2Hub">WeDo2Hub</a> ⇐ <code><a href="#Hub">Hub</a></code></dt>
 <dd></dd>
@@ -62,48 +62,48 @@ Emits when a LPF2 Hub device is found.
 
 | Param | Type |
 | --- | --- |
-| hub | [<code>WeDo2Hub</code>](#WeDo2Hub) \| [<code>BoostHub</code>](#BoostHub) | 
+| hub | [<code>WeDo2Hub</code>](#WeDo2Hub) \| [<code>LPF2Hub</code>](#LPF2Hub) | 
 
-<a name="BoostHub"></a>
+<a name="LPF2Hub"></a>
 
-## BoostHub ⇐ [<code>Hub</code>](#Hub)
+## LPF2Hub ⇐ [<code>Hub</code>](#Hub)
 **Kind**: global class  
 **Extends**: [<code>Hub</code>](#Hub)  
 
-* [BoostHub](#BoostHub) ⇐ [<code>Hub</code>](#Hub)
-    * [.setLEDColor(color)](#BoostHub+setLEDColor) ⇒ <code>Promise</code>
-    * [.setMotorSpeed(port, speed, [time])](#BoostHub+setMotorSpeed) ⇒ <code>Promise</code>
-    * [.setMotorAngle(port, angle, [speed])](#BoostHub+setMotorAngle) ⇒ <code>Promise</code>
+* [LPF2Hub](#LPF2Hub) ⇐ [<code>Hub</code>](#Hub)
+    * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
+    * [.setMotorSpeed(port, speed, [time])](#LPF2Hub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.setMotorAngle(port, angle, [speed])](#LPF2Hub+setMotorAngle) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
-    * ["button" (button, state)](#BoostHub+event_button)
-    * ["distance" (port, distance)](#BoostHub+event_distance)
-    * ["color" (port, color)](#BoostHub+event_color)
-    * ["tilt" (port, x, y)](#BoostHub+event_tilt)
-    * ["rotate" (port, rotation)](#BoostHub+event_rotate)
+    * ["button" (button, state)](#LPF2Hub+event_button)
+    * ["distance" (port, distance)](#LPF2Hub+event_distance)
+    * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
+    * ["rotate" (port, rotation)](#LPF2Hub+event_rotate)
 
-<a name="BoostHub+setLEDColor"></a>
+<a name="LPF2Hub+setLEDColor"></a>
 
-### boostHub.setLEDColor(color) ⇒ <code>Promise</code>
+### lpF2Hub.setLEDColor(color) ⇒ <code>Promise</code>
 Set the color of the LED on the Hub via a color value.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>number</code> | A number representing one of the LED color consts. |
 
-<a name="BoostHub+setMotorSpeed"></a>
+<a name="LPF2Hub+setMotorSpeed"></a>
 
-### boostHub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
+### lpF2Hub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
 Set the motor speed on a given port.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
 
 | Param | Type | Description |
@@ -112,12 +112,12 @@ Set the motor speed on a given port.
 | speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
 
-<a name="BoostHub+setMotorAngle"></a>
+<a name="LPF2Hub+setMotorAngle"></a>
 
-### boostHub.setMotorAngle(port, angle, [speed]) ⇒ <code>Promise</code>
+### lpF2Hub.setMotorAngle(port, angle, [speed]) ⇒ <code>Promise</code>
 Rotate a motor by a given angle.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the motor is finished).  
 
 | Param | Type | Default | Description |
@@ -128,25 +128,25 @@ Rotate a motor by a given angle.
 
 <a name="Hub+connect"></a>
 
-### boostHub.connect() ⇒ <code>Promise</code>
+### lpF2Hub.connect() ⇒ <code>Promise</code>
 Connect to the Hub.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Overrides**: [<code>connect</code>](#Hub+connect)  
 **Returns**: <code>Promise</code> - Resolved upon successful connect.  
 <a name="Hub+disconnect"></a>
 
-### boostHub.disconnect() ⇒ <code>Promise</code>
+### lpF2Hub.disconnect() ⇒ <code>Promise</code>
 Disconnect the Hub.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
-### boostHub.subscribe(port, [mode]) ⇒ <code>Promise</code>
+### lpF2Hub.subscribe(port, [mode]) ⇒ <code>Promise</code>
 Subscribe to sensor notifications on a given port.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -156,10 +156,10 @@ Subscribe to sensor notifications on a given port.
 
 <a name="Hub+unsubscribe"></a>
 
-### boostHub.unsubscribe(port) ⇒ <code>Promise</code>
+### lpF2Hub.unsubscribe(port) ⇒ <code>Promise</code>
 Unsubscribe to sensor notifications on a given port.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -168,12 +168,12 @@ Unsubscribe to sensor notifications on a given port.
 
 <a name="Hub+sleep"></a>
 
-### boostHub.sleep(delay) ⇒ <code>Promise</code>
+### lpF2Hub.sleep(delay) ⇒ <code>Promise</code>
 Sleep a given amount of time.
 
 This is a helper method to make it easier to add delays into a chain of commands.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -182,60 +182,60 @@ This is a helper method to make it easier to add delays into a chain of commands
 
 <a name="Hub+wait"></a>
 
-### boostHub.wait(commands) ⇒ <code>Promise</code>
+### lpF2Hub.wait(commands) ⇒ <code>Promise</code>
 Wait until a given list of concurrently running commands are complete.
 
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
-**Kind**: instance method of [<code>BoostHub</code>](#BoostHub)  
+**Kind**: instance method of [<code>LPF2Hub</code>](#LPF2Hub)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
-<a name="BoostHub+event_button"></a>
+<a name="LPF2Hub+event_button"></a>
 
 ### "button" (button, state)
 Emits when a button is pressed.
 
-**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+**Kind**: event emitted by [<code>LPF2Hub</code>](#LPF2Hub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
-<a name="BoostHub+event_distance"></a>
+<a name="LPF2Hub+event_distance"></a>
 
 ### "distance" (port, distance)
 Emits when a distance sensor is activated.
 
-**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+**Kind**: event emitted by [<code>LPF2Hub</code>](#LPF2Hub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
 | distance | <code>number</code> | Distance, in millimeters. |
 
-<a name="BoostHub+event_color"></a>
+<a name="LPF2Hub+event_color"></a>
 
 ### "color" (port, color)
 Emits when a color sensor is activated.
 
-**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+**Kind**: event emitted by [<code>LPF2Hub</code>](#LPF2Hub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
 | color | <code>number</code> | A number representing one of the LED color consts. |
 
-<a name="BoostHub+event_tilt"></a>
+<a name="LPF2Hub+event_tilt"></a>
 
 ### "tilt" (port, x, y)
 Emits when a tilt sensor is activated.
 
-**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+**Kind**: event emitted by [<code>LPF2Hub</code>](#LPF2Hub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -243,12 +243,12 @@ Emits when a tilt sensor is activated.
 | x | <code>number</code> |  |
 | y | <code>number</code> |  |
 
-<a name="BoostHub+event_rotate"></a>
+<a name="LPF2Hub+event_rotate"></a>
 
 ### "rotate" (port, rotation)
 Emits when a rotation sensor is activated.
 
-**Kind**: event emitted by [<code>BoostHub</code>](#BoostHub)  
+**Kind**: event emitted by [<code>LPF2Hub</code>](#LPF2Hub)  
 
 | Param | Type |
 | --- | --- |

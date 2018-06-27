@@ -6,18 +6,18 @@ import { Port } from "./port.js";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-const debug = Debug("boosthub");
+const debug = Debug("lpf2hub");
 
 
 /**
- * @class BoostHub
+ * @class LPF2Hub
  * @extends Hub
  */
-export class BoostHub extends Hub {
+export class LPF2Hub extends Hub {
 
 
-    public static IsBoostHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.localName === Consts.BLENames.BOOST_MOVE_HUB_NAME && peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0);
+    public static IsLPF2Hub (peripheral: Peripheral) {
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0);
     }
 
 
@@ -27,16 +27,39 @@ export class BoostHub extends Hub {
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hubs.BOOST_MOVE_HUB;
-        this._ports = {
-            "A": new Port("A", 55),
-            "B": new Port("B", 56),
-            "AB": new Port("AB", 57),
-            "TILT": new Port("TILT", 58),
-            "C": new Port("C", 1),
-            "D": new Port("D", 2)
-        };
-        debug("Discovered Boost Move Hub");
+        switch (peripheral.advertisement.localName) {
+            case Consts.BLENames.POWERED_UP_HUB_NAME:
+            {
+                this.type = Consts.Hubs.POWERED_UP_HUB;
+                this._ports = {
+                    "A": new Port("A", 55),
+                    "B": new Port("B", 56),
+                    "AB": new Port("AB", 57)
+                };
+                debug("Discovered Powered Up Hub");
+                break;
+            }
+            case Consts.BLENames.POWERED_UP_REMOTE_NAME:
+            {
+                this.type = Consts.Hubs.POWERED_UP_REMOTE;
+                debug("Discovered Powered Up Remote");
+                break;
+            }
+            default:
+            {
+                this.type = Consts.Hubs.BOOST_MOVE_HUB;
+                this._ports = {
+                    "A": new Port("A", 55),
+                    "B": new Port("B", 56),
+                    "AB": new Port("AB", 57),
+                    "TILT": new Port("TILT", 58),
+                    "C": new Port("C", 1),
+                    "D": new Port("D", 2)
+                };
+                debug("Discovered Boost Move Hub");
+                break;
+            }
+        }
     }
 
 
@@ -55,7 +78,7 @@ export class BoostHub extends Hub {
 
     /**
      * Set the color of the LED on the Hub via a color value.
-     * @method BoostHub#setLEDColor
+     * @method LPF2Hub#setLEDColor
      * @param {number} color A number representing one of the LED color consts.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
@@ -89,7 +112,7 @@ export class BoostHub extends Hub {
 
     /**
      * Set the motor speed on a given port.
-     * @method BoostHub#setMotorSpeed
+     * @method LPF2Hub#setMotorSpeed
      * @param {string} port
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
@@ -120,7 +143,7 @@ export class BoostHub extends Hub {
 
     /**
      * Rotate a motor by a given angle.
-     * @method BoostHub#setMotorAngle
+     * @method LPF2Hub#setMotorAngle
      * @param {string} port
      * @param {number} angle How much the motor should be rotated (in degrees).
      * @param {number} [speed=100] How fast the motor should be rotated.
@@ -160,31 +183,6 @@ export class BoostHub extends Hub {
     }
 
 
-    private _getPortForPortNumber (num: number) {
-
-        let port = null;
-
-        if (num === 1) {
-            port = this._ports["C"];
-        } else if (num === 2) {
-            port = this._ports["D"];
-        } else if (num === 55) {
-            port = this._ports["A"];
-        } else if (num === 56) {
-            port = this._ports["B"];
-        } else if (num === 57) {
-            port = this._ports["AB"];
-        } else if (num === 58) {
-            port = this._ports["TILT"];
-        } else {
-            return false;
-        }
-
-        return port;
-
-    }
-
-
     private _parseMessage (data: Buffer) {
 
         switch (data[2]) {
@@ -218,7 +216,7 @@ export class BoostHub extends Hub {
             if (data[5] === 1) {
                 /**
                  * Emits when a button is pressed.
-                 * @event BoostHub#button
+                 * @event LPF2Hub#button
                  * @param {string} button
                  * @param {number} state A number representing one of the button state consts.
                  */
@@ -284,7 +282,7 @@ export class BoostHub extends Hub {
                     }
                     /**
                      * Emits when a distance sensor is activated.
-                     * @event BoostHub#distance
+                     * @event LPF2Hub#distance
                      * @param {string} port
                      * @param {number} distance Distance, in millimeters.
                      */
@@ -296,7 +294,7 @@ export class BoostHub extends Hub {
 
                     /**
                      * Emits when a color sensor is activated.
-                     * @event BoostHub#color
+                     * @event LPF2Hub#color
                      * @param {string} port
                      * @param {number} color A number representing one of the LED color consts.
                      */
@@ -322,7 +320,7 @@ export class BoostHub extends Hub {
                     this._lastTiltY = tiltY;
                     /**
                      * Emits when a tilt sensor is activated.
-                     * @event BoostHub#tilt
+                     * @event LPF2Hub#tilt
                      * @param {string} port If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.
                      * @param {number} x
                      * @param {number} y
@@ -335,7 +333,7 @@ export class BoostHub extends Hub {
                     const rotation = data.readInt32LE(2);
                     /**
                      * Emits when a rotation sensor is activated.
-                     * @event BoostHub#rotate
+                     * @event LPF2Hub#rotate
                      * @param {string} port
                      * @param {number} rotation
                      */

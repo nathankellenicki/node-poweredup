@@ -130,23 +130,6 @@ export class WeDo2Hub extends Hub {
     }
 
 
-    private _getPortForPortNumber (num: number) {
-
-        let port = null;
-
-        if (num === 1) {
-            port = this._ports["A"];
-        } else if (num === 2) {
-            port = this._ports["B"];
-        } else {
-            return;
-        }
-
-        return port;
-
-    }
-
-
     private _parsePortMessage (data: Buffer) {
 
         const port = this._getPortForPortNumber(data[0]);

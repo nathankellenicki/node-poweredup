@@ -227,6 +227,19 @@ export class Hub extends EventEmitter {
     }
 
 
+    protected _getPortForPortNumber (num: number) {
+
+        for (const key of Object.keys(this._ports)) {
+            if (this._ports[key].value === num) {
+                return this._ports[key];
+            }
+        }
+
+        return false;
+
+    }
+
+
     protected _mapSpeed (speed: number) { // Speed range of -100 to 100 is supported unless speed mapping is turned off, in which case, you're on your own!
         if (!this.useSpeedMap) {
             return speed;

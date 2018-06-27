@@ -1,7 +1,7 @@
 import { Peripheral } from "noble";
 
-import { BoostHub } from "./boosthub";
 import { Hub } from "./hub";
+import { LPF2Hub } from "./lpf2hub";
 import { WeDo2Hub } from "./wedo2hub";
 
 import { EventEmitter} from "events";
@@ -56,8 +56,8 @@ export class LPF2 extends EventEmitter {
 
             if (WeDo2Hub.IsWeDo2Hub(peripheral)) {
                 hub = new WeDo2Hub(peripheral, this.autoSubscribe);
-            } else if (BoostHub.IsBoostHub(peripheral)) {
-                hub = new BoostHub(peripheral, this.autoSubscribe);
+            } else if (LPF2Hub.IsLPF2Hub(peripheral)) {
+                hub = new LPF2Hub(peripheral, this.autoSubscribe);
             } else {
                 return;
             }
@@ -86,7 +86,7 @@ export class LPF2 extends EventEmitter {
             /**
              * Emits when a LPF2 Hub device is found.
              * @event LPF2#discover
-             * @param {WeDo2Hub | BoostHub} hub
+             * @param {WeDo2Hub | LPF2Hub} hub
              */
             this.emit("discover", hub);
 
@@ -135,4 +135,4 @@ export class LPF2 extends EventEmitter {
 }
 
 export default LPF2;
-export { Hub, WeDo2Hub, BoostHub };
+export { Hub, WeDo2Hub, LPF2Hub };
