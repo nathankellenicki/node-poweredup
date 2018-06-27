@@ -17,7 +17,7 @@ export class WeDo2Hub extends Hub {
 
 
     public static IsWeDo2Hub (peripheral: Peripheral) {
-        return (peripheral.advertisement.localName === Consts.BLENames.WEDO2_SMART_HUB_NAME && peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.WEDO2_SMART_HUB) >= 0);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.WEDO2_SMART_HUB) >= 0);
     }
 
 

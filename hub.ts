@@ -6,7 +6,6 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { METHODS } from "http";
 const debug = Debug("hub");
 
 

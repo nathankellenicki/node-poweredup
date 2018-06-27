@@ -4,6 +4,8 @@ import { Hub } from "./hub";
 import { LPF2Hub } from "./lpf2hub";
 import { WeDo2Hub } from "./wedo2hub";
 
+import * as Consts from "./consts";
+
 import { EventEmitter} from "events";
 
 import Debug = require("debug");
@@ -135,4 +137,4 @@ export class LPF2 extends EventEmitter {
 }
 
 export default LPF2;
-export { Hub, WeDo2Hub, LPF2Hub };
+export { Hub, WeDo2Hub, LPF2Hub, Consts };
