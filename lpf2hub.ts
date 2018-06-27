@@ -10,6 +10,7 @@ const debug = Debug("lpf2hub");
 
 
 /**
+ * The LPF2Hub is emitted if the discovered device is either a Boost Move Hub, Powered Up Hub, or Powered Up Remote.
  * @class LPF2Hub
  * @extends Hub
  */

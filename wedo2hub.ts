@@ -10,6 +10,7 @@ const debug = Debug("wedo2hub");
 
 
 /**
+ * The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
  * @class WeDo2Hub
  * @extends Hub
  */

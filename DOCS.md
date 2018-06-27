@@ -71,6 +71,7 @@ Emits when a LPF2 Hub device is found.
 **Extends**: [<code>Hub</code>](#Hub)  
 
 * [LPF2Hub](#LPF2Hub) ⇐ [<code>Hub</code>](#Hub)
+    * [new LPF2Hub()](#new_LPF2Hub_new)
     * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#LPF2Hub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.setMotorAngle(port, angle, [speed])](#LPF2Hub+setMotorAngle) ⇒ <code>Promise</code>
@@ -85,6 +86,11 @@ Emits when a LPF2 Hub device is found.
     * ["color" (port, color)](#LPF2Hub+event_color)
     * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
     * ["rotate" (port, rotation)](#LPF2Hub+event_rotate)
+
+<a name="new_LPF2Hub_new"></a>
+
+### new LPF2Hub()
+The LPF2Hub is emitted if the discovered device is either a Boost Move Hub, Powered Up Hub, or Powered Up Remote.
 
 <a name="LPF2Hub+setLEDColor"></a>
 
@@ -262,6 +268,7 @@ Emits when a rotation sensor is activated.
 **Extends**: [<code>Hub</code>](#Hub)  
 
 * [WeDo2Hub](#WeDo2Hub) ⇐ [<code>Hub</code>](#Hub)
+    * [new WeDo2Hub()](#new_WeDo2Hub_new)
     * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
@@ -276,6 +283,11 @@ Emits when a rotation sensor is activated.
     * ["color" (port, color)](#WeDo2Hub+event_color)
     * ["tilt" (port, x, y)](#WeDo2Hub+event_tilt)
     * ["rotate" (port, rotation)](#WeDo2Hub+event_rotate)
+
+<a name="new_WeDo2Hub_new"></a>
+
+### new WeDo2Hub()
+The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 
 <a name="WeDo2Hub+setLEDColor"></a>
 
