@@ -217,10 +217,23 @@ export class Hub extends EventEmitter {
             port.type = type;
             if (this.autoSubscribe) {
                 this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
+                /**
+                 * Emits when a motor or sensor is attached to the Hub.
+                 * @event Hub#attach
+                 * @param {string} port
+                 * @param {number} type A number representing one of the peripheral consts.
+                 */
+                this.emit("attach", port.id, type);
             }
         } else {
             port.type = Consts.Devices.UNKNOWN;
             debug(`Port ${port.id} disconnected`);
+            /**
+             * Emits when an attached motor or sensor is detached from the Hub.
+             * @event Hub#detach
+             * @param {string} port
+             */
+            this.emit("detach", port.id);
         }
 
     }

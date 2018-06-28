@@ -86,6 +86,8 @@ Emits when a LPF2 Hub device is found.
     * ["color" (port, color)](#LPF2Hub+event_color)
     * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
     * ["rotate" (port, rotation)](#LPF2Hub+event_rotate)
+    * ["attach" (port, type)](#Hub+event_attach)
+    * ["detach" (port)](#Hub+event_detach)
 
 <a name="new_LPF2Hub_new"></a>
 
@@ -261,6 +263,29 @@ Emits when a rotation sensor is activated.
 | port | <code>string</code> | 
 | rotation | <code>number</code> | 
 
+<a name="Hub+event_attach"></a>
+
+### "attach" (port, type)
+Emits when a motor or sensor is attached to the Hub.
+
+**Kind**: event emitted by [<code>LPF2Hub</code>](#LPF2Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| type | <code>number</code> | A number representing one of the peripheral consts. |
+
+<a name="Hub+event_detach"></a>
+
+### "detach" (port)
+Emits when an attached motor or sensor is detached from the Hub.
+
+**Kind**: event emitted by [<code>LPF2Hub</code>](#LPF2Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="WeDo2Hub"></a>
 
 ## WeDo2Hub ⇐ [<code>Hub</code>](#Hub)
@@ -283,6 +308,8 @@ Emits when a rotation sensor is activated.
     * ["color" (port, color)](#WeDo2Hub+event_color)
     * ["tilt" (port, x, y)](#WeDo2Hub+event_tilt)
     * ["rotate" (port, rotation)](#WeDo2Hub+event_rotate)
+    * ["attach" (port, type)](#Hub+event_attach)
+    * ["detach" (port)](#Hub+event_detach)
 
 <a name="new_WeDo2Hub_new"></a>
 
@@ -457,6 +484,29 @@ Emits when a rotation sensor is activated.
 | port | <code>string</code> | 
 | rotation | <code>number</code> | 
 
+<a name="Hub+event_attach"></a>
+
+### "attach" (port, type)
+Emits when a motor or sensor is attached to the Hub.
+
+**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| type | <code>number</code> | A number representing one of the peripheral consts. |
+
+<a name="Hub+event_detach"></a>
+
+### "detach" (port)
+Emits when an attached motor or sensor is detached from the Hub.
+
+**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="Hub"></a>
 
 ## Hub ⇐ <code>EventEmitter</code>
@@ -470,6 +520,8 @@ Emits when a rotation sensor is activated.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * ["attach" (port, type)](#Hub+event_attach)
+    * ["detach" (port)](#Hub+event_detach)
 
 <a name="Hub+connect"></a>
 
@@ -537,4 +589,27 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | Param | Type | Description |
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
+
+<a name="Hub+event_attach"></a>
+
+### "attach" (port, type)
+Emits when a motor or sensor is attached to the Hub.
+
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| type | <code>number</code> | A number representing one of the peripheral consts. |
+
+<a name="Hub+event_detach"></a>
+
+### "detach" (port)
+Emits when an attached motor or sensor is detached from the Hub.
+
+**Kind**: event emitted by [<code>Hub</code>](#Hub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 

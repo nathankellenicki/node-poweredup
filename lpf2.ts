@@ -64,6 +64,8 @@ export class LPF2 extends EventEmitter {
                 return;
             }
 
+            console.log(peripheral);
+
             peripheral.removeAllListeners();
             noble.stopScanning();
             noble.startScanning();
