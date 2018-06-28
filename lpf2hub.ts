@@ -25,6 +25,9 @@ export class LPF2Hub extends Hub {
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
 
+    private _incomingData: Buffer = Buffer.alloc(0);
+    private _outgoingData: Buffer = Buffer.alloc(0);
+
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
@@ -184,29 +187,49 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _parseMessage (data: Buffer) {
+    private _parseMessage (data?: Buffer) {
 
-        switch (data[2]) {
-            case 0x01:
-            {
-                this._parseDeviceInfo(data);
-                break;
+        if (data) {
+            this._incomingData = Buffer.concat([this._incomingData, data]);
+        }
+
+        if (this._incomingData.length <= 0) {
+            return;
+        }
+
+        const len = this._incomingData[0];
+        if (len >= this._incomingData.length) {
+
+            const message = this._incomingData.slice(0, len);
+            this._incomingData = this._incomingData.slice(len);
+
+            switch (message[2]) {
+                case 0x01:
+                {
+                    this._parseDeviceInfo(message);
+                    break;
+                }
+                case 0x04:
+                {
+                    this._parsePortMessage(message);
+                    break;
+                }
+                case 0x45:
+                {
+                    this._parseSensorMessage(message);
+                    break;
+                }
+                case 0x82:
+                {
+                    this._parsePortAction(message);
+                    break;
+                }
             }
-            case 0x04:
-            {
-                this._parsePortMessage(data);
-                break;
+
+            if (this._incomingData.length > 0) {
+                this._parseMessage();
             }
-            case 0x45:
-            {
-                this._parseSensorMessage(data);
-                break;
-            }
-            case 0x82:
-            {
-                this._parsePortAction(data);
-                break;
-            }
+
         }
     }
 
@@ -338,6 +361,12 @@ export class LPF2Hub extends Hub {
                      * @param {string} port
                      * @param {number} rotation
                      */
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
+                {
+                    const rotation = data.readInt32LE(2);
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
