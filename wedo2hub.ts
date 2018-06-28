@@ -59,12 +59,12 @@ export class WeDo2Hub extends Hub {
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
-            this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
+            this._writeMessage(Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE, data);
             if (color === false) {
                 color = 0;
             }
             data = Buffer.from([0x06, 0x04, 0x01, color]);
-            this._writeMessage(Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE, data);
+            this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
             return resolve();
         });
     }
