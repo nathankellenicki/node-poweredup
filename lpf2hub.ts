@@ -73,7 +73,7 @@ export class LPF2Hub extends Hub {
             await super.connect();
             const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
-            this._writeMessage(Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]));
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]));
             debug("Connect completed");
             return resolve();
         });
@@ -89,12 +89,12 @@ export class LPF2Hub extends Hub {
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
-            this._writeMessage(data);
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
             if (color === false) {
                 color = 0;
             }
             data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(data);
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
             return resolve();
         });
     }
@@ -115,13 +115,13 @@ export class LPF2Hub extends Hub {
                 portObj.busy = true;
                 const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                 data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
-                this._writeMessage(data);
+                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
                 portObj.finished = () => {
                     return resolve();
                 };
             } else {
                 const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                this._writeMessage(data);
+                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
                 return resolve();
             }
         });
@@ -143,7 +143,7 @@ export class LPF2Hub extends Hub {
             const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
             data.writeUInt32LE(angle, 6);
             data.writeUInt8(this._mapSpeed(speed), 10);
-            this._writeMessage(data);
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
             portObj.finished = () => {
                 return resolve();
             };
@@ -152,17 +152,17 @@ export class LPF2Hub extends Hub {
 
 
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
-        this._writeMessage(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+        this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
 
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
-        this._writeMessage(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+        this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
     }
 
 
-    private _writeMessage (message: Buffer, callback?: () => void) {
-        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
+    private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
+        const characteristic = this._characteristics[uuid];
         if (characteristic) {
             characteristic.write(message, false, callback);
         }
