@@ -24,28 +24,24 @@ lpf2.on("discover", async (hub) => { // Wait to discover Vernie and Remote
                 switch (state) {
                     case LPF2.Consts.ButtonStates.UP:
                     {
-                        vernie && vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 50);
+                        vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 50);
                         break;
                     }
                     case LPF2.Consts.ButtonStates.DOWN:
                     {
-                        vernie && vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", -50);
+                        vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", -50);
                         break;
                     }
                     case LPF2.Consts.ButtonStates.RELEASED:
                     {
-                        if (button === "LEFT" || button === "RIGHT") {
-                            vernie && vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 0);
+                        if (button !== "GREEN") {
+                            vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 0);
                         }
                         break;
                     }
                     case LPF2.Consts.ButtonStates.STOP:
                     {
-                        if (button === "RIGHT") {
-                            await vernie.setMotorAngle("D", 35, 20);
-                        } else if (button === "LEFT") {
-                            await vernie.setMotorAngle("D", 35, -20);
-                        }
+                        await vernie.setMotorAngle("D", 35, button === "LEFT" ? -20 : 20);
                         break;
                     }
                     case LPF2.Consts.ButtonStates.PRESSED:
