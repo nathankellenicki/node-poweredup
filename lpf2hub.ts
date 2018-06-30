@@ -31,21 +31,25 @@ export class LPF2Hub extends Hub {
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        switch (peripheral.advertisement.localName) {
-            case Consts.BLENames.POWERED_UP_HUB_NAME:
+        switch (peripheral.advertisement.manufacturerData[3]) {
+            case Consts.BLEManufacturerData.POWERED_UP_HUB_ID:
             {
                 this.type = Consts.Hubs.POWERED_UP_HUB;
                 this._ports = {
-                    "A": new Port("A", 55),
-                    "B": new Port("B", 56),
+                    "A": new Port("A", 0),
+                    "B": new Port("B", 1),
                     "AB": new Port("AB", 57)
                 };
                 debug("Discovered Powered Up Hub");
                 break;
             }
-            case Consts.BLENames.POWERED_UP_REMOTE_NAME:
+            case Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID:
             {
                 this.type = Consts.Hubs.POWERED_UP_REMOTE;
+                this._ports = {
+                    "LEFT": new Port("LEFT", 0),
+                    "RIGHT": new Port("RIGHT", 1)
+                };
                 debug("Discovered Powered Up Remote");
                 break;
             }
@@ -69,7 +73,7 @@ export class LPF2Hub extends Hub {
 
     public connect () {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Boost Move Hub");
+            debug("Connecting to Hub");
             await super.connect();
             const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
@@ -111,7 +115,11 @@ export class LPF2Hub extends Hub {
     public setMotorSpeed (port: string, speed: number, time: number) {
         return new Promise((resolve, reject) => {
             const portObj = this._ports[port];
-            if (time) {
+            if (portObj.type === Consts.Devices.TRAIN_MOTOR) {
+                const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                return resolve();
+            } else if (time) {
                 portObj.busy = true;
                 const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                 data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
@@ -357,6 +365,32 @@ export class LPF2Hub extends Hub {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
                     this.emit("tilt", port.id, tiltX, tiltY);
+                    break;
+                }
+                case Consts.Devices.REMOTE_BUTTON:
+                {
+                    switch (data[4]) {
+                        case 0x01:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.UP);
+                            break;
+                        }
+                        case 0xff:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.DOWN);
+                            break;
+                        }
+                        case 0x7f:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.STOP);
+                            break;
+                        }
+                        case 0x00:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.RELEASED);
+                            break;
+                        }
+                    }
                     break;
                 }
             }
