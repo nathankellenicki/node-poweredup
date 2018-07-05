@@ -276,6 +276,8 @@ export class Hub extends EventEmitter {
         switch (type) {
             case Consts.Devices.BASIC_MOTOR:
                 return 0x02;
+            case Consts.Devices.TRAIN_MOTOR:
+                return 0x02;
             case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
                 return 0x02;
             case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
@@ -284,6 +286,8 @@ export class Hub extends EventEmitter {
                 return (this.type === Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08);
             case Consts.Devices.BOOST_TILT:
                 return 0x04;
+            case Consts.Devices.REMOTE_BUTTON:
+                return 0x00;
             default:
                 return 0x00;
         }

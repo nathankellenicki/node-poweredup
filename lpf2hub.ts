@@ -25,24 +25,31 @@ export class LPF2Hub extends Hub {
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
 
+    private _incomingData: Buffer = Buffer.alloc(0);
+    private _outgoingData: Buffer = Buffer.alloc(0);
+
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        switch (peripheral.advertisement.localName) {
-            case Consts.BLENames.POWERED_UP_HUB_NAME:
+        switch (peripheral.advertisement.manufacturerData[3]) {
+            case Consts.BLEManufacturerData.POWERED_UP_HUB_ID:
             {
                 this.type = Consts.Hubs.POWERED_UP_HUB;
                 this._ports = {
-                    "A": new Port("A", 55),
-                    "B": new Port("B", 56),
+                    "A": new Port("A", 0),
+                    "B": new Port("B", 1),
                     "AB": new Port("AB", 57)
                 };
                 debug("Discovered Powered Up Hub");
                 break;
             }
-            case Consts.BLENames.POWERED_UP_REMOTE_NAME:
+            case Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID:
             {
                 this.type = Consts.Hubs.POWERED_UP_REMOTE;
+                this._ports = {
+                    "LEFT": new Port("LEFT", 0),
+                    "RIGHT": new Port("RIGHT", 1)
+                };
                 debug("Discovered Powered Up Remote");
                 break;
             }
@@ -66,11 +73,11 @@ export class LPF2Hub extends Hub {
 
     public connect () {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Boost Move Hub");
+            debug("Connecting to Hub");
             await super.connect();
             const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
-            characteristic.write(Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]), false);
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]));
             debug("Connect completed");
             return resolve();
         });
@@ -85,30 +92,16 @@ export class LPF2Hub extends Hub {
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
-            const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
-            if (characteristic) {
-                let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
-                characteristic.write(data, false);
-                if (color === false) {
-                    color = 0;
-                }
-                data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
-                characteristic.write(data, false);
+            let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+            if (color === false) {
+                color = 0;
             }
+            data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
             return resolve();
         });
     }
-
-
-    // setLEDRGB (red, green, blue) {
-    //     const characteristic = this._characteristics[Consts.BLE.Characteristics.Boost.ALL];
-    //     if (characteristic) {
-    //         let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x03]);
-    //         characteristic.write(data);
-    //         data = Buffer.from([0x0a, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, red, green, blue]);
-    //         characteristic.write(data);
-    //     }
-    // }
 
 
     /**
@@ -121,22 +114,23 @@ export class LPF2Hub extends Hub {
      */
     public setMotorSpeed (port: string, speed: number, time: number) {
         return new Promise((resolve, reject) => {
-            const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
-            if (characteristic) {
-                const portObj = this._ports[port];
-                if (time) {
-                    portObj.busy = true;
-                    const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                    data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
-                    characteristic.write(data, false);
-                    portObj.finished = () => {
-                        return resolve();
-                    };
-                } else {
-                    const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                    characteristic.write(data, false);
+            const portObj = this._ports[port];
+            if (portObj.type === Consts.Devices.TRAIN_MOTOR) {
+                const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                return resolve();
+            } else if (time) {
+                portObj.busy = true;
+                const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
+                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                portObj.finished = () => {
                     return resolve();
-                }
+                };
+            } else {
+                const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                return resolve();
             }
         });
     }
@@ -152,61 +146,80 @@ export class LPF2Hub extends Hub {
      */
     public setMotorAngle (port: string, angle: number, speed: number = 100) {
         return new Promise((resolve, reject) => {
-            const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
-            if (characteristic) {
-                const portObj = this._ports[port];
-                portObj.busy = true;
-                const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
-                data.writeUInt32LE(angle, 6);
-                data.writeUInt8(this._mapSpeed(speed), 10);
-                characteristic.write(data, false);
-                portObj.finished = () => {
-                    return resolve();
-                };
-            }
+            const portObj = this._ports[port];
+            portObj.busy = true;
+            const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
+            data.writeUInt32LE(angle, 6);
+            data.writeUInt8(this._mapSpeed(speed), 10);
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+            portObj.finished = () => {
+                return resolve();
+            };
         });
     }
 
 
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
-        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
-        if (characteristic) {
-            characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), false, callback);
-        }
+        this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
 
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
-        const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
+        this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+    }
+
+
+    private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
+        const characteristic = this._characteristics[uuid];
         if (characteristic) {
-            characteristic.write(Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), false, callback);
+            characteristic.write(message, false, callback);
         }
     }
 
 
-    private _parseMessage (data: Buffer) {
+    private _parseMessage (data?: Buffer) {
 
-        switch (data[2]) {
-            case 0x01:
-            {
-                this._parseDeviceInfo(data);
-                break;
+        if (data) {
+            this._incomingData = Buffer.concat([this._incomingData, data]);
+        }
+
+        if (this._incomingData.length <= 0) {
+            return;
+        }
+
+        const len = this._incomingData[0];
+        if (len >= this._incomingData.length) {
+
+            const message = this._incomingData.slice(0, len);
+            this._incomingData = this._incomingData.slice(len);
+
+            switch (message[2]) {
+                case 0x01:
+                {
+                    this._parseDeviceInfo(message);
+                    break;
+                }
+                case 0x04:
+                {
+                    this._parsePortMessage(message);
+                    break;
+                }
+                case 0x45:
+                {
+                    this._parseSensorMessage(message);
+                    break;
+                }
+                case 0x82:
+                {
+                    this._parsePortAction(message);
+                    break;
+                }
             }
-            case 0x04:
-            {
-                this._parsePortMessage(data);
-                break;
+
+            if (this._incomingData.length > 0) {
+                this._parseMessage();
             }
-            case 0x45:
-            {
-                this._parseSensorMessage(data);
-                break;
-            }
-            case 0x82:
-            {
-                this._parsePortAction(data);
-                break;
-            }
+
         }
     }
 
@@ -341,11 +354,43 @@ export class LPF2Hub extends Hub {
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
+                case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
+                {
+                    const rotation = data.readInt32LE(2);
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
                 case Consts.Devices.BOOST_TILT:
                 {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
                     this.emit("tilt", port.id, tiltX, tiltY);
+                    break;
+                }
+                case Consts.Devices.REMOTE_BUTTON:
+                {
+                    switch (data[4]) {
+                        case 0x01:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.UP);
+                            break;
+                        }
+                        case 0xff:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.DOWN);
+                            break;
+                        }
+                        case 0x7f:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.STOP);
+                            break;
+                        }
+                        case 0x00:
+                        {
+                            this.emit("button", port.id, Consts.ButtonStates.RELEASED);
+                            break;
+                        }
+                    }
                     break;
                 }
             }

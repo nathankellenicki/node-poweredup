@@ -9,13 +9,15 @@ export enum Hubs {
 export enum Devices {
     UNKNOWN = 0,
     BASIC_MOTOR = 1,
+    TRAIN_MOTOR = 2,
     BOOST_LED = 22,
     WEDO2_TILT = 34,
     WEDO2_DISTANCE = 35,
     BOOST_DISTANCE = 37,
     BOOST_INTERACTIVE_MOTOR = 38,
     BOOST_MOVE_HUB_MOTOR = 39,
-    BOOST_TILT = 40
+    BOOST_TILT = 40,
+    REMOTE_BUTTON = 55
 }
 
 
@@ -35,14 +37,16 @@ export enum Colors {
 
 export enum ButtonStates {
     PRESSED = 0,
-    RELEASED = 1
+    RELEASED = 1,
+    UP = 2,
+    DOWN = 3,
+    STOP = 4
 }
 
-export enum BLENames {
-    WEDO2_SMART_HUB_NAME = "LPF2 Smart Hub 2 I/O",
-    BOOST_MOVE_HUB_NAME = "LEGO Move Hub",
-    POWERED_UP_HUB_NAME = "HUB NO.4",
-    POWERED_UP_REMOTE_NAME = "Handset"
+export enum BLEManufacturerData {
+    BOOST_MOVE_HUB_ID = 64,
+    POWERED_UP_HUB_ID = 65,
+    POWERED_UP_REMOTE_ID = 66
 }
 
 export enum BLEServices {
