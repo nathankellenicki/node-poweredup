@@ -27,8 +27,6 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 | Powered Up LED Lights           | Light         |       Unknown      |     Unknown    |     Unknown    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
 
 
-<a name="compatibility-note-2"></a><sub>(2) When used with the WeDo 2.0 Smart Hub, the Boost Interactive Medium Motor functions like the WeDo 2.0 Medium Motor - that is, only basic constant speed is possible. However the rotation sensing functionality is supported.</sub>
-
 ### Known Issues and Limitations
 
 * The Powered Up Remote is compatible with this library for the purpose of detecting button presses, however unlike other Hubs, it is currently not possible to change the color of the LED light.
