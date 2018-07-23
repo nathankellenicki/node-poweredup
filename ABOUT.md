@@ -39,3 +39,7 @@ const lpf2 = new LPF2();
 
 Examples are available in the "examples" directory.
 
+### Credits
+
+Thanks go to Jorge Pereira ([@JorgePe](https://github.com/JorgePe)), Sebastian Raff ([@hobbyquaker](https://github.com/hobbyquaker)), Valentin Heun ([@vheun](https://github.com/vheun)), and Johan Korten ([@jakorten](https://github.com/jakorten)) for their various works and assistance on figuring out the LEGO Boost, WeDo 2.0, and Powered Up protocols.
+
