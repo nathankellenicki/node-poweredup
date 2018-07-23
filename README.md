@@ -22,7 +22,7 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 | WeDo 2.0 Motion Sensor          | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
 | WeDo 2.0 Medium Motor           | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a> |
 | Boost Color and Distance Sensor | Sensor        |     *Partial (<a href="#compatibility-note-1">1</a>)*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
-| Boost Interactive Motor  | Motor/Sensor  |     *Partial (<a href="#compatibility-note-2">2</a>)*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Boost Interactive Motor  | Motor/Sensor  |     *Partial (<a href="#compatibility-note-2">2</a>)*    |       Yes      |       No      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
 | Powered Up Train Motor          | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
 | Powered Up LED Lights           | Light         |       Unknown      |     Unknown    |     Unknown    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
 
