@@ -15,9 +15,9 @@ lpf2.on("discover", async (hub) => { // Wait to discover hubs
 let color = 0;
 setInterval(() => {
 
-    const hubs = lpf2.getConnectedDevices();
+    const hubs = lpf2.getConnectedDevices(); // Get an array of all connected hubs
     hubs.forEach((hub) => {
-        hub.setLEDColor(color);
+        hub.setLEDColor(color); // Set the color
     })
     color++;
     if (color > 10) {

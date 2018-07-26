@@ -22,29 +22,29 @@ lpf2.on("discover", async (hub) => { // Wait to discover Vernie and Remote
         remote.on("button", async (button, state) => {
             if (vernie) {
                 switch (state) {
-                    case LPF2.Consts.ButtonStates.UP:
+                    case LPF2.Consts.ButtonStates.UP: // If up is pressed, move the track forward
                     {
                         vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 50);
                         break;
                     }
-                    case LPF2.Consts.ButtonStates.DOWN:
+                    case LPF2.Consts.ButtonStates.DOWN: // If down is pressed, move the track backwards
                     {
                         vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", -50);
                         break;
                     }
-                    case LPF2.Consts.ButtonStates.RELEASED:
+                    case LPF2.Consts.ButtonStates.RELEASED: // Stop the track when the button is released
                     {
                         if (button !== "GREEN") {
                             vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 0);
                         }
                         break;
                     }
-                    case LPF2.Consts.ButtonStates.STOP:
+                    case LPF2.Consts.ButtonStates.STOP: // Move the head left or right when a red button is pressed
                     {
                         await vernie.setMotorAngle("D", 35, button === "LEFT" ? -20 : 20);
                         break;
                     }
-                    case LPF2.Consts.ButtonStates.PRESSED:
+                    case LPF2.Consts.ButtonStates.PRESSED: // Fire when the green button is pressed
                     {
                         if (button === "GREEN") {
                             await vernie.setMotorAngle("D", 80, 20);
@@ -61,6 +61,8 @@ lpf2.on("discover", async (hub) => { // Wait to discover Vernie and Remote
     }
 
     if (vernie && remote) {
+        vernie.setLEDColor(LPF2.Consts.Colors.GREEN);
+        remote.setLEDColor(LPF2.Consts.Colors.GREEN);
         console.log("You're now ready to go!");
     }
     
