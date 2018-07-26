@@ -89,6 +89,7 @@ export class WeDo2Hub extends Hub {
         });
     }
 
+
     /**
      * Play a sound on the Hub's in-built buzzer
      * @method WeDo2Hub#playSound
