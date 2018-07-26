@@ -91,6 +91,21 @@ export class WeDo2Hub extends Hub {
 
 
     /**
+     * Set the motor speed on a given port.
+     * @method WeDo2Hub#setMotorSpeed
+     * @param {string} port
+     * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    public setMotorSpeed (port: string, speed: number) {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([this._ports[port].value, 0x01, 0x02, this._mapSpeed(speed)]));
+            return resolve();
+        });
+    }
+
+
+    /**
      * Play a sound on the Hub's in-built buzzer
      * @method WeDo2Hub#playSound
      * @param {number} frequency
@@ -104,21 +119,6 @@ export class WeDo2Hub extends Hub {
             data.writeUInt16LE(time, 5);
             this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
             setTimeout(resolve, time);
-        });
-    }
-
-
-    /**
-     * Set the motor speed on a given port.
-     * @method WeDo2Hub#setMotorSpeed
-     * @param {string} port
-     * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setMotorSpeed (port: string, speed: number) {
-        return new Promise((resolve, reject) => {
-            this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([this._ports[port].value, 0x01, 0x02, this._mapSpeed(speed)]));
-            return resolve();
         });
     }
 
