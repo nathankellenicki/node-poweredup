@@ -128,12 +128,12 @@ export class WeDo2Hub extends Hub {
     }
 
 
-    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
+    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
             this._writeMessage(Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
     }
 
 
-    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
+    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
         this._writeMessage(Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), callback);
     }
 

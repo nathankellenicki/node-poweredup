@@ -159,12 +159,12 @@ export class LPF2Hub extends Hub {
     }
 
 
-    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
+    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
         this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
 
-    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback: () => void) {
+    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
         this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
     }
 
