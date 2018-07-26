@@ -61,8 +61,9 @@ lpf2.on("discover", async (hub) => { // Wait to discover Vernie and Remote
     }
 
     if (vernie && remote) {
-        vernie.setLEDColor(LPF2.Consts.Colors.GREEN);
-        remote.setLEDColor(LPF2.Consts.Colors.GREEN);
+        const color = Math.floor(Math.random() * 10) + 1;
+        vernie.setLEDColor(color);
+        remote.setLEDColor(color);
         console.log("You're now ready to go!");
     }
     
