@@ -29,13 +29,11 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 
 ### Known Issues and Limitations
 
-* The Powered Up Remote is compatible with this library for the purpose of detecting button presses, however unlike other Hubs, it is currently not possible to change the color of the LED light.
-
 * The Boost Color and Distance sensor only works in color mode with the WeDo 2.0 Smart Hub.
 
 * When used with the WeDo 2.0 Smart Hub, the Boost Interactive Motor does not support rotating the motor by angle or by time. Only constant speed is supported. However angle detection is supported.
 
-* The Boost Interactive Motor does not currently function with the Powered Up Hub in any fashion.
+* The Boost Interactive Motor does not currently function with the Powered Up Hub.
 
 ### Usage
 
