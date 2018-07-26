@@ -6,6 +6,7 @@ import { Port } from "./port.js";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { resolve } from "path";
 const debug = Debug("wedo2hub");
 
 
@@ -80,11 +81,28 @@ export class WeDo2Hub extends Hub {
      */
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x01, 0x02, 0x06, 0x17, 0x01, 0x02]);
-            this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
-            data = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
+            let data = Buffer.from([0x06, 0x17, 0x01, 0x02]);
             this._writeMessage(Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE, data);
+            data = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
+            this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
             return resolve();
+        });
+    }
+
+    /**
+     * Play a sound on the Hub's in-built buzzer
+     * @method WeDo2Hub#playSound
+     * @param {number} frequency
+     * @param {number} time How long the sound should play for (in milliseconds).
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the sound has finished playing).
+     */
+    public playSound (frequency: number, time: number) {
+        return new Promise((resolve, reject) => {
+            const data = Buffer.from([0x05, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00]);
+            data.writeUInt16LE(frequency, 3);
+            data.writeUInt16LE(time, 5);
+            this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
+            setTimeout(resolve, time);
         });
     }
 

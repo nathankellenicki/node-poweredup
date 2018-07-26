@@ -346,6 +346,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [new WeDo2Hub()](#new_WeDo2Hub_new)
     * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
+    * [.playSound(frequency, time)](#WeDo2Hub+playSound) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
@@ -391,6 +392,19 @@ Set the color of the LED on the Hub via RGB values.
 | red | <code>number</code> | 
 | green | <code>number</code> | 
 | blue | <code>number</code> | 
+
+<a name="WeDo2Hub+playSound"></a>
+
+### weDo2Hub.playSound(frequency, time) ⇒ <code>Promise</code>
+Play a sound on the Hub's in-built buzzer
+
+**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the sound has finished playing).  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| frequency | <code>number</code> |  |
+| time | <code>number</code> | How long the sound should play for (in milliseconds). |
 
 <a name="WeDo2Hub+setMotorSpeed"></a>
 
