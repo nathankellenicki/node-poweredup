@@ -346,8 +346,8 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [new WeDo2Hub()](#new_WeDo2Hub_new)
     * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
+    * [.setMotorSpeed(port, speed, [time])](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.playSound(frequency, time)](#WeDo2Hub+playSound) ⇒ <code>Promise</code>
-    * [.setMotorSpeed(port, speed)](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -393,6 +393,20 @@ Set the color of the LED on the Hub via RGB values.
 | green | <code>number</code> | 
 | blue | <code>number</code> | 
 
+<a name="WeDo2Hub+setMotorSpeed"></a>
+
+### weDo2Hub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
+Set the motor speed on a given port.
+
+**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
+
 <a name="WeDo2Hub+playSound"></a>
 
 ### weDo2Hub.playSound(frequency, time) ⇒ <code>Promise</code>
@@ -405,19 +419,6 @@ Play a sound on the Hub's in-built buzzer
 | --- | --- | --- |
 | frequency | <code>number</code> |  |
 | time | <code>number</code> | How long the sound should play for (in milliseconds). |
-
-<a name="WeDo2Hub+setMotorSpeed"></a>
-
-### weDo2Hub.setMotorSpeed(port, speed) ⇒ <code>Promise</code>
-Set the motor speed on a given port.
-
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 
 <a name="Hub+connect"></a>
 

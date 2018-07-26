@@ -116,7 +116,7 @@ export class LPF2Hub extends Hub {
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
      * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
-    public setMotorSpeed (port: string, speed: number, time: number) {
+    public setMotorSpeed (port: string, speed: number, time?: number) {
         return new Promise((resolve, reject) => {
             const portObj = this._ports[port];
             if (time) {

@@ -95,12 +95,17 @@ export class WeDo2Hub extends Hub {
      * @method WeDo2Hub#setMotorSpeed
      * @param {string} port
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @returns {Promise} Resolved upon successful issuance of command.
+     * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
+     * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
-    public setMotorSpeed (port: string, speed: number) {
+    public setMotorSpeed (port: string, speed: number, time?: number) {
         return new Promise((resolve, reject) => {
             this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([this._ports[port].value, 0x01, 0x02, this._mapSpeed(speed)]));
-            return resolve();
+            if (time) {
+                setTimeout(resolve, time);
+            } else {
+                return resolve();
+            }
         });
     }
 
