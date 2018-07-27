@@ -118,17 +118,6 @@ lpf2.on("discover", async (hub) => { // Wait to discover hubs
                 }, 6000);
             }
 
-            /*if (color === 7 && moving && state === 2) {
-                moving = false;
-                maersk.setMotorSpeed("A", 0);
-                await maersk.sleep(2000);
-                maersk.setMotorSpeed("A", -40);
-                setTimeout(() => {
-                    state = 3;
-                    moving = true;
-                }, 3000);
-            }*/
-
             if (color === 7 && moving && state === 3) {
                 moving = false;
                 maersk.setMotorSpeed("A", 0);
