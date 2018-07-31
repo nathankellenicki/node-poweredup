@@ -37,7 +37,7 @@ export class LPF2 extends EventEmitter {
     public autoSubscribe: boolean = true;
 
 
-    private _connectedDevices: {[uuid: string]: Hub} = {};
+    private _connectedHubs: {[uuid: string]: Hub} = {};
 
 
     constructor () {
@@ -70,18 +70,16 @@ export class LPF2 extends EventEmitter {
 
             hub.on("connect", () => {
                 debug(`Hub ${hub.uuid} connected`);
-                this._connectedDevices[hub.uuid] = hub;
+                this._connectedHubs[hub.uuid] = hub;
             });
 
             hub.on("disconnect", () => {
                 debug(`Hub ${hub.uuid} disconnected`);
-                delete this._connectedDevices[hub.uuid];
+                delete this._connectedHubs[hub.uuid];
 
                 if (wantScan) {
                     noble.startScanning();
                 }
-
-                hub.emit("disconnect");
             });
 
             debug(`Hub ${hub.uuid} discovered`);
@@ -112,24 +110,24 @@ export class LPF2 extends EventEmitter {
 
 
     /**
-     * Retrieve a LPF2 Hub device by UUID.
-     * @method LPF2#getConnectedDeviceByUUID
+     * Retrieve a LPF2 Hub by UUID.
+     * @method LPF2#getConnectedHubByUUID
      * @param {string} uuid
      * @returns {Hub | null}
      */
-    public getConnectedDeviceByUUID (uuid: string) {
-        return this._connectedDevices[uuid];
+    public getConnectedHubByUUID (uuid: string) {
+        return this._connectedHubs[uuid];
     }
 
 
     /**
-     * Retrieve a list of LPF2 Hub devices.
-     * @method LPF2#getConnectedDevices
+     * Retrieve a list of LPF2 Hubs.
+     * @method LPF2#getConnectedHubs
      * @returns {Hub[]}
      */
-    public getConnectedDevices () {
-        return Object.keys(this._connectedDevices).map((uuid) => {
-            return this._connectedDevices[uuid];
+    public getConnectedHubs () {
+        return Object.keys(this._connectedHubs).map((uuid) => {
+            return this._connectedHubs[uuid];
         });
     }
 

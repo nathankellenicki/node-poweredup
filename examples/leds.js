@@ -8,14 +8,18 @@ console.log("Looking for Hubs...");
 lpf2.on("discover", async (hub) => { // Wait to discover hubs
 
     await hub.connect(); // Connect to hub
-    console.log("Connected to Hub!");
+    console.log(`Connected to ${hub.name}!`);
+
+    hub.on("disconnect", () => {
+        console.log("Hub disconnected");
+    })
 
 });
 
 let color = 0;
 setInterval(() => {
 
-    const hubs = lpf2.getConnectedDevices(); // Get an array of all connected hubs
+    const hubs = lpf2.getConnectedHubs(); // Get an array of all connected hubs
     hubs.forEach((hub) => {
         hub.setLEDColor(color); // Set the color
     })

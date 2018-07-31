@@ -20,6 +20,7 @@ export class Hub extends EventEmitter {
     public useSpeedMap: boolean = true;
     public type: Consts.Hubs = Consts.Hubs.UNKNOWN;
     public uuid: string;
+    public name: string;
 
     protected _ports: {[port: string]: Port} = {};
     protected _characteristics: {[uuid: string]: Characteristic} = {};
@@ -33,6 +34,7 @@ export class Hub extends EventEmitter {
         this.autoSubscribe = !!autoSubscribe;
         this._peripheral = peripheral;
         this.uuid = peripheral.uuid;
+        this.name = peripheral.advertisement.localName;
     }
 
 
@@ -63,8 +65,8 @@ export class Hub extends EventEmitter {
                 }, 2000);
 
                 self._peripheral.on("disconnect", () => {
-                clearInterval(rssiUpdateInterval);
-                this.emit("disconnect");
+                    clearInterval(rssiUpdateInterval);
+                    this.emit("disconnect");
                 });
 
                 self._peripheral.discoverServices([], (err: string, services: Service[]) => {

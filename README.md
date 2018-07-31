@@ -70,8 +70,8 @@ Thanks go to Jorge Pereira ([@JorgePe](https://github.com/JorgePe)), Sebastian R
 * [LPF2](#LPF2) ⇐ <code>EventEmitter</code>
     * [.scan()](#LPF2+scan)
     * [.stop()](#LPF2+stop)
-    * [.getConnectedDeviceByUUID(uuid)](#LPF2+getConnectedDeviceByUUID) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
-    * [.getConnectedDevices()](#LPF2+getConnectedDevices) ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
+    * [.getConnectedHubByUUID(uuid)](#LPF2+getConnectedHubByUUID) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
+    * [.getConnectedHubs()](#LPF2+getConnectedHubs) ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
     * ["discover" (hub)](#LPF2+event_discover)
 
 <a name="LPF2+scan"></a>
@@ -86,10 +86,10 @@ Begin scanning for LPF2 Hub devices.
 Stop scanning for LPF2 Hub devices.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+getConnectedDeviceByUUID"></a>
+<a name="LPF2+getConnectedHubByUUID"></a>
 
-### lpF2.getConnectedDeviceByUUID(uuid) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
-Retrieve a LPF2 Hub device by UUID.
+### lpF2.getConnectedHubByUUID(uuid) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
+Retrieve a LPF2 Hub by UUID.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
 
@@ -97,10 +97,10 @@ Retrieve a LPF2 Hub device by UUID.
 | --- | --- |
 | uuid | <code>string</code> | 
 
-<a name="LPF2+getConnectedDevices"></a>
+<a name="LPF2+getConnectedHubs"></a>
 
-### lpF2.getConnectedDevices() ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
-Retrieve a list of LPF2 Hub devices.
+### lpF2.getConnectedHubs() ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
+Retrieve a list of LPF2 Hubs.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
 <a name="LPF2+event_discover"></a>
