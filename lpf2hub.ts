@@ -76,7 +76,9 @@ export class LPF2Hub extends Hub {
             await super.connect();
             const characteristic = this._characteristics[Consts.BLECharacteristics.BOOST_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
-            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]));
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02])); // Activate button reports
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, Buffer.from([0x0a, 0x00, 0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
             debug("Connect completed");
             return resolve();
         });
@@ -296,7 +298,33 @@ export class LPF2Hub extends Hub {
     }
 
 
+    private _padMessage (data: Buffer, len: number) {
+        if (data.length < len) {
+            data = Buffer.concat([data, Buffer.alloc(len - data.length)]);
+        }
+        return data;
+    }
+
+
     private _parseSensorMessage (data: Buffer) {
+
+        if (data[3] === 0x3c) { // Voltage
+            data = this._padMessage(data, 6);
+            let batteryLevel = (data.readUInt16LE(4) / 4096) * 100;
+            if (this.type === Consts.Hubs.POWERED_UP_REMOTE) {
+                batteryLevel = (100 / 5.1) * ((data.readUInt16LE(4) / 4096) * 100);
+            }
+            this._batteryLevel = Math.floor(batteryLevel);
+            return;
+        } else if (data[3] === 0x3b) { // Current
+            data = this._padMessage(data, 6);
+            let current = data.readUInt16LE(4) / 4096;
+            if (this.type === Consts.Hubs.POWERED_UP_REMOTE) {
+                current = data.readUInt16LE(4) / 1000000;
+            }
+            this._current = current;
+            return;
+        }
 
         const port = this._getPortForPortNumber(data[3]);
 

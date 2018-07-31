@@ -72,6 +72,11 @@ Emits when a LPF2 Hub device is found.
 
 * [LPF2Hub](#LPF2Hub) ⇐ [<code>Hub</code>](#Hub)
     * [new LPF2Hub()](#new_LPF2Hub_new)
+    * [.name](#Hub+name)
+    * [.uuid](#Hub+uuid)
+    * [.rssi](#Hub+rssi)
+    * [.batteryLevel](#Hub+batteryLevel)
+    * [.current](#Hub+current)
     * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#LPF2Hub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.setMotorAngle(port, angle, [speed])](#LPF2Hub+setMotorAngle) ⇒ <code>Promise</code>
@@ -93,6 +98,61 @@ Emits when a LPF2 Hub device is found.
 
 ### new LPF2Hub()
 The LPF2Hub is emitted if the discovered device is either a Boost Move Hub, Powered Up Hub, or Powered Up Remote.
+
+<a name="Hub+name"></a>
+
+### lpF2Hub.name
+**Kind**: instance property of [<code>LPF2Hub</code>](#LPF2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | Name of the hub |
+
+<a name="Hub+uuid"></a>
+
+### lpF2Hub.uuid
+**Kind**: instance property of [<code>LPF2Hub</code>](#LPF2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| uuid | <code>string</code> | UUID of the hub |
+
+<a name="Hub+rssi"></a>
+
+### lpF2Hub.rssi
+**Kind**: instance property of [<code>LPF2Hub</code>](#LPF2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| rssi | <code>number</code> | Signal strength of the hub |
+
+<a name="Hub+batteryLevel"></a>
+
+### lpF2Hub.batteryLevel
+**Kind**: instance property of [<code>LPF2Hub</code>](#LPF2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
+
+<a name="Hub+current"></a>
+
+### lpF2Hub.current
+**Kind**: instance property of [<code>LPF2Hub</code>](#LPF2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| current | <code>number</code> | Current usage of the hub (Amps) |
 
 <a name="LPF2Hub+setLEDColor"></a>
 
@@ -294,6 +354,11 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 * [WeDo2Hub](#WeDo2Hub) ⇐ [<code>Hub</code>](#Hub)
     * [new WeDo2Hub()](#new_WeDo2Hub_new)
+    * [.name](#Hub+name)
+    * [.uuid](#Hub+uuid)
+    * [.rssi](#Hub+rssi)
+    * [.batteryLevel](#Hub+batteryLevel)
+    * [.current](#Hub+current)
     * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
@@ -316,6 +381,61 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 ### new WeDo2Hub()
 The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
+
+<a name="Hub+name"></a>
+
+### weDo2Hub.name
+**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | Name of the hub |
+
+<a name="Hub+uuid"></a>
+
+### weDo2Hub.uuid
+**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| uuid | <code>string</code> | UUID of the hub |
+
+<a name="Hub+rssi"></a>
+
+### weDo2Hub.rssi
+**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| rssi | <code>number</code> | Signal strength of the hub |
+
+<a name="Hub+batteryLevel"></a>
+
+### weDo2Hub.batteryLevel
+**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
+
+<a name="Hub+current"></a>
+
+### weDo2Hub.current
+**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| current | <code>number</code> | Current usage of the hub (Amps) |
 
 <a name="WeDo2Hub+setLEDColor"></a>
 
@@ -529,6 +649,11 @@ Emits when an attached motor or sensor is detached from the Hub.
 **Extends**: <code>EventEmitter</code>  
 
 * [Hub](#Hub) ⇐ <code>EventEmitter</code>
+    * [.name](#Hub+name)
+    * [.uuid](#Hub+uuid)
+    * [.rssi](#Hub+rssi)
+    * [.batteryLevel](#Hub+batteryLevel)
+    * [.current](#Hub+current)
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -537,6 +662,61 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * ["attach" (port, type)](#Hub+event_attach)
     * ["detach" (port)](#Hub+event_detach)
+
+<a name="Hub+name"></a>
+
+### hub.name
+**Kind**: instance property of [<code>Hub</code>](#Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | Name of the hub |
+
+<a name="Hub+uuid"></a>
+
+### hub.uuid
+**Kind**: instance property of [<code>Hub</code>](#Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| uuid | <code>string</code> | UUID of the hub |
+
+<a name="Hub+rssi"></a>
+
+### hub.rssi
+**Kind**: instance property of [<code>Hub</code>](#Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| rssi | <code>number</code> | Signal strength of the hub |
+
+<a name="Hub+batteryLevel"></a>
+
+### hub.batteryLevel
+**Kind**: instance property of [<code>Hub</code>](#Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
+
+<a name="Hub+current"></a>
+
+### hub.current
+**Kind**: instance property of [<code>Hub</code>](#Hub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| current | <code>number</code> | Current usage of the hub (Amps) |
 
 <a name="Hub+connect"></a>
 

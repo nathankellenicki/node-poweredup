@@ -166,7 +166,7 @@ export class WeDo2Hub extends Hub {
     private _parseSensorMessage (data: Buffer) {
 
 
-        if (data[0] === 1) {
+        if (data[0] === 0x01) {
             /**
              * Emits when a button is pressed.
              * @event WeDo2Hub#button
@@ -175,7 +175,7 @@ export class WeDo2Hub extends Hub {
              */
             this.emit("button", "GREEN", Consts.ButtonStates.PRESSED);
             return;
-        } else if (data[0] === 0) {
+        } else if (data[0] === 0x00) {
             this.emit("button", "GREEN", Consts.ButtonStates.RELEASED);
             return;
         }

@@ -19,22 +19,69 @@ export class Hub extends EventEmitter {
     public autoSubscribe: boolean = true;
     public useSpeedMap: boolean = true;
     public type: Consts.Hubs = Consts.Hubs.UNKNOWN;
-    public uuid: string;
-    public name: string;
 
     protected _ports: {[port: string]: Port} = {};
     protected _characteristics: {[uuid: string]: Characteristic} = {};
 
+    protected _name: string;
+    protected _batteryLevel: number = 100;
+    protected _current: number = 0;
+
     private _peripheral: Peripheral;
+    private _uuid: string;
     private _rssi: number = -100;
-    private _batteryLevel: number = 100;
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super();
         this.autoSubscribe = !!autoSubscribe;
         this._peripheral = peripheral;
-        this.uuid = peripheral.uuid;
-        this.name = peripheral.advertisement.localName;
+        this._uuid = peripheral.uuid;
+        this._name = peripheral.advertisement.localName;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} name Name of the hub
+     */
+    public get name () {
+        return this._name;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} uuid UUID of the hub
+     */
+    public get uuid () {
+        return this._uuid;
+    }
+
+
+    /**
+     * @readonly
+     * @property {number} rssi Signal strength of the hub
+     */
+    public get rssi () {
+        return this._rssi;
+    }
+
+
+    /**
+     * @readonly
+     * @property {number} batteryLevel Battery level of the hub (Percentage between 0-100)
+     */
+    public get batteryLevel () {
+        return this._batteryLevel;
+    }
+
+
+    /**
+     * @readonly
+     * @property {number} current Current usage of the hub (Amps)
+     */
+    public get current () {
+        return this._current;
     }
 
 
@@ -57,8 +104,6 @@ export class Hub extends EventEmitter {
                         if (!err) {
                             if (this._rssi !== rssi) {
                                 this._rssi = rssi;
-                                debug(`RSSI change ${rssi}`);
-                                self.emit("rssiChange", rssi);
                             }
                         }
                     });
