@@ -216,7 +216,7 @@ export class Hub extends EventEmitter {
         if (port.connected) {
             port.type = type;
             if (this.autoSubscribe) {
-                // this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
+                this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
                 /**
                  * Emits when a motor or sensor is attached to the Hub.
                  * @event Hub#attach
