@@ -25,8 +25,7 @@ export class LPF2Hub extends Hub {
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
 
-    private _incomingData: Buffer = Buffer.alloc(0);
-    private _outgoingData: Buffer = Buffer.alloc(0);
+    private _messageBuffer: Buffer = Buffer.alloc(0);
 
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
@@ -199,18 +198,18 @@ export class LPF2Hub extends Hub {
     private _parseMessage (data?: Buffer) {
 
         if (data) {
-            this._incomingData = Buffer.concat([this._incomingData, data]);
+            this._messageBuffer = Buffer.concat([this._messageBuffer, data]);
         }
 
-        if (this._incomingData.length <= 0) {
+        if (this._messageBuffer.length <= 0) {
             return;
         }
 
-        const len = this._incomingData[0];
-        if (len >= this._incomingData.length) {
+        const len = this._messageBuffer[0];
+        if (len >= this._messageBuffer.length) {
 
-            const message = this._incomingData.slice(0, len);
-            this._incomingData = this._incomingData.slice(len);
+            const message = this._messageBuffer.slice(0, len);
+            this._messageBuffer = this._messageBuffer.slice(len);
 
             switch (message[2]) {
                 case 0x01:
@@ -235,7 +234,7 @@ export class LPF2Hub extends Hub {
                 }
             }
 
-            if (this._incomingData.length > 0) {
+            if (this._messageBuffer.length > 0) {
                 this._parseMessage();
             }
 
