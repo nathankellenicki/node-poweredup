@@ -11,10 +11,10 @@ let remote = null;
 lpf2.on("discover", async (hub) => { // Wait to discover Vernie and Remote
 
     if (hub.type === LPF2.Consts.Hubs.BOOST_MOVE_HUB) {
+
         vernie = hub;
         await vernie.connect();
         console.log("Connected to Vernie!");
-
 
     } else if (hub.type === LPF2.Consts.Hubs.POWERED_UP_REMOTE) {
         remote = hub;

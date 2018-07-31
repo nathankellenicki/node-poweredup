@@ -131,9 +131,9 @@ export class Hub extends EventEmitter {
      */
     public subscribe (port: string, mode?: number) {
         return new Promise((resolve, reject) => {
-            let newMode = 0x00;
-            if (mode && !(typeof mode === "number")) {
-                newMode = this._getModeForDeviceType(this._ports[port].type);
+            let newMode = this._getModeForDeviceType(this._ports[port].type);
+            if (mode) {
+                newMode = mode;
             }
             this._activatePortDevice(this._ports[port].value, this._ports[port].type, newMode, 0x00, () => {
                 return resolve();
@@ -216,7 +216,7 @@ export class Hub extends EventEmitter {
         if (port.connected) {
             port.type = type;
             if (this.autoSubscribe) {
-                this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
+                // this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
                 /**
                  * Emits when a motor or sensor is attached to the Hub.
                  * @event Hub#attach

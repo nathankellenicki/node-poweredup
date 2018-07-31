@@ -120,13 +120,23 @@ export class LPF2Hub extends Hub {
         return new Promise((resolve, reject) => {
             const portObj = this._ports[port];
             if (time) {
-                portObj.busy = true;
-                const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
-                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
-                portObj.finished = () => {
-                    return resolve();
-                };
+                if (portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR) {
+                    portObj.busy = true;
+                    const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                    data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
+                    this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                    portObj.finished = () => {
+                        return resolve();
+                    };
+                } else {
+                    const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                    this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                    setTimeout(() => {
+                        const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
+                        this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                        return resolve();
+                    }, time);
+                }
             } else {
                 const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
                 this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
@@ -170,6 +180,8 @@ export class LPF2Hub extends Hub {
 
 
     private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
+        console.log("OUT");
+        console.log(message);
         const characteristic = this._characteristics[uuid];
         if (characteristic) {
             characteristic.write(message, false, callback);
@@ -178,6 +190,9 @@ export class LPF2Hub extends Hub {
 
 
     private _parseMessage (data?: Buffer) {
+
+        console.log("IN");
+        console.log(data);
 
         if (data) {
             this._incomingData = Buffer.concat([this._incomingData, data]);
@@ -255,6 +270,7 @@ export class LPF2Hub extends Hub {
 
         port.connected = (data[4] === 1 || data[4] === 2) ? true : false;
         this._registerDeviceAttachment(port, data[5]);
+        console.log(port);
 
     }
 
