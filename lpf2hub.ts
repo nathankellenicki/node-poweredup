@@ -118,6 +118,9 @@ export class LPF2Hub extends Hub {
      * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
     public setMotorSpeed (port: string, speed: number, time?: number) {
+        if (this.type === Consts.Hubs.POWERED_UP_REMOTE) {
+            throw new Error("Motor commands are not available when using the Powered Up Remote");
+        }
         return new Promise((resolve, reject) => {
             const portObj = this._ports[port];
             if (time) {
@@ -165,8 +168,17 @@ export class LPF2Hub extends Hub {
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
     public setMotorAngle (port: string, angle: number, speed: number = 100) {
+        const portObj = this._ports[port];
+        if (this.type === Consts.Hubs.POWERED_UP_REMOTE) {
+            throw new Error("Motor commands are not available when using the Powered Up Remote");
+        }
+        if (this.type !== Consts.Hubs.BOOST_MOVE_HUB) {
+            throw new Error("Angle rotation is only available when using the Boost Move Hub");
+        }
+        if (!(portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR)) {
+            throw new Error("Angle rotation is only available when using a Boost Interactive Motor or Boost Move Hub Motor");
+        }
         return new Promise((resolve, reject) => {
-            const portObj = this._ports[port];
             portObj.busy = true;
             const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
             data.writeUInt32LE(angle, 6);
