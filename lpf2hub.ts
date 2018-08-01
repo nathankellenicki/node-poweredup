@@ -124,7 +124,7 @@ export class LPF2Hub extends Hub {
         return new Promise((resolve, reject) => {
             const portObj = this._ports[port];
             if (time) {
-                if (this.type !== Consts.Hubs.POWERED_UP_HUB && (portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR)) {
+                if (this.type === Consts.Hubs.BOOST_MOVE_HUB && (portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR)) {
                     portObj.busy = true;
                     const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
@@ -133,16 +133,25 @@ export class LPF2Hub extends Hub {
                         return resolve();
                     };
                 } else {
-                    const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                    let data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                    if (this.type === Consts.Hubs.POWERED_UP_HUB) {
+                        data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                    }
                     this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
                     setTimeout(() => {
-                        const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, 0x00, 0x00, 0x00]);
+                        let data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
+                        if (this.type === Consts.Hubs.POWERED_UP_HUB) {
+                            data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, 0x00, 0x00, 0x00]);
+                        }
                         this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
                         return resolve();
                     }, time);
                 }
             } else {
-                const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                let data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                if (this.type === Consts.Hubs.POWERED_UP_HUB) {
+                    data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                }
                 this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
                 return resolve();
             }
