@@ -64,7 +64,7 @@ Emits when a LPF2 Hub device is found.
 
 | Param | Type |
 | --- | --- |
-| hub | [<code>WeDo2Hub</code>](#WeDo2Hub) \| <code>LPF2Hub</code> | 
+| hub | <code>WeDo2SmartHub</code> \| <code>LPF2Hub</code> | 
 
 <a name="WeDo2Hub"></a>
 

@@ -4,7 +4,7 @@ import { BoostMoveHub } from "./boostmovehub";
 import { Hub } from "./hub";
 import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
-import { WeDo2Hub } from "./wedo2hub";
+import { WeDo2SmartHub } from "./wedo2smarthub";
 
 import * as Consts from "./consts";
 
@@ -58,8 +58,8 @@ export class LPF2 extends EventEmitter {
 
             let hub: Hub;
 
-            if (WeDo2Hub.IsWeDo2Hub(peripheral)) {
-                hub = new WeDo2Hub(peripheral, this.autoSubscribe);
+            if (WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
+                hub = new WeDo2SmartHub(peripheral, this.autoSubscribe);
             } else if (BoostMoveHub.IsBoostMoveHub(peripheral)) {
                 hub = new BoostMoveHub(peripheral, this.autoSubscribe);
             } else if (PUPHub.IsPUPHub(peripheral)) {
@@ -92,7 +92,7 @@ export class LPF2 extends EventEmitter {
             /**
              * Emits when a LPF2 Hub device is found.
              * @event LPF2#discover
-             * @param {WeDo2Hub | LPF2Hub} hub
+             * @param {WeDo2SmartHub | LPF2Hub} hub
              */
             this.emit("discover", hub);
 
@@ -141,4 +141,4 @@ export class LPF2 extends EventEmitter {
 }
 
 export default LPF2;
-export { Hub, WeDo2Hub, BoostMoveHub, PUPHub, PUPRemote, Consts };
+export { Hub, WeDo2SmartHub, BoostMoveHub, PUPHub, PUPRemote, Consts };

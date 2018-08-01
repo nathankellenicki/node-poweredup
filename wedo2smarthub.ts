@@ -15,10 +15,10 @@ const debug = Debug("wedo2hub");
  * @class WeDo2Hub
  * @extends Hub
  */
-export class WeDo2Hub extends Hub {
+export class WeDo2SmartHub extends Hub {
 
 
-    public static IsWeDo2Hub (peripheral: Peripheral) {
+    public static IsWeDo2SmartHub (peripheral: Peripheral) {
         return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.WEDO2_SMART_HUB) >= 0);
     }
 
