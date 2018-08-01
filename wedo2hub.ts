@@ -1,7 +1,7 @@
 import { Peripheral } from "noble";
 
-import { Hub } from "./hub.js";
-import { Port } from "./port.js";
+import { Hub } from "./hub";
+import { Port } from "./port";
 
 import * as Consts from "./consts";
 

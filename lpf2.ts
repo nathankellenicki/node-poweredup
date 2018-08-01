@@ -1,7 +1,9 @@
 import { Peripheral } from "noble";
 
+import { BoostMoveHub } from "./boostmovehub";
 import { Hub } from "./hub";
-import { LPF2Hub } from "./lpf2hub";
+import { PUPHub } from "./puphub";
+import { PUPRemote } from "./pupremote";
 import { WeDo2Hub } from "./wedo2hub";
 
 import * as Consts from "./consts";
@@ -58,8 +60,12 @@ export class LPF2 extends EventEmitter {
 
             if (WeDo2Hub.IsWeDo2Hub(peripheral)) {
                 hub = new WeDo2Hub(peripheral, this.autoSubscribe);
-            } else if (LPF2Hub.IsLPF2Hub(peripheral)) {
-                hub = new LPF2Hub(peripheral, this.autoSubscribe);
+            } else if (BoostMoveHub.IsBoostMoveHub(peripheral)) {
+                hub = new BoostMoveHub(peripheral, this.autoSubscribe);
+            } else if (PUPHub.IsPUPHub(peripheral)) {
+                hub = new PUPHub(peripheral, this.autoSubscribe);
+            } else if (PUPRemote.IsPUPRemote(peripheral)) {
+                hub = new PUPRemote(peripheral, this.autoSubscribe);
             } else {
                 return;
             }
@@ -135,4 +141,4 @@ export class LPF2 extends EventEmitter {
 }
 
 export default LPF2;
-export { Hub, WeDo2Hub, LPF2Hub, Consts };
+export { Hub, WeDo2Hub, BoostMoveHub, PUPHub, PUPRemote, Consts };
