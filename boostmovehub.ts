@@ -13,6 +13,7 @@ const debug = Debug("lpf2hub");
  * The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
  * @class BoostMoveHub
  * @extends LPF2Hub
+ * @extends Hub
  */
 export class BoostMoveHub extends LPF2Hub {
 

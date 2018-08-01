@@ -13,6 +13,7 @@ const debug = Debug("lpf2hub");
  * The PUPHub is emitted if the discovered device is a Powered Up Hub.
  * @class PUPHub
  * @extends LPF2Hub
+ * @extends Hub
  */
 export class PUPHub extends LPF2Hub {
 

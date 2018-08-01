@@ -13,6 +13,7 @@ const debug = Debug("lpf2hub");
  * The PUPRemote is emitted if the discovered device is a Powered Up Remote.
  * @class PUPRemote
  * @extends LPF2Hub
+ * @extends Hub
  */
 export class PUPRemote extends LPF2Hub {
 
