@@ -80,7 +80,7 @@ export class PUPHub extends LPF2Hub {
      */
     public setMotorSpeed (port: string, speed: number, time?: number) {
         return new Promise((resolve, reject) => {
-            const portObj = this._ports[port];
+            const portObj = this._portLookup(port);
             if (time) {
                 const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
