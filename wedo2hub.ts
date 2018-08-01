@@ -45,6 +45,8 @@ export class WeDo2Hub extends Hub {
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE], this._parsePortMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_SENSOR_VALUE], this._parseSensorMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_BUTTON], this._parseSensorMessage.bind(this));
+            this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_BATTERY], this._parseBatteryMessage.bind(this));
+            this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_HIGH_CURRENT_ALERT], this._parseHighCurrentAlert.bind(this));
             debug("Connect completed");
             return resolve();
         });
@@ -146,6 +148,16 @@ export class WeDo2Hub extends Hub {
         if (characteristic) {
             characteristic.write(message, false, callback);
         }
+    }
+
+
+    private _parseHighCurrentAlert (data: Buffer) {
+        // console.log(data);
+    }
+
+
+    private _parseBatteryMessage (data: Buffer) {
+        this._batteryLevel = data[0];
     }
 
 
