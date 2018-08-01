@@ -11,6 +11,7 @@ const debug = Debug("hub");
 
 /**
  * @class Hub
+ * @ignore
  * @extends EventEmitter
  */
 export class Hub extends EventEmitter {

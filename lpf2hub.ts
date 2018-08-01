@@ -93,15 +93,12 @@ export class LPF2Hub extends Hub {
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02]);
-            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
             if (color === false) {
                 color = 0;
             }
+            let data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
             if (this.type === Consts.Hubs.POWERED_UP_REMOTE) {
                 data = Buffer.from([0x08, 0x00, 0x81, 0x34, 0x11, 0x51, 0x00, color]);
-            } else {
-                data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
             }
             this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
             return resolve();

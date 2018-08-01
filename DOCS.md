@@ -3,11 +3,9 @@
 <dl>
 <dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
 <dd></dd>
-<dt><a href="#LPF2Hub">LPF2Hub</a> ⇐ <code><a href="#Hub">Hub</a></code></dt>
+<dt><a href="#LPF2Hub">LPF2Hub</a> ⇐ <code>Hub</code></dt>
 <dd></dd>
-<dt><a href="#WeDo2Hub">WeDo2Hub</a> ⇐ <code><a href="#Hub">Hub</a></code></dt>
-<dd></dd>
-<dt><a href="#Hub">Hub</a> ⇐ <code>EventEmitter</code></dt>
+<dt><a href="#WeDo2Hub">WeDo2Hub</a> ⇐ <code>Hub</code></dt>
 <dd></dd>
 </dl>
 
@@ -20,8 +18,8 @@
 * [LPF2](#LPF2) ⇐ <code>EventEmitter</code>
     * [.scan()](#LPF2+scan)
     * [.stop()](#LPF2+stop)
-    * [.getConnectedHubByUUID(uuid)](#LPF2+getConnectedHubByUUID) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
-    * [.getConnectedHubs()](#LPF2+getConnectedHubs) ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
+    * [.getConnectedHubByUUID(uuid)](#LPF2+getConnectedHubByUUID) ⇒ <code>Hub</code> \| <code>null</code>
+    * [.getConnectedHubs()](#LPF2+getConnectedHubs) ⇒ <code>Array.&lt;Hub&gt;</code>
     * ["discover" (hub)](#LPF2+event_discover)
 
 <a name="LPF2+scan"></a>
@@ -38,7 +36,7 @@ Stop scanning for LPF2 Hub devices.
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
 <a name="LPF2+getConnectedHubByUUID"></a>
 
-### lpF2.getConnectedHubByUUID(uuid) ⇒ [<code>Hub</code>](#Hub) \| <code>null</code>
+### lpF2.getConnectedHubByUUID(uuid) ⇒ <code>Hub</code> \| <code>null</code>
 Retrieve a LPF2 Hub by UUID.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
@@ -49,7 +47,7 @@ Retrieve a LPF2 Hub by UUID.
 
 <a name="LPF2+getConnectedHubs"></a>
 
-### lpF2.getConnectedHubs() ⇒ [<code>Array.&lt;Hub&gt;</code>](#Hub)
+### lpF2.getConnectedHubs() ⇒ <code>Array.&lt;Hub&gt;</code>
 Retrieve a list of LPF2 Hubs.
 
 **Kind**: instance method of [<code>LPF2</code>](#LPF2)  
@@ -66,11 +64,11 @@ Emits when a LPF2 Hub device is found.
 
 <a name="LPF2Hub"></a>
 
-## LPF2Hub ⇐ [<code>Hub</code>](#Hub)
+## LPF2Hub ⇐ <code>Hub</code>
 **Kind**: global class  
-**Extends**: [<code>Hub</code>](#Hub)  
+**Extends**: <code>Hub</code>  
 
-* [LPF2Hub](#LPF2Hub) ⇐ [<code>Hub</code>](#Hub)
+* [LPF2Hub](#LPF2Hub) ⇐ <code>Hub</code>
     * [new LPF2Hub()](#new_LPF2Hub_new)
     * [.name](#Hub+name)
     * [.uuid](#Hub+uuid)
@@ -348,11 +346,11 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 <a name="WeDo2Hub"></a>
 
-## WeDo2Hub ⇐ [<code>Hub</code>](#Hub)
+## WeDo2Hub ⇐ <code>Hub</code>
 **Kind**: global class  
-**Extends**: [<code>Hub</code>](#Hub)  
+**Extends**: <code>Hub</code>  
 
-* [WeDo2Hub](#WeDo2Hub) ⇐ [<code>Hub</code>](#Hub)
+* [WeDo2Hub](#WeDo2Hub) ⇐ <code>Hub</code>
     * [new WeDo2Hub()](#new_WeDo2Hub_new)
     * [.name](#Hub+name)
     * [.uuid](#Hub+uuid)
@@ -637,172 +635,6 @@ Emits when a motor or sensor is attached to the Hub.
 Emits when an attached motor or sensor is detached from the Hub.
 
 **Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
-
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
-
-<a name="Hub"></a>
-
-## Hub ⇐ <code>EventEmitter</code>
-**Kind**: global class  
-**Extends**: <code>EventEmitter</code>  
-
-* [Hub](#Hub) ⇐ <code>EventEmitter</code>
-    * [.name](#Hub+name)
-    * [.uuid](#Hub+uuid)
-    * [.rssi](#Hub+rssi)
-    * [.batteryLevel](#Hub+batteryLevel)
-    * [.current](#Hub+current)
-    * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
-    * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
-    * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
-    * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
-    * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
-    * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
-    * ["attach" (port, type)](#Hub+event_attach)
-    * ["detach" (port)](#Hub+event_detach)
-
-<a name="Hub+name"></a>
-
-### hub.name
-**Kind**: instance property of [<code>Hub</code>](#Hub)  
-**Read only**: true  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| name | <code>string</code> | Name of the hub |
-
-<a name="Hub+uuid"></a>
-
-### hub.uuid
-**Kind**: instance property of [<code>Hub</code>](#Hub)  
-**Read only**: true  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| uuid | <code>string</code> | UUID of the hub |
-
-<a name="Hub+rssi"></a>
-
-### hub.rssi
-**Kind**: instance property of [<code>Hub</code>](#Hub)  
-**Read only**: true  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| rssi | <code>number</code> | Signal strength of the hub |
-
-<a name="Hub+batteryLevel"></a>
-
-### hub.batteryLevel
-**Kind**: instance property of [<code>Hub</code>](#Hub)  
-**Read only**: true  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
-
-<a name="Hub+current"></a>
-
-### hub.current
-**Kind**: instance property of [<code>Hub</code>](#Hub)  
-**Read only**: true  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| current | <code>number</code> | Current usage of the hub (Amps) |
-
-<a name="Hub+connect"></a>
-
-### hub.connect() ⇒ <code>Promise</code>
-Connect to the Hub.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful connect.  
-<a name="Hub+disconnect"></a>
-
-### hub.disconnect() ⇒ <code>Promise</code>
-Disconnect the Hub.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
-<a name="Hub+subscribe"></a>
-
-### hub.subscribe(port, [mode]) ⇒ <code>Promise</code>
-Subscribe to sensor notifications on a given port.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| [mode] | <code>number</code> | The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen. |
-
-<a name="Hub+unsubscribe"></a>
-
-### hub.unsubscribe(port) ⇒ <code>Promise</code>
-Unsubscribe to sensor notifications on a given port.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
-
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
-
-<a name="Hub+sleep"></a>
-
-### hub.sleep(delay) ⇒ <code>Promise</code>
-Sleep a given amount of time.
-
-This is a helper method to make it easier to add delays into a chain of commands.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-**Returns**: <code>Promise</code> - Resolved after the delay is finished.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| delay | <code>number</code> | How long to sleep (in milliseconds). |
-
-<a name="Hub+wait"></a>
-
-### hub.wait(commands) ⇒ <code>Promise</code>
-Wait until a given list of concurrently running commands are complete.
-
-This is a helper method to make it easier to wait for concurrent commands to complete.
-
-**Kind**: instance method of [<code>Hub</code>](#Hub)  
-**Returns**: <code>Promise</code> - Resolved after the commands are finished.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
-
-<a name="Hub+event_attach"></a>
-
-### "attach" (port, type)
-Emits when a motor or sensor is attached to the Hub.
-
-**Kind**: event emitted by [<code>Hub</code>](#Hub)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
-
-<a name="Hub+event_detach"></a>
-
-### "detach" (port)
-Emits when an attached motor or sensor is detached from the Hub.
-
-**Kind**: event emitted by [<code>Hub</code>](#Hub)  
 
 | Param | Type |
 | --- | --- |
