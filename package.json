@@ -6,7 +6,7 @@
   "types": "dist/lpf2.d.ts",
   "scripts": {
     "build": "tslint -c tslint.json \"*.ts\" && tsc",
-    "docs": "jsdoc2md dist/lpf2.js dist/lpf2hub.js dist/wedo2hub.js dist/hub.js dist/consts.js > DOCS.md",
+    "docs": "jsdoc2md dist/lpf2.js dist/wedo2hub.js dist/boostmovehub.js dist/puphub.js dist/pupremote.js dist/hub.js dist/consts.js > DOCS.md",
     "readme": "cat ABOUT.md DOCS.md > README.md",
     "all": "npm run build && npm run docs && npm run readme",
     "prepublishOnly": "tsc"

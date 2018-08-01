@@ -5,6 +5,12 @@
 <dd></dd>
 <dt><a href="#WeDo2Hub">WeDo2Hub</a> ⇐ <code>Hub</code></dt>
 <dd></dd>
+<dt><a href="#BoostMoveHub">BoostMoveHub</a> ⇐ <code>LPF2Hub</code></dt>
+<dd></dd>
+<dt><a href="#PUPHub">PUPHub</a> ⇐ <code>LPF2Hub</code></dt>
+<dd></dd>
+<dt><a href="#PUPRemote">PUPRemote</a> ⇐ <code>LPF2Hub</code></dt>
+<dd></dd>
 </dl>
 
 <a name="LPF2"></a>
@@ -355,4 +361,130 @@ Emits when an attached motor or sensor is detached from the Hub.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
+
+<a name="BoostMoveHub"></a>
+
+## BoostMoveHub ⇐ <code>LPF2Hub</code>
+**Kind**: global class  
+**Extends**: <code>LPF2Hub</code>  
+
+* [BoostMoveHub](#BoostMoveHub) ⇐ <code>LPF2Hub</code>
+    * [new BoostMoveHub()](#new_BoostMoveHub_new)
+    * [.setLEDColor(color)](#BoostMoveHub+setLEDColor) ⇒ <code>Promise</code>
+    * [.setMotorSpeed(port, speed, [time])](#BoostMoveHub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.setMotorAngle(port, angle, [speed])](#BoostMoveHub+setMotorAngle) ⇒ <code>Promise</code>
+
+<a name="new_BoostMoveHub_new"></a>
+
+### new BoostMoveHub()
+The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
+
+<a name="BoostMoveHub+setLEDColor"></a>
+
+### boostMoveHub.setLEDColor(color) ⇒ <code>Promise</code>
+Set the color of the LED on the Hub via a color value.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="BoostMoveHub+setMotorSpeed"></a>
+
+### boostMoveHub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
+Set the motor speed on a given port.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
+
+<a name="BoostMoveHub+setMotorAngle"></a>
+
+### boostMoveHub.setMotorAngle(port, angle, [speed]) ⇒ <code>Promise</code>
+Rotate a motor by a given angle.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the motor is finished).  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| port | <code>string</code> |  |  |
+| angle | <code>number</code> |  | How much the motor should be rotated (in degrees). |
+| [speed] | <code>number</code> | <code>100</code> | How fast the motor should be rotated. |
+
+<a name="PUPHub"></a>
+
+## PUPHub ⇐ <code>LPF2Hub</code>
+**Kind**: global class  
+**Extends**: <code>LPF2Hub</code>  
+
+* [PUPHub](#PUPHub) ⇐ <code>LPF2Hub</code>
+    * [new PUPHub()](#new_PUPHub_new)
+    * [.setLEDColor(color)](#PUPHub+setLEDColor) ⇒ <code>Promise</code>
+    * [.setMotorSpeed(port, speed, [time])](#PUPHub+setMotorSpeed) ⇒ <code>Promise</code>
+
+<a name="new_PUPHub_new"></a>
+
+### new PUPHub()
+The PUPHub is emitted if the discovered device is a Powered Up Hub.
+
+<a name="PUPHub+setLEDColor"></a>
+
+### pupHub.setLEDColor(color) ⇒ <code>Promise</code>
+Set the color of the LED on the Hub via a color value.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="PUPHub+setMotorSpeed"></a>
+
+### pupHub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
+Set the motor speed on a given port.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
+
+<a name="PUPRemote"></a>
+
+## PUPRemote ⇐ <code>LPF2Hub</code>
+**Kind**: global class  
+**Extends**: <code>LPF2Hub</code>  
+
+* [PUPRemote](#PUPRemote) ⇐ <code>LPF2Hub</code>
+    * [new PUPRemote()](#new_PUPRemote_new)
+    * [.setLEDColor(color)](#PUPRemote+setLEDColor) ⇒ <code>Promise</code>
+
+<a name="new_PUPRemote_new"></a>
+
+### new PUPRemote()
+The PUPRemote is emitted if the discovered device is a Powered Up Remote.
+
+<a name="PUPRemote+setLEDColor"></a>
+
+### pupRemote.setLEDColor(color) ⇒ <code>Promise</code>
+Set the color of the LED on the Remote via a color value.
+
+**Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| color | <code>number</code> | A number representing one of the LED color consts. |
 
