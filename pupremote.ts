@@ -18,6 +18,39 @@ const debug = Debug("lpf2hub");
 export class PUPRemote extends LPF2Hub {
 
 
+    // We set JSDoc to ignore these events as a Powered Up Remote will never emit them.
+
+    /**
+     * @event PUPRemote#distance
+     * @ignore
+     */
+
+    /**
+     * @event PUPRemote#color
+     * @ignore
+     */
+
+    /**
+     * @event PUPRemote#tilt
+     * @ignore
+     */
+
+    /**
+     * @event PUPRemote#rotate
+     * @ignore
+     */
+
+    /**
+     * @event PUPRemote#attach
+     * @ignore
+     */
+
+    /**
+     * @event PUPRemote#detach
+     * @ignore
+     */
+
+
     public static IsPUPRemote (peripheral: Peripheral) {
         return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
     }

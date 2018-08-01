@@ -920,12 +920,6 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * ["button" (button, state)](#LPF2Hub+event_button)
-    * ["distance" (port, distance)](#LPF2Hub+event_distance)
-    * ["color" (port, color)](#LPF2Hub+event_color)
-    * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
-    * ["rotate" (port, rotation)](#LPF2Hub+event_rotate)
-    * ["attach" (port, type)](#Hub+event_attach)
-    * ["detach" (port)](#Hub+event_detach)
 
 <a name="new_PUPRemote_new"></a>
 
@@ -1078,76 +1072,4 @@ Emits when a button is pressed.
 | --- | --- | --- |
 | button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
-
-<a name="LPF2Hub+event_distance"></a>
-
-### "distance" (port, distance)
-Emits when a distance sensor is activated.
-
-**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| distance | <code>number</code> | Distance, in millimeters. |
-
-<a name="LPF2Hub+event_color"></a>
-
-### "color" (port, color)
-Emits when a color sensor is activated.
-
-**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
-
-<a name="LPF2Hub+event_tilt"></a>
-
-### "tilt" (port, x, y)
-Emits when a tilt sensor is activated.
-
-**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> | If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used. |
-| x | <code>number</code> |  |
-| y | <code>number</code> |  |
-
-<a name="LPF2Hub+event_rotate"></a>
-
-### "rotate" (port, rotation)
-Emits when a rotation sensor is activated.
-
-**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
-
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
-| rotation | <code>number</code> | 
-
-<a name="Hub+event_attach"></a>
-
-### "attach" (port, type)
-Emits when a motor or sensor is attached to the Hub.
-
-**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
-
-<a name="Hub+event_detach"></a>
-
-### "detach" (port)
-Emits when an attached motor or sensor is detached from the Hub.
-
-**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
-
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
 

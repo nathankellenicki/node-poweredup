@@ -18,6 +18,14 @@ const debug = Debug("lpf2hub");
 export class PUPHub extends LPF2Hub {
 
 
+    // We set JSDoc to ignore these events as a Powered Up Remote will never emit them.
+
+    /**
+     * @event PUPRemote#rotate
+     * @ignore
+     */
+
+
     public static IsPUPHub (peripheral: Peripheral) {
         return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
     }
