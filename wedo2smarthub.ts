@@ -7,12 +7,12 @@ import * as Consts from "./consts";
 
 import Debug = require("debug");
 import { resolve } from "path";
-const debug = Debug("wedo2hub");
+const debug = Debug("wedo2smarthub");
 
 
 /**
- * The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
- * @class WeDo2Hub
+ * The WeDo2SmartHub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
+ * @class WeDo2SmartHub
  * @extends Hub
  */
 export class WeDo2SmartHub extends Hub {
@@ -55,7 +55,7 @@ export class WeDo2SmartHub extends Hub {
 
     /**
      * Set the color of the LED on the Hub via a color value.
-     * @method WeDo2Hub#setLEDColor
+     * @method WeDo2SmartHub#setLEDColor
      * @param {number} color A number representing one of the LED color consts.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
@@ -75,7 +75,7 @@ export class WeDo2SmartHub extends Hub {
 
     /**
      * Set the color of the LED on the Hub via RGB values.
-     * @method WeDo2Hub#setLEDRGB
+     * @method WeDo2SmartHub#setLEDRGB
      * @param {number} red
      * @param {number} green
      * @param {number} blue
@@ -94,7 +94,7 @@ export class WeDo2SmartHub extends Hub {
 
     /**
      * Set the motor speed on a given port.
-     * @method WeDo2Hub#setMotorSpeed
+     * @method WeDo2SmartHub#setMotorSpeed
      * @param {string} port
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
@@ -117,7 +117,7 @@ export class WeDo2SmartHub extends Hub {
 
     /**
      * Play a sound on the Hub's in-built buzzer
-     * @method WeDo2Hub#playSound
+     * @method WeDo2SmartHub#playSound
      * @param {number} frequency
      * @param {number} time How long the sound should play for (in milliseconds).
      * @returns {Promise} Resolved upon successful completion of command (ie. once the sound has finished playing).
@@ -181,7 +181,7 @@ export class WeDo2SmartHub extends Hub {
         if (data[0] === 0x01) {
             /**
              * Emits when a button is pressed.
-             * @event WeDo2Hub#button
+             * @event WeDo2SmartHub#button
              * @param {string} button
              * @param {number} state A number representing one of the button state consts.
              */
@@ -208,7 +208,7 @@ export class WeDo2SmartHub extends Hub {
                     }
                     /**
                      * Emits when a distance sensor is activated.
-                     * @event WeDo2Hub#distance
+                     * @event WeDo2SmartHub#distance
                      * @param {string} port
                      * @param {number} distance Distance, in millimeters.
                      */
@@ -220,7 +220,7 @@ export class WeDo2SmartHub extends Hub {
                     const distance = data[2];
                     /**
                      * Emits when a color sensor is activated.
-                     * @event WeDo2Hub#color
+                     * @event WeDo2SmartHub#color
                      * @param {string} port
                      * @param {number} color A number representing one of the LED color consts.
                      */
@@ -239,7 +239,7 @@ export class WeDo2SmartHub extends Hub {
                     }
                     /**
                      * Emits when a tilt sensor is activated.
-                     * @event WeDo2Hub#tilt
+                     * @event WeDo2SmartHub#tilt
                      * @param {string} port
                      * @param {number} x
                      * @param {number} y
@@ -252,7 +252,7 @@ export class WeDo2SmartHub extends Hub {
                     const rotation = data.readInt32LE(2);
                     /**
                      * Emits when a rotation sensor is activated.
-                     * @event WeDo2Hub#rotate
+                     * @event WeDo2SmartHub#rotate
                      * @param {string} port
                      * @param {number} rotation
                      */

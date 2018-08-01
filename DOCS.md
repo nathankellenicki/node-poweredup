@@ -3,7 +3,7 @@
 <dl>
 <dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
 <dd></dd>
-<dt><a href="#WeDo2Hub">WeDo2Hub</a> ⇐ <code>Hub</code></dt>
+<dt><a href="#WeDo2SmartHub">WeDo2SmartHub</a> ⇐ <code>Hub</code></dt>
 <dd></dd>
 <dt><a href="#BoostMoveHub">BoostMoveHub</a> ⇐ <code>LPF2Hub</code></dt>
 <dd></dd>
@@ -64,47 +64,47 @@ Emits when a LPF2 Hub device is found.
 
 | Param | Type |
 | --- | --- |
-| hub | <code>WeDo2SmartHub</code> \| <code>LPF2Hub</code> | 
+| hub | [<code>WeDo2SmartHub</code>](#WeDo2SmartHub) \| <code>LPF2Hub</code> | 
 
-<a name="WeDo2Hub"></a>
+<a name="WeDo2SmartHub"></a>
 
-## WeDo2Hub ⇐ <code>Hub</code>
+## WeDo2SmartHub ⇐ <code>Hub</code>
 **Kind**: global class  
 **Extends**: <code>Hub</code>  
 
-* [WeDo2Hub](#WeDo2Hub) ⇐ <code>Hub</code>
-    * [new WeDo2Hub()](#new_WeDo2Hub_new)
+* [WeDo2SmartHub](#WeDo2SmartHub) ⇐ <code>Hub</code>
+    * [new WeDo2SmartHub()](#new_WeDo2SmartHub_new)
     * [.name](#Hub+name)
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
-    * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
-    * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
-    * [.setMotorSpeed(port, speed, [time])](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
-    * [.playSound(frequency, time)](#WeDo2Hub+playSound) ⇒ <code>Promise</code>
+    * [.setLEDColor(color)](#WeDo2SmartHub+setLEDColor) ⇒ <code>Promise</code>
+    * [.setLEDRGB(red, green, blue)](#WeDo2SmartHub+setLEDRGB) ⇒ <code>Promise</code>
+    * [.setMotorSpeed(port, speed, [time])](#WeDo2SmartHub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.playSound(frequency, time)](#WeDo2SmartHub+playSound) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
-    * ["button" (button, state)](#WeDo2Hub+event_button)
-    * ["distance" (port, distance)](#WeDo2Hub+event_distance)
-    * ["color" (port, color)](#WeDo2Hub+event_color)
-    * ["tilt" (port, x, y)](#WeDo2Hub+event_tilt)
-    * ["rotate" (port, rotation)](#WeDo2Hub+event_rotate)
+    * ["button" (button, state)](#WeDo2SmartHub+event_button)
+    * ["distance" (port, distance)](#WeDo2SmartHub+event_distance)
+    * ["color" (port, color)](#WeDo2SmartHub+event_color)
+    * ["tilt" (port, x, y)](#WeDo2SmartHub+event_tilt)
+    * ["rotate" (port, rotation)](#WeDo2SmartHub+event_rotate)
     * ["attach" (port, type)](#Hub+event_attach)
     * ["detach" (port)](#Hub+event_detach)
 
-<a name="new_WeDo2Hub_new"></a>
+<a name="new_WeDo2SmartHub_new"></a>
 
-### new WeDo2Hub()
-The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
+### new WeDo2SmartHub()
+The WeDo2SmartHub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 
 <a name="Hub+name"></a>
 
-### weDo2Hub.name
-**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+### weDo2SmartHub.name
+**Kind**: instance property of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Read only**: true  
 **Properties**
 
@@ -114,8 +114,8 @@ The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 
 <a name="Hub+uuid"></a>
 
-### weDo2Hub.uuid
-**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+### weDo2SmartHub.uuid
+**Kind**: instance property of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Read only**: true  
 **Properties**
 
@@ -125,8 +125,8 @@ The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 
 <a name="Hub+rssi"></a>
 
-### weDo2Hub.rssi
-**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+### weDo2SmartHub.rssi
+**Kind**: instance property of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Read only**: true  
 **Properties**
 
@@ -136,8 +136,8 @@ The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 
 <a name="Hub+batteryLevel"></a>
 
-### weDo2Hub.batteryLevel
-**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+### weDo2SmartHub.batteryLevel
+**Kind**: instance property of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Read only**: true  
 **Properties**
 
@@ -145,24 +145,24 @@ The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 | --- | --- | --- |
 | batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
 
-<a name="WeDo2Hub+setLEDColor"></a>
+<a name="WeDo2SmartHub+setLEDColor"></a>
 
-### weDo2Hub.setLEDColor(color) ⇒ <code>Promise</code>
+### weDo2SmartHub.setLEDColor(color) ⇒ <code>Promise</code>
 Set the color of the LED on the Hub via a color value.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>number</code> | A number representing one of the LED color consts. |
 
-<a name="WeDo2Hub+setLEDRGB"></a>
+<a name="WeDo2SmartHub+setLEDRGB"></a>
 
-### weDo2Hub.setLEDRGB(red, green, blue) ⇒ <code>Promise</code>
+### weDo2SmartHub.setLEDRGB(red, green, blue) ⇒ <code>Promise</code>
 Set the color of the LED on the Hub via RGB values.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -171,12 +171,12 @@ Set the color of the LED on the Hub via RGB values.
 | green | <code>number</code> | 
 | blue | <code>number</code> | 
 
-<a name="WeDo2Hub+setMotorSpeed"></a>
+<a name="WeDo2SmartHub+setMotorSpeed"></a>
 
-### weDo2Hub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
+### weDo2SmartHub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
 Set the motor speed on a given port.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
 
 | Param | Type | Description |
@@ -185,12 +185,12 @@ Set the motor speed on a given port.
 | speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
 
-<a name="WeDo2Hub+playSound"></a>
+<a name="WeDo2SmartHub+playSound"></a>
 
-### weDo2Hub.playSound(frequency, time) ⇒ <code>Promise</code>
+### weDo2SmartHub.playSound(frequency, time) ⇒ <code>Promise</code>
 Play a sound on the Hub's in-built buzzer
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the sound has finished playing).  
 
 | Param | Type | Description |
@@ -200,25 +200,25 @@ Play a sound on the Hub's in-built buzzer
 
 <a name="Hub+connect"></a>
 
-### weDo2Hub.connect() ⇒ <code>Promise</code>
+### weDo2SmartHub.connect() ⇒ <code>Promise</code>
 Connect to the Hub.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Overrides**: [<code>connect</code>](#Hub+connect)  
 **Returns**: <code>Promise</code> - Resolved upon successful connect.  
 <a name="Hub+disconnect"></a>
 
-### weDo2Hub.disconnect() ⇒ <code>Promise</code>
+### weDo2SmartHub.disconnect() ⇒ <code>Promise</code>
 Disconnect the Hub.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
-### weDo2Hub.subscribe(port, [mode]) ⇒ <code>Promise</code>
+### weDo2SmartHub.subscribe(port, [mode]) ⇒ <code>Promise</code>
 Subscribe to sensor notifications on a given port.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -228,10 +228,10 @@ Subscribe to sensor notifications on a given port.
 
 <a name="Hub+unsubscribe"></a>
 
-### weDo2Hub.unsubscribe(port) ⇒ <code>Promise</code>
+### weDo2SmartHub.unsubscribe(port) ⇒ <code>Promise</code>
 Unsubscribe to sensor notifications on a given port.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -240,12 +240,12 @@ Unsubscribe to sensor notifications on a given port.
 
 <a name="Hub+sleep"></a>
 
-### weDo2Hub.sleep(delay) ⇒ <code>Promise</code>
+### weDo2SmartHub.sleep(delay) ⇒ <code>Promise</code>
 Sleep a given amount of time.
 
 This is a helper method to make it easier to add delays into a chain of commands.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -254,60 +254,60 @@ This is a helper method to make it easier to add delays into a chain of commands
 
 <a name="Hub+wait"></a>
 
-### weDo2Hub.wait(commands) ⇒ <code>Promise</code>
+### weDo2SmartHub.wait(commands) ⇒ <code>Promise</code>
 Wait until a given list of concurrently running commands are complete.
 
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
-**Kind**: instance method of [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
-<a name="WeDo2Hub+event_button"></a>
+<a name="WeDo2SmartHub+event_button"></a>
 
 ### "button" (button, state)
 Emits when a button is pressed.
 
-**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
-<a name="WeDo2Hub+event_distance"></a>
+<a name="WeDo2SmartHub+event_distance"></a>
 
 ### "distance" (port, distance)
 Emits when a distance sensor is activated.
 
-**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
 | distance | <code>number</code> | Distance, in millimeters. |
 
-<a name="WeDo2Hub+event_color"></a>
+<a name="WeDo2SmartHub+event_color"></a>
 
 ### "color" (port, color)
 Emits when a color sensor is activated.
 
-**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
 | color | <code>number</code> | A number representing one of the LED color consts. |
 
-<a name="WeDo2Hub+event_tilt"></a>
+<a name="WeDo2SmartHub+event_tilt"></a>
 
 ### "tilt" (port, x, y)
 Emits when a tilt sensor is activated.
 
-**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
 | Param | Type |
 | --- | --- |
@@ -315,12 +315,12 @@ Emits when a tilt sensor is activated.
 | x | <code>number</code> | 
 | y | <code>number</code> | 
 
-<a name="WeDo2Hub+event_rotate"></a>
+<a name="WeDo2SmartHub+event_rotate"></a>
 
 ### "rotate" (port, rotation)
 Emits when a rotation sensor is activated.
 
-**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
 | Param | Type |
 | --- | --- |
@@ -332,7 +332,7 @@ Emits when a rotation sensor is activated.
 ### "attach" (port, type)
 Emits when a motor or sensor is attached to the Hub.
 
-**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -344,7 +344,7 @@ Emits when a motor or sensor is attached to the Hub.
 ### "detach" (port)
 Emits when an attached motor or sensor is detached from the Hub.
 
-**Kind**: event emitted by [<code>WeDo2Hub</code>](#WeDo2Hub)  
+**Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
 | Param | Type |
 | --- | --- |
