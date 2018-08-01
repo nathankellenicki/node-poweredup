@@ -54,6 +54,22 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
+     * Set the name of the Hub.
+     * @method WeDo2SmartHub#setName
+     * @param {string} name New name of the hub (ASCII characters only).
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    public setName (name: string) {
+        return new Promise((resolve, reject) => {
+            const data = Buffer.from(name, "ascii");
+            this._writeMessage(Consts.BLECharacteristics.WEDO2_NAME_ID, data);
+            this._name = name;
+            return resolve();
+        });
+    }
+
+
+    /**
      * Set the color of the LED on the Hub via a color value.
      * @method WeDo2SmartHub#setLEDColor
      * @param {number} color A number representing one of the LED color consts.

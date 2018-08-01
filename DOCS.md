@@ -78,6 +78,7 @@ Emits when a LPF2 Hub device is found.
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
+    * [.setName(name)](#WeDo2SmartHub+setName) ⇒ <code>Promise</code>
     * [.setLEDColor(color)](#WeDo2SmartHub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2SmartHub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#WeDo2SmartHub+setMotorSpeed) ⇒ <code>Promise</code>
@@ -144,6 +145,18 @@ The WeDo2SmartHub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 | Name | Type | Description |
 | --- | --- | --- |
 | batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
+
+<a name="WeDo2SmartHub+setName"></a>
+
+### weDo2SmartHub.setName(name) ⇒ <code>Promise</code>
+Set the name of the Hub.
+
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | New name of the hub (ASCII characters only). |
 
 <a name="WeDo2SmartHub+setLEDColor"></a>
 
