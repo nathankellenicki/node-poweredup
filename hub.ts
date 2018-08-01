@@ -26,7 +26,6 @@ export class Hub extends EventEmitter {
 
     protected _name: string;
     protected _batteryLevel: number = 100;
-    protected _current: number = 0;
 
     private _peripheral: Peripheral;
     private _uuid: string;
@@ -74,15 +73,6 @@ export class Hub extends EventEmitter {
      */
     public get batteryLevel () {
         return this._batteryLevel;
-    }
-
-
-    /**
-     * @readonly
-     * @property {number} current Current usage of the hub (Amps)
-     */
-    public get current () {
-        return this._current;
     }
 
 

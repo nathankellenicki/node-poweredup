@@ -17,10 +17,21 @@ const debug = Debug("lpf2hub");
 export class LPF2Hub extends Hub {
 
 
+    protected _current: number = 0;
+
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
 
     private _messageBuffer: Buffer = Buffer.alloc(0);
+
+
+    /**
+     * @readonly
+     * @property {number} current Current usage of the hub (Amps)
+     */
+    public get current () {
+        return this._current;
+    }
 
 
     public connect () {

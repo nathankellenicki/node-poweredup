@@ -78,7 +78,6 @@ Emits when a LPF2 Hub device is found.
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
-    * [.current](#Hub+current)
     * [.setLEDColor(color)](#WeDo2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#WeDo2Hub+setMotorSpeed) ⇒ <code>Promise</code>
@@ -145,17 +144,6 @@ The WeDo2Hub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 | Name | Type | Description |
 | --- | --- | --- |
 | batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
-
-<a name="Hub+current"></a>
-
-### weDo2Hub.current
-**Kind**: instance property of [<code>WeDo2Hub</code>](#WeDo2Hub)  
-**Read only**: true  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| current | <code>number</code> | Current usage of the hub (Amps) |
 
 <a name="WeDo2Hub+setLEDColor"></a>
 
