@@ -19,7 +19,7 @@ export class BoostMoveHub extends LPF2Hub {
 
 
     public static IsBoostMoveHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
     }
 
 
@@ -60,7 +60,7 @@ export class BoostMoveHub extends LPF2Hub {
                 color = 0;
             }
             const data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             return resolve();
         });
     }
@@ -82,22 +82,22 @@ export class BoostMoveHub extends LPF2Hub {
                     portObj.busy = true;
                     const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
-                    this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     portObj.finished = () => {
                         return resolve();
                     };
                 } else {
                     const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                    this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     setTimeout(() => {
                         const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                        this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                         return resolve();
                     }, time);
                 }
             } else {
                 const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 return resolve();
             }
         });
@@ -119,7 +119,7 @@ export class BoostMoveHub extends LPF2Hub {
             const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
             data.writeUInt32LE(angle, 6);
             data.writeUInt8(this._mapSpeed(speed), 10);
-            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             portObj.finished = () => {
                 return resolve();
             };

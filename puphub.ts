@@ -21,13 +21,13 @@ export class PUPHub extends LPF2Hub {
     // We set JSDoc to ignore these events as a Powered Up Remote will never emit them.
 
     /**
-     * @event PUPRemote#rotate
+     * @event PUPHub#rotate
      * @ignore
      */
 
 
     public static IsPUPHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
     }
 
 
@@ -65,7 +65,7 @@ export class PUPHub extends LPF2Hub {
                 color = 0;
             }
             const data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             return resolve();
         });
     }
@@ -84,15 +84,15 @@ export class PUPHub extends LPF2Hub {
             const portObj = this._ports[port];
             if (time) {
                 const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
-                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 setTimeout(() => {
                     const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, 0x00, 0x00, 0x00]);
-                    this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     return resolve();
                 }, time);
             } else {
                 const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
-                this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 return resolve();
             }
         });

@@ -707,7 +707,6 @@ Emits when an attached motor or sensor is detached from the Hub.
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
     * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
-    * ["rotate" (port, rotation)](#LPF2Hub+event_rotate)
     * ["attach" (port, type)](#Hub+event_attach)
     * ["detach" (port)](#Hub+event_detach)
 
@@ -913,18 +912,6 @@ Emits when a tilt sensor is activated.
 | port | <code>string</code> | If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used. |
 | x | <code>number</code> |  |
 | y | <code>number</code> |  |
-
-<a name="LPF2Hub+event_rotate"></a>
-
-### "rotate" (port, rotation)
-Emits when a rotation sensor is activated.
-
-**Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
-
-| Param | Type |
-| --- | --- |
-| port | <code>string</code> | 
-| rotation | <code>number</code> | 
 
 <a name="Hub+event_attach"></a>
 

@@ -52,7 +52,7 @@ export class PUPRemote extends LPF2Hub {
 
 
     public static IsPUPRemote (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.BOOST_MOVE_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
     }
 
 
@@ -89,7 +89,7 @@ export class PUPRemote extends LPF2Hub {
                 color = 0;
             }
             const data = Buffer.from([0x08, 0x00, 0x81, 0x34, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristics.BOOST_ALL, data);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             return resolve();
         });
     }

@@ -17,7 +17,7 @@ export enum Devices {
     BOOST_INTERACTIVE_MOTOR = 38,
     BOOST_MOVE_HUB_MOTOR = 39,
     BOOST_TILT = 40,
-    REMOTE_BUTTON = 55
+    POWERED_UP_REMOTE_BUTTON = 55
 }
 
 
@@ -51,7 +51,7 @@ export enum BLEManufacturerData {
 
 export enum BLEServices {
     WEDO2_SMART_HUB = "000015231212efde1523785feabcd123",
-    BOOST_MOVE_HUB = "000016231212efde1623785feabcd123"
+    LPF2_HUB = "000016231212efde1623785feabcd123"
 }
 
 
@@ -67,5 +67,5 @@ export enum BLECharacteristics {
     WEDO2_PORT_TYPE_WRITE = "000015631212efde1523785feabcd123", // "1563"
     WEDO2_MOTOR_VALUE_WRITE = "000015651212efde1523785feabcd123", // "1565"
     WEDO2_NAME_ID = "000015241212efde1523785feabcd123", // "1524"
-    BOOST_ALL = "000016241212efde1623785feabcd123"
+    LPF2_ALL = "000016241212efde1623785feabcd123"
 }
