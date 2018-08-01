@@ -114,6 +114,9 @@ export class BoostMoveHub extends LPF2Hub {
      */
     public setMotorAngle (port: string, angle: number, speed: number = 100) {
         const portObj = this._ports[port];
+        if (!(portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR)) {
+            throw new Error("Angle rotation is only available when using a Boost Interactive Motor or Boost Move Hub Motor");
+        }
         return new Promise((resolve, reject) => {
             portObj.busy = true;
             const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);

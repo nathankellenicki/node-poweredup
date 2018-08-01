@@ -36,8 +36,7 @@ export class PUPHub extends LPF2Hub {
         this.type = Consts.Hubs.POWERED_UP_HUB;
         this._ports = {
             "A": new Port("A", 0),
-            "B": new Port("B", 1),
-            "AB": new Port("AB", 57)
+            "B": new Port("B", 1)
         };
         debug("Discovered Powered Up Hub");
     }
