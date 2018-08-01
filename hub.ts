@@ -303,7 +303,7 @@ export class Hub extends EventEmitter {
             if (speed < -100) {
                 speed = -100;
             }
-            return Math.round((speed - -100) * (245 - 160) / (-1 - -100) + 160); // In reverse, minimum speed is 245, maximum speed is 160
+            return Math.round((speed - -100) * (240 - 158) / (-1 - -100) + 158); // In reverse, minimum speed is 245, maximum speed is 160
         } else {
             return 0;
         }
