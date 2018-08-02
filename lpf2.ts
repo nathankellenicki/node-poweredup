@@ -92,7 +92,7 @@ export class LPF2 extends EventEmitter {
             /**
              * Emits when a LPF2 Hub device is found.
              * @event LPF2#discover
-             * @param {WeDo2SmartHub | LPF2Hub} hub
+             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote} hub
              */
             this.emit("discover", hub);
 

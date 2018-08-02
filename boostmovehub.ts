@@ -138,7 +138,7 @@ export class BoostMoveHub extends LPF2Hub {
      * @method BoostMoveHub#setMotorAngle
      * @param {string} port
      * @param {number} angle How much the motor should be rotated (in degrees).
-     * @param {number} [speed=100] How fast the motor should be rotated.
+     * @param {number | Array.<number>} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
     public setMotorAngle (port: string, angle: number, speed: number | [number, number] = 100) {

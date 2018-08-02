@@ -64,7 +64,7 @@ Emits when a LPF2 Hub device is found.
 
 | Param | Type |
 | --- | --- |
-| hub | [<code>WeDo2SmartHub</code>](#WeDo2SmartHub) \| <code>LPF2Hub</code> | 
+| hub | [<code>WeDo2SmartHub</code>](#WeDo2SmartHub) \| [<code>BoostMoveHub</code>](#BoostMoveHub) \| [<code>PUPHub</code>](#PUPHub) \| [<code>PUPRemote</code>](#PUPRemote) | 
 
 <a name="WeDo2SmartHub"></a>
 
@@ -492,7 +492,7 @@ Rotate a motor by a given angle.
 | --- | --- | --- | --- |
 | port | <code>string</code> |  |  |
 | angle | <code>number</code> |  | How much the motor should be rotated (in degrees). |
-| [speed] | <code>number</code> | <code>100</code> | How fast the motor should be rotated. |
+| [speed] | <code>number</code> \| <code>Array.&lt;number&gt;</code> | <code>100</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
 
 <a name="LPF2Hub+setName"></a>
 
