@@ -35,6 +35,8 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 
 * When used with the Powered Up Hub, the Boost Interactive Motor does not support rotating the motor by angle. It also does not support rotation detection.
 
+* Plugging two Boost Interactive Motors into the Powered Up Hub will crash the Hub (This requires a firmware update from LEGO to fix).
+
 ### Usage
 
 ```javascript
