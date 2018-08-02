@@ -70,23 +70,44 @@ export class BoostMoveHub extends LPF2Hub {
      * Set the motor speed on a given port.
      * @method BoostMoveHub#setMotorSpeed
      * @param {string} port
-     * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number | Array<number>} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
      * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
-    public setMotorSpeed (port: string, speed: number, time?: number) {
+    public setMotorSpeed (port: string, speed: number | [number, number], time?: number) {
+        const portObj = this._portLookup(port);
+        if (portObj.id !== "AB" && speed instanceof Array) {
+            throw new Error(`Port ${portObj.id} can only accept a single speed`);
+        }
+        if (portObj.id === "AB") {
+            const portObjA = this._portLookup("A");
+            const portObjB = this._portLookup("B");
+            if (portObjA.type !== portObjB.type) {
+                throw new Error(`Port ${portObj.id} requires both motors be of the same type`);
+            }
+        }
         return new Promise((resolve, reject) => {
-            const portObj = this._portLookup(port);
             if (time) {
                 if (portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
-                    const data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                    let data = null;
+                    if (portObj.id === "AB") {
+                        if (speed instanceof Array) {
+                            data = Buffer.from([0x0d, 0x00, 0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
+                        } else {
+                            data = Buffer.from([0x0d, 0x00, 0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                        }
+                    } else {
+                        // @ts-ignore: The type of speed is properly checked at the start
+                        data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                    }
                     data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     portObj.finished = () => {
                         return resolve();
                     };
                 } else {
+                    // @ts-ignore: The type of speed is properly checked at the start
                     const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     setTimeout(() => {
@@ -96,6 +117,7 @@ export class BoostMoveHub extends LPF2Hub {
                     }, time);
                 }
             } else {
+                // @ts-ignore: The type of speed is properly checked at the start
                 const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 return resolve();

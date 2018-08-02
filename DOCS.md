@@ -477,7 +477,7 @@ Set the motor speed on a given port.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| speed | <code>number</code> \| <code>Array.&lt;number&gt;</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
 
 <a name="BoostMoveHub+setMotorAngle"></a>
