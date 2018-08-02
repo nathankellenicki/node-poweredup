@@ -88,7 +88,7 @@ export class PUPRemote extends LPF2Hub {
             if (color === false) {
                 color = 0;
             }
-            const data = Buffer.from([0x08, 0x00, 0x81, 0x34, 0x11, 0x51, 0x00, color]);
+            const data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x00, color]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             return resolve();
         });

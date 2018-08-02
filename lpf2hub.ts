@@ -39,9 +39,9 @@ export class LPF2Hub extends Hub {
             await super.connect();
             const characteristic = this._characteristics[Consts.BLECharacteristics.LPF2_ALL];
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x05, 0x00, 0x01, 0x02, 0x02])); // Activate button reports
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x0a, 0x00, 0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x0a, 0x00, 0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
             return resolve();
         });
     }
@@ -58,9 +58,8 @@ export class LPF2Hub extends Hub {
             throw new Error("Name must be 14 characters or less");
         }
         return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x00, 0x00, 0x01, 0x01, 0x01]);
+            let data = Buffer.from([0x01, 0x01, 0x01]);
             data = Buffer.concat([data, Buffer.from(name, "ascii")]);
-            data[0] = data.length;
             // Send this twice, as sometimes the first time doesn't take
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
@@ -71,18 +70,20 @@ export class LPF2Hub extends Hub {
 
 
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
 
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
     }
 
 
     protected _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
         const characteristic = this._characteristics[uuid];
         if (characteristic) {
+            message = Buffer.concat([Buffer.alloc(2), message]);
+            message[0] = message.length;
             characteristic.write(message, false, callback);
         }
     }

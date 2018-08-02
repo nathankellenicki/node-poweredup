@@ -59,7 +59,7 @@ export class BoostMoveHub extends LPF2Hub {
             if (color === false) {
                 color = 0;
             }
-            const data = Buffer.from([0x08, 0x00, 0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            const data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             return resolve();
         });
@@ -87,25 +87,25 @@ export class BoostMoveHub extends LPF2Hub {
                     let data = null;
                     if (portObj.id === "AB") {
                         if (speed instanceof Array) {
-                            data = Buffer.from([0x0d, 0x00, 0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
+                            data = Buffer.from([0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
                         } else {
-                            data = Buffer.from([0x0d, 0x00, 0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                            data = Buffer.from([0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                         }
                     } else {
                         // @ts-ignore: The type of speed is properly checked at the start
-                        data = Buffer.from([0x0c, 0x00, 0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                        data = Buffer.from([0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     }
-                    data.writeUInt16LE(time > 65535 ? 65535 : time, 6);
+                    data.writeUInt16LE(time > 65535 ? 65535 : time, 4);
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     portObj.finished = () => {
                         return resolve();
                     };
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
-                    const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                    const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     setTimeout(() => {
-                        const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
+                        const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
                         this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                         return resolve();
                     }, time);
@@ -118,13 +118,13 @@ export class BoostMoveHub extends LPF2Hub {
                     let data = null;
                     if (portObj.id === "AB") {
                         if (speed instanceof Array) {
-                            data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
+                            data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
                         } else {
-                            data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                            data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                         }
                     } else {
                         // @ts-ignore: The type of speed is properly checked at the start
-                        data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                        data = Buffer.from([0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     }
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     portObj.finished = () => {
@@ -132,7 +132,7 @@ export class BoostMoveHub extends LPF2Hub {
                     };
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
-                    const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                    const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 }
 
@@ -162,15 +162,15 @@ export class BoostMoveHub extends LPF2Hub {
             let data = null;
             if (portObj.id === "AB") {
                 if (speed instanceof Array) {
-                    data = Buffer.from([0x0f, 0x00, 0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
+                    data = Buffer.from([0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
                 } else {
-                    data = Buffer.from([0x0f, 0x00, 0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                    data = Buffer.from([0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                 }
             } else {
                 // @ts-ignore: The type of speed is properly checked at the start
-                data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                data = Buffer.from([0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
             }
-            data.writeUInt32LE(angle, 6);
+            data.writeUInt32LE(angle, 4);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             portObj.finished = () => {
                 return resolve();
