@@ -104,7 +104,7 @@ export class PUPHub extends LPF2Hub {
                 setTimeout(() => {
                     let data = null;
                     if (portObj.id === "AB") {
-                        data = Buffer.from([0x81, portObj.value, 0x11, 0x02, 0x00]);
+                        data = Buffer.from([0x81, portObj.value, 0x11, 0x02, 0x00, 0x00]);
                     } else {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x60, 0x00, 0x00, 0x00, 0x00]);
                     }
