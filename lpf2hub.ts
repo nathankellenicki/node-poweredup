@@ -50,7 +50,7 @@ export class LPF2Hub extends Hub {
     /**
      * Set the name of the Hub.
      * @method LPF2Hub#setName
-     * @param {string} name New name of the hub (ASCII characters only).
+     * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setName (name: string) {
@@ -61,6 +61,7 @@ export class LPF2Hub extends Hub {
             let data = Buffer.from([0x00, 0x00, 0x01, 0x01, 0x01]);
             data = Buffer.concat([data, Buffer.from(name, "ascii")]);
             data[0] = data.length;
+            // Send this twice, as sometimes the first time doesn't take
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             this._name = name;

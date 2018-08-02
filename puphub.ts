@@ -84,6 +84,13 @@ export class PUPHub extends LPF2Hub {
         if (portObj.id !== "AB" && speed instanceof Array) {
             throw new Error(`Port ${portObj.id} can only accept a single speed`);
         }
+        if (portObj.id === "AB") {
+            const portObjA = this._portLookup("A");
+            const portObjB = this._portLookup("B");
+            if (portObjA.type !== portObjB.type) {
+                throw new Error(`Port ${portObj.id} requires both motors be of the same type`);
+            }
+        }
         return new Promise((resolve, reject) => {
             if (time) {
                 let data = null;

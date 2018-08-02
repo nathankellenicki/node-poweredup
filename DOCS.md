@@ -156,7 +156,7 @@ Set the name of the Hub.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>string</code> | New name of the hub (ASCII characters only). |
+| name | <code>string</code> | New name of the hub (14 characters or less, ASCII only). |
 
 <a name="WeDo2SmartHub+setLEDColor"></a>
 
@@ -504,7 +504,7 @@ Set the name of the Hub.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>string</code> | New name of the hub (ASCII characters only). |
+| name | <code>string</code> | New name of the hub (14 characters or less, ASCII only). |
 
 <a name="Hub+connect"></a>
 
@@ -783,7 +783,7 @@ Set the name of the Hub.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>string</code> | New name of the hub (ASCII characters only). |
+| name | <code>string</code> | New name of the hub (14 characters or less, ASCII only). |
 
 <a name="Hub+connect"></a>
 
@@ -1030,7 +1030,7 @@ Set the name of the Hub.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| name | <code>string</code> | New name of the hub (ASCII characters only). |
+| name | <code>string</code> | New name of the hub (14 characters or less, ASCII only). |
 
 <a name="Hub+connect"></a>
 

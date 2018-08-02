@@ -56,7 +56,7 @@ export class WeDo2SmartHub extends Hub {
     /**
      * Set the name of the Hub.
      * @method WeDo2SmartHub#setName
-     * @param {string} name New name of the hub (ASCII characters only).
+     * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setName (name: string) {
@@ -65,6 +65,7 @@ export class WeDo2SmartHub extends Hub {
         }
         return new Promise((resolve, reject) => {
             const data = Buffer.from(name, "ascii");
+            // Send this twice, as sometimes the first time doesn't take
             this._writeMessage(Consts.BLECharacteristics.WEDO2_NAME_ID, data);
             this._writeMessage(Consts.BLECharacteristics.WEDO2_NAME_ID, data);
             this._name = name;
