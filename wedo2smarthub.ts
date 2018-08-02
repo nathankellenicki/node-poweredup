@@ -60,8 +60,12 @@ export class WeDo2SmartHub extends Hub {
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setName (name: string) {
+        if (name.length > 14) {
+            throw new Error("Name must be 14 characters or less");
+        }
         return new Promise((resolve, reject) => {
             const data = Buffer.from(name, "ascii");
+            this._writeMessage(Consts.BLECharacteristics.WEDO2_NAME_ID, data);
             this._writeMessage(Consts.BLECharacteristics.WEDO2_NAME_ID, data);
             this._name = name;
             return resolve();

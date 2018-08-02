@@ -36,7 +36,8 @@ export class PUPHub extends LPF2Hub {
         this.type = Consts.Hubs.POWERED_UP_HUB;
         this._ports = {
             "A": new Port("A", 0),
-            "B": new Port("B", 1)
+            "B": new Port("B", 1),
+            "AB": new Port("AB", 57)
         };
         debug("Discovered Powered Up Hub");
     }
@@ -74,23 +75,51 @@ export class PUPHub extends LPF2Hub {
      * Set the motor speed on a given port.
      * @method PUPHub#setMotorSpeed
      * @param {string} port
-     * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number | Array<number>} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
      * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
-    public setMotorSpeed (port: string, speed: number, time?: number) {
+    public setMotorSpeed (port: string, speed: number | [number, number], time?: number) {
+        const portObj = this._portLookup(port);
+        if (portObj.id !== "AB" && speed instanceof Array) {
+            throw new Error(`Port ${portObj.id} can only accept a single speed`);
+        }
         return new Promise((resolve, reject) => {
-            const portObj = this._portLookup(port);
             if (time) {
-                const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                let data = null;
+                if (portObj.id === "AB") {
+                    if (speed instanceof Array) {
+                        data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1])]);
+                    } else {
+                        data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed)]);
+                    }
+                } else {
+                    // @ts-ignore: The type of speed is properly checked at the start
+                    data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                }
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 setTimeout(() => {
-                    const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, 0x00, 0x00, 0x00]);
+                    let data = null;
+                    if (portObj.id === "AB") {
+                        data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x02, 0x00]);
+                    } else {
+                        data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, 0x00, 0x00, 0x00]);
+                    }
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     return resolve();
                 }, time);
             } else {
-                const data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                let data = null;
+                if (portObj.id === "AB") {
+                    if (speed instanceof Array) {
+                        data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1])]);
+                    } else {
+                        data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed)]);
+                    }
+                } else {
+                    // @ts-ignore: The type of speed is properly checked at the start
+                    data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
+                }
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 return resolve();
             }

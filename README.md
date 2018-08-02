@@ -429,6 +429,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.setLEDColor(color)](#BoostMoveHub+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#BoostMoveHub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.setMotorAngle(port, angle, [speed])](#BoostMoveHub+setMotorAngle) ⇒ <code>Promise</code>
+    * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -542,6 +543,18 @@ Rotate a motor by a given angle.
 | port | <code>string</code> |  |  |
 | angle | <code>number</code> |  | How much the motor should be rotated (in degrees). |
 | [speed] | <code>number</code> | <code>100</code> | How fast the motor should be rotated. |
+
+<a name="LPF2Hub+setName"></a>
+
+### boostMoveHub.setName(name) ⇒ <code>Promise</code>
+Set the name of the Hub.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | New name of the hub (ASCII characters only). |
 
 <a name="Hub+connect"></a>
 
@@ -710,6 +723,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.batteryLevel](#Hub+batteryLevel)
     * [.setLEDColor(color)](#PUPHub+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#PUPHub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -806,8 +820,20 @@ Set the motor speed on a given port.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| speed | <code>number</code> \| <code>Array.&lt;number&gt;</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
+
+<a name="LPF2Hub+setName"></a>
+
+### pupHub.setName(name) ⇒ <code>Promise</code>
+Set the name of the Hub.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | New name of the hub (ASCII characters only). |
 
 <a name="Hub+connect"></a>
 
@@ -963,6 +989,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
     * [.setLEDColor(color)](#PUPRemote+setLEDColor) ⇒ <code>Promise</code>
+    * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -1042,6 +1069,18 @@ Set the color of the LED on the Remote via a color value.
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="LPF2Hub+setName"></a>
+
+### pupRemote.setName(name) ⇒ <code>Promise</code>
+Set the name of the Hub.
+
+**Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | New name of the hub (ASCII characters only). |
 
 <a name="Hub+connect"></a>
 

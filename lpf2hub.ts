@@ -47,6 +47,28 @@ export class LPF2Hub extends Hub {
     }
 
 
+    /**
+     * Set the name of the Hub.
+     * @method LPF2Hub#setName
+     * @param {string} name New name of the hub (ASCII characters only).
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    public setName (name: string) {
+        if (name.length > 14) {
+            throw new Error("Name must be 14 characters or less");
+        }
+        return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x00, 0x00, 0x01, 0x01, 0x01]);
+            data = Buffer.concat([data, Buffer.from(name, "ascii")]);
+            data[0] = data.length;
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._name = name;
+            return resolve();
+        });
+    }
+
+
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
         this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x0a, 0x00, 0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
