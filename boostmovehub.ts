@@ -79,15 +79,9 @@ export class BoostMoveHub extends LPF2Hub {
         if (portObj.id !== "AB" && speed instanceof Array) {
             throw new Error(`Port ${portObj.id} can only accept a single speed`);
         }
-        if (portObj.id === "AB") {
-            const portObjA = this._portLookup("A");
-            const portObjB = this._portLookup("B");
-            if (portObjA.type !== portObjB.type) {
-                throw new Error(`Port ${portObj.id} requires both motors be of the same type`);
-            }
-        }
         return new Promise((resolve, reject) => {
             if (time) {
+
                 if (portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
@@ -116,11 +110,32 @@ export class BoostMoveHub extends LPF2Hub {
                         return resolve();
                     }, time);
                 }
+
             } else {
-                // @ts-ignore: The type of speed is properly checked at the start
-                const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-                return resolve();
+
+                if (portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR) {
+                    portObj.busy = true;
+                    let data = null;
+                    if (portObj.id === "AB") {
+                        if (speed instanceof Array) {
+                            data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
+                        } else {
+                            data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                        }
+                    } else {
+                        // @ts-ignore: The type of speed is properly checked at the start
+                        data = Buffer.from([0x0a, 0x00, 0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                    }
+                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    portObj.finished = () => {
+                        return resolve();
+                    };
+                } else {
+                    // @ts-ignore: The type of speed is properly checked at the start
+                    const data = Buffer.from([0x08, 0x00, 0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
+                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                }
+
             }
         });
     }
@@ -134,16 +149,28 @@ export class BoostMoveHub extends LPF2Hub {
      * @param {number} [speed=100] How fast the motor should be rotated.
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
-    public setMotorAngle (port: string, angle: number, speed: number = 100) {
+    public setMotorAngle (port: string, angle: number, speed: number | [number, number] = 100) {
         const portObj = this._portLookup(port);
         if (!(portObj.type === Consts.Devices.BOOST_INTERACTIVE_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR)) {
             throw new Error("Angle rotation is only available when using a Boost Interactive Motor or Boost Move Hub Motor");
         }
+        if (portObj.id !== "AB" && speed instanceof Array) {
+            throw new Error(`Port ${portObj.id} can only accept a single speed`);
+        }
         return new Promise((resolve, reject) => {
             portObj.busy = true;
-            const data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x64, 0x7f, 0x03]);
+            let data = null;
+            if (portObj.id === "AB") {
+                if (speed instanceof Array) {
+                    data = Buffer.from([0x0f, 0x00, 0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
+                } else {
+                    data = Buffer.from([0x0f, 0x00, 0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                }
+            } else {
+                // @ts-ignore: The type of speed is properly checked at the start
+                data = Buffer.from([0x0e, 0x00, 0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+            }
             data.writeUInt32LE(angle, 6);
-            data.writeUInt8(this._mapSpeed(speed), 10);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             portObj.finished = () => {
                 return resolve();
