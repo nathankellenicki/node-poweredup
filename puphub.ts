@@ -95,11 +95,7 @@ export class PUPHub extends LPF2Hub {
             if (time) {
                 let data = null;
                 if (portObj.id === "AB") {
-                    if (speed instanceof Array) {
-                        data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1])]);
-                    } else {
-                        data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed)]);
-                    }
+                    data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed)]);
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
                     data = Buffer.from([0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
@@ -118,11 +114,7 @@ export class PUPHub extends LPF2Hub {
             } else {
                 let data = null;
                 if (portObj.id === "AB") {
-                    if (speed instanceof Array) {
-                        data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1])]);
-                    } else {
-                        data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed)]);
-                    }
+                    data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed)]);
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
                     data = Buffer.from([0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);

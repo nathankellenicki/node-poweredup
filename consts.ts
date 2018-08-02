@@ -22,7 +22,7 @@ export enum Devices {
 
 
 export enum Colors {
-    NONE = 0,
+    BLACK = 0,
     PINK = 1,
     PURPLE = 2,
     BLUE = 3,
@@ -32,7 +32,8 @@ export enum Colors {
     YELLOW = 7,
     ORANGE = 8,
     RED = 9,
-    WHITE = 10
+    WHITE = 10,
+    NONE = 255
 }
 
 export enum ButtonStates {

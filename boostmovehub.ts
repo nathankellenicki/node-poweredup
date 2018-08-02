@@ -86,11 +86,7 @@ export class BoostMoveHub extends LPF2Hub {
                     portObj.busy = true;
                     let data = null;
                     if (portObj.id === "AB") {
-                        if (speed instanceof Array) {
-                            data = Buffer.from([0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
-                        } else {
-                            data = Buffer.from([0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                        }
+                        data = Buffer.from([0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
                     } else {
                         // @ts-ignore: The type of speed is properly checked at the start
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
@@ -117,11 +113,7 @@ export class BoostMoveHub extends LPF2Hub {
                     portObj.busy = true;
                     let data = null;
                     if (portObj.id === "AB") {
-                        if (speed instanceof Array) {
-                            data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
-                        } else {
-                            data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                        }
+                        data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
                     } else {
                         // @ts-ignore: The type of speed is properly checked at the start
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
@@ -161,11 +153,7 @@ export class BoostMoveHub extends LPF2Hub {
             portObj.busy = true;
             let data = null;
             if (portObj.id === "AB") {
-                if (speed instanceof Array) {
-                    data = Buffer.from([0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed[0]), this._mapSpeed(speed[1]), 0x64, 0x7f, 0x03]);
-                } else {
-                    data = Buffer.from([0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                }
+                data = Buffer.from([0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
             } else {
                 // @ts-ignore: The type of speed is properly checked at the start
                 data = Buffer.from([0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
