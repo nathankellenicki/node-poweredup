@@ -311,8 +311,8 @@ export class Hub extends EventEmitter {
 
 
     protected _portLookup (port: string) {
-        if (!this._ports[port]) {
-            throw new Error(`Port ${port} does not exist on this Hub type`);
+        if (!this._ports[port.toUpperCase()]) {
+            throw new Error(`Port ${port.toUpperCase()} does not exist on this Hub type`);
         }
         return this._ports[port];
     }
