@@ -14,6 +14,8 @@ console.log("Looking for Batmobile and Remote...");
 let batmobile = null;
 let remote = null;
 
+let lastButton = null;
+
 lpf2.on("discover", async (hub) => { // Wait to Batmobile and Remote
 
     if (hub instanceof LPF2.PUPHub) {
@@ -30,23 +32,26 @@ lpf2.on("discover", async (hub) => { // Wait to Batmobile and Remote
                 switch (state) {
                     case LPF2.Consts.ButtonStates.UP: // If up is pressed, move the wheels forward
                     {
-                        batmobile.setMotorSpeed(button === "LEFT" ? "A" : "B", 50);
+                        lastButton = state;
+                        batmobile.setMotorSpeed(button === "LEFT" ? "B" : "A", button === "LEFT" ? -100 : 100);
                         break;
                     }
                     case LPF2.Consts.ButtonStates.DOWN: // If down is pressed, move the wheels backwards
                     {
-                        batmobile.setMotorSpeed(button === "LEFT" ? "A" : "B", -50);
+                        lastButton = state;
+                        batmobile.setMotorSpeed(button === "LEFT" ? "B" : "A", button === "LEFT" ? 100 : -100);
                         break;
                     }
                     case LPF2.Consts.ButtonStates.RELEASED: // Stop the wheels when the button is released
                     {
-                        if (button !== "GREEN") {
-                            batmobile.setMotorSpeed(button === "LEFT" ? "A" : "B", 0);
+                        if (lastButton === LPF2.Consts.ButtonStates.UP || lastButton === LPF2.Consts.ButtonStates.DOWN) {
+                            batmobile.setMotorSpeed(button === "LEFT" ? "B" : "A", 0);
                         }
                         break;
                     }
                     case LPF2.Consts.ButtonStates.STOP: // When left red button is pressed, do a retreat. When right red button is pressed, scan the area.
                     {
+                        lastButton = state;
                         if (button === "LEFT") {
                             await batmobile.setMotorSpeed("A", -100, 500);
                             await batmobile.setMotorSpeed("B", -100, 1000);
@@ -54,18 +59,20 @@ lpf2.on("discover", async (hub) => { // Wait to Batmobile and Remote
                             await batmobile.setMotorSpeed("B", -100, 1000);
                             await batmobile.setMotorSpeed("A", -100, 500);
                         } else if (button === "RIGHT") {
-                            await batmobile.setMotorSpeed("AB", [100, -100], 1000);
-                            await batmobile.setMotorSpeed("AB", [-100, 100], 2000);
-                            await batmobile.setMotorSpeed("AB", [100, -100], 2000);
-                            await batmobile.setMotorSpeed("AB", [-100, 100], 1000);
+                            await batmobile.setMotorSpeed("AB", 100, 1000);
+                            await batmobile.setMotorSpeed("AB", -100, 2000);
+                            await batmobile.setMotorSpeed("AB", 100, 2000);
+                            await batmobile.setMotorSpeed("AB", -100, 1000);
                         }
                         break;
                     }
                     case LPF2.Consts.ButtonStates.PRESSED: // Do a wheelie when the green button is pressed
                     {
+                        lastButton = state;
                         if (button === "GREEN") {
-                            await batmobile.setMotorSpeed("AB", -100, 500);
-                            await batmobile.setMotorSpeed("AB", 100, 1000);
+                            batmobile.setMotorSpeed("AB", [-100, 100]);
+                            await batmobile.sleep(500);
+                            await batmobile.setMotorSpeed("AB", [100, -100], 1000);
                         }
                         break;
                     }
