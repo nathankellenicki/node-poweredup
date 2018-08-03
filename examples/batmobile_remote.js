@@ -1,3 +1,9 @@
+/*
+ *
+ * This example allows you to connect your Batmobile and a Powered Up Remote Control to your laptop, and enables the control of the Batmobile with the Remote.
+ *
+ */
+
 const LPF2 = require("..");
 
 const lpf2 = new LPF2.LPF2();

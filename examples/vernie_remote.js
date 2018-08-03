@@ -1,3 +1,9 @@
+/*
+ *
+ * This example allows you to connect Vernie and a Powered Up Remote Control to your laptop, and enables the control of Vernie with the Remote.
+ *
+ */
+
 const LPF2 = require("..");
 
 const lpf2 = new LPF2.LPF2();

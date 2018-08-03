@@ -1,3 +1,9 @@
+/*
+ *
+ * This demonstrates connecting multiple hubs to your laptop. Once connected, all the hubs LED lights will cycle through the same colors simultaneously.
+ *
+ */
+
 const LPF2 = require("..").LPF2;
 
 const lpf2 = new LPF2();
