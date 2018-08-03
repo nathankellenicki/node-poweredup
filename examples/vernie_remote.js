@@ -1,7 +1,7 @@
 const LPF2 = require("..");
 
 const lpf2 = new LPF2.LPF2();
-lpf2.scan(); // Start scanning for Vernie
+lpf2.scan(); // Start scanning
 
 console.log("Looking for Vernie and Remote...");
 
@@ -10,13 +10,13 @@ let remote = null;
 
 lpf2.on("discover", async (hub) => { // Wait to discover Vernie and Remote
 
-    if (hub.type === LPF2.Consts.Hubs.BOOST_MOVE_HUB) {
+    if (hub instanceof LPF2.BoostMoveHub) {
 
         vernie = hub;
         await vernie.connect();
         console.log("Connected to Vernie!");
 
-    } else if (hub.type === LPF2.Consts.Hubs.POWERED_UP_REMOTE) {
+    } else if (hub instanceof LPF2.PUPRemote) {
         remote = hub;
 
         remote.on("button", async (button, state) => {
@@ -61,9 +61,8 @@ lpf2.on("discover", async (hub) => { // Wait to discover Vernie and Remote
     }
 
     if (vernie && remote) {
-        const color = Math.floor(Math.random() * 10) + 1;
-        vernie.setLEDColor(color);
-        remote.setLEDColor(color);
+        vernie.setLEDColor(LPF2.Consts.Colors.BLUE);
+        remote.setLEDColor(LPF2.Consts.Colors.BLUE);
         console.log("You're now ready to go!");
     }
     

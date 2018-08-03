@@ -16,7 +16,7 @@ lpf2.on("discover", async (hub) => { // Wait to discover hubs
 
 });
 
-let color = 0;
+let color = 1;
 setInterval(() => {
 
     const hubs = lpf2.getConnectedHubs(); // Get an array of all connected hubs
@@ -25,7 +25,7 @@ setInterval(() => {
     })
     color++;
     if (color > 10) {
-        color = 0;
+        color = 1;
     }
 
 }, 2000);
