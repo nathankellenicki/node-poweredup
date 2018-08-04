@@ -147,9 +147,11 @@ export class WeDo2SmartHub extends Hub {
      */
     public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
         return new Promise((resolve, reject) => {
-            this._calculateRamp(fromSpeed, toSpeed, time).on("changeSpeed", (speed) => {
+            this._calculateRamp(fromSpeed, toSpeed, time)
+            .on("changeSpeed", (speed) => {
                 this.setMotorSpeed(port, speed);
-            }).on("finished", resolve);
+            })
+            .on("finished", resolve);
         });
     }
 
