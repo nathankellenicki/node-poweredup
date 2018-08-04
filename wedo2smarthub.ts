@@ -137,6 +137,24 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
+     * Ramp the motor speed on a given port.
+     * @method WeDo2SmartHub#rampMotorSpeed
+     * @param {string} port
+     * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} time How long the ramp should last (in milliseconds).
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
+        return new Promise((resolve, reject) => {
+            this._calculateRamp(fromSpeed, toSpeed, time).on("changeSpeed", (speed) => {
+                this.setMotorSpeed(port, speed);
+            }).on("finished", resolve);
+        });
+    }
+
+
+    /**
      * Play a sound on the Hub's in-built buzzer
      * @method WeDo2SmartHub#playSound
      * @param {number} frequency

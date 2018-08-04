@@ -6,6 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { resolve } from "path";
 const debug = Debug("puphub");
 
 
@@ -122,6 +123,24 @@ export class PUPHub extends LPF2Hub {
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 return resolve();
             }
+        });
+    }
+
+
+    /**
+     * Ramp the motor speed on a given port.
+     * @method PUPHub#rampMotorSpeed
+     * @param {string} port
+     * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} time How long the ramp should last (in milliseconds).
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
+        return new Promise((resolve, reject) => {
+            this._calculateRamp(fromSpeed, toSpeed, time).on("changeSpeed", (speed) => {
+                this.setMotorSpeed(port, speed);
+            }).on("finished", resolve);
         });
     }
 

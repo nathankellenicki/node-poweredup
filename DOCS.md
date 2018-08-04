@@ -82,6 +82,7 @@ Emits when a LPF2 Hub device is found.
     * [.setLEDColor(color)](#WeDo2SmartHub+setLEDColor) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#WeDo2SmartHub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#WeDo2SmartHub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#WeDo2SmartHub+rampMotorSpeed) ⇒ <code>Promise</code>
     * [.playSound(frequency, time)](#WeDo2SmartHub+playSound) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
@@ -197,6 +198,21 @@ Set the motor speed on a given port.
 | port | <code>string</code> |  |
 | speed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
+
+<a name="WeDo2SmartHub+rampMotorSpeed"></a>
+
+### weDo2SmartHub.rampMotorSpeed(port, fromSpeed, toSpeed, time) ⇒ <code>Promise</code>
+Ramp the motor speed on a given port.
+
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| fromSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| toSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| time | <code>number</code> | How long the ramp should last (in milliseconds). |
 
 <a name="WeDo2SmartHub+playSound"></a>
 
@@ -378,6 +394,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.batteryLevel](#Hub+batteryLevel)
     * [.setLEDColor(color)](#BoostMoveHub+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#BoostMoveHub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#BoostMoveHub+rampMotorSpeed) ⇒ <code>Promise</code>
     * [.setMotorAngle(port, angle, [speed])](#BoostMoveHub+setMotorAngle) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
@@ -479,6 +496,21 @@ Set the motor speed on a given port.
 | port | <code>string</code> |  |
 | speed | <code>number</code> \| <code>Array.&lt;number&gt;</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
+
+<a name="BoostMoveHub+rampMotorSpeed"></a>
+
+### boostMoveHub.rampMotorSpeed(port, fromSpeed, toSpeed, time) ⇒ <code>Promise</code>
+Ramp the motor speed on a given port.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| fromSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| toSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| time | <code>number</code> | How long the ramp should last (in milliseconds). |
 
 <a name="BoostMoveHub+setMotorAngle"></a>
 
@@ -673,6 +705,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.batteryLevel](#Hub+batteryLevel)
     * [.setLEDColor(color)](#PUPHub+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#PUPHub+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#PUPHub+rampMotorSpeed) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
@@ -772,6 +805,21 @@ Set the motor speed on a given port.
 | port | <code>string</code> |  |
 | speed | <code>number</code> \| <code>Array.&lt;number&gt;</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
+
+<a name="PUPHub+rampMotorSpeed"></a>
+
+### pupHub.rampMotorSpeed(port, fromSpeed, toSpeed, time) ⇒ <code>Promise</code>
+Ramp the motor speed on a given port.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| fromSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| toSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
+| time | <code>number</code> | How long the ramp should last (in milliseconds). |
 
 <a name="LPF2Hub+setName"></a>
 

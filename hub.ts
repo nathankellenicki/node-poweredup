@@ -6,6 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { resolve } from "path";
 const debug = Debug("hub");
 
 
@@ -89,7 +90,6 @@ export class Hub extends EventEmitter {
             this._peripheral.connect((err: string) => {
 
                 this._rssi = this._peripheral.rssi;
-
                 const rssiUpdateInterval = setInterval(() => {
                     this._peripheral.updateRssi((err: string, rssi: number) => {
                         if (!err) {
@@ -113,22 +113,16 @@ export class Hub extends EventEmitter {
                     }
 
                     debug("Service/characteristic discovery started");
-
                     const servicePromises: Array<Promise<null>> = [];
-
                     services.forEach((service) => {
-
                         servicePromises.push(new Promise((resolve, reject) => {
-
                             service.discoverCharacteristics([], (err, characteristics) => {
                                 characteristics.forEach((characteristic) => {
                                     this._characteristics[characteristic.uuid] = characteristic;
                                 });
                                 return resolve();
                             });
-
                         }));
-
                     });
 
                     Promise.all(servicePromises).then(() => {
@@ -303,11 +297,41 @@ export class Hub extends EventEmitter {
             if (speed < -100) {
                 speed = -100;
             }
-            return Math.round((speed - -100) * (240 - 158) / (-1 - -100) + 158); // In reverse, minimum speed is 245, maximum speed is 160
+            return Math.round((speed - -100) * (240 - 158) / (-1 - -100) + 158); // In reverse, minimum speed is 240, maximum speed is 158
         } else {
             return 0;
         }
     }
+
+
+    protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number) {
+        const emitter = new EventEmitter();
+        const steps = Math.abs(toSpeed - fromSpeed);
+        let delay = time / steps;
+        let increment = 1;
+        if (delay < 50 && steps > 0) {
+            increment = 50 / delay;
+            delay = 50;
+        }
+        if (fromSpeed > toSpeed) {
+            increment = -increment;
+        }
+        let i = 0;
+        const interval = setInterval(() => {
+            let speed = Math.round(fromSpeed + (++i * increment));
+            if (toSpeed > fromSpeed && speed > toSpeed) {
+                speed = toSpeed;
+            } else if (fromSpeed > toSpeed && speed < toSpeed) {
+                speed = toSpeed;
+            }
+            emitter.emit("changeSpeed", speed);
+            if (speed === toSpeed) {
+                clearInterval(interval);
+                emitter.emit("finished");
+            }
+        }, delay);
+        return emitter;
+}
 
 
     protected _portLookup (port: string) {
