@@ -3,8 +3,8 @@
 
 const PoweredUP = require("..").PoweredUP;
 
-const pup = new PoweredUP();
-pup.scan(); // Start scanning for hubs
+const poweredUP = new PoweredUP();
+poweredUP.scan(); // Start scanning for hubs
 
 console.log("Looking for Hubs...");
 
@@ -24,7 +24,7 @@ let state = 0;
 
 let moving = true;
 
-pup.on("discover", async (hub) => { // Wait to discover hubs
+poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 
     console.log(hub.uuid);
 

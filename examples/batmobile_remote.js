@@ -6,8 +6,8 @@
 
 const PoweredUP = require("..");
 
-const pup = new PoweredUP.PoweredUP();
-pup.scan(); // Start scanning
+const poweredUP = new PoweredUP.PoweredUP();
+poweredUP.scan(); // Start scanning
 
 console.log("Looking for Batmobile and Remote...");
 
@@ -16,7 +16,7 @@ let remote = null;
 
 let lastButton = null;
 
-pup.on("discover", async (hub) => { // Wait to Batmobile and Remote
+poweredUP.on("discover", async (hub) => { // Wait to Batmobile and Remote
 
     if (hub instanceof PoweredUP.PUPHub) {
 

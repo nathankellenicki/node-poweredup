@@ -1,7 +1,7 @@
 const PoweredUP = require("..");
 
-const pup = new PoweredUP.PoweredUP();
-pup.scan(); // Start scanning for trains
+const poweredUP = new PoweredUP.PoweredUP();
+poweredUP.scan(); // Start scanning for trains
 
 // Change these to make the train behave as you want
 const FORWARD_DIRECTION_COLOR = PoweredUP.Consts.Colors.YELLOW;
@@ -12,7 +12,7 @@ const TRAIN_MOTOR_PORT = "A";
 
 console.log("Looking for trains...");
 
-pup.on("discover", async (hub) => { // Wait to discover a train
+poweredUP.on("discover", async (hub) => { // Wait to discover a train
 
     let moving = true;
 

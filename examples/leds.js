@@ -6,12 +6,12 @@
 
 const PoweredUP = require("..").PoweredUP;
 
-const pup = new PoweredUP();
-pup.scan(); // Start scanning for hubs
+const poweredUP = new PoweredUP();
+poweredUP.scan(); // Start scanning for hubs
 
 console.log("Looking for Hubs...");
 
-pup.on("discover", async (hub) => { // Wait to discover hubs
+poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 
     await hub.connect(); // Connect to hub
     console.log(`Connected to ${hub.name}!`);
@@ -25,7 +25,7 @@ pup.on("discover", async (hub) => { // Wait to discover hubs
 let color = 1;
 setInterval(() => {
 
-    const hubs = pup.getConnectedHubs(); // Get an array of all connected hubs
+    const hubs = poweredUP.getConnectedHubs(); // Get an array of all connected hubs
     hubs.forEach((hub) => {
         hub.setLEDColor(color); // Set the color
     })

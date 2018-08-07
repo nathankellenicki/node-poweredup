@@ -6,15 +6,15 @@
 
 const PoweredUP = require("..");
 
-const pup = new PoweredUP.PoweredUP();
-pup.scan(); // Start scanning
+const poweredUP = new PoweredUP.PoweredUP();
+poweredUP.scan(); // Start scanning
 
 console.log("Looking for Vernie and Remote...");
 
 let vernie = null;
 let remote = null;
 
-pup.on("discover", async (hub) => { // Wait to discover Vernie and Remote
+poweredUP.on("discover", async (hub) => { // Wait to discover Vernie and Remote
 
     if (hub instanceof PoweredUP.BoostMoveHub) {
 

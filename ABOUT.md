@@ -37,14 +37,22 @@ While most Powered UP components and Hubs are compatible with each other, there 
 
 * Plugging two Boost Tacho Motors into the Powered UP Hub will crash the Hub (This requires a firmware update from LEGO to fix).
 
-### Usage
+### Usage Example
 
 ```javascript
 const PoweredUP = require("node-poweredup");
-const pup = new PoweredUP.PoweredUP();
+const poweredUP = new PoweredUP.PoweredUP();
+
+poweredUP.on("discover", async (hub) => { // Wait to discover a Hub
+    await hub.setMotorSpeed("A", 100,  2000); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
+    await hub.sleep(1000); // Do nothing for 1 second
+    await hub.setMotorSpeed("A", -50,  1000); // Run a motor attached to port A for 1 second at 1/2 speed in reverse (-50) then stop
+    await hub.sleep(1000); // Do nothing for 1 second
+    await hub.setMotorSpeed("A", 75); // Activate a motor attached to port A at 3/4 speed (75) indefinitely
+});
 ```
 
-Examples are available in the "examples" directory.
+More examples are available in the "examples" directory.
 
 ### Credits
 
