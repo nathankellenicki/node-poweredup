@@ -11,7 +11,7 @@ import * as Consts from "./consts";
 import { EventEmitter} from "events";
 
 import Debug = require("debug");
-const debug = Debug("lpf2");
+const debug = Debug("PoweredUP");
 import noble = require("noble");
 
 let ready = false;
@@ -30,10 +30,10 @@ noble.on("stateChange", (state: string) => {
 });
 
 /**
- * @class LPF2
+ * @class PoweredUP
  * @extends EventEmitter
  */
-export class LPF2 extends EventEmitter {
+export class PoweredUP extends EventEmitter {
 
 
     public autoSubscribe: boolean = true;
@@ -48,8 +48,8 @@ export class LPF2 extends EventEmitter {
 
 
     /**
-     * Begin scanning for LPF2 Hub devices.
-     * @method LPF2#scan
+     * Begin scanning for Powered UP Hub devices.
+     * @method PoweredUP#scan
      */
     public scan () {
         wantScan = true;
@@ -90,8 +90,8 @@ export class LPF2 extends EventEmitter {
 
             debug(`Hub ${hub.uuid} discovered`);
             /**
-             * Emits when a LPF2 Hub device is found.
-             * @event LPF2#discover
+             * Emits when a Powered UP Hub device is found.
+             * @event PoweredUP#discover
              * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote} hub
              */
             this.emit("discover", hub);
@@ -106,8 +106,8 @@ export class LPF2 extends EventEmitter {
 
 
     /**
-     * Stop scanning for LPF2 Hub devices.
-     * @method LPF2#stop
+     * Stop scanning for Powered UP Hub devices.
+     * @method PoweredUP#stop
      */
     public stop () {
         wantScan = false;
@@ -116,8 +116,8 @@ export class LPF2 extends EventEmitter {
 
 
     /**
-     * Retrieve a LPF2 Hub by UUID.
-     * @method LPF2#getConnectedHubByUUID
+     * Retrieve a Powered UP Hub by UUID.
+     * @method PoweredUP#getConnectedHubByUUID
      * @param {string} uuid
      * @returns {Hub | null}
      */
@@ -127,8 +127,8 @@ export class LPF2 extends EventEmitter {
 
 
     /**
-     * Retrieve a list of LPF2 Hubs.
-     * @method LPF2#getConnectedHubs
+     * Retrieve a list of Powered UP Hubs.
+     * @method PoweredUP#getConnectedHubs
      * @returns {Hub[]}
      */
     public getConnectedHubs () {
@@ -140,5 +140,5 @@ export class LPF2 extends EventEmitter {
 
 }
 
-export default LPF2;
+export default PoweredUP;
 export { Hub, WeDo2SmartHub, BoostMoveHub, PUPHub, PUPRemote, Consts };

@@ -1,7 +1,7 @@
 ## Classes
 
 <dl>
-<dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
+<dt><a href="#PoweredUP">PoweredUP</a> ⇐ <code>EventEmitter</code></dt>
 <dd></dd>
 <dt><a href="#WeDo2SmartHub">WeDo2SmartHub</a> ⇐ <code>Hub</code></dt>
 <dd></dd>
@@ -13,54 +13,54 @@
 <dd></dd>
 </dl>
 
-<a name="LPF2"></a>
+<a name="PoweredUP"></a>
 
-## LPF2 ⇐ <code>EventEmitter</code>
+## PoweredUP ⇐ <code>EventEmitter</code>
 **Kind**: global class  
 **Extends**: <code>EventEmitter</code>  
 
-* [LPF2](#LPF2) ⇐ <code>EventEmitter</code>
-    * [.scan()](#LPF2+scan)
-    * [.stop()](#LPF2+stop)
-    * [.getConnectedHubByUUID(uuid)](#LPF2+getConnectedHubByUUID) ⇒ <code>Hub</code> \| <code>null</code>
-    * [.getConnectedHubs()](#LPF2+getConnectedHubs) ⇒ <code>Array.&lt;Hub&gt;</code>
-    * ["discover" (hub)](#LPF2+event_discover)
+* [PoweredUP](#PoweredUP) ⇐ <code>EventEmitter</code>
+    * [.scan()](#PoweredUP+scan)
+    * [.stop()](#PoweredUP+stop)
+    * [.getConnectedHubByUUID(uuid)](#PoweredUP+getConnectedHubByUUID) ⇒ <code>Hub</code> \| <code>null</code>
+    * [.getConnectedHubs()](#PoweredUP+getConnectedHubs) ⇒ <code>Array.&lt;Hub&gt;</code>
+    * ["discover" (hub)](#PoweredUP+event_discover)
 
-<a name="LPF2+scan"></a>
+<a name="PoweredUP+scan"></a>
 
-### lpF2.scan()
-Begin scanning for LPF2 Hub devices.
+### poweredUP.scan()
+Begin scanning for Powered UP Hub devices.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+stop"></a>
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
+<a name="PoweredUP+stop"></a>
 
-### lpF2.stop()
-Stop scanning for LPF2 Hub devices.
+### poweredUP.stop()
+Stop scanning for Powered UP Hub devices.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+getConnectedHubByUUID"></a>
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
+<a name="PoweredUP+getConnectedHubByUUID"></a>
 
-### lpF2.getConnectedHubByUUID(uuid) ⇒ <code>Hub</code> \| <code>null</code>
-Retrieve a LPF2 Hub by UUID.
+### poweredUP.getConnectedHubByUUID(uuid) ⇒ <code>Hub</code> \| <code>null</code>
+Retrieve a Powered UP Hub by UUID.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
 
 | Param | Type |
 | --- | --- |
 | uuid | <code>string</code> | 
 
-<a name="LPF2+getConnectedHubs"></a>
+<a name="PoweredUP+getConnectedHubs"></a>
 
-### lpF2.getConnectedHubs() ⇒ <code>Array.&lt;Hub&gt;</code>
-Retrieve a list of LPF2 Hubs.
+### poweredUP.getConnectedHubs() ⇒ <code>Array.&lt;Hub&gt;</code>
+Retrieve a list of Powered UP Hubs.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+event_discover"></a>
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
+<a name="PoweredUP+event_discover"></a>
 
 ### "discover" (hub)
-Emits when a LPF2 Hub device is found.
+Emits when a Powered UP Hub device is found.
 
-**Kind**: event emitted by [<code>LPF2</code>](#LPF2)  
+**Kind**: event emitted by [<code>PoweredUP</code>](#PoweredUP)  
 
 | Param | Type |
 | --- | --- |

@@ -1,20 +1,20 @@
-# **node-lpf2** - A Node.js module to interface with LEGO Power Functions 2.0 components.
+# **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
 
 ### Installation
 
 Node.js v8.0+ required.
 
 ```javascript
-npm install node-lpf2 --save
+npm install node-poweredup --save
 ```
 
-node-lpf2 uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/noble/noble#prerequisites).
+node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/noble/noble#prerequisites).
 
-Note: node-lpf2 has been tested on macOS 10.13 and Debian/Raspbian on the Raspberry Pi 3 Model B.
+Note: node-poweredup has been tested on macOS 10.13 and Debian/Raspbian on the Raspberry Pi 3 Model B.
 
 ### Compatibility
 
-While most LPF2 components and Hubs are compatible with each other, there are exceptions. There is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
+While most Powered UP components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
 
 | Name                            | Type          | WeDo 2.0 Smart Hub | Boost Move Hub | Powered Up Hub | Availability |
 | ------------------------------- | ------------- | ------------------ | -------------- | -------------- | ------------ |
@@ -22,7 +22,7 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 | WeDo 2.0 Motion Sensor          | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
 | WeDo 2.0 Medium Motor           | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a> |
 | Boost Color and Distance Sensor | Sensor        |     *Partial*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
-| Boost Interactive Motor  | Motor/Sensor  |     *Partial*    |       Yes      |       *Partial*      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Boost Tacho Motor  | Motor/Sensor  |     *Partial*    |       Yes      |       *Partial*      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
 | Powered Up Train Motor          | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
 | Powered Up LED Lights           | Light         |       Unknown      |     Unknown    |     Unknown    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
 
@@ -40,8 +40,8 @@ While most LPF2 components and Hubs are compatible with each other, there are ex
 ### Usage
 
 ```javascript
-const LPF2 = require("node-lpf2").LPF2;
-const lpf2 = new LPF2();
+const PoweredUP = require("node-poweredup");
+const pup = new PoweredUP.PoweredUP();
 ```
 
 Examples are available in the "examples" directory.
@@ -53,7 +53,7 @@ Thanks go to Jorge Pereira ([@JorgePe](https://github.com/JorgePe)), Sebastian R
 ## Classes
 
 <dl>
-<dt><a href="#LPF2">LPF2</a> ⇐ <code>EventEmitter</code></dt>
+<dt><a href="#PoweredUP">PoweredUP</a> ⇐ <code>EventEmitter</code></dt>
 <dd></dd>
 <dt><a href="#WeDo2SmartHub">WeDo2SmartHub</a> ⇐ <code>Hub</code></dt>
 <dd></dd>
@@ -65,54 +65,54 @@ Thanks go to Jorge Pereira ([@JorgePe](https://github.com/JorgePe)), Sebastian R
 <dd></dd>
 </dl>
 
-<a name="LPF2"></a>
+<a name="PoweredUP"></a>
 
-## LPF2 ⇐ <code>EventEmitter</code>
+## PoweredUP ⇐ <code>EventEmitter</code>
 **Kind**: global class  
 **Extends**: <code>EventEmitter</code>  
 
-* [LPF2](#LPF2) ⇐ <code>EventEmitter</code>
-    * [.scan()](#LPF2+scan)
-    * [.stop()](#LPF2+stop)
-    * [.getConnectedHubByUUID(uuid)](#LPF2+getConnectedHubByUUID) ⇒ <code>Hub</code> \| <code>null</code>
-    * [.getConnectedHubs()](#LPF2+getConnectedHubs) ⇒ <code>Array.&lt;Hub&gt;</code>
-    * ["discover" (hub)](#LPF2+event_discover)
+* [PoweredUP](#PoweredUP) ⇐ <code>EventEmitter</code>
+    * [.scan()](#PoweredUP+scan)
+    * [.stop()](#PoweredUP+stop)
+    * [.getConnectedHubByUUID(uuid)](#PoweredUP+getConnectedHubByUUID) ⇒ <code>Hub</code> \| <code>null</code>
+    * [.getConnectedHubs()](#PoweredUP+getConnectedHubs) ⇒ <code>Array.&lt;Hub&gt;</code>
+    * ["discover" (hub)](#PoweredUP+event_discover)
 
-<a name="LPF2+scan"></a>
+<a name="PoweredUP+scan"></a>
 
-### lpF2.scan()
-Begin scanning for LPF2 Hub devices.
+### poweredUP.scan()
+Begin scanning for Powered UP Hub devices.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+stop"></a>
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
+<a name="PoweredUP+stop"></a>
 
-### lpF2.stop()
-Stop scanning for LPF2 Hub devices.
+### poweredUP.stop()
+Stop scanning for Powered UP Hub devices.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+getConnectedHubByUUID"></a>
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
+<a name="PoweredUP+getConnectedHubByUUID"></a>
 
-### lpF2.getConnectedHubByUUID(uuid) ⇒ <code>Hub</code> \| <code>null</code>
-Retrieve a LPF2 Hub by UUID.
+### poweredUP.getConnectedHubByUUID(uuid) ⇒ <code>Hub</code> \| <code>null</code>
+Retrieve a Powered UP Hub by UUID.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
 
 | Param | Type |
 | --- | --- |
 | uuid | <code>string</code> | 
 
-<a name="LPF2+getConnectedHubs"></a>
+<a name="PoweredUP+getConnectedHubs"></a>
 
-### lpF2.getConnectedHubs() ⇒ <code>Array.&lt;Hub&gt;</code>
-Retrieve a list of LPF2 Hubs.
+### poweredUP.getConnectedHubs() ⇒ <code>Array.&lt;Hub&gt;</code>
+Retrieve a list of Powered UP Hubs.
 
-**Kind**: instance method of [<code>LPF2</code>](#LPF2)  
-<a name="LPF2+event_discover"></a>
+**Kind**: instance method of [<code>PoweredUP</code>](#PoweredUP)  
+<a name="PoweredUP+event_discover"></a>
 
 ### "discover" (hub)
-Emits when a LPF2 Hub device is found.
+Emits when a Powered UP Hub device is found.
 
-**Kind**: event emitted by [<code>LPF2</code>](#LPF2)  
+**Kind**: event emitted by [<code>PoweredUP</code>](#PoweredUP)  
 
 | Param | Type |
 | --- | --- |

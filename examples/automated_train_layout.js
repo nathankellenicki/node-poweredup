@@ -1,10 +1,10 @@
 // This example won't work by itself, this is the code used to automate this train layout: https://www.youtube.com/watch?v=Tyzo_hHFiUc
 // It is included here as an example.
 
-const LPF2 = require(".").LPF2;
+const PoweredUP = require("..").PoweredUP;
 
-const lpf2 = new LPF2();
-lpf2.scan(); // Start scanning for hubs
+const pup = new PoweredUP();
+pup.scan(); // Start scanning for hubs
 
 console.log("Looking for Hubs...");
 
@@ -24,7 +24,7 @@ let state = 0;
 
 let moving = true;
 
-lpf2.on("discover", async (hub) => { // Wait to discover hubs
+pup.on("discover", async (hub) => { // Wait to discover hubs
 
     console.log(hub.uuid);
 

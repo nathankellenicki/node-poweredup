@@ -1,18 +1,18 @@
-const LPF2 = require("..");
+const PoweredUP = require("..");
 
-const lpf2 = new LPF2.LPF2();
-lpf2.scan(); // Start scanning for trains
+const pup = new PoweredUP.PoweredUP();
+pup.scan(); // Start scanning for trains
 
 // Change these to make the train behave as you want
-const FORWARD_DIRECTION_COLOR = LPF2.Consts.Colors.YELLOW;
-const BACKWARDS_DIRECTION_COLOR = LPF2.Consts.Colors.RED;
+const FORWARD_DIRECTION_COLOR = PoweredUP.Consts.Colors.YELLOW;
+const BACKWARDS_DIRECTION_COLOR = PoweredUP.Consts.Colors.RED;
 const TRAIN_SPEED = 40;
 const STOP_DELAY = 2000;
 const TRAIN_MOTOR_PORT = "A";
 
 console.log("Looking for trains...");
 
-lpf2.on("discover", async (hub) => { // Wait to discover a train
+pup.on("discover", async (hub) => { // Wait to discover a train
 
     let moving = true;
 
