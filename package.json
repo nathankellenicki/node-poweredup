@@ -1,6 +1,6 @@
 {
   "name": "node-poweredup",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A Node.js module to interface with LEGO Powered UP components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
   "main": "dist/poweredup.js",
@@ -15,6 +15,7 @@
   "author": "Nathan Kellenicki <nathan@kellenicki.com>",
   "license": "MIT",
   "dependencies": {
+    "debug": "^3.1.0",
     "noble": "^1.9.1"
   },
   "devDependencies": {
