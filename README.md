@@ -2,7 +2,7 @@
 
 ### Installation
 
-Node.js v8.0+ required.
+Node.js v8.0 required.
 
 ```javascript
 npm install node-poweredup --save
