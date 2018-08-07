@@ -348,7 +348,7 @@ export class Hub extends EventEmitter {
                 return 0x02;
             case Consts.Devices.TRAIN_MOTOR:
                 return 0x02;
-            case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
+            case Consts.Devices.BOOST_TACHO_MOTOR:
                 return 0x02;
             case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
                 return 0x02;

@@ -288,7 +288,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
                     break;
                 }
-                case Consts.Devices.BOOST_INTERACTIVE_MOTOR:
+                case Consts.Devices.BOOST_TACHO_MOTOR:
                 {
                     const rotation = data.readInt32LE(2);
                     /**

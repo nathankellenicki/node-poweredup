@@ -31,11 +31,11 @@ While most Powered UP components and Hubs are compatible with each other, there 
 
 * The Boost Color and Distance sensor only works in color mode with the WeDo 2.0 Smart Hub.
 
-* When used with the WeDo 2.0 Smart Hub, the Boost Interactive Motor does not support rotating the motor by angle.
+* When used with the WeDo 2.0 Smart Hub, the Boost Tacho Motor does not support rotating the motor by angle.
 
-* When used with the Powered Up Hub, the Boost Interactive Motor does not support rotating the motor by angle. It also does not support rotation detection.
+* When used with the Powered Up Hub, the Boost Tacho Motor does not support rotating the motor by angle. It also does not support rotation detection.
 
-* Plugging two Boost Interactive Motors into the Powered Up Hub will crash the Hub (This requires a firmware update from LEGO to fix).
+* Plugging two Boost Tacho Motors into the Powered Up Hub will crash the Hub (This requires a firmware update from LEGO to fix).
 
 ### Usage
 
