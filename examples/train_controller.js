@@ -53,57 +53,60 @@ const trains = [
 ];
 
 
-let currentTrain = 0;
 poweredUP.on("discover", async (hub) => {
 
     if (hub instanceof PoweredUP.PUPRemote) {
+        await hub.connect();
+        hub._currentTrain = 0;
         hub.on("button", (button, state) => {
 
             switch (button) {
                 case "GREEN": {
                     if (state === PoweredUP.Consts.ButtonStates.PRESSED) {
-                        currentTrain++;
-                        if (currentTrain >= trains.length) {
-                            currentTrain = 0;
+                        hub._currentTrain++;
+                        if (hub._currentTrain >= trains.length) {
+                            hub._currentTrain = 0;
                         }
-                        hub.setLEDColor(trains[currentTrain].color);
-                        console.log(`Switched active train to ${trains[currentTrain].name}`);
+                        hub.setLEDColor(trains[hub._currentTrain].color);
+                        console.log(`Switched active train to ${trains[hub._currentTrain].name}`);
                     }
                     break;
                 }
                 case "LEFT": {
-                    trains[currentTrain]._speed = trains[currentTrain]._speed || 0;
+                    trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
                     if (state === PoweredUP.Consts.ButtonStates.UP) {
-                        trains[currentTrain]._speed += 10;
-                        if (trains[currentTrain]._speed > 100) {
-                            trains[currentTrain]._speed = 100;
+                        trains[hub._currentTrain]._speed += 10;
+                        if (trains[hub._currentTrain]._speed > 100) {
+                            trains[hub._currentTrain]._speed = 100;
                         }
                     } else if (state === PoweredUP.Consts.ButtonStates.DOWN) {
-                        trains[currentTrain]._speed -= 10;
-                        if (trains[currentTrain]._speed < 0) {
-                            trains[currentTrain]._speed = 0;
+                        trains[hub._currentTrain]._speed -= 10;
+                        if (trains[hub._currentTrain]._speed < 0) {
+                            trains[hub._currentTrain]._speed = 0;
                         }
                     }
-                    for (let trainHub in trains[currentTrain].hubs) {
+                    for (let trainHub in trains[hub._currentTrain].hubs) {
                         if (trainHub._hub) {
                             for (let port in trainHub.ports) {
                                 trainHub.reverse = trainHub.reverse || [];
-                                trainHub._hub.setMotorSpeed(port, trainHub.reverse.indexOf(port) >= 0 ? -trains[currentTrain].speed : trains[currentTrain].speed);
+                                trainHub._hub.setMotorSpeed(port, trainHub.reverse.indexOf(port) >= 0 ? -trains[hub._currentTrain].speed : trains[hub._currentTrain].speed);
                             }
                         }
                     }
-                    console.log(`Set ${trains[currentTrain].name} speed to ${trains[currentTrain]._speed}`);
+                    console.log(`Set ${trains[hub._currentTrain].name} speed to ${trains[hub._currentTrain]._speed}`);
                 }
             }
 
         });
-        hub.setLEDColor(trains[currentTrain].color);
+        hub.setLEDColor(trains[hub._currentTrain].color);
+        console.log(`Connected to Powered UP remote (${hub.name})`);
         return;
     }
 
     for (let train in trains) {
         for (let trainHub in train.hubs) {
             if (hub.name === trainHub.name) {
+                await hub.connect();
                 trainHub._hub = hub;
                 hub.setLEDColor(train.color);
                 console.log(`Connected to ${train.name} (${hub.name})`);
