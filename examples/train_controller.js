@@ -60,41 +60,40 @@ poweredUP.on("discover", async (hub) => {
         hub._currentTrain = 0;
         hub.on("button", (button, state) => {
 
-            switch (button) {
-                case "GREEN": {
-                    if (state === PoweredUP.Consts.ButtonStates.PRESSED) {
-                        hub._currentTrain++;
-                        if (hub._currentTrain >= trains.length) {
-                            hub._currentTrain = 0;
-                        }
-                        hub.setLEDColor(trains[hub._currentTrain].color);
-                        console.log(`Switched active train to ${trains[hub._currentTrain].name}`);
+            if (button === "GREEN") {
+                if (state === PoweredUP.Consts.ButtonStates.PRESSED) {
+                    hub._currentTrain++;
+                    if (hub._currentTrain >= trains.length) {
+                        hub._currentTrain = 0;
                     }
-                    break;
+                    hub.setLEDColor(trains[hub._currentTrain].color);
+                    console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name}`);
                 }
-                case "LEFT": {
-                    trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
-                    if (state === PoweredUP.Consts.ButtonStates.UP) {
-                        trains[hub._currentTrain]._speed += 10;
-                        if (trains[hub._currentTrain]._speed > 100) {
-                            trains[hub._currentTrain]._speed = 100;
-                        }
-                    } else if (state === PoweredUP.Consts.ButtonStates.DOWN) {
-                        trains[hub._currentTrain]._speed -= 10;
-                        if (trains[hub._currentTrain]._speed < 0) {
-                            trains[hub._currentTrain]._speed = 0;
-                        }
+                break;
+            } else if (button === "LEFT" || button === "RIGHT") {
+                trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
+                if (state === PoweredUP.Consts.ButtonStates.UP) {
+                    trains[hub._currentTrain]._speed += 10;
+                    if (trains[hub._currentTrain]._speed > 100) {
+                        trains[hub._currentTrain]._speed = 100;
                     }
-                    for (let trainHub in trains[hub._currentTrain].hubs) {
-                        if (trainHub._hub) {
-                            for (let port in trainHub.ports) {
-                                trainHub.reverse = trainHub.reverse || [];
-                                trainHub._hub.setMotorSpeed(port, trainHub.reverse.indexOf(port) >= 0 ? -trains[hub._currentTrain].speed : trains[hub._currentTrain].speed);
-                            }
-                        }
+                } else if (state === PoweredUP.Consts.ButtonStates.DOWN) {
+                    trains[hub._currentTrain]._speed -= 10;
+                    if (trains[hub._currentTrain]._speed < 0) {
+                        trains[hub._currentTrain]._speed = 0;
                     }
-                    console.log(`Set ${trains[hub._currentTrain].name} speed to ${trains[hub._currentTrain]._speed}`);
+                } else if (state === PoweredUP.Consts.ButtonStates.STOP) {
+                    trains[hub._currentTrain]._speed = 0;
                 }
+                for (let trainHub in trains[hub._currentTrain].hubs) {
+                    if (trainHub._hub) {
+                        for (let port in trainHub.ports) {
+                            trainHub.reverse = trainHub.reverse || [];
+                            trainHub._hub.setMotorSpeed(port, trainHub.reverse.indexOf(port) >= 0 ? -trains[hub._currentTrain].speed : trains[hub._currentTrain].speed);
+                        }
+                    }
+                }
+                console.log(`Set ${trains[hub._currentTrain].name} speed to ${trains[hub._currentTrain]._speed}`);
             }
 
         });
