@@ -19,12 +19,12 @@ const trains = [
             {
                 name: "NK_Horizon_1",
                 ports: ["A"],
-                lights: ["B"]
+                lights: ["B"],
+                reverse: ["A"]
             },
             {
                 name: "NK_Horizon_2",
-                ports: ["A"],
-                reverse: ["A"]
+                ports: ["A"]
             }
         ]
     },
@@ -35,7 +35,8 @@ const trains = [
             {
                 name: "NK_Emerald",
                 ports: ["A"],
-                lights: ["B"]
+                lights: ["B"],
+                reverse: ["A"]
             }
         ]
     },
@@ -46,7 +47,8 @@ const trains = [
             {
                 name: "NK_Metroliner",
                 ports: ["A"],
-                lights: ["B"]
+                lights: ["B"],
+                reverse: ["A"]
             }
         ]
     }
@@ -57,7 +59,7 @@ poweredUP.on("discover", async (hub) => {
 
     if (hub instanceof PoweredUP.PUPRemote) {
         await hub.connect();
-        hub._currentTrain = 0;
+        hub._currentTrain = 2;
         hub.on("button", (button, state) => {
 
             if (button === "GREEN") {
@@ -69,8 +71,7 @@ poweredUP.on("discover", async (hub) => {
                     hub.setLEDColor(trains[hub._currentTrain].color);
                     console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name}`);
                 }
-                break;
-            } else if (button === "LEFT" || button === "RIGHT") {
+            } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonStates.RELEASED) {
                 trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
                 if (state === PoweredUP.Consts.ButtonStates.UP) {
                     trains[hub._currentTrain]._speed += 10;
@@ -79,17 +80,19 @@ poweredUP.on("discover", async (hub) => {
                     }
                 } else if (state === PoweredUP.Consts.ButtonStates.DOWN) {
                     trains[hub._currentTrain]._speed -= 10;
-                    if (trains[hub._currentTrain]._speed < 0) {
-                        trains[hub._currentTrain]._speed = 0;
+                    if (trains[hub._currentTrain]._speed < -100) {
+                        trains[hub._currentTrain]._speed = -100;
                     }
                 } else if (state === PoweredUP.Consts.ButtonStates.STOP) {
                     trains[hub._currentTrain]._speed = 0;
                 }
                 for (let trainHub in trains[hub._currentTrain].hubs) {
+                    trainHub = trains[hub._currentTrain].hubs[trainHub];
                     if (trainHub._hub) {
                         for (let port in trainHub.ports) {
+                            port = trainHub.ports[port];
                             trainHub.reverse = trainHub.reverse || [];
-                            trainHub._hub.setMotorSpeed(port, trainHub.reverse.indexOf(port) >= 0 ? -trains[hub._currentTrain].speed : trains[hub._currentTrain].speed);
+                            trainHub._hub.setMotorSpeed(port, trainHub.reverse.indexOf(port) >= 0 ? -trains[hub._currentTrain]._speed : trains[hub._currentTrain]._speed);
                         }
                     }
                 }
@@ -103,7 +106,9 @@ poweredUP.on("discover", async (hub) => {
     }
 
     for (let train in trains) {
+        train = trains[train];
         for (let trainHub in train.hubs) {
+            trainHub = train.hubs[trainHub];
             if (hub.name === trainHub.name) {
                 await hub.connect();
                 trainHub._hub = hub;
