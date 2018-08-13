@@ -10,7 +10,7 @@ Powered UP has a few improvements over Power Functions:
 
 2. The ability to use sensors to react to events happening in the real world opens up a whole new world of possibilities.
 
-3. As Powered UP hubs and remotes pair with each other, it allows for a near unlimited number of independently controlled models in the same room. Power Functions was limited to 8 due to the use of infra-red for communication.
+3. As Powered UP hubs and remotes pair with each other, the system allows for a near unlimited number of independently controlled models in the same room. Power Functions was limited to 8 due to the use of infra-red for communication.
 
 ### Installation
 
