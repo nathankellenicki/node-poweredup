@@ -1,5 +1,17 @@
 # **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
 
+### Introduction
+
+LEGO Powered UP is the successor to Power Functions, the system for adding electronics to LEGO models. Powered UP is a collection of ranges - starting with LEGO WeDo 2.0 released in 2016, LEGO Boost released in 2017, and LEGO Powered UP released in 2018.
+
+Powered UP has a few improvements over Power Functions:
+
+1. The use of Bluetooth Low Energy makes it easy to control from a computer, and even write code for.
+
+2. The ability to use sensors to react to events happening in the real world opens up a whole new world of possibilities.
+
+3. When using a Powered UP remote control, there are 5 channels available, with 2 motors each - an improvement over the 4 channels/2 motors in Power Functions. However as the remotes pair with the hubs, each paired network is seperate, allowing a near unlimited number of networks in the same room (As Power Functions used Infra-Red, this would cause cross-talk issues).
+
 ### Installation
 
 Node.js v8.0 required.
