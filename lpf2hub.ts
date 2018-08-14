@@ -200,20 +200,19 @@ export class LPF2Hub extends Hub {
 
     private _parseSensorMessage (data: Buffer) {
 
-        if (data[3] === 0x3c) { // Voltage
+        if ((data[3] === 0x3b && this.type === Consts.Hubs.POWERED_UP_REMOTE) || (data[3] === 0x3c && this.type !== Consts.Hubs.POWERED_UP_REMOTE)) { // Voltage
             data = this._padMessage(data, 6);
-            let batteryLevel = (data.readUInt16LE(4) / 4096) * 100;
-            if (this.type === Consts.Hubs.POWERED_UP_REMOTE) {
-                batteryLevel = (100 / 5.1) * ((data.readUInt16LE(4) / 4096) * 100);
-            }
+            const batteryLevel = (data.readUInt16LE(4) / 4096) * 100;
             this._batteryLevel = Math.floor(batteryLevel);
             return;
-        } else if (data[3] === 0x3b) { // Current
+        } else if (data[3] === 0x3b && this.type !== Consts.Hubs.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
             data = this._padMessage(data, 6);
-            let current = data.readUInt16LE(4) / 4096;
-            if (this.type === Consts.Hubs.POWERED_UP_REMOTE) {
-                current = data.readUInt16LE(4) / 1000000;
-            }
+            const current = data.readUInt16LE(4) / 4096;
+            this._current = current;
+            return;
+        } else if (data[3] === 0x3c) { // Current (PUP Remote)
+            data = this._padMessage(data, 6);
+            const current = data.readUInt16LE(4) / 1000;
             this._current = current;
             return;
         }
