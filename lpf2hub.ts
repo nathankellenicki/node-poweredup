@@ -208,7 +208,7 @@ export class LPF2Hub extends Hub {
         } else if (data[3] === 0x3b && this.type !== Consts.Hubs.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
             data = this._padMessage(data, 6);
             const current = data.readUInt16LE(4) / 4096;
-            this._current = current;
+            this._current = current * 100;
             return;
         } else if (data[3] === 0x3c) { // Current (PUP Remote)
             data = this._padMessage(data, 6);
