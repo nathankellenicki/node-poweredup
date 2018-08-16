@@ -69,6 +69,24 @@ export class LPF2Hub extends Hub {
     }
 
 
+    /**
+     * Set the color of the LED on the Hub via a color value.
+     * @method LPF2Hub#setLEDColor
+     * @param {number} color A number representing one of the LED color consts.
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    public setLEDColor (color: number | boolean) {
+        return new Promise((resolve, reject) => {
+            if (color === false) {
+                color = 0;
+            }
+            const data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            return resolve();
+        });
+    }
+
+
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
         this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }

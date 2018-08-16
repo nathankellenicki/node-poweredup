@@ -174,6 +174,29 @@ export class WeDo2SmartHub extends Hub {
     }
 
 
+    /**
+     * Set the light brightness on a given port.
+     * @method WeDo2SmartHub#setLightBrightness
+     * @param {string} port
+     * @param {number} brightness Brightness value between 0-100 (0 is off)
+     * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
+     * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the light is turned off.
+     */
+    public setLightBrightness (port: string, brightness: number, time?: number) {
+        const portObj = this._portLookup(port);
+        return new Promise((resolve, reject) => {
+            const data = Buffer.from([this._portLookup(port).value, 0x01, 0x02, this._mapSpeed(brightness)]);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            setTimeout(() => {
+                const data = Buffer.from([this._portLookup(port).value, 0x01, 0x02, 0x00]);
+                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                return resolve();
+            }, time);
+            return resolve();
+        });
+    }
+
+
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
             this._writeMessage(Consts.BLECharacteristics.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
     }

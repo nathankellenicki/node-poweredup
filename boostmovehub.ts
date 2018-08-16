@@ -49,24 +49,6 @@ export class BoostMoveHub extends LPF2Hub {
 
 
     /**
-     * Set the color of the LED on the Hub via a color value.
-     * @method BoostMoveHub#setLEDColor
-     * @param {number} color A number representing one of the LED color consts.
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDColor (color: number | boolean) {
-        return new Promise((resolve, reject) => {
-            if (color === false) {
-                color = 0;
-            }
-            const data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-            return resolve();
-        });
-    }
-
-
-    /**
      * Set the motor speed on a given port.
      * @method BoostMoveHub#setMotorSpeed
      * @param {string} port
@@ -183,6 +165,29 @@ export class BoostMoveHub extends LPF2Hub {
             portObj.finished = () => {
                 return resolve();
             };
+        });
+    }
+
+
+    /**
+     * Set the light brightness on a given port.
+     * @method BoostMoveHub#setLightBrightness
+     * @param {string} port
+     * @param {number} brightness Brightness value between 0-100 (0 is off)
+     * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
+     * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the light is turned off.
+     */
+    public setLightBrightness (port: string, brightness: number, time?: number) {
+        const portObj = this._portLookup(port);
+        return new Promise((resolve, reject) => {
+            const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            setTimeout(() => {
+                const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
+                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                return resolve();
+            }, time);
+            return resolve();
         });
     }
 
