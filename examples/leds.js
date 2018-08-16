@@ -4,9 +4,9 @@
  *
  */
 
-const PoweredUP = require("..").PoweredUP;
+const PoweredUP = require("..");
 
-const poweredUP = new PoweredUP();
+const poweredUP = new PoweredUP.PoweredUP();
 poweredUP.scan(); // Start scanning for hubs
 
 console.log("Looking for Hubs...");

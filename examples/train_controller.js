@@ -1,5 +1,6 @@
 const PoweredUP = require("..");
-const poweredUP = new PoweredUP.PoweredUP();
+
+const poweredUP = new PoweredUP.PoweredUP()
 
 const trains = [
     {
