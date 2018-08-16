@@ -10,6 +10,7 @@ export enum Devices {
     UNKNOWN = 0,
     BASIC_MOTOR = 1,
     TRAIN_MOTOR = 2,
+    LED_LIGHTS = 8,
     BOOST_LED = 22,
     WEDO2_TILT = 34,
     WEDO2_DISTANCE = 35,

@@ -142,12 +142,15 @@ export class PUPHub extends LPF2Hub {
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-            setTimeout(() => {
-                const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            if (time) {
+                setTimeout(() => {
+                    const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
+                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    return resolve();
+                }, time);
+            } else {
                 return resolve();
-            }, time);
-            return resolve();
+            }
         });
     }
 

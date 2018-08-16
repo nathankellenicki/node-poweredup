@@ -187,12 +187,15 @@ export class WeDo2SmartHub extends Hub {
         return new Promise((resolve, reject) => {
             const data = Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(brightness)]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-            setTimeout(() => {
-                const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
-                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            if (time) {
+                setTimeout(() => {
+                    const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
+                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    return resolve();
+                }, time);
+            } else {
                 return resolve();
-            }, time);
-            return resolve();
+            }
         });
     }
 
