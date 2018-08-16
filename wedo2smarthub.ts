@@ -185,10 +185,10 @@ export class WeDo2SmartHub extends Hub {
     public setLightBrightness (port: string, brightness: number, time?: number) {
         const portObj = this._portLookup(port);
         return new Promise((resolve, reject) => {
-            const data = Buffer.from([this._portLookup(port).value, 0x01, 0x02, this._mapSpeed(brightness)]);
+            const data = Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(brightness)]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             setTimeout(() => {
-                const data = Buffer.from([this._portLookup(port).value, 0x01, 0x02, 0x00]);
+                const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                 return resolve();
             }, time);
