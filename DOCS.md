@@ -754,7 +754,7 @@ Emits when an attached motor or sensor is detached from the Hub.
 <a name="new_PUPHub_new"></a>
 
 ### new PUPHub()
-The PUPHub is emitted if the discovered device is a Powered Up Hub.
+The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 <a name="LPF2Hub+current"></a>
 
@@ -1044,7 +1044,7 @@ Emits when an attached motor or sensor is detached from the Hub.
 <a name="new_PUPRemote_new"></a>
 
 ### new PUPRemote()
-The PUPRemote is emitted if the discovered device is a Powered Up Remote.
+The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 <a name="LPF2Hub+current"></a>
 

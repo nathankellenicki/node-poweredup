@@ -35,8 +35,8 @@ While most Powered UP components and Hubs are compatible with each other, there 
 | WeDo 2.0 Medium Motor           | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a> |
 | Boost Color and Distance Sensor | Sensor        |     *Partial*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
 | Boost Tacho Motor  | Motor/Sensor  |     *Partial*    |       Yes      |       *Partial*      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
-| Powered Up Train Motor          | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
-| Powered Up LED Lights           | Light         |       Yes      |     Yes    |     Yes    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
+| Powered UP Train Motor          | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
+| Powered UP LED Lights           | Light         |       Yes      |     Yes    |     Yes    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
 
 
 ### Known Issues and Limitations
@@ -833,7 +833,7 @@ Emits when an attached motor or sensor is detached from the Hub.
 <a name="new_PUPHub_new"></a>
 
 ### new PUPHub()
-The PUPHub is emitted if the discovered device is a Powered Up Hub.
+The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 <a name="LPF2Hub+current"></a>
 
@@ -1123,7 +1123,7 @@ Emits when an attached motor or sensor is detached from the Hub.
 <a name="new_PUPRemote_new"></a>
 
 ### new PUPRemote()
-The PUPRemote is emitted if the discovered device is a Powered Up Remote.
+The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 <a name="LPF2Hub+current"></a>
 

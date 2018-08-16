@@ -1,6 +1,6 @@
 /*
  *
- * This example allows you to connect your Batmobile and a Powered Up Remote Control to your laptop, and enables the control of the Batmobile with the Remote.
+ * This example allows you to connect your Batmobile and a Powered UP Remote Control to your laptop, and enables the control of the Batmobile with the Remote.
  *
  */
 
@@ -81,7 +81,7 @@ poweredUP.on("discover", async (hub) => { // Wait to Batmobile and Remote
         })
 
         await remote.connect();
-        console.log("Connected to Powered Up Remote!");
+        console.log("Connected to Powered UP Remote!");
     }
 
     if (batmobile && remote) {

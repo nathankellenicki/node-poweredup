@@ -10,7 +10,7 @@ const debug = Debug("pupremote");
 
 
 /**
- * The PUPRemote is emitted if the discovered device is a Powered Up Remote.
+ * The PUPRemote is emitted if the discovered device is a Powered UP Remote.
  * @class PUPRemote
  * @extends LPF2Hub
  * @extends Hub
@@ -18,7 +18,7 @@ const debug = Debug("pupremote");
 export class PUPRemote extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Powered Up Remote will never emit them.
+    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
 
     /**
      * @event PUPRemote#distance
@@ -63,13 +63,13 @@ export class PUPRemote extends LPF2Hub {
             "LEFT": new Port("LEFT", 0),
             "RIGHT": new Port("RIGHT", 1)
         };
-        debug("Discovered Powered Up Remote");
+        debug("Discovered Powered UP Remote");
     }
 
 
     public connect () {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Powered Up Remote");
+            debug("Connecting to Powered UP Remote");
             await super.connect();
             debug("Connect completed");
             return resolve();

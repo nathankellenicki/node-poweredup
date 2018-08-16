@@ -1,6 +1,6 @@
 /*
  *
- * This example allows you to connect Vernie and a Powered Up Remote Control to your laptop, and enables the control of Vernie with the Remote.
+ * This example allows you to connect Vernie and a Powered UP Remote Control to your laptop, and enables the control of Vernie with the Remote.
  *
  */
 
@@ -63,7 +63,7 @@ poweredUP.on("discover", async (hub) => { // Wait to discover Vernie and Remote
         })
 
         await remote.connect();
-        console.log("Connected to Powered Up Remote!");
+        console.log("Connected to Powered UP Remote!");
     }
 
     if (vernie && remote) {

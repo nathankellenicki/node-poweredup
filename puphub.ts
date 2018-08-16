@@ -11,7 +11,7 @@ const debug = Debug("puphub");
 
 
 /**
- * The PUPHub is emitted if the discovered device is a Powered Up Hub.
+ * The PUPHub is emitted if the discovered device is a Powered UP Hub.
  * @class PUPHub
  * @extends LPF2Hub
  * @extends Hub
@@ -19,7 +19,7 @@ const debug = Debug("puphub");
 export class PUPHub extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Powered Up Remote will never emit them.
+    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
 
     /**
      * @event PUPHub#rotate
@@ -40,13 +40,13 @@ export class PUPHub extends LPF2Hub {
             "B": new Port("B", 1),
             "AB": new Port("AB", 57)
         };
-        debug("Discovered Powered Up Hub");
+        debug("Discovered Powered UP Hub");
     }
 
 
     public connect () {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Powered Up Hub");
+            debug("Connecting to Powered UP Hub");
             await super.connect();
             debug("Connect completed");
             return resolve();
