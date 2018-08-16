@@ -47,6 +47,9 @@ export class WeDo2SmartHub extends Hub {
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_BUTTON], this._parseSensorMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_BATTERY], this._parseBatteryMessage.bind(this));
             this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_HIGH_CURRENT_ALERT], this._parseHighCurrentAlert.bind(this));
+            this._characteristics[Consts.BLECharacteristics.WEDO2_BATTERY].read((err, data) => {
+                this._parseBatteryMessage(data);
+            });
             debug("Connect completed");
             return resolve();
         });
