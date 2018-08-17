@@ -25,7 +25,8 @@ const trains = [
             },
             {
                 name: "NK_Horizon_2",
-                ports: ["A"]
+                ports: ["A"],
+                lights: ["B"]
             }
         ]
     },
@@ -115,6 +116,11 @@ poweredUP.on("discover", async (hub) => {
                 trainHub._hub = hub;
                 hub.setLEDColor(train.color);
                 console.log(`Connected to ${train.name} (${hub.name})`);
+                hub.on("attach", (port, type) => {
+                    if (type === PoweredUP.Consts.Devices.LED_LIGHTS && trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
+                        hub.setLightBrightness(port, 100);
+                    }
+                });
                 hub.on("disconnect", () => {
                     console.log(`Disconnected from ${train.name} (${hub.name})`);
                     delete trainHub._hub;
