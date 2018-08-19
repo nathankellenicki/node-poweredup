@@ -74,6 +74,7 @@ export class PUPHub extends LPF2Hub {
                 throw new Error(`Port ${portObj.id} requires both motors be of the same type`);
             }
         }
+        portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             if (time) {
                 let data = null;
@@ -84,7 +85,7 @@ export class PUPHub extends LPF2Hub {
                     data = Buffer.from([0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
                 }
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     let data = null;
                     if (portObj.id === "AB") {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x02, 0x00, 0x00]);
@@ -94,6 +95,7 @@ export class PUPHub extends LPF2Hub {
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     return resolve();
                 }, time);
+                portObj.setEventTimer(timeout);
             } else {
                 let data = null;
                 if (portObj.id === "AB") {
@@ -119,8 +121,10 @@ export class PUPHub extends LPF2Hub {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
+        const portObj = this._portLookup(port);
+        portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
-            this._calculateRamp(fromSpeed, toSpeed, time)
+            this._calculateRamp(fromSpeed, toSpeed, time, portObj)
             .on("changeSpeed", (speed) => {
                 this.setMotorSpeed(port, speed);
             })
@@ -139,15 +143,17 @@ export class PUPHub extends LPF2Hub {
      */
     public setLightBrightness (port: string, brightness: number, time?: number) {
         const portObj = this._portLookup(port);
+        portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             if (time) {
-                setTimeout(() => {
+                const timeout = setTimeout(() => {
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     return resolve();
                 }, time);
+                portObj.setEventTimer(timeout);
             } else {
                 return resolve();
             }

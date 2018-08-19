@@ -304,7 +304,7 @@ export class Hub extends EventEmitter {
     }
 
 
-    protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number) {
+    protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number, port: Port) {
         const emitter = new EventEmitter();
         const steps = Math.abs(toSpeed - fromSpeed);
         let delay = time / steps;
@@ -330,6 +330,7 @@ export class Hub extends EventEmitter {
                 emitter.emit("finished");
             }
         }, delay);
+        port.setEventTimer(interval);
         return emitter;
 }
 
