@@ -6,7 +6,6 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { resolve } from "path";
 const debug = Debug("wedo2smarthub");
 
 

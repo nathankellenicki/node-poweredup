@@ -3,7 +3,8 @@ export enum Hubs {
     WEDO2_SMART_HUB = 1,
     BOOST_MOVE_HUB = 2,
     POWERED_UP_HUB = 3,
-    POWERED_UP_REMOTE = 4
+    POWERED_UP_REMOTE = 4,
+    DUPLO_TRAIN_HUB = 5
 }
 
 export enum Devices {
@@ -48,7 +49,8 @@ export enum ButtonStates {
 export enum BLEManufacturerData {
     BOOST_MOVE_HUB_ID = 64,
     POWERED_UP_HUB_ID = 65,
-    POWERED_UP_REMOTE_ID = 66
+    POWERED_UP_REMOTE_ID = 66,
+    DUPLO_TRAIN_HUB_ID = 66
 }
 
 export enum BLEServices {

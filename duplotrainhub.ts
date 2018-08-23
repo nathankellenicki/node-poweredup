@@ -6,46 +6,65 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-const debug = Debug("puphub");
+const debug = Debug("duplotrainhub");
 
 
 /**
- * The PUPHub is emitted if the discovered device is a Powered UP Hub.
- * @class PUPHub
+ * The DuploTrainHub is emitted if the discovered device is a Duplo Train Hub.
+ * @class DuploTrainHub
  * @extends LPF2Hub
  * @extends Hub
  */
-export class PUPHub extends LPF2Hub {
+export class DuploTrainHub extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
+    // We set JSDoc to ignore these events as a Duplo Train Hub will never emit them.
 
     /**
-     * @event PUPHub#rotate
+     * @event DuploTrainHub#distance
+     * @ignore
+     */
+
+    /**
+     * @event DuploTrainHub#tilt
+     * @ignore
+     */
+
+    /**
+     * @event DuploTrainHub#rotate
+     * @ignore
+     */
+
+    /**
+     * @event DuploTrainHub#attach
+     * @ignore
+     */
+
+    /**
+     * @event DuploTrainHub#detach
      * @ignore
      */
 
 
-    public static IsPUPHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
+    public static IsDuploTrainHub (peripheral: Peripheral) {
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
     }
 
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hubs.POWERED_UP_HUB;
+        this.type = Consts.Hubs.DUPLO_TRAIN_HUB;
         this._ports = {
-            "A": new Port("A", 0),
-            "B": new Port("B", 1),
-            "AB": new Port("AB", 57)
+            "MOTOR": new Port("MOTOR", 0),
+            "LIGHT": new Port("LIGHT", 1)
         };
-        debug("Discovered Powered UP Hub");
+        debug("Discovered Duplo Train Hub");
     }
 
 
     public connect () {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Powered UP Hub");
+            debug("Connecting to Duplo Train Hub");
             await super.connect();
             debug("Connect completed");
             return resolve();
@@ -55,7 +74,7 @@ export class PUPHub extends LPF2Hub {
 
     /**
      * Set the motor speed on a given port.
-     * @method PUPHub#setMotorSpeed
+     * @method DuploTrainHub#setMotorSpeed
      * @param {string} port
      * @param {number | Array.<number>} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
@@ -110,7 +129,7 @@ export class PUPHub extends LPF2Hub {
 
     /**
      * Ramp the motor speed on a given port.
-     * @method PUPHub#rampMotorSpeed
+     * @method DuploTrainHub#rampMotorSpeed
      * @param {string} port
      * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
@@ -124,32 +143,6 @@ export class PUPHub extends LPF2Hub {
                 this.setMotorSpeed(port, speed);
             })
             .on("finished", resolve);
-        });
-    }
-
-
-    /**
-     * Set the light brightness on a given port.
-     * @method PUPHub#setLightBrightness
-     * @param {string} port
-     * @param {number} brightness Brightness value between 0-100 (0 is off)
-     * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
-     * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the light is turned off.
-     */
-    public setLightBrightness (port: string, brightness: number, time?: number) {
-        const portObj = this._portLookup(port);
-        return new Promise((resolve, reject) => {
-            const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-            if (time) {
-                setTimeout(() => {
-                    const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-                    return resolve();
-                }, time);
-            } else {
-                return resolve();
-            }
         });
     }
 

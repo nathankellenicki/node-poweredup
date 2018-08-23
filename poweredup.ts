@@ -1,6 +1,7 @@
 import { Peripheral } from "noble";
 
 import { BoostMoveHub } from "./boostmovehub";
+import { DuploTrainHub } from "./duplotrainhub";
 import { Hub } from "./hub";
 import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
@@ -66,6 +67,8 @@ export class PoweredUP extends EventEmitter {
                 hub = new PUPHub(peripheral, this.autoSubscribe);
             } else if (PUPRemote.IsPUPRemote(peripheral)) {
                 hub = new PUPRemote(peripheral, this.autoSubscribe);
+            } else if (DuploTrainHub.IsDuploTrainHub(peripheral)) {
+                hub = new DuploTrainHub(peripheral, this.autoSubscribe);
             } else {
                 return;
             }
