@@ -95,7 +95,7 @@ export class PoweredUP extends EventEmitter {
             /**
              * Emits when a Powered UP Hub device is found.
              * @event PoweredUP#discover
-             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote} hub
+             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainHub} hub
              */
             this.emit("discover", hub);
 

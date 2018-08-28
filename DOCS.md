@@ -66,7 +66,7 @@ Emits when a Powered UP Hub device is found.
 
 | Param | Type |
 | --- | --- |
-| hub | [<code>WeDo2SmartHub</code>](#WeDo2SmartHub) \| [<code>BoostMoveHub</code>](#BoostMoveHub) \| [<code>PUPHub</code>](#PUPHub) \| [<code>PUPRemote</code>](#PUPRemote) | 
+| hub | [<code>WeDo2SmartHub</code>](#WeDo2SmartHub) \| [<code>BoostMoveHub</code>](#BoostMoveHub) \| [<code>PUPHub</code>](#PUPHub) \| [<code>PUPRemote</code>](#PUPRemote) \| [<code>DuploTrainHub</code>](#DuploTrainHub) | 
 
 <a name="WeDo2SmartHub"></a>
 
