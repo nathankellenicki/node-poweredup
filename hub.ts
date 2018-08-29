@@ -199,7 +199,7 @@ export class Hub extends EventEmitter {
      */
     public sleep (delay: number) {
         return new Promise((resolve) => {
-            setTimeout(resolve, delay);
+            global.setTimeout(resolve, delay);
         });
     }
 

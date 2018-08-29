@@ -62,7 +62,7 @@ export class PUPHub extends LPF2Hub {
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
      * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
-    public setMotorSpeed (port: string, speed: number | [number, number], time?: number) {
+    public setMotorSpeed (port: string, speed: number | [number, number], time?: number | boolean) {
         const portObj = this._portLookup(port);
         if (portObj.id !== "AB" && speed instanceof Array) {
             throw new Error(`Port ${portObj.id} can only accept a single speed`);
@@ -74,9 +74,14 @@ export class PUPHub extends LPF2Hub {
                 throw new Error(`Port ${portObj.id} requires both motors be of the same type`);
             }
         }
-        portObj.cancelEventTimer();
+        if (typeof time === "boolean") {
+            if (time === true) {
+                portObj.cancelEventTimer();
+            }
+            time = undefined;
+        }
         return new Promise((resolve, reject) => {
-            if (time) {
+            if (time && typeof time === "number") {
                 let data = null;
                 if (portObj.id === "AB") {
                     data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed)]);
@@ -85,7 +90,7 @@ export class PUPHub extends LPF2Hub {
                     data = Buffer.from([0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
                 }
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-                const timeout = setTimeout(() => {
+                const timeout = global.setTimeout(() => {
                     let data = null;
                     if (portObj.id === "AB") {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x02, 0x00, 0x00]);
@@ -126,7 +131,7 @@ export class PUPHub extends LPF2Hub {
         return new Promise((resolve, reject) => {
             this._calculateRamp(fromSpeed, toSpeed, time, portObj)
             .on("changeSpeed", (speed) => {
-                this.setMotorSpeed(port, speed);
+                this.setMotorSpeed(port, speed, true);
             })
             .on("finished", resolve);
         });
@@ -148,7 +153,7 @@ export class PUPHub extends LPF2Hub {
             const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             if (time) {
-                const timeout = setTimeout(() => {
+                const timeout = global.setTimeout(() => {
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     return resolve();

@@ -124,13 +124,18 @@ export class WeDo2SmartHub extends Hub {
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
      * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
      */
-    public setMotorSpeed (port: string, speed: number, time?: number) {
+    public setMotorSpeed (port: string, speed: number, time?: number | boolean) {
         const portObj = this._portLookup(port);
-        portObj.cancelEventTimer();
+        if (typeof time === "boolean") {
+            if (time === true) {
+                portObj.cancelEventTimer();
+            }
+            time = undefined;
+        }
         return new Promise((resolve, reject) => {
             this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(speed)]));
-            if (time) {
-                const timeout = setTimeout(() => {
+            if (time && typeof time === "number") {
+                const timeout = global.setTimeout(() => {
                     this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, 0x00]));
                     return resolve();
                 }, time);
@@ -157,7 +162,7 @@ export class WeDo2SmartHub extends Hub {
         return new Promise((resolve, reject) => {
             this._calculateRamp(fromSpeed, toSpeed, time, portObj)
             .on("changeSpeed", (speed) => {
-                this.setMotorSpeed(port, speed);
+                this.setMotorSpeed(port, speed, true);
             })
             .on("finished", resolve);
         });
@@ -177,7 +182,7 @@ export class WeDo2SmartHub extends Hub {
             data.writeUInt16LE(frequency, 3);
             data.writeUInt16LE(time, 5);
             this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
-            setTimeout(resolve, time);
+            global.setTimeout(resolve, time);
         });
     }
 
@@ -196,7 +201,7 @@ export class WeDo2SmartHub extends Hub {
             const data = Buffer.from([portObj.value, 0x01, 0x02, brightness]);
             this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
             if (time) {
-                const timeout = setTimeout(() => {
+                const timeout = global.setTimeout(() => {
                     const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
                     this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
                     return resolve();
