@@ -55,8 +55,7 @@ export class DuploTrainHub extends LPF2Hub {
         super(peripheral, autoSubscribe);
         this.type = Consts.Hubs.DUPLO_TRAIN_HUB;
         this._ports = {
-            "MOTOR": new Port("MOTOR", 0),
-            "LIGHT": new Port("LIGHT", 1)
+            "MOTOR": new Port("MOTOR", 0)
         };
         debug("Discovered Duplo Train Hub");
     }
@@ -92,6 +91,16 @@ export class DuploTrainHub extends LPF2Hub {
                 throw new Error(`Port ${portObj.id} requires both motors be of the same type`);
             }
         }
+        let cancelEventTimer = true;
+        if (typeof time === "boolean") {
+            if (time === true) {
+                cancelEventTimer = false;
+            }
+            time = undefined;
+        }
+        if (cancelEventTimer) {
+            portObj.cancelEventTimer();
+        }
         return new Promise((resolve, reject) => {
             if (time) {
                 let data = null;
@@ -102,7 +111,7 @@ export class DuploTrainHub extends LPF2Hub {
                     data = Buffer.from([0x81, portObj.value, 0x11, 0x60, 0x00, this._mapSpeed(speed), 0x00, 0x00]);
                 }
                 this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-                setTimeout(() => {
+                const timeout = global.setTimeout(() => {
                     let data = null;
                     if (portObj.id === "AB") {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x02, 0x00, 0x00]);
@@ -112,6 +121,7 @@ export class DuploTrainHub extends LPF2Hub {
                     this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
                     return resolve();
                 }, time);
+                portObj.setEventTimer(timeout);
             } else {
                 let data = null;
                 if (portObj.id === "AB") {
@@ -137,8 +147,10 @@ export class DuploTrainHub extends LPF2Hub {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
+        const portObj = this._portLookup(port);
+        portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
-            this._calculateRamp(fromSpeed, toSpeed, time)
+            this._calculateRamp(fromSpeed, toSpeed, time, portObj)
             .on("changeSpeed", (speed) => {
                 this.setMotorSpeed(port, speed);
             })
