@@ -74,11 +74,15 @@ export class PUPHub extends LPF2Hub {
                 throw new Error(`Port ${portObj.id} requires both motors be of the same type`);
             }
         }
+        let cancelEventTimer = true;
         if (typeof time === "boolean") {
             if (time === true) {
-                portObj.cancelEventTimer();
+                cancelEventTimer = false;
             }
             time = undefined;
+        }
+        if (cancelEventTimer) {
+            portObj.cancelEventTimer();
         }
         return new Promise((resolve, reject) => {
             if (time && typeof time === "number") {

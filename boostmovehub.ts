@@ -61,11 +61,15 @@ export class BoostMoveHub extends LPF2Hub {
         if (portObj.id !== "AB" && speed instanceof Array) {
             throw new Error(`Port ${portObj.id} can only accept a single speed`);
         }
+        let cancelEventTimer = true;
         if (typeof time === "boolean") {
             if (time === true) {
-                portObj.cancelEventTimer();
+                cancelEventTimer = false;
             }
             time = undefined;
+        }
+        if (cancelEventTimer) {
+            portObj.cancelEventTimer();
         }
         return new Promise((resolve, reject) => {
             if (time && typeof time === "number") {
@@ -190,6 +194,7 @@ export class BoostMoveHub extends LPF2Hub {
      */
     public setLightBrightness (port: string, brightness: number, time?: number) {
         const portObj = this._portLookup(port);
+        portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);

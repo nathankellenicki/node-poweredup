@@ -126,11 +126,15 @@ export class WeDo2SmartHub extends Hub {
      */
     public setMotorSpeed (port: string, speed: number, time?: number | boolean) {
         const portObj = this._portLookup(port);
+        let cancelEventTimer = true;
         if (typeof time === "boolean") {
             if (time === true) {
-                portObj.cancelEventTimer();
+                cancelEventTimer = false;
             }
             time = undefined;
+        }
+        if (cancelEventTimer) {
+            portObj.cancelEventTimer();
         }
         return new Promise((resolve, reject) => {
             this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(speed)]));
@@ -197,6 +201,7 @@ export class WeDo2SmartHub extends Hub {
      */
     public setLightBrightness (port: string, brightness: number, time?: number) {
         const portObj = this._portLookup(port);
+        portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             const data = Buffer.from([portObj.value, 0x01, 0x02, brightness]);
             this._writeMessage(Consts.BLECharacteristics.WEDO2_MOTOR_VALUE_WRITE, data);
