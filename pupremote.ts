@@ -41,6 +41,11 @@ export class PUPRemote extends LPF2Hub {
      */
 
     /**
+     * @event PUPRemote#speed
+     * @ignore
+     */
+
+    /**
      * @event PUPRemote#attach
      * @ignore
      */

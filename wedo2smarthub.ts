@@ -17,6 +17,14 @@ const debug = Debug("wedo2smarthub");
 export class WeDo2SmartHub extends Hub {
 
 
+    // We set JSDoc to ignore these events as a WeDo 2.0 Smart Hub will never emit them.
+
+    /**
+     * @event WeDo2SmartHub#speed
+     * @ignore
+     */
+
+
     public static IsWeDo2SmartHub (peripheral: Peripheral) {
         return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.WEDO2_SMART_HUB) >= 0);
     }
@@ -173,13 +181,13 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
-     * Play a sound on the Hub's in-built buzzer
-     * @method WeDo2SmartHub#playSound
+     * Play a tone on the Hub's in-built buzzer
+     * @method WeDo2SmartHub#playTone
      * @param {number} frequency
-     * @param {number} time How long the sound should play for (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the sound has finished playing).
+     * @param {number} time How long the tone should play for (in milliseconds).
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the tone has finished playing).
      */
-    public playSound (frequency: number, time: number) {
+    public playTone (frequency: number, time: number) {
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x05, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00]);
             data.writeUInt16LE(frequency, 3);

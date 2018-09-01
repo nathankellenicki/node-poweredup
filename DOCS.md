@@ -11,7 +11,7 @@
 <dd></dd>
 <dt><a href="#PUPRemote">PUPRemote</a> ⇐ <code>LPF2Hub</code></dt>
 <dd></dd>
-<dt><a href="#DuploTrainHub">DuploTrainHub</a> ⇐ <code>LPF2Hub</code></dt>
+<dt><a href="#DuploTrainBase">DuploTrainBase</a> ⇐ <code>LPF2Hub</code></dt>
 <dd></dd>
 </dl>
 
@@ -66,7 +66,7 @@ Emits when a Powered UP Hub device is found.
 
 | Param | Type |
 | --- | --- |
-| hub | [<code>WeDo2SmartHub</code>](#WeDo2SmartHub) \| [<code>BoostMoveHub</code>](#BoostMoveHub) \| [<code>PUPHub</code>](#PUPHub) \| [<code>PUPRemote</code>](#PUPRemote) \| [<code>DuploTrainHub</code>](#DuploTrainHub) | 
+| hub | [<code>WeDo2SmartHub</code>](#WeDo2SmartHub) \| [<code>BoostMoveHub</code>](#BoostMoveHub) \| [<code>PUPHub</code>](#PUPHub) \| [<code>PUPRemote</code>](#PUPRemote) \| [<code>DuploTrainBase</code>](#DuploTrainBase) | 
 
 <a name="WeDo2SmartHub"></a>
 
@@ -85,7 +85,7 @@ Emits when a Powered UP Hub device is found.
     * [.setLEDRGB(red, green, blue)](#WeDo2SmartHub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#WeDo2SmartHub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#WeDo2SmartHub+rampMotorSpeed) ⇒ <code>Promise</code>
-    * [.playSound(frequency, time)](#WeDo2SmartHub+playSound) ⇒ <code>Promise</code>
+    * [.playTone(frequency, time)](#WeDo2SmartHub+playTone) ⇒ <code>Promise</code>
     * [.setLightBrightness(port, brightness, [time])](#WeDo2SmartHub+setLightBrightness) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
@@ -217,18 +217,18 @@ Ramp the motor speed on a given port.
 | toSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | time | <code>number</code> | How long the ramp should last (in milliseconds). |
 
-<a name="WeDo2SmartHub+playSound"></a>
+<a name="WeDo2SmartHub+playTone"></a>
 
-### weDo2SmartHub.playSound(frequency, time) ⇒ <code>Promise</code>
-Play a sound on the Hub's in-built buzzer
+### weDo2SmartHub.playTone(frequency, time) ⇒ <code>Promise</code>
+Play a tone on the Hub's in-built buzzer
 
 **Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
-**Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the sound has finished playing).  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command (ie. once the tone has finished playing).  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | frequency | <code>number</code> |  |
-| time | <code>number</code> | How long the sound should play for (in milliseconds). |
+| time | <code>number</code> | How long the tone should play for (in milliseconds). |
 
 <a name="WeDo2SmartHub+setLightBrightness"></a>
 
@@ -1208,41 +1208,42 @@ Emits when a button is pressed.
 | button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
-<a name="DuploTrainHub"></a>
+<a name="DuploTrainBase"></a>
 
-## DuploTrainHub ⇐ <code>LPF2Hub</code>
+## DuploTrainBase ⇐ <code>LPF2Hub</code>
 **Kind**: global class  
 **Extends**: <code>LPF2Hub</code>, <code>Hub</code>  
 
-* [DuploTrainHub](#DuploTrainHub) ⇐ <code>LPF2Hub</code>
-    * [new DuploTrainHub()](#new_DuploTrainHub_new)
+* [DuploTrainBase](#DuploTrainBase) ⇐ <code>LPF2Hub</code>
+    * [new DuploTrainBase()](#new_DuploTrainBase_new)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
-    * [.setMotorSpeed(port, speed, [time])](#DuploTrainHub+setMotorSpeed) ⇒ <code>Promise</code>
-    * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#DuploTrainHub+rampMotorSpeed) ⇒ <code>Promise</code>
+    * [.setLEDColor(color)](#DuploTrainBase+setLEDColor) ⇒ <code>Promise</code>
+    * [.setMotorSpeed(port, speed, [time])](#DuploTrainBase+setMotorSpeed) ⇒ <code>Promise</code>
+    * [.playSound(sound)](#DuploTrainBase+playSound) ⇒ <code>Promise</code>
+    * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#DuploTrainBase+rampMotorSpeed) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
-    * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
-    * ["button" (button, state)](#LPF2Hub+event_button)
     * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["speed" (port, speed)](#LPF2Hub+event_speed)
 
-<a name="new_DuploTrainHub_new"></a>
+<a name="new_DuploTrainBase_new"></a>
 
-### new DuploTrainHub()
-The DuploTrainHub is emitted if the discovered device is a Duplo Train Hub.
+### new DuploTrainBase()
+The DuploTrainBase is emitted if the discovered device is a Duplo Train Base.
 
 <a name="LPF2Hub+current"></a>
 
-### duploTrainHub.current
-**Kind**: instance property of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+### duploTrainBase.current
+**Kind**: instance property of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Read only**: true  
 **Properties**
 
@@ -1252,8 +1253,8 @@ The DuploTrainHub is emitted if the discovered device is a Duplo Train Hub.
 
 <a name="Hub+name"></a>
 
-### duploTrainHub.name
-**Kind**: instance property of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+### duploTrainBase.name
+**Kind**: instance property of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>name</code>](#Hub+name)  
 **Read only**: true  
 **Properties**
@@ -1264,8 +1265,8 @@ The DuploTrainHub is emitted if the discovered device is a Duplo Train Hub.
 
 <a name="Hub+uuid"></a>
 
-### duploTrainHub.uuid
-**Kind**: instance property of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+### duploTrainBase.uuid
+**Kind**: instance property of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>uuid</code>](#Hub+uuid)  
 **Read only**: true  
 **Properties**
@@ -1276,8 +1277,8 @@ The DuploTrainHub is emitted if the discovered device is a Duplo Train Hub.
 
 <a name="Hub+rssi"></a>
 
-### duploTrainHub.rssi
-**Kind**: instance property of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+### duploTrainBase.rssi
+**Kind**: instance property of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>rssi</code>](#Hub+rssi)  
 **Read only**: true  
 **Properties**
@@ -1288,8 +1289,8 @@ The DuploTrainHub is emitted if the discovered device is a Duplo Train Hub.
 
 <a name="Hub+batteryLevel"></a>
 
-### duploTrainHub.batteryLevel
-**Kind**: instance property of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+### duploTrainBase.batteryLevel
+**Kind**: instance property of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>batteryLevel</code>](#Hub+batteryLevel)  
 **Read only**: true  
 **Properties**
@@ -1298,12 +1299,25 @@ The DuploTrainHub is emitted if the discovered device is a Duplo Train Hub.
 | --- | --- | --- |
 | batteryLevel | <code>number</code> | Battery level of the hub (Percentage between 0-100) |
 
-<a name="DuploTrainHub+setMotorSpeed"></a>
+<a name="DuploTrainBase+setLEDColor"></a>
 
-### duploTrainHub.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
+### duploTrainBase.setLEDColor(color) ⇒ <code>Promise</code>
+Set the color of the LED on the train via a color value.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Overrides**: [<code>setLEDColor</code>](#LPF2Hub+setLEDColor)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="DuploTrainBase+setMotorSpeed"></a>
+
+### duploTrainBase.setMotorSpeed(port, speed, [time]) ⇒ <code>Promise</code>
 Set the motor speed on a given port.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Returns**: <code>Promise</code> - Resolved upon successful completion of command. If time is specified, this is once the motor is finished.  
 
 | Param | Type | Description |
@@ -1312,12 +1326,24 @@ Set the motor speed on a given port.
 | speed | <code>number</code> \| <code>Array.&lt;number&gt;</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
 
-<a name="DuploTrainHub+rampMotorSpeed"></a>
+<a name="DuploTrainBase+playSound"></a>
 
-### duploTrainHub.rampMotorSpeed(port, fromSpeed, toSpeed, time) ⇒ <code>Promise</code>
+### duploTrainBase.playSound(sound) ⇒ <code>Promise</code>
+Play a built-in train sound.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| sound | <code>number</code> | A number representing one of the Train Base sound consts. |
+
+<a name="DuploTrainBase+rampMotorSpeed"></a>
+
+### duploTrainBase.rampMotorSpeed(port, fromSpeed, toSpeed, time) ⇒ <code>Promise</code>
 Ramp the motor speed on a given port.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
 
 | Param | Type | Description |
@@ -1329,50 +1355,38 @@ Ramp the motor speed on a given port.
 
 <a name="LPF2Hub+setName"></a>
 
-### duploTrainHub.setName(name) ⇒ <code>Promise</code>
+### duploTrainBase.setName(name) ⇒ <code>Promise</code>
 Set the name of the Hub.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | New name of the hub (14 characters or less, ASCII only). |
 
-<a name="LPF2Hub+setLEDColor"></a>
-
-### duploTrainHub.setLEDColor(color) ⇒ <code>Promise</code>
-Set the color of the LED on the Hub via a color value.
-
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
-**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
-
 <a name="Hub+connect"></a>
 
-### duploTrainHub.connect() ⇒ <code>Promise</code>
+### duploTrainBase.connect() ⇒ <code>Promise</code>
 Connect to the Hub.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>connect</code>](#Hub+connect)  
 **Returns**: <code>Promise</code> - Resolved upon successful connect.  
 <a name="Hub+disconnect"></a>
 
-### duploTrainHub.disconnect() ⇒ <code>Promise</code>
+### duploTrainBase.disconnect() ⇒ <code>Promise</code>
 Disconnect the Hub.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>disconnect</code>](#Hub+disconnect)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
-### duploTrainHub.subscribe(port, [mode]) ⇒ <code>Promise</code>
+### duploTrainBase.subscribe(port, [mode]) ⇒ <code>Promise</code>
 Subscribe to sensor notifications on a given port.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
@@ -1383,10 +1397,10 @@ Subscribe to sensor notifications on a given port.
 
 <a name="Hub+unsubscribe"></a>
 
-### duploTrainHub.unsubscribe(port) ⇒ <code>Promise</code>
+### duploTrainBase.unsubscribe(port) ⇒ <code>Promise</code>
 Unsubscribe to sensor notifications on a given port.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>unsubscribe</code>](#Hub+unsubscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
@@ -1396,12 +1410,12 @@ Unsubscribe to sensor notifications on a given port.
 
 <a name="Hub+sleep"></a>
 
-### duploTrainHub.sleep(delay) ⇒ <code>Promise</code>
+### duploTrainBase.sleep(delay) ⇒ <code>Promise</code>
 Sleep a given amount of time.
 
 This is a helper method to make it easier to add delays into a chain of commands.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>sleep</code>](#Hub+sleep)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
@@ -1411,12 +1425,12 @@ This is a helper method to make it easier to add delays into a chain of commands
 
 <a name="Hub+wait"></a>
 
-### duploTrainHub.wait(commands) ⇒ <code>Promise</code>
+### duploTrainBase.wait(commands) ⇒ <code>Promise</code>
 Wait until a given list of concurrently running commands are complete.
 
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
-**Kind**: instance method of [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Overrides**: [<code>wait</code>](#Hub+wait)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
@@ -1424,27 +1438,27 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
-<a name="LPF2Hub+event_button"></a>
-
-### "button" (button, state)
-Emits when a button is pressed.
-
-**Kind**: event emitted by [<code>DuploTrainHub</code>](#DuploTrainHub)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
-
 <a name="LPF2Hub+event_color"></a>
 
 ### "color" (port, color)
 Emits when a color sensor is activated.
 
-**Kind**: event emitted by [<code>DuploTrainHub</code>](#DuploTrainHub)  
+**Kind**: event emitted by [<code>DuploTrainBase</code>](#DuploTrainBase)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
 | color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="LPF2Hub+event_speed"></a>
+
+### "speed" (port, speed)
+Emits on a speed change.
+
+**Kind**: event emitted by [<code>DuploTrainBase</code>](#DuploTrainBase)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| speed | <code>number</code> | 
 

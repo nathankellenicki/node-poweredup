@@ -1,7 +1,7 @@
 import { Peripheral } from "noble";
 
 import { BoostMoveHub } from "./boostmovehub";
-import { DuploTrainHub } from "./duplotrainhub";
+import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
 import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
@@ -67,8 +67,8 @@ export class PoweredUP extends EventEmitter {
                 hub = new PUPHub(peripheral, this.autoSubscribe);
             } else if (PUPRemote.IsPUPRemote(peripheral)) {
                 hub = new PUPRemote(peripheral, this.autoSubscribe);
-            } else if (DuploTrainHub.IsDuploTrainHub(peripheral)) {
-                hub = new DuploTrainHub(peripheral, this.autoSubscribe);
+            } else if (DuploTrainBase.IsDuploTrainBase(peripheral)) {
+                hub = new DuploTrainBase(peripheral, this.autoSubscribe);
             } else {
                 return;
             }
@@ -95,7 +95,7 @@ export class PoweredUP extends EventEmitter {
             /**
              * Emits when a Powered UP Hub device is found.
              * @event PoweredUP#discover
-             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainHub} hub
+             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
              */
             this.emit("discover", hub);
 

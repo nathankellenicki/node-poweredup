@@ -7,6 +7,7 @@ export enum Hubs {
     DUPLO_TRAIN_HUB = 5
 }
 
+
 export enum Devices {
     UNKNOWN = 0,
     BASIC_MOTOR = 1,
@@ -19,6 +20,10 @@ export enum Devices {
     BOOST_TACHO_MOTOR = 38,
     BOOST_MOVE_HUB_MOTOR = 39,
     BOOST_TILT = 40,
+    DUPLO_TRAIN_BASE_MOTOR = 41,
+    DUPLO_TRAIN_BASE_SPEAKER = 42,
+    DUPLO_TRAIN_BASE_COLOR = 43,
+    DUPLO_TRAIN_BASE_SPEEDOMETER = 44,
     POWERED_UP_REMOTE_BUTTON = 55
 }
 
@@ -38,6 +43,7 @@ export enum Colors {
     NONE = 255
 }
 
+
 export enum ButtonStates {
     PRESSED = 0,
     RELEASED = 1,
@@ -46,12 +52,21 @@ export enum ButtonStates {
     STOP = 4
 }
 
+
+export enum DuploTrainBaseSounds {
+    STATION_DEPARTURE = 5,
+    WATER_REFILL = 7,
+    HORN = 9
+}
+
+
 export enum BLEManufacturerData {
     BOOST_MOVE_HUB_ID = 64,
     POWERED_UP_HUB_ID = 65,
     POWERED_UP_REMOTE_ID = 66,
-    DUPLO_TRAIN_HUB_ID = 66
+    DUPLO_TRAIN_HUB_ID = 32
 }
+
 
 export enum BLEServices {
     WEDO2_SMART_HUB = "000015231212efde1523785feabcd123",

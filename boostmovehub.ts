@@ -18,6 +18,14 @@ const debug = Debug("boostmovehub");
 export class BoostMoveHub extends LPF2Hub {
 
 
+    // We set JSDoc to ignore these events as a Boost Move Hub will never emit them.
+
+    /**
+     * @event BoostMoveHub#speed
+     * @ignore
+     */
+
+
     public static IsBoostMoveHub (peripheral: Peripheral) {
         return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
     }

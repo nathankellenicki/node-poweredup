@@ -42,6 +42,9 @@ export class LPF2Hub extends Hub {
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
+            if (this.type === Consts.Hubs.DUPLO_TRAIN_HUB) {
+                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
+            }
             return resolve();
         });
     }
@@ -346,6 +349,25 @@ export class LPF2Hub extends Hub {
                             break;
                         }
                     }
+                    break;
+                }
+                case Consts.Devices.DUPLO_TRAIN_BASE_COLOR:
+                {
+                    if (data[4] <= 10) {
+                        this.emit("color", port.id, data[4]);
+                    }
+                    break;
+                }
+                case Consts.Devices.DUPLO_TRAIN_BASE_SPEEDOMETER:
+                {
+                    /**
+                     * Emits on a speed change.
+                     * @event LPF2Hub#speed
+                     * @param {string} port
+                     * @param {number} speed
+                     */
+                    const speed = data.readInt16LE(4);
+                    this.emit("speed", port.id, speed);
                     break;
                 }
             }

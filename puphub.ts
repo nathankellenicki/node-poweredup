@@ -25,6 +25,11 @@ export class PUPHub extends LPF2Hub {
      * @ignore
      */
 
+    /**
+     * @event PUPHub#speed
+     * @ignore
+     */
+
 
     public static IsPUPHub (peripheral: Peripheral) {
         return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
