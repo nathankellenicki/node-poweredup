@@ -17,7 +17,8 @@
   "dependencies": {
     "debug": "^3.1.0",
     "noble": "^1.9.1",
-    "noble-mac": "git@github.com:Timeular/noble-mac.git#3d8046d"
+    "noble-mac": "Timeular/noble-mac.git#3d8046d",
+    "xpc-connection": "sandeepmistry/node-xpc-connection#pull/26/head"
   },
   "devDependencies": {
     "jsdoc-to-markdown": "^4.0.1",
