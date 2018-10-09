@@ -52,7 +52,7 @@ export class DuploTrainBase extends LPF2Hub {
 
 
     public static IsDuploTrainBase (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
     }
 
 

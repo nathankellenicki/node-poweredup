@@ -37,7 +37,7 @@ export class LPF2Hub extends Hub {
     public connect () {
         return new Promise(async (resolve, reject) => {
             await super.connect();
-            const characteristic = this._characteristics[Consts.BLECharacteristics.LPF2_ALL];
+            const characteristic = this._getCharacteristic(Consts.BLECharacteristics.LPF2_ALL);
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
@@ -101,7 +101,7 @@ export class LPF2Hub extends Hub {
 
 
     protected _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
-        const characteristic = this._characteristics[uuid];
+        const characteristic = this._getCharacteristic(uuid);
         if (characteristic) {
             message = Buffer.concat([Buffer.alloc(2), message]);
             message[0] = message.length;

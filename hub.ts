@@ -216,6 +216,11 @@ export class Hub extends EventEmitter {
     }
 
 
+    protected _getCharacteristic (uuid: string) {
+        return this._characteristics[uuid.replace(/-/g, "")];
+    }
+
+
     protected _subscribeToCharacteristic (characteristic: Characteristic, callback: (data: Buffer) => void) {
         characteristic.on("data", (data: Buffer) => {
             return callback(data);

@@ -32,7 +32,7 @@ export class PUPHub extends LPF2Hub {
 
 
     public static IsPUPHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
     }
 
 

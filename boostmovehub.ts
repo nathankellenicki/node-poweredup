@@ -27,7 +27,7 @@ export class BoostMoveHub extends LPF2Hub {
 
 
     public static IsBoostMoveHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
     }
 
 

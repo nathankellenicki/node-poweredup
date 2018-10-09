@@ -26,7 +26,7 @@ export class WeDo2SmartHub extends Hub {
 
 
     public static IsWeDo2SmartHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.WEDO2_SMART_HUB) >= 0);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.WEDO2_SMART_HUB.replace(/-/g, "")) >= 0);
     }
 
 
@@ -49,12 +49,12 @@ export class WeDo2SmartHub extends Hub {
         return new Promise(async (resolve, reject) => {
             debug("Connecting to WeDo 2.0 Smart Hub");
             await super.connect();
-            this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_PORT_TYPE], this._parsePortMessage.bind(this));
-            this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_SENSOR_VALUE], this._parseSensorMessage.bind(this));
-            this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_BUTTON], this._parseSensorMessage.bind(this));
-            this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_BATTERY], this._parseBatteryMessage.bind(this));
-            this._subscribeToCharacteristic(this._characteristics[Consts.BLECharacteristics.WEDO2_HIGH_CURRENT_ALERT], this._parseHighCurrentAlert.bind(this));
-            this._characteristics[Consts.BLECharacteristics.WEDO2_BATTERY].read((err, data) => {
+            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristics.WEDO2_PORT_TYPE), this._parsePortMessage.bind(this));
+            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristics.WEDO2_SENSOR_VALUE), this._parseSensorMessage.bind(this));
+            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristics.WEDO2_BUTTON), this._parseSensorMessage.bind(this));
+            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristics.WEDO2_BATTERY), this._parseBatteryMessage.bind(this));
+            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristics.WEDO2_HIGH_CURRENT_ALERT), this._parseHighCurrentAlert.bind(this));
+            this._getCharacteristic(Consts.BLECharacteristics.WEDO2_BATTERY).read((err, data) => {
                 this._parseBatteryMessage(data);
             });
             debug("Connect completed");
@@ -237,7 +237,7 @@ export class WeDo2SmartHub extends Hub {
 
 
     private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
-        const characteristic = this._characteristics[uuid];
+        const characteristic = this._getCharacteristic(uuid);
         if (characteristic) {
             characteristic.write(message, false, callback);
         }
