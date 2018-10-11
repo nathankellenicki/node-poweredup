@@ -1,4 +1,4 @@
-import { Peripheral } from "noble-mac";
+import { Peripheral } from "noble";
 
 import { BoostMoveHub } from "./boostmovehub";
 import { DuploTrainBase } from "./duplotrainbase";
@@ -7,23 +7,34 @@ import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
 import { WeDo2SmartHub } from "./wedo2smarthub";
 
+import { isBrowserContext } from "./utils";
+
 import * as Consts from "./consts";
 
-import { EventEmitter} from "events";
+import { EventEmitter } from "events";
 
 import Debug = require("debug");
 const debug = Debug("PoweredUP");
-import noble = require("noble-mac");
+import noble = require("noble");
+import { start } from "repl";
 
 let ready = false;
 let wantScan = false;
+
+const startScanning = () => {
+    if (isBrowserContext) {
+        noble.startScanning([Consts.BLEServices.WEDO2_SMART_HUB, Consts.BLEServices.LPF2_HUB]);
+    } else {
+        noble.startScanning();
+    }
+};
 
 noble.on("stateChange", (state: string) => {
     ready = (state === "poweredOn");
     if (ready) {
         if (wantScan) {
             debug("Scanning started");
-            noble.startScanning();
+            startScanning();
         }
     } else {
         noble.stopScanning();
@@ -55,19 +66,19 @@ export class PoweredUP extends EventEmitter {
     public scan () {
         wantScan = true;
 
-        noble.on("discover", (peripheral: Peripheral) => {
+        noble.on("discover", async (peripheral: Peripheral) => {
 
             let hub: Hub;
 
-            if (WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
+            if (await WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
                 hub = new WeDo2SmartHub(peripheral, this.autoSubscribe);
-            } else if (BoostMoveHub.IsBoostMoveHub(peripheral)) {
+            } else if (await BoostMoveHub.IsBoostMoveHub(peripheral)) {
                 hub = new BoostMoveHub(peripheral, this.autoSubscribe);
-            } else if (PUPHub.IsPUPHub(peripheral)) {
+            } else if (await PUPHub.IsPUPHub(peripheral)) {
                 hub = new PUPHub(peripheral, this.autoSubscribe);
-            } else if (PUPRemote.IsPUPRemote(peripheral)) {
+            } else if (await PUPRemote.IsPUPRemote(peripheral)) {
                 hub = new PUPRemote(peripheral, this.autoSubscribe);
-            } else if (DuploTrainBase.IsDuploTrainBase(peripheral)) {
+            } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
                 hub = new DuploTrainBase(peripheral, this.autoSubscribe);
             } else {
                 return;
@@ -75,7 +86,9 @@ export class PoweredUP extends EventEmitter {
 
             peripheral.removeAllListeners();
             noble.stopScanning();
-            noble.startScanning();
+            if (!isBrowserContext) {
+                startScanning();
+            }
 
             hub.on("connect", () => {
                 debug(`Hub ${hub.uuid} connected`);
@@ -87,7 +100,7 @@ export class PoweredUP extends EventEmitter {
                 delete this._connectedHubs[hub.uuid];
 
                 if (wantScan) {
-                    noble.startScanning();
+                    startScanning();
                 }
             });
 
@@ -103,7 +116,7 @@ export class PoweredUP extends EventEmitter {
 
         if (ready) {
             debug("Scanning started");
-            noble.startScanning();
+            startScanning();
         }
     }
 
@@ -135,9 +148,7 @@ export class PoweredUP extends EventEmitter {
      * @returns {Hub[]}
      */
     public getConnectedHubs () {
-        return Object.keys(this._connectedHubs).map((uuid) => {
-            return this._connectedHubs[uuid];
-        });
+        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]);
     }
 
 
