@@ -72,7 +72,6 @@ poweredUP.on("discover", async (vernie) => { // Wait to discover Vernie
                 await vernie.sleep(1000);
 
                 const { leftDistance, forwardDistance, rightDistance } = await scan(vernie);
-                console.log(leftDistance, forwardDistance, rightDistance);
 
                 if (rightDistance >= forwardDistance && rightDistance >= leftDistance) {
                     // Go right
