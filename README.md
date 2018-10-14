@@ -494,6 +494,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.setLightBrightness(port, brightness, [time])](#BoostMoveHub+setLightBrightness) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
+    * [.setLEDRGB(red, green, blue)](#LPF2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -648,6 +649,20 @@ Set the color of the LED on the Hub via a color value.
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="LPF2Hub+setLEDRGB"></a>
+
+### boostMoveHub.setLEDRGB(red, green, blue) ⇒ <code>Promise</code>
+Set the color of the LED on the Hub via RGB values.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type |
+| --- | --- |
+| red | <code>number</code> | 
+| green | <code>number</code> | 
+| blue | <code>number</code> | 
 
 <a name="Hub+connect"></a>
 
@@ -819,6 +834,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.setLightBrightness(port, brightness, [time])](#PUPHub+setLightBrightness) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
+    * [.setLEDRGB(red, green, blue)](#LPF2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -958,6 +974,20 @@ Set the color of the LED on the Hub via a color value.
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="LPF2Hub+setLEDRGB"></a>
+
+### pupHub.setLEDRGB(red, green, blue) ⇒ <code>Promise</code>
+Set the color of the LED on the Hub via RGB values.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type |
+| --- | --- |
+| red | <code>number</code> | 
+| green | <code>number</code> | 
+| blue | <code>number</code> | 
 
 <a name="Hub+connect"></a>
 
@@ -1113,6 +1143,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
     * [.setLEDColor(color)](#PUPRemote+setLEDColor) ⇒ <code>Promise</code>
+    * [.setLEDRGB(red, green, blue)](#PUPRemote+setLEDRGB) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
@@ -1194,6 +1225,21 @@ Set the color of the LED on the Remote via a color value.
 | Param | Type | Description |
 | --- | --- | --- |
 | color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="PUPRemote+setLEDRGB"></a>
+
+### pupRemote.setLEDRGB(red, green, blue) ⇒ <code>Promise</code>
+Set the color of the LED on the Hub via RGB values.
+
+**Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>setLEDRGB</code>](#LPF2Hub+setLEDRGB)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type |
+| --- | --- |
+| red | <code>number</code> | 
+| green | <code>number</code> | 
+| blue | <code>number</code> | 
 
 <a name="LPF2Hub+setName"></a>
 
@@ -1305,6 +1351,7 @@ Emits when a button is pressed.
     * [.playSound(sound)](#DuploTrainBase+playSound) ⇒ <code>Promise</code>
     * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#DuploTrainBase+rampMotorSpeed) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
+    * [.setLEDRGB(red, green, blue)](#LPF2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
     * [.disconnect()](#Hub+disconnect) ⇒ <code>Promise</code>
     * [.subscribe(port, [mode])](#Hub+subscribe) ⇒ <code>Promise</code>
@@ -1443,6 +1490,20 @@ Set the name of the Hub.
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | New name of the hub (14 characters or less, ASCII only). |
+
+<a name="LPF2Hub+setLEDRGB"></a>
+
+### duploTrainBase.setLEDRGB(red, green, blue) ⇒ <code>Promise</code>
+Set the color of the LED on the Hub via RGB values.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type |
+| --- | --- |
+| red | <code>number</code> | 
+| green | <code>number</code> | 
+| blue | <code>number</code> | 
 
 <a name="Hub+connect"></a>
 
