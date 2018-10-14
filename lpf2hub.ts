@@ -83,7 +83,28 @@ export class LPF2Hub extends Hub {
             if (color === false) {
                 color = 0;
             }
-            const data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            let data = Buffer.from([0x41, 0x32, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            return resolve();
+        });
+    }
+
+
+    /**
+     * Set the color of the LED on the Hub via RGB values.
+     * @method LPF2Hub#setLEDRGB
+     * @param {number} red
+     * @param {number} green
+     * @param {number} blue
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    public setLEDRGB (red: number, green: number, blue: number) {
+        return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x41, 0x32, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x01, red, green, blue]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             return resolve();
         });
