@@ -1,6 +1,6 @@
 {
   "name": "node-poweredup",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "A Node.js module to interface with LEGO Powered UP components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
   "main": "dist/poweredup.js",
@@ -17,8 +17,7 @@
   "dependencies": {
     "debug": "^3.1.0",
     "noble": "1.9.1",
-    "noble-mac": "git@github.com:Timeular/noble-mac.git#3d8046d",
-    "ws": "^6.1.0"
+    "noble-mac": "git@github.com:Timeular/noble-mac.git#3d8046d"
   },
   "devDependencies": {
     "jsdoc-to-markdown": "^4.0.1",
@@ -27,5 +26,8 @@
     "@types/debug": "0.0.30",
     "@types/noble": "0.0.37",
     "@types/node": "^10.3.4"
+  },
+  "resolutions": {
+    "xpc-connection": "sandeepmistry/node-xpc-connection#pull/26/head"
   }
 }
