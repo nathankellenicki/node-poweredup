@@ -90,11 +90,11 @@ export class PUPRemote extends LPF2Hub {
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x41, 0x34, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             if (color === false) {
                 color = 0;
             }
-            let data = Buffer.from([0x41, 0x34, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x00, color]);
             this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
             return resolve();
