@@ -121,10 +121,12 @@ poweredUP.on("discover", async (vernie) => { // Wait to discover Vernie
         });
 
         setInterval(async () => {
-            if (vernie.current > 20 && mode === Modes.ROAMING) { // If we're roaming around and we detect an object in front of us, stop and scan
+            if (vernie.current > 20 && mode === Modes.ROAMING) { // If current spikes, we've likely stalled on something. Reverse and scan.
                 
                 mode = Modes.AVOIDING;
-                await vernie.setMotorSpeed("AB", -30, 1500);
+                await vernie.sleep(1000);
+                await vernie.setMotorSpeed("AB", -30, 1500); // Reverse
+                await vernie.sleep(1000);
                 
                 const { leftDistance, forwardDistance, rightDistance } = await scan(vernie);
 
