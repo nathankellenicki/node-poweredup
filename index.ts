@@ -8,4 +8,4 @@ import { PUPRemote } from "./pupremote";
 import { WeDo2SmartHub } from "./wedo2smarthub";
 
 export default PoweredUP;
-export { Hub, WeDo2SmartHub, BoostMoveHub, PUPHub, PUPRemote, DuploTrainBase, Consts };
+export { PoweredUP, Hub, WeDo2SmartHub, BoostMoveHub, PUPHub, PUPRemote, DuploTrainBase, Consts };
