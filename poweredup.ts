@@ -16,7 +16,6 @@ import { EventEmitter } from "events";
 import Debug = require("debug");
 const debug = Debug("PoweredUP");
 import noble = require("noble-mac");
-import { start } from "repl";
 
 let ready = false;
 let wantScan = false;
@@ -153,6 +152,3 @@ export class PoweredUP extends EventEmitter {
 
 
 }
-
-export default PoweredUP;
-export { Hub, WeDo2SmartHub, BoostMoveHub, PUPHub, PUPRemote, Consts };
