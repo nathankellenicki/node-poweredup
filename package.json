@@ -22,10 +22,10 @@
   "devDependencies": {
     "jsdoc-to-markdown": "^4.0.1",
     "typescript": "^3.1.6",
-    "tslint": "^5.10.0",
+    "tslint": "^5.11.0",
     "@types/debug": "0.0.31",
     "@types/noble": "0.0.37",
-    "@types/node": "^10.3.4"
+    "@types/node": "^10.12.9"
   },
   "resolutions": {
     "xpc-connection": "sandeepmistry/node-xpc-connection#pull/26/head"
