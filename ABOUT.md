@@ -1,6 +1,6 @@
-# **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
+[![CircleCI](https://circleci.com/gh/nathankellenicki/node-poweredup.svg?style=shield)](https://circleci.com/gh/nathankellenicki/node-poweredup)
 
-CI: [![CircleCI](https://circleci.com/gh/nathankellenicki/node-poweredup.svg?style=svg)](https://circleci.com/gh/nathankellenicki/node-poweredup)
+# **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
 
 ### Introduction
 
