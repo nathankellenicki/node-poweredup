@@ -1,5 +1,7 @@
 # **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
 
+CI: [![CircleCI](https://circleci.com/gh/nathankellenicki/node-poweredup.svg?style=svg)](https://circleci.com/gh/nathankellenicki/node-poweredup)
+
 ### Introduction
 
 LEGO Powered UP is the successor to Power Functions, the system for adding electronics to LEGO models. Powered UP is a collection of ranges - starting with LEGO WeDo 2.0 released in 2016, LEGO Boost released in 2017, and LEGO Powered UP released in 2018. It also includes the 2018 Duplo App-Controlled Train sets.
