@@ -1,10 +1,10 @@
 {
   "name": "node-poweredup",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "description": "A Node.js module to interface with LEGO Powered UP components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
-  "main": "dist/poweredup.js",
-  "types": "dist/poweredup.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tslint -c tslint.json \"*.ts\" && tsc",
     "docs": "jsdoc2md dist/poweredup.js dist/lpf2hub.js dist/wedo2smarthub.js dist/boostmovehub.js dist/puphub.js dist/pupremote.js dist/duplotrainbase.js dist/hub.js dist/consts.js > DOCS.md",
