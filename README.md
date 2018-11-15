@@ -529,6 +529,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.name
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>name</code>](#Hub+name)  
 **Read only**: true  
 **Properties**
 
@@ -540,6 +541,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.uuid
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>uuid</code>](#Hub+uuid)  
 **Read only**: true  
 **Properties**
 
@@ -551,6 +553,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.rssi
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>rssi</code>](#Hub+rssi)  
 **Read only**: true  
 **Properties**
 
@@ -562,6 +565,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.batteryLevel
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>batteryLevel</code>](#Hub+batteryLevel)  
 **Read only**: true  
 **Properties**
 
@@ -678,6 +682,7 @@ Connect to the Hub.
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>disconnect</code>](#Hub+disconnect)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
@@ -685,6 +690,7 @@ Disconnect the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -698,6 +704,7 @@ Subscribe to sensor notifications on a given port.
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>unsubscribe</code>](#Hub+unsubscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -712,6 +719,7 @@ Sleep a given amount of time.
 This is a helper method to make it easier to add delays into a chain of commands.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>sleep</code>](#Hub+sleep)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -726,6 +734,7 @@ Wait until a given list of concurrently running commands are complete.
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>wait</code>](#Hub+wait)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
@@ -799,6 +808,7 @@ Emits when a rotation sensor is activated.
 Emits when a motor or sensor is attached to the Hub.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>attach</code>](#Hub+event_attach)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -811,6 +821,7 @@ Emits when a motor or sensor is attached to the Hub.
 Emits when an attached motor or sensor is detached from the Hub.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>detach</code>](#Hub+event_detach)  
 
 | Param | Type |
 | --- | --- |
@@ -868,6 +879,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.name
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>name</code>](#Hub+name)  
 **Read only**: true  
 **Properties**
 
@@ -879,6 +891,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.uuid
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>uuid</code>](#Hub+uuid)  
 **Read only**: true  
 **Properties**
 
@@ -890,6 +903,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.rssi
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>rssi</code>](#Hub+rssi)  
 **Read only**: true  
 **Properties**
 
@@ -901,6 +915,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.batteryLevel
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>batteryLevel</code>](#Hub+batteryLevel)  
 **Read only**: true  
 **Properties**
 
@@ -1003,6 +1018,7 @@ Connect to the Hub.
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>disconnect</code>](#Hub+disconnect)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
@@ -1010,6 +1026,7 @@ Disconnect the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -1023,6 +1040,7 @@ Subscribe to sensor notifications on a given port.
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>unsubscribe</code>](#Hub+unsubscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -1037,6 +1055,7 @@ Sleep a given amount of time.
 This is a helper method to make it easier to add delays into a chain of commands.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>sleep</code>](#Hub+sleep)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -1051,6 +1070,7 @@ Wait until a given list of concurrently running commands are complete.
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>wait</code>](#Hub+wait)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
@@ -1112,6 +1132,7 @@ Emits when a tilt sensor is activated.
 Emits when a motor or sensor is attached to the Hub.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>attach</code>](#Hub+event_attach)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1124,6 +1145,7 @@ Emits when a motor or sensor is attached to the Hub.
 Emits when an attached motor or sensor is detached from the Hub.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>detach</code>](#Hub+event_detach)  
 
 | Param | Type |
 | --- | --- |
@@ -1173,6 +1195,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.name
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>name</code>](#Hub+name)  
 **Read only**: true  
 **Properties**
 
@@ -1184,6 +1207,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.uuid
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>uuid</code>](#Hub+uuid)  
 **Read only**: true  
 **Properties**
 
@@ -1195,6 +1219,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.rssi
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>rssi</code>](#Hub+rssi)  
 **Read only**: true  
 **Properties**
 
@@ -1206,6 +1231,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.batteryLevel
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>batteryLevel</code>](#Hub+batteryLevel)  
 **Read only**: true  
 **Properties**
 
@@ -1267,6 +1293,7 @@ Connect to the Hub.
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>disconnect</code>](#Hub+disconnect)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
@@ -1274,6 +1301,7 @@ Disconnect the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -1287,6 +1315,7 @@ Subscribe to sensor notifications on a given port.
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>unsubscribe</code>](#Hub+unsubscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -1301,6 +1330,7 @@ Sleep a given amount of time.
 This is a helper method to make it easier to add delays into a chain of commands.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>sleep</code>](#Hub+sleep)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -1315,6 +1345,7 @@ Wait until a given list of concurrently running commands are complete.
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>wait</code>](#Hub+wait)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
