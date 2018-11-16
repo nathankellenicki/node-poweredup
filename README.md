@@ -508,6 +508,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
     * ["rotate" (port, rotation)](#LPF2Hub+event_rotate)
     * ["attach" (port, type)](#Hub+event_attach)
@@ -781,6 +782,19 @@ Emits when a color sensor is activated.
 | port | <code>string</code> |  |
 | color | <code>number</code> | A number representing one of the LED color consts. |
 
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+| distance | <code>number</code> | Distance, in millimeters. |
+
 <a name="LPF2Hub+event_tilt"></a>
 
 ### "tilt" (port, x, y)
@@ -859,6 +873,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
     * ["attach" (port, type)](#Hub+event_attach)
     * ["detach" (port)](#Hub+event_detach)
@@ -1117,6 +1132,19 @@ Emits when a color sensor is activated.
 | port | <code>string</code> |  |
 | color | <code>number</code> | A number representing one of the LED color consts. |
 
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+| distance | <code>number</code> | Distance, in millimeters. |
+
 <a name="LPF2Hub+event_tilt"></a>
 
 ### "tilt" (port, x, y)
@@ -1178,6 +1206,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * ["button" (button, state)](#LPF2Hub+event_button)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
 
 <a name="new_PUPRemote_new"></a>
 
@@ -1368,6 +1397,19 @@ Emits when a button is pressed.
 | button | <code>string</code> |  |
 | state | <code>number</code> | A number representing one of the button state consts. |
 
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+| distance | <code>number</code> | Distance, in millimeters. |
+
 <a name="DuploTrainBase"></a>
 
 ## DuploTrainBase ⇐ <code>LPF2Hub</code>
@@ -1394,6 +1436,7 @@ Emits when a button is pressed.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["speed" (port, speed)](#LPF2Hub+event_speed)
 
 <a name="new_DuploTrainBase_new"></a>
@@ -1624,6 +1667,19 @@ Emits when a color sensor is activated.
 | --- | --- | --- |
 | port | <code>string</code> |  |
 | color | <code>number</code> | A number representing one of the LED color consts. |
+
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>DuploTrainBase</code>](#DuploTrainBase)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| port | <code>string</code> |  |
+| color | <code>number</code> | A number representing one of the LED color consts. |
+| distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_speed"></a>
 
