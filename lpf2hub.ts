@@ -299,10 +299,23 @@ export class LPF2Hub extends Hub {
                     const partial = data[7];
 
                     if (partial > 0) {
-                        distance += 1 / partial;
+                        distance += 1.0 / partial;
                     }
 
-                    this.emit("distance", port.id, Math.floor(distance * 25.4) - 20);
+                    distance = Math.floor(distance * 25.4) - 20;
+
+                    this.emit("distance", port.id, distance);
+
+                    /**
+                     * A combined color and distance event, emits when the sensor is activated.
+                     * @event LPF2Hub#colorAndDistance
+                     * @param {string} port
+                     * @param {number} color A number representing one of the LED color consts.
+                     * @param {number} distance Distance, in millimeters.
+                     */
+                    if (data[4] <= 10) {
+                        this.emit("colorAndDistance", port.id, data[4], distance);
+                    }
                     break;
                 }
                 case Consts.Devices.WEDO2_TILT:
