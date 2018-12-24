@@ -54,9 +54,11 @@ export enum ButtonStates {
 
 
 export enum DuploTrainBaseSounds {
+    BREAK = 3,
     STATION_DEPARTURE = 5,
     WATER_REFILL = 7,
-    HORN = 9
+    HORN = 9,
+    STEAM = 10
 }
 
 
