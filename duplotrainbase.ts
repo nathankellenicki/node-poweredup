@@ -140,6 +140,13 @@ export class DuploTrainBase extends LPF2Hub {
      * @method DuploTrainBase#playSound
      * @param {number} sound A number representing one of the Train Base sound consts.
      * @returns {Promise} Resolved upon successful issuance of command.
+     *
+     * For the 10874 Duplo Train Set these sounds are
+     *  2 = brake
+     *  4 = chime
+     *  6 = refill
+     *  8 = whistle
+     *  9 = kachung (like when reversing)
      */
     public playSound (sound: number) {
         return new Promise((resolve, reject) => {
