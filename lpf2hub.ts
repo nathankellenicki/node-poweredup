@@ -336,7 +336,7 @@ export class LPF2Hub extends Hub {
                 }
                 case Consts.Devices.BOOST_TACHO_MOTOR:
                 {
-                    const rotation = data.readInt32LE(2);
+                    const rotation = data.readInt32LE(4);
                     /**
                      * Emits when a rotation sensor is activated.
                      * @event LPF2Hub#rotate
@@ -348,7 +348,7 @@ export class LPF2Hub extends Hub {
                 }
                 case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
                 {
-                    const rotation = data.readInt32LE(2);
+                    const rotation = data.readInt32LE(4);
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
