@@ -33,7 +33,7 @@ export class BoostMoveHub extends LPF2Hub {
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hub.BOOST_MOVE_HUB;
+        this.type = Consts.HubType.BOOST_MOVE_HUB;
         this._ports = {
             "A": new Port("A", 55),
             "B": new Port("B", 56),
@@ -82,7 +82,7 @@ export class BoostMoveHub extends LPF2Hub {
         return new Promise((resolve, reject) => {
             if (time && typeof time === "number") {
 
-                if (portObj.type === Consts.Device.BOOST_TACHO_MOTOR || portObj.type === Consts.Device.BOOST_MOVE_HUB_MOTOR) {
+                if (portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
                     if (portObj.id === "AB") {
@@ -111,7 +111,7 @@ export class BoostMoveHub extends LPF2Hub {
 
             } else {
 
-                if (portObj.type === Consts.Device.BOOST_TACHO_MOTOR || portObj.type === Consts.Device.BOOST_MOVE_HUB_MOTOR) {
+                if (portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
                     if (portObj.id === "AB") {
@@ -167,7 +167,7 @@ export class BoostMoveHub extends LPF2Hub {
      */
     public setMotorAngle (port: string, angle: number, speed: number | [number, number] = 100) {
         const portObj = this._portLookup(port);
-        if (!(portObj.type === Consts.Device.BOOST_TACHO_MOTOR || portObj.type === Consts.Device.BOOST_MOVE_HUB_MOTOR)) {
+        if (!(portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR)) {
             throw new Error("Angle rotation is only available when using a Boost Tacho Motor or Boost Move Hub Motor");
         }
         if (portObj.id !== "AB" && speed instanceof Array) {

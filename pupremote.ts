@@ -63,7 +63,7 @@ export class PUPRemote extends LPF2Hub {
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hub.POWERED_UP_REMOTE;
+        this.type = Consts.HubType.POWERED_UP_REMOTE;
         this._ports = {
             "LEFT": new Port("LEFT", 0),
             "RIGHT": new Port("RIGHT", 1)

@@ -1,4 +1,13 @@
-export enum Hub {
+/**
+ * @typedef HubType
+ * @property {number} UNKNOWN 0
+ * @property {number} WEDO2_SMART_HUB 1
+ * @property {number} BOOST_MOVE_HUB 2
+ * @property {number} POWERED_UP_HUB 3
+ * @property {number} POWERED_UP_REMOTE 4
+ * @property {number} DUPLO_TRAIN_HUB 5
+ */
+export enum HubType {
     UNKNOWN = 0,
     WEDO2_SMART_HUB = 1,
     BOOST_MOVE_HUB = 2,
@@ -27,7 +36,7 @@ export enum Hub {
  * @property {number} DUPLO_TRAIN_BASE_SPEEDOMETER 44
  * @property {number} POWERED_UP_REMOTE_BUTTON 55
  */
-export enum Device {
+export enum DeviceType {
     UNKNOWN = 0,
     BASIC_MOTOR = 1,
     TRAIN_MOTOR = 2,

@@ -18,6 +18,8 @@
 ## Typedefs
 
 <dl>
+<dt><a href="#HubType">HubType</a></dt>
+<dd></dd>
 <dt><a href="#Device">Device</a></dt>
 <dd></dd>
 <dt><a href="#Color">Color</a></dt>
@@ -106,6 +108,8 @@ Emits when a Powered UP Hub device is found.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
     * ["button" (button, state)](#WeDo2SmartHub+event_button)
     * ["distance" (port, distance)](#WeDo2SmartHub+event_distance)
     * ["color" (port, color)](#WeDo2SmartHub+event_color)
@@ -325,6 +329,23 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
+<a name="Hub+getHubType"></a>
+
+### weDo2SmartHub.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+<a name="Hub+getPortDeviceType"></a>
+
+### weDo2SmartHub.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="WeDo2SmartHub+event_button"></a>
 
 ### "button" (button, state)
@@ -396,7 +417,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
-| type | [<code>Device</code>](#Device) | 
+| type | <code>DeviceType</code> | 
 
 <a name="Hub+event_detach"></a>
 
@@ -435,6 +456,8 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
@@ -676,6 +699,25 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
+<a name="Hub+getHubType"></a>
+
+### boostMoveHub.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### boostMoveHub.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="LPF2Hub+event_button"></a>
 
 ### "button" (button, state)
@@ -761,7 +803,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
-| type | [<code>Device</code>](#Device) | 
+| type | <code>DeviceType</code> | 
 
 <a name="Hub+event_detach"></a>
 
@@ -800,6 +842,8 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
@@ -1026,6 +1070,25 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
+<a name="Hub+getHubType"></a>
+
+### pupHub.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### pupHub.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="LPF2Hub+event_button"></a>
 
 ### "button" (button, state)
@@ -1099,7 +1162,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
-| type | [<code>Device</code>](#Device) | 
+| type | <code>DeviceType</code> | 
 
 <a name="Hub+event_detach"></a>
 
@@ -1135,6 +1198,8 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
 
@@ -1315,6 +1380,25 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
+<a name="Hub+getHubType"></a>
+
+### pupRemote.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### pupRemote.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="LPF2Hub+event_button"></a>
 
 ### "button" (button, state)
@@ -1365,6 +1449,8 @@ A combined color and distance event, emits when the sensor is activated.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
     * ["color" (port, color)](#LPF2Hub+event_color)
     * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["speed" (port, speed)](#LPF2Hub+event_speed)
@@ -1586,6 +1672,25 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
+<a name="Hub+getHubType"></a>
+
+### duploTrainBase.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### duploTrainBase.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="LPF2Hub+event_color"></a>
 
 ### "color" (port, color)
@@ -1622,6 +1727,21 @@ Emits on a speed change.
 | --- | --- |
 | port | <code>string</code> | 
 | speed | <code>number</code> | 
+
+<a name="HubType"></a>
+
+## HubType
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| UNKNOWN | <code>number</code> | 0 |
+| WEDO2_SMART_HUB | <code>number</code> | 1 |
+| BOOST_MOVE_HUB | <code>number</code> | 2 |
+| POWERED_UP_HUB | <code>number</code> | 3 |
+| POWERED_UP_REMOTE | <code>number</code> | 4 |
+| DUPLO_TRAIN_HUB | <code>number</code> | 5 |
 
 <a name="Device"></a>
 

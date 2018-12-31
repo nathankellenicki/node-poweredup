@@ -38,7 +38,7 @@ export class PUPHub extends LPF2Hub {
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hub.POWERED_UP_HUB;
+        this.type = Consts.HubType.POWERED_UP_HUB;
         this._ports = {
             "A": new Port("A", 0),
             "B": new Port("B", 1),
