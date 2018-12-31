@@ -1774,7 +1774,7 @@ Emits on a speed change.
 
 | Name | Type | Description |
 | --- | --- | --- |
-| BREAK | <code>number</code> | 3 |
+| BRAKE | <code>number</code> | 3 |
 | STATION_DEPARTURE | <code>number</code> | 5 |
 | WATER_REFILL | <code>number</code> | 7 |
 | HORN | <code>number</code> | 9 |

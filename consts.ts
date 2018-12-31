@@ -97,7 +97,7 @@ export enum ButtonStates {
 
 /**
  * @typedef DuploTrainBaseSounds
- * @property {number} BREAK 3
+ * @property {number} BRAKE 3
  * @property {number} STATION_DEPARTURE 5
  * @property {number} WATER_REFILL 7
  * @property {number} HORN 9
