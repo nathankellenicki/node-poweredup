@@ -57,13 +57,13 @@ export class PUPRemote extends LPF2Hub {
 
 
     public static IsPUPRemote (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
     }
 
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hubs.POWERED_UP_REMOTE;
+        this.type = Consts.Hub.POWERED_UP_REMOTE;
         this._ports = {
             "LEFT": new Port("LEFT", 0),
             "RIGHT": new Port("RIGHT", 1)
@@ -85,18 +85,18 @@ export class PUPRemote extends LPF2Hub {
     /**
      * Set the color of the LED on the Remote via a color value.
      * @method PUPRemote#setLEDColor
-     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>.
+     * @param {Color} color
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x41, 0x34, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             if (color === false) {
                 color = 0;
             }
             data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }
@@ -113,9 +113,9 @@ export class PUPRemote extends LPF2Hub {
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x41, 0x34, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x01, red, green, blue]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }

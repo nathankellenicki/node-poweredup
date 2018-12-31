@@ -18,13 +18,13 @@
 ## Typedefs
 
 <dl>
-<dt><a href="#Devices">Devices</a></dt>
+<dt><a href="#Device">Device</a></dt>
 <dd></dd>
-<dt><a href="#Colors">Colors</a></dt>
+<dt><a href="#Color">Color</a></dt>
 <dd></dd>
-<dt><a href="#ButtonStates">ButtonStates</a></dt>
+<dt><a href="#ButtonState">ButtonState</a></dt>
 <dd></dd>
-<dt><a href="#DuploTrainBaseSounds">DuploTrainBaseSounds</a></dt>
+<dt><a href="#DuploTrainBaseSound">DuploTrainBaseSound</a></dt>
 <dd></dd>
 </dl>
 
@@ -183,9 +183,9 @@ Set the color of the LED on the Hub via a color value.
 **Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="WeDo2SmartHub+setLEDRGB"></a>
 
@@ -332,10 +332,10 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
 
 <a name="WeDo2SmartHub+event_distance"></a>
 
@@ -356,10 +356,10 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
 
 <a name="WeDo2SmartHub+event_tilt"></a>
 
@@ -393,10 +393,10 @@ Emits when a motor or sensor is attached to the Hub.
 
 **Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the <a href="#Devices">Devices</a>.. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| type | [<code>Device</code>](#Device) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -585,9 +585,9 @@ Set the color of the LED on the Hub via a color value.
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="LPF2Hub+setLEDRGB"></a>
 
@@ -683,10 +683,10 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
 
 <a name="LPF2Hub+event_distance"></a>
 
@@ -707,10 +707,10 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -722,7 +722,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
+| color | [<code>Color</code>](#Color) |  |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_tilt"></a>
@@ -758,10 +758,10 @@ Emits when a motor or sensor is attached to the Hub.
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
 **Overrides**: [<code>attach</code>](#Hub+event_attach)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the <a href="#Devices">Devices</a>.. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| type | [<code>Device</code>](#Device) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -935,9 +935,9 @@ Set the color of the LED on the Hub via a color value.
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="LPF2Hub+setLEDRGB"></a>
 
@@ -1033,10 +1033,10 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
 
 <a name="LPF2Hub+event_distance"></a>
 
@@ -1057,10 +1057,10 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -1072,7 +1072,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
+| color | [<code>Color</code>](#Color) |  |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_tilt"></a>
@@ -1096,10 +1096,10 @@ Emits when a motor or sensor is attached to the Hub.
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
 **Overrides**: [<code>attach</code>](#Hub+event_attach)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the <a href="#Devices">Devices</a>.. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| type | [<code>Device</code>](#Device) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -1211,9 +1211,9 @@ Set the color of the LED on the Remote via a color value.
 **Overrides**: [<code>setLEDColor</code>](#LPF2Hub+setLEDColor)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="PUPRemote+setLEDRGB"></a>
 
@@ -1322,10 +1322,10 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -1337,7 +1337,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
+| color | [<code>Color</code>](#Color) |  |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="DuploTrainBase"></a>
@@ -1442,9 +1442,9 @@ Set the color of the LED on the train via a color value.
 **Overrides**: [<code>setLEDColor</code>](#LPF2Hub+setLEDColor)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="DuploTrainBase+setMotorSpeed"></a>
 
@@ -1468,9 +1468,9 @@ Play a built-in train sound.
 **Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| sound | <code>number</code> | A number representing one of the <a href="#DuploTrainBaseSounds">DuploTrainBaseSounds</a>. |
+| Param | Type |
+| --- | --- |
+| sound | [<code>DuploTrainBaseSound</code>](#DuploTrainBaseSound) | 
 
 <a name="DuploTrainBase+rampMotorSpeed"></a>
 
@@ -1593,10 +1593,10 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>DuploTrainBase</code>](#DuploTrainBase)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -1608,7 +1608,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
+| color | [<code>Color</code>](#Color) |  |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_speed"></a>
@@ -1623,9 +1623,9 @@ Emits on a speed change.
 | port | <code>string</code> | 
 | speed | <code>number</code> | 
 
-<a name="Devices"></a>
+<a name="Device"></a>
 
-## Devices
+## Device
 **Kind**: global typedef  
 **Properties**
 
@@ -1648,9 +1648,9 @@ Emits on a speed change.
 | DUPLO_TRAIN_BASE_SPEEDOMETER | <code>number</code> | 44 |
 | POWERED_UP_REMOTE_BUTTON | <code>number</code> | 55 |
 
-<a name="Colors"></a>
+<a name="Color"></a>
 
-## Colors
+## Color
 **Kind**: global typedef  
 **Properties**
 
@@ -1669,9 +1669,9 @@ Emits on a speed change.
 | WHITE | <code>number</code> | 10 |
 | NONE | <code>number</code> | 255 |
 
-<a name="ButtonStates"></a>
+<a name="ButtonState"></a>
 
-## ButtonStates
+## ButtonState
 **Kind**: global typedef  
 **Properties**
 
@@ -1683,9 +1683,9 @@ Emits on a speed change.
 | DOWN | <code>number</code> | 3 |
 | STOP | <code>number</code> | 4 |
 
-<a name="DuploTrainBaseSounds"></a>
+<a name="DuploTrainBaseSound"></a>
 
-## DuploTrainBaseSounds
+## DuploTrainBaseSound
 **Kind**: global typedef  
 **Properties**
 

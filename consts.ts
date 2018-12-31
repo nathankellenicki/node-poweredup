@@ -1,4 +1,4 @@
-export enum Hubs {
+export enum Hub {
     UNKNOWN = 0,
     WEDO2_SMART_HUB = 1,
     BOOST_MOVE_HUB = 2,
@@ -9,7 +9,7 @@ export enum Hubs {
 
 
 /**
- * @typedef Devices
+ * @typedef Device
  * @property {number} UNKNOWN 0
  * @property {number} BASIC_MOTOR 1
  * @property {number} TRAIN_MOTOR 2
@@ -27,7 +27,7 @@ export enum Hubs {
  * @property {number} DUPLO_TRAIN_BASE_SPEEDOMETER 44
  * @property {number} POWERED_UP_REMOTE_BUTTON 55
  */
-export enum Devices {
+export enum Device {
     UNKNOWN = 0,
     BASIC_MOTOR = 1,
     TRAIN_MOTOR = 2,
@@ -48,7 +48,7 @@ export enum Devices {
 
 
 /**
- * @typedef Colors
+ * @typedef Color
  * @property {number} BLACK 0
  * @property {number} PINK 1
  * @property {number} PURPLE 2
@@ -62,7 +62,7 @@ export enum Devices {
  * @property {number} WHITE 10
  * @property {number} NONE 255
  */
-export enum Colors {
+export enum Color {
     BLACK = 0,
     PINK = 1,
     PURPLE = 2,
@@ -79,14 +79,14 @@ export enum Colors {
 
 
 /**
- * @typedef ButtonStates
+ * @typedef ButtonState
  * @property {number} PRESSED 0
  * @property {number} RELEASED 1
  * @property {number} UP 2
  * @property {number} DOWN 3
  * @property {number} STOP 4
  */
-export enum ButtonStates {
+export enum ButtonState {
     PRESSED = 0,
     RELEASED = 1,
     UP = 2,
@@ -96,14 +96,14 @@ export enum ButtonStates {
 
 
 /**
- * @typedef DuploTrainBaseSounds
+ * @typedef DuploTrainBaseSound
  * @property {number} BRAKE 3
  * @property {number} STATION_DEPARTURE 5
  * @property {number} WATER_REFILL 7
  * @property {number} HORN 9
  * @property {number} STEAM 10
  */
-export enum DuploTrainBaseSounds {
+export enum DuploTrainBaseSound {
     BREAK = 3,
     STATION_DEPARTURE = 5,
     WATER_REFILL = 7,
@@ -120,13 +120,13 @@ export enum BLEManufacturerData {
 }
 
 
-export enum BLEServices {
+export enum BLEService {
     WEDO2_SMART_HUB = "00001523-1212-efde-1523-785feabcd123",
     LPF2_HUB = "00001623-1212-efde-1623-785feabcd123"
 }
 
 
-export enum BLECharacteristics {
+export enum BLECharacteristic {
     WEDO2_BATTERY = "2a19",
     WEDO2_BUTTON = "00001526-1212-efde-1523-785feabcd123", // "1526"
     WEDO2_PORT_TYPE = "00001527-1212-efde-1523-785feabcd123", // "1527" // Handles plugging and unplugging of devices on WeDo 2.0 Smart Hub

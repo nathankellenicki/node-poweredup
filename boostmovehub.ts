@@ -27,13 +27,13 @@ export class BoostMoveHub extends LPF2Hub {
 
 
     public static IsBoostMoveHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
     }
 
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hubs.BOOST_MOVE_HUB;
+        this.type = Consts.Hub.BOOST_MOVE_HUB;
         this._ports = {
             "A": new Port("A", 55),
             "B": new Port("B", 56),
@@ -82,7 +82,7 @@ export class BoostMoveHub extends LPF2Hub {
         return new Promise((resolve, reject) => {
             if (time && typeof time === "number") {
 
-                if (portObj.type === Consts.Devices.BOOST_TACHO_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR) {
+                if (portObj.type === Consts.Device.BOOST_TACHO_MOTOR || portObj.type === Consts.Device.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
                     if (portObj.id === "AB") {
@@ -92,17 +92,17 @@ export class BoostMoveHub extends LPF2Hub {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     }
                     data.writeUInt16LE(time > 65535 ? 65535 : time, 4);
-                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                     portObj.finished = () => {
                         return resolve();
                     };
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                     const timeout = global.setTimeout(() => {
                         const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                         return resolve();
                     // @ts-ignore: The type of time is properly checked at the start
                     }, time);
@@ -111,7 +111,7 @@ export class BoostMoveHub extends LPF2Hub {
 
             } else {
 
-                if (portObj.type === Consts.Devices.BOOST_TACHO_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR) {
+                if (portObj.type === Consts.Device.BOOST_TACHO_MOTOR || portObj.type === Consts.Device.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
                     if (portObj.id === "AB") {
@@ -120,14 +120,14 @@ export class BoostMoveHub extends LPF2Hub {
                         // @ts-ignore: The type of speed is properly checked at the start
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     }
-                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                     portObj.finished = () => {
                         return resolve();
                     };
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                 }
 
             }
@@ -167,7 +167,7 @@ export class BoostMoveHub extends LPF2Hub {
      */
     public setMotorAngle (port: string, angle: number, speed: number | [number, number] = 100) {
         const portObj = this._portLookup(port);
-        if (!(portObj.type === Consts.Devices.BOOST_TACHO_MOTOR || portObj.type === Consts.Devices.BOOST_MOVE_HUB_MOTOR)) {
+        if (!(portObj.type === Consts.Device.BOOST_TACHO_MOTOR || portObj.type === Consts.Device.BOOST_MOVE_HUB_MOTOR)) {
             throw new Error("Angle rotation is only available when using a Boost Tacho Motor or Boost Move Hub Motor");
         }
         if (portObj.id !== "AB" && speed instanceof Array) {
@@ -184,7 +184,7 @@ export class BoostMoveHub extends LPF2Hub {
                 data = Buffer.from([0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
             }
             data.writeUInt32LE(angle, 4);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             portObj.finished = () => {
                 return resolve();
             };
@@ -205,11 +205,11 @@ export class BoostMoveHub extends LPF2Hub {
         portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             if (time) {
                 const timeout = global.setTimeout(() => {
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                     return resolve();
                 }, time);
                 portObj.setEventTimer(timeout);
