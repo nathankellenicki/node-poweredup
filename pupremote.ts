@@ -85,7 +85,7 @@ export class PUPRemote extends LPF2Hub {
     /**
      * Set the color of the LED on the Remote via a color value.
      * @method PUPRemote#setLEDColor
-     * @param {number} color A number representing one of the LED color consts.
+     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {

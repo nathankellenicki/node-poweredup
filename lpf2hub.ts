@@ -75,7 +75,7 @@ export class LPF2Hub extends Hub {
     /**
      * Set the color of the LED on the Hub via a color value.
      * @method LPF2Hub#setLEDColor
-     * @param {number} color A number representing one of the LED color consts.
+     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
@@ -186,7 +186,7 @@ export class LPF2Hub extends Hub {
                  * Emits when a button is pressed.
                  * @event LPF2Hub#button
                  * @param {string} button
-                 * @param {number} state A number representing one of the button state consts.
+                 * @param {number} state A number representing one of the <a href="#ButtonStates">ButtonStates</a>.
                  */
                 this.emit("button", "GREEN", Consts.ButtonStates.PRESSED);
                 return;
@@ -289,7 +289,7 @@ export class LPF2Hub extends Hub {
                      * Emits when a color sensor is activated.
                      * @event LPF2Hub#color
                      * @param {string} port
-                     * @param {number} color A number representing one of the LED color consts.
+                     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>
                      */
                     if (data[4] <= 10) {
                         this.emit("color", port.id, data[4]);
@@ -310,7 +310,7 @@ export class LPF2Hub extends Hub {
                      * A combined color and distance event, emits when the sensor is activated.
                      * @event LPF2Hub#colorAndDistance
                      * @param {string} port
-                     * @param {number} color A number representing one of the LED color consts.
+                     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>
                      * @param {number} distance Distance, in millimeters.
                      */
                     if (data[4] <= 10) {

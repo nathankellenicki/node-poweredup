@@ -15,6 +15,19 @@
 <dd></dd>
 </dl>
 
+## Typedefs
+
+<dl>
+<dt><a href="#Devices">Devices</a></dt>
+<dd></dd>
+<dt><a href="#Colors">Colors</a></dt>
+<dd></dd>
+<dt><a href="#ButtonStates">ButtonStates</a></dt>
+<dd></dd>
+<dt><a href="#DuploTrainBaseSounds">DuploTrainBaseSounds</a></dt>
+<dd></dd>
+</dl>
+
 <a name="PoweredUP"></a>
 
 ## PoweredUP ⇐ <code>EventEmitter</code>
@@ -172,7 +185,7 @@ Set the color of the LED on the Hub via a color value.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
 
 <a name="WeDo2SmartHub+setLEDRGB"></a>
 
@@ -322,7 +335,7 @@ Emits when a button is pressed.
 | Param | Type | Description |
 | --- | --- | --- |
 | button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
 
 <a name="WeDo2SmartHub+event_distance"></a>
 
@@ -346,7 +359,7 @@ Emits when a color sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
 
 <a name="WeDo2SmartHub+event_tilt"></a>
 
@@ -383,7 +396,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
+| type | <code>number</code> | A number representing one of the <a href="#Devices">Devices</a>.. |
 
 <a name="Hub+event_detach"></a>
 
@@ -574,7 +587,7 @@ Set the color of the LED on the Hub via a color value.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
 
 <a name="LPF2Hub+setLEDRGB"></a>
 
@@ -673,7 +686,7 @@ Emits when a button is pressed.
 | Param | Type | Description |
 | --- | --- | --- |
 | button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
 
 <a name="LPF2Hub+event_distance"></a>
 
@@ -697,7 +710,7 @@ Emits when a color sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -709,7 +722,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_tilt"></a>
@@ -748,7 +761,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
+| type | <code>number</code> | A number representing one of the <a href="#Devices">Devices</a>.. |
 
 <a name="Hub+event_detach"></a>
 
@@ -924,7 +937,7 @@ Set the color of the LED on the Hub via a color value.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
 
 <a name="LPF2Hub+setLEDRGB"></a>
 
@@ -1023,7 +1036,7 @@ Emits when a button is pressed.
 | Param | Type | Description |
 | --- | --- | --- |
 | button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
 
 <a name="LPF2Hub+event_distance"></a>
 
@@ -1047,7 +1060,7 @@ Emits when a color sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -1059,7 +1072,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_tilt"></a>
@@ -1086,7 +1099,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
+| type | <code>number</code> | A number representing one of the <a href="#Devices">Devices</a>.. |
 
 <a name="Hub+event_detach"></a>
 
@@ -1200,7 +1213,7 @@ Set the color of the LED on the Remote via a color value.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
 
 <a name="PUPRemote+setLEDRGB"></a>
 
@@ -1312,7 +1325,7 @@ Emits when a button is pressed.
 | Param | Type | Description |
 | --- | --- | --- |
 | button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| state | <code>number</code> | A number representing one of the <a href="#ButtonStates">ButtonStates</a>. |
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -1324,7 +1337,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="DuploTrainBase"></a>
@@ -1431,7 +1444,7 @@ Set the color of the LED on the train via a color value.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a>. |
 
 <a name="DuploTrainBase+setMotorSpeed"></a>
 
@@ -1457,7 +1470,7 @@ Play a built-in train sound.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| sound | <code>number</code> | A number representing one of the Train Base sound consts. |
+| sound | <code>number</code> | A number representing one of the <a href="#DuploTrainBaseSounds">DuploTrainBaseSounds</a>. |
 
 <a name="DuploTrainBase+rampMotorSpeed"></a>
 
@@ -1583,7 +1596,7 @@ Emits when a color sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
 
 <a name="LPF2Hub+event_colorAndDistance"></a>
 
@@ -1595,7 +1608,7 @@ A combined color and distance event, emits when the sensor is activated.
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | <code>number</code> | A number representing one of the LED <a href="#Colors">Colors</a> |
 | distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_speed"></a>
@@ -1609,4 +1622,78 @@ Emits on a speed change.
 | --- | --- |
 | port | <code>string</code> | 
 | speed | <code>number</code> | 
+
+<a name="Devices"></a>
+
+## Devices
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| UNKNOWN | <code>number</code> | 0 |
+| BASIC_MOTOR | <code>number</code> | 1 |
+| TRAIN_MOTOR | <code>number</code> | 2 |
+| LED_LIGHTS | <code>number</code> | 8 |
+| BOOST_LED | <code>number</code> | 22 |
+| WEDO2_TILT | <code>number</code> | 34 |
+| WEDO2_DISTANCE | <code>number</code> | 35 |
+| BOOST_DISTANCE | <code>number</code> | 37 |
+| BOOST_TACHO_MOTOR | <code>number</code> | 38 |
+| BOOST_MOVE_HUB_MOTOR | <code>number</code> | 39 |
+| BOOST_TILT | <code>number</code> | 40 |
+| DUPLO_TRAIN_BASE_MOTOR | <code>number</code> | 41 |
+| DUPLO_TRAIN_BASE_SPEAKER | <code>number</code> | 42 |
+| DUPLO_TRAIN_BASE_COLOR | <code>number</code> | 43 |
+| DUPLO_TRAIN_BASE_SPEEDOMETER | <code>number</code> | 44 |
+| POWERED_UP_REMOTE_BUTTON | <code>number</code> | 55 |
+
+<a name="Colors"></a>
+
+## Colors
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| BLACK | <code>number</code> | 0 |
+| PINK | <code>number</code> | 1 |
+| PURPLE | <code>number</code> | 2 |
+| BLUE | <code>number</code> | 3 |
+| LIGHT_BLUE | <code>number</code> | 4 |
+| CYAN | <code>number</code> | 5 |
+| GREEN | <code>number</code> | 6 |
+| YELLOW | <code>number</code> | 7 |
+| ORANGE | <code>number</code> | 8 |
+| RED | <code>number</code> | 9 |
+| WHITE | <code>number</code> | 10 |
+| NONE | <code>number</code> | 255 |
+
+<a name="ButtonStates"></a>
+
+## ButtonStates
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| PRESSED | <code>number</code> | 0 |
+| RELEASED | <code>number</code> | 1 |
+| UP | <code>number</code> | 2 |
+| DOWN | <code>number</code> | 3 |
+| STOP | <code>number</code> | 4 |
+
+<a name="DuploTrainBaseSounds"></a>
+
+## DuploTrainBaseSounds
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| BREAK | <code>number</code> | 3 |
+| STATION_DEPARTURE | <code>number</code> | 5 |
+| WATER_REFILL | <code>number</code> | 7 |
+| HORN | <code>number</code> | 9 |
+| STEAM | <code>number</code> | 10 |
 

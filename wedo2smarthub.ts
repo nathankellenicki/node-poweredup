@@ -87,7 +87,7 @@ export class WeDo2SmartHub extends Hub {
     /**
      * Set the color of the LED on the Hub via a color value.
      * @method WeDo2SmartHub#setLEDColor
-     * @param {number} color A number representing one of the LED color consts.
+     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
@@ -276,7 +276,7 @@ export class WeDo2SmartHub extends Hub {
              * Emits when a button is pressed.
              * @event WeDo2SmartHub#button
              * @param {string} button
-             * @param {number} state A number representing one of the button state consts.
+             * @param {number} state A number representing one of the <a href="#ButtonStates">ButtonStates</a>.
              */
             this.emit("button", "GREEN", Consts.ButtonStates.PRESSED);
             return;
@@ -315,7 +315,7 @@ export class WeDo2SmartHub extends Hub {
                      * Emits when a color sensor is activated.
                      * @event WeDo2SmartHub#color
                      * @param {string} port
-                     * @param {number} color A number representing one of the LED color consts.
+                     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>.
                      */
                     this.emit("color", port.id, distance);
                     break;

@@ -257,7 +257,7 @@ export class Hub extends EventEmitter {
                  * Emits when a motor or sensor is attached to the Hub.
                  * @event Hub#attach
                  * @param {string} port
-                 * @param {number} type A number representing one of the peripheral consts.
+                 * @param {number} type A number representing one of the <a href="#Devices">Devices</a>..
                  */
                 this.emit("attach", port.id, type);
             }

@@ -81,7 +81,7 @@ export class DuploTrainBase extends LPF2Hub {
     /**
      * Set the color of the LED on the train via a color value.
      * @method DuploTrainBase#setLEDColor
-     * @param {number} color A number representing one of the LED color consts.
+     * @param {number} color A number representing one of the LED <a href="#Colors">Colors</a>.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
@@ -138,7 +138,7 @@ export class DuploTrainBase extends LPF2Hub {
     /**
      * Play a built-in train sound.
      * @method DuploTrainBase#playSound
-     * @param {number} sound A number representing one of the Train Base sound consts.
+     * @param {number} sound A number representing one of the <a href="#DuploTrainBaseSounds">DuploTrainBaseSounds</a>.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public playSound (sound: number) {

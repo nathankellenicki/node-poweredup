@@ -8,6 +8,25 @@ export enum Hubs {
 }
 
 
+/**
+ * @typedef Devices
+ * @property {number} UNKNOWN 0
+ * @property {number} BASIC_MOTOR 1
+ * @property {number} TRAIN_MOTOR 2
+ * @property {number} LED_LIGHTS 8
+ * @property {number} BOOST_LED 22
+ * @property {number} WEDO2_TILT 34
+ * @property {number} WEDO2_DISTANCE 35
+ * @property {number} BOOST_DISTANCE 37
+ * @property {number} BOOST_TACHO_MOTOR 38
+ * @property {number} BOOST_MOVE_HUB_MOTOR 39
+ * @property {number} BOOST_TILT 40
+ * @property {number} DUPLO_TRAIN_BASE_MOTOR 41
+ * @property {number} DUPLO_TRAIN_BASE_SPEAKER 42
+ * @property {number} DUPLO_TRAIN_BASE_COLOR 43
+ * @property {number} DUPLO_TRAIN_BASE_SPEEDOMETER 44
+ * @property {number} POWERED_UP_REMOTE_BUTTON 55
+ */
 export enum Devices {
     UNKNOWN = 0,
     BASIC_MOTOR = 1,
@@ -28,6 +47,21 @@ export enum Devices {
 }
 
 
+/**
+ * @typedef Colors
+ * @property {number} BLACK 0
+ * @property {number} PINK 1
+ * @property {number} PURPLE 2
+ * @property {number} BLUE 3
+ * @property {number} LIGHT_BLUE 4
+ * @property {number} CYAN 5
+ * @property {number} GREEN 6
+ * @property {number} YELLOW 7
+ * @property {number} ORANGE 8
+ * @property {number} RED 9
+ * @property {number} WHITE 10
+ * @property {number} NONE 255
+ */
 export enum Colors {
     BLACK = 0,
     PINK = 1,
@@ -44,6 +78,14 @@ export enum Colors {
 }
 
 
+/**
+ * @typedef ButtonStates
+ * @property {number} PRESSED 0
+ * @property {number} RELEASED 1
+ * @property {number} UP 2
+ * @property {number} DOWN 3
+ * @property {number} STOP 4
+ */
 export enum ButtonStates {
     PRESSED = 0,
     RELEASED = 1,
@@ -53,6 +95,14 @@ export enum ButtonStates {
 }
 
 
+/**
+ * @typedef DuploTrainBaseSounds
+ * @property {number} BREAK 3
+ * @property {number} STATION_DEPARTURE 5
+ * @property {number} WATER_REFILL 7
+ * @property {number} HORN 9
+ * @property {number} STEAM 10
+ */
 export enum DuploTrainBaseSounds {
     BREAK = 3,
     STATION_DEPARTURE = 5,
