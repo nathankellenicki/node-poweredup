@@ -18,7 +18,7 @@ export enum HubType {
 
 
 /**
- * @typedef Device
+ * @typedef DeviceType
  * @property {number} UNKNOWN 0
  * @property {number} BASIC_MOTOR 1
  * @property {number} TRAIN_MOTOR 2

@@ -103,7 +103,7 @@ Thanks go to Jorge Pereira ([@JorgePe](https://github.com/JorgePe)), Sebastian R
 <dl>
 <dt><a href="#HubType">HubType</a></dt>
 <dd></dd>
-<dt><a href="#Device">Device</a></dt>
+<dt><a href="#DeviceType">DeviceType</a></dt>
 <dd></dd>
 <dt><a href="#Color">Color</a></dt>
 <dd></dd>
@@ -192,7 +192,7 @@ Emits when a Powered UP Hub device is found.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
-    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#WeDo2SmartHub+event_button)
     * ["distance" (port, distance)](#WeDo2SmartHub+event_distance)
     * ["color" (port, color)](#WeDo2SmartHub+event_color)
@@ -420,7 +420,7 @@ Get the hub type.
 **Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 <a name="Hub+getPortDeviceType"></a>
 
-### weDo2SmartHub.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+### weDo2SmartHub.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
 Get the device type for a given port.
 
 **Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
@@ -500,7 +500,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
-| type | <code>DeviceType</code> | 
+| type | [<code>DeviceType</code>](#DeviceType) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -540,7 +540,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
-    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
@@ -791,7 +791,7 @@ Get the hub type.
 **Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
 <a name="Hub+getPortDeviceType"></a>
 
-### boostMoveHub.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+### boostMoveHub.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
 Get the device type for a given port.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
@@ -886,7 +886,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
-| type | <code>DeviceType</code> | 
+| type | [<code>DeviceType</code>](#DeviceType) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -926,7 +926,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
-    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
@@ -1162,7 +1162,7 @@ Get the hub type.
 **Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
 <a name="Hub+getPortDeviceType"></a>
 
-### pupHub.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+### pupHub.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
 Get the device type for a given port.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
@@ -1245,7 +1245,7 @@ Emits when a motor or sensor is attached to the Hub.
 | Param | Type |
 | --- | --- |
 | port | <code>string</code> | 
-| type | <code>DeviceType</code> | 
+| type | [<code>DeviceType</code>](#DeviceType) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -1282,7 +1282,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
-    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
 
@@ -1472,7 +1472,7 @@ Get the hub type.
 **Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
 <a name="Hub+getPortDeviceType"></a>
 
-### pupRemote.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+### pupRemote.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
 Get the device type for a given port.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
@@ -1533,7 +1533,7 @@ A combined color and distance event, emits when the sensor is activated.
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
     * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
-    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ <code>DeviceType</code>
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["color" (port, color)](#LPF2Hub+event_color)
     * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["speed" (port, speed)](#LPF2Hub+event_speed)
@@ -1764,7 +1764,7 @@ Get the hub type.
 **Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
 <a name="Hub+getPortDeviceType"></a>
 
-### duploTrainBase.getPortDeviceType(port) ⇒ <code>DeviceType</code>
+### duploTrainBase.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
 Get the device type for a given port.
 
 **Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
@@ -1826,9 +1826,9 @@ Emits on a speed change.
 | POWERED_UP_REMOTE | <code>number</code> | 4 |
 | DUPLO_TRAIN_HUB | <code>number</code> | 5 |
 
-<a name="Device"></a>
+<a name="DeviceType"></a>
 
-## Device
+## DeviceType
 **Kind**: global typedef  
 **Properties**
 
