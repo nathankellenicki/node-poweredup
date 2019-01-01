@@ -1,3 +1,7 @@
+[![CircleCI](https://circleci.com/gh/nathankellenicki/node-poweredup.svg?style=shield)](https://circleci.com/gh/nathankellenicki/node-poweredup)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/node-poweredup?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![NPM Version](https://img.shields.io/npm/v/node-poweredup.svg?style=flat)
+
 # **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
 
 ### Introduction
@@ -28,15 +32,25 @@ Note: node-poweredup has been tested on macOS 10.13 and Debian/Raspbian on the R
 
 While most Powered UP components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
 
-| Name                            | Type          | WeDo 2.0 Smart Hub | Boost Move Hub | Powered UP Hub | Availability |
-| ------------------------------- | ------------- | ------------------ | -------------- | -------------- | ------------ |
-| WeDo 2.0 Tilt Sensor            | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
-| WeDo 2.0 Motion Sensor          | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
-| WeDo 2.0 Medium Motor           | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a> |
-| Boost Color and Distance Sensor | Sensor        |     *Partial*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
-| Boost Tacho Motor  | Motor/Sensor  |     *Partial*    |       Yes      |       *Partial*      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
-| Powered UP Train Motor          | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
-| Powered UP LED Lights           | Light         |       Yes      |     Yes    |     Yes    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
+| Device Name                     | Product Code | Type          | WeDo 2.0 Smart Hub | Boost Move Hub | Powered UP Hub | Availability |
+| ------------------------------- | ------------ | ------------- | ------------------ | -------------- | -------------- | ------------ |
+| WeDo 2.0 Tilt Sensor            | <a href="https://brickset.com/sets/45305-1/">45305</a>        | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| WeDo 2.0 Motion Sensor          | <a href="https://brickset.com/sets/45304-1/">45304</a>        | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| WeDo 2.0 Medium Motor           | <a href="https://brickset.com/sets/45303-1/">45303</a>        | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a> |
+| Boost Color and Distance Sensor | <a href="https://brickset.com/sets/88007-1/">88007</a>        | Sensor        |     *Partial*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Boost Tacho Motor               | <a href="https://brickset.com/sets/88008-1/">88008</a>        | Motor/Sensor  |     *Partial*    |       Yes      |       *Partial*      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Powered UP Train Motor          | <a href="https://brickset.com/sets/88011-1/">88011</a>        | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
+| Powered UP LED Lights           | <a href="https://brickset.com/sets/88005-1/">88005</a>        | Light         |       Yes      |     Yes    |     Yes    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
+
+In addition, the Hubs themselves have certain built-in features which this library exposes.
+
+| Hub Name           | Product Code | Built-In Features      | Availability |
+| ------------------ | ------------ | ---------------------- | ------------ |
+| WeDo 2.0 Smart hub | <a href="https://brickset.com/sets/45301-1/">45301</a> | RGB LED<br />Piezo Buzzer<br />Button                  | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| Boost Move Hub     | <a href="https://brickset.com/sets/88006-1/">88006</a> | RGB LED<br />Tilt Sensor<br />2x Tacho Motors<br />Button               | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Powered UP Hub     | <a href="https://brickset.com/sets/88009-1/">88009</a> | RGB LED<br />Button                                                     | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a><br /><a href="https://brickset.com/sets/76112-1/">76112</a> |
+| Powered UP Remote  | <a href="https://brickset.com/sets/88010-1/">88010</a> | RGB LED<br />Left and Right Control Buttons<br />Button                 | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
+| Duplo Train Base   | 28743 | RGB LED/Headlights<br />Speaker<br />Speedometer<br />Motor<br />Color and Distance Sensor<br />Button | <a href="https://brickset.com/sets/10874-1/">10874</a><br /><a href="https://brickset.com/sets/10875-1/">10875</a> |
 
 
 ### Known Issues and Limitations
@@ -91,6 +105,21 @@ Thanks go to Jorge Pereira ([@JorgePe](https://github.com/JorgePe)), Sebastian R
 <dt><a href="#PUPRemote">PUPRemote</a> ⇐ <code>LPF2Hub</code></dt>
 <dd></dd>
 <dt><a href="#DuploTrainBase">DuploTrainBase</a> ⇐ <code>LPF2Hub</code></dt>
+<dd></dd>
+</dl>
+
+## Typedefs
+
+<dl>
+<dt><a href="#HubType">HubType</a></dt>
+<dd></dd>
+<dt><a href="#DeviceType">DeviceType</a></dt>
+<dd></dd>
+<dt><a href="#Color">Color</a></dt>
+<dd></dd>
+<dt><a href="#ButtonState">ButtonState</a></dt>
+<dd></dd>
+<dt><a href="#DuploTrainBaseSound">DuploTrainBaseSound</a></dt>
 <dd></dd>
 </dl>
 
@@ -172,6 +201,8 @@ Emits when a Powered UP Hub device is found.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#WeDo2SmartHub+event_button)
     * ["distance" (port, distance)](#WeDo2SmartHub+event_distance)
     * ["color" (port, color)](#WeDo2SmartHub+event_color)
@@ -249,9 +280,9 @@ Set the color of the LED on the Hub via a color value.
 **Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="WeDo2SmartHub+setLEDRGB"></a>
 
@@ -391,6 +422,23 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
+<a name="Hub+getHubType"></a>
+
+### weDo2SmartHub.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+<a name="Hub+getPortDeviceType"></a>
+
+### weDo2SmartHub.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="WeDo2SmartHub+event_button"></a>
 
 ### "button" (button, state)
@@ -398,10 +446,10 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
 
 <a name="WeDo2SmartHub+event_distance"></a>
 
@@ -422,10 +470,10 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
 
 <a name="WeDo2SmartHub+event_tilt"></a>
 
@@ -459,10 +507,10 @@ Emits when a motor or sensor is attached to the Hub.
 
 **Kind**: event emitted by [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| type | [<code>DeviceType</code>](#DeviceType) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -501,9 +549,12 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
     * ["rotate" (port, rotation)](#LPF2Hub+event_rotate)
     * ["attach" (port, type)](#Hub+event_attach)
@@ -529,6 +580,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.name
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>name</code>](#Hub+name)  
 **Read only**: true  
 **Properties**
 
@@ -540,6 +592,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.uuid
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>uuid</code>](#Hub+uuid)  
 **Read only**: true  
 **Properties**
 
@@ -551,6 +604,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.rssi
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>rssi</code>](#Hub+rssi)  
 **Read only**: true  
 **Properties**
 
@@ -562,6 +616,7 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 
 ### boostMoveHub.batteryLevel
 **Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>batteryLevel</code>](#Hub+batteryLevel)  
 **Read only**: true  
 **Properties**
 
@@ -646,9 +701,9 @@ Set the color of the LED on the Hub via a color value.
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="LPF2Hub+setLEDRGB"></a>
 
@@ -678,6 +733,7 @@ Connect to the Hub.
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>disconnect</code>](#Hub+disconnect)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
@@ -685,6 +741,7 @@ Disconnect the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -698,6 +755,7 @@ Subscribe to sensor notifications on a given port.
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>unsubscribe</code>](#Hub+unsubscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -712,6 +770,7 @@ Sleep a given amount of time.
 This is a helper method to make it easier to add delays into a chain of commands.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>sleep</code>](#Hub+sleep)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -726,11 +785,31 @@ Wait until a given list of concurrently running commands are complete.
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
 **Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>wait</code>](#Hub+wait)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
+
+<a name="Hub+getHubType"></a>
+
+### boostMoveHub.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### boostMoveHub.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="LPF2Hub+event_button"></a>
 
@@ -739,10 +818,10 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
 
 <a name="LPF2Hub+event_distance"></a>
 
@@ -763,10 +842,23 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
 
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
+
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
+
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | [<code>Color</code>](#Color) |  |
+| distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_tilt"></a>
 
@@ -799,11 +891,12 @@ Emits when a rotation sensor is activated.
 Emits when a motor or sensor is attached to the Hub.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>attach</code>](#Hub+event_attach)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| type | [<code>DeviceType</code>](#DeviceType) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -811,6 +904,7 @@ Emits when a motor or sensor is attached to the Hub.
 Emits when an attached motor or sensor is detached from the Hub.
 
 **Kind**: event emitted by [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>detach</code>](#Hub+event_detach)  
 
 | Param | Type |
 | --- | --- |
@@ -841,9 +935,12 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#LPF2Hub+event_button)
     * ["distance" (port, distance)](#LPF2Hub+event_distance)
     * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["tilt" (port, x, y)](#LPF2Hub+event_tilt)
     * ["attach" (port, type)](#Hub+event_attach)
     * ["detach" (port)](#Hub+event_detach)
@@ -868,6 +965,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.name
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>name</code>](#Hub+name)  
 **Read only**: true  
 **Properties**
 
@@ -879,6 +977,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.uuid
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>uuid</code>](#Hub+uuid)  
 **Read only**: true  
 **Properties**
 
@@ -890,6 +989,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.rssi
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>rssi</code>](#Hub+rssi)  
 **Read only**: true  
 **Properties**
 
@@ -901,6 +1001,7 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 
 ### pupHub.batteryLevel
 **Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>batteryLevel</code>](#Hub+batteryLevel)  
 **Read only**: true  
 **Properties**
 
@@ -971,9 +1072,9 @@ Set the color of the LED on the Hub via a color value.
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="LPF2Hub+setLEDRGB"></a>
 
@@ -1003,6 +1104,7 @@ Connect to the Hub.
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>disconnect</code>](#Hub+disconnect)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
@@ -1010,6 +1112,7 @@ Disconnect the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -1023,6 +1126,7 @@ Subscribe to sensor notifications on a given port.
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>unsubscribe</code>](#Hub+unsubscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -1037,6 +1141,7 @@ Sleep a given amount of time.
 This is a helper method to make it easier to add delays into a chain of commands.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>sleep</code>](#Hub+sleep)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -1051,11 +1156,31 @@ Wait until a given list of concurrently running commands are complete.
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
 **Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>wait</code>](#Hub+wait)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
+
+<a name="Hub+getHubType"></a>
+
+### pupHub.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### pupHub.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="LPF2Hub+event_button"></a>
 
@@ -1064,10 +1189,10 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
 
 <a name="LPF2Hub+event_distance"></a>
 
@@ -1088,10 +1213,23 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
 
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
+
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
+
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | [<code>Color</code>](#Color) |  |
+| distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_tilt"></a>
 
@@ -1112,11 +1250,12 @@ Emits when a tilt sensor is activated.
 Emits when a motor or sensor is attached to the Hub.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>attach</code>](#Hub+event_attach)  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| type | <code>number</code> | A number representing one of the peripheral consts. |
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| type | [<code>DeviceType</code>](#DeviceType) | 
 
 <a name="Hub+event_detach"></a>
 
@@ -1124,6 +1263,7 @@ Emits when a motor or sensor is attached to the Hub.
 Emits when an attached motor or sensor is detached from the Hub.
 
 **Kind**: event emitted by [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>detach</code>](#Hub+event_detach)  
 
 | Param | Type |
 | --- | --- |
@@ -1151,7 +1291,10 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["button" (button, state)](#LPF2Hub+event_button)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
 
 <a name="new_PUPRemote_new"></a>
 
@@ -1173,6 +1316,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.name
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>name</code>](#Hub+name)  
 **Read only**: true  
 **Properties**
 
@@ -1184,6 +1328,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.uuid
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>uuid</code>](#Hub+uuid)  
 **Read only**: true  
 **Properties**
 
@@ -1195,6 +1340,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.rssi
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>rssi</code>](#Hub+rssi)  
 **Read only**: true  
 **Properties**
 
@@ -1206,6 +1352,7 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 
 ### pupRemote.batteryLevel
 **Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>batteryLevel</code>](#Hub+batteryLevel)  
 **Read only**: true  
 **Properties**
 
@@ -1222,9 +1369,9 @@ Set the color of the LED on the Remote via a color value.
 **Overrides**: [<code>setLEDColor</code>](#LPF2Hub+setLEDColor)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="PUPRemote+setLEDRGB"></a>
 
@@ -1267,6 +1414,7 @@ Connect to the Hub.
 Disconnect the Hub.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>disconnect</code>](#Hub+disconnect)  
 **Returns**: <code>Promise</code> - Resolved upon successful disconnect.  
 <a name="Hub+subscribe"></a>
 
@@ -1274,6 +1422,7 @@ Disconnect the Hub.
 Subscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>subscribe</code>](#Hub+subscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type | Description |
@@ -1287,6 +1436,7 @@ Subscribe to sensor notifications on a given port.
 Unsubscribe to sensor notifications on a given port.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>unsubscribe</code>](#Hub+unsubscribe)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
 | Param | Type |
@@ -1301,6 +1451,7 @@ Sleep a given amount of time.
 This is a helper method to make it easier to add delays into a chain of commands.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>sleep</code>](#Hub+sleep)  
 **Returns**: <code>Promise</code> - Resolved after the delay is finished.  
 
 | Param | Type | Description |
@@ -1315,11 +1466,31 @@ Wait until a given list of concurrently running commands are complete.
 This is a helper method to make it easier to wait for concurrent commands to complete.
 
 **Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>wait</code>](#Hub+wait)  
 **Returns**: <code>Promise</code> - Resolved after the commands are finished.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
+
+<a name="Hub+getHubType"></a>
+
+### pupRemote.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### pupRemote.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="LPF2Hub+event_button"></a>
 
@@ -1328,10 +1499,23 @@ Emits when a button is pressed.
 
 **Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
 
+| Param | Type |
+| --- | --- |
+| button | <code>string</code> | 
+| state | [<code>ButtonState</code>](#ButtonState) | 
+
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>PUPRemote</code>](#PUPRemote)  
+
 | Param | Type | Description |
 | --- | --- | --- |
-| button | <code>string</code> |  |
-| state | <code>number</code> | A number representing one of the button state consts. |
+| port | <code>string</code> |  |
+| color | [<code>Color</code>](#Color) |  |
+| distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="DuploTrainBase"></a>
 
@@ -1358,7 +1542,10 @@ Emits when a button is pressed.
     * [.unsubscribe(port)](#Hub+unsubscribe) ⇒ <code>Promise</code>
     * [.sleep(delay)](#Hub+sleep) ⇒ <code>Promise</code>
     * [.wait(commands)](#Hub+wait) ⇒ <code>Promise</code>
+    * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
+    * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["color" (port, color)](#LPF2Hub+event_color)
+    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["speed" (port, speed)](#LPF2Hub+event_speed)
 
 <a name="new_DuploTrainBase_new"></a>
@@ -1434,9 +1621,9 @@ Set the color of the LED on the train via a color value.
 **Overrides**: [<code>setLEDColor</code>](#LPF2Hub+setLEDColor)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| Param | Type |
+| --- | --- |
+| color | [<code>Color</code>](#Color) | 
 
 <a name="DuploTrainBase+setMotorSpeed"></a>
 
@@ -1460,9 +1647,9 @@ Play a built-in train sound.
 **Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
 **Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| sound | <code>number</code> | A number representing one of the Train Base sound consts. |
+| Param | Type |
+| --- | --- |
+| sound | [<code>DuploTrainBaseSound</code>](#DuploTrainBaseSound) | 
 
 <a name="DuploTrainBase+rampMotorSpeed"></a>
 
@@ -1578,6 +1765,25 @@ This is a helper method to make it easier to wait for concurrent commands to com
 | --- | --- | --- |
 | commands | <code>Array.&lt;Promise.&lt;any&gt;&gt;</code> | Array of executing commands. |
 
+<a name="Hub+getHubType"></a>
+
+### duploTrainBase.getHubType() ⇒ [<code>HubType</code>](#HubType)
+Get the hub type.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Overrides**: [<code>getHubType</code>](#Hub+getHubType)  
+<a name="Hub+getPortDeviceType"></a>
+
+### duploTrainBase.getPortDeviceType(port) ⇒ [<code>DeviceType</code>](#DeviceType)
+Get the device type for a given port.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Overrides**: [<code>getPortDeviceType</code>](#Hub+getPortDeviceType)  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
 <a name="LPF2Hub+event_color"></a>
 
 ### "color" (port, color)
@@ -1585,10 +1791,23 @@ Emits when a color sensor is activated.
 
 **Kind**: event emitted by [<code>DuploTrainBase</code>](#DuploTrainBase)  
 
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+| color | [<code>Color</code>](#Color) | 
+
+<a name="LPF2Hub+event_colorAndDistance"></a>
+
+### "colorAndDistance" (port, color, distance)
+A combined color and distance event, emits when the sensor is activated.
+
+**Kind**: event emitted by [<code>DuploTrainBase</code>](#DuploTrainBase)  
+
 | Param | Type | Description |
 | --- | --- | --- |
 | port | <code>string</code> |  |
-| color | <code>number</code> | A number representing one of the LED color consts. |
+| color | [<code>Color</code>](#Color) |  |
+| distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_speed"></a>
 
@@ -1601,4 +1820,93 @@ Emits on a speed change.
 | --- | --- |
 | port | <code>string</code> | 
 | speed | <code>number</code> | 
+
+<a name="HubType"></a>
+
+## HubType
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| UNKNOWN | <code>number</code> | 0 |
+| WEDO2_SMART_HUB | <code>number</code> | 1 |
+| BOOST_MOVE_HUB | <code>number</code> | 2 |
+| POWERED_UP_HUB | <code>number</code> | 3 |
+| POWERED_UP_REMOTE | <code>number</code> | 4 |
+| DUPLO_TRAIN_HUB | <code>number</code> | 5 |
+
+<a name="DeviceType"></a>
+
+## DeviceType
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| UNKNOWN | <code>number</code> | 0 |
+| BASIC_MOTOR | <code>number</code> | 1 |
+| TRAIN_MOTOR | <code>number</code> | 2 |
+| LED_LIGHTS | <code>number</code> | 8 |
+| BOOST_LED | <code>number</code> | 22 |
+| WEDO2_TILT | <code>number</code> | 34 |
+| WEDO2_DISTANCE | <code>number</code> | 35 |
+| BOOST_DISTANCE | <code>number</code> | 37 |
+| BOOST_TACHO_MOTOR | <code>number</code> | 38 |
+| BOOST_MOVE_HUB_MOTOR | <code>number</code> | 39 |
+| BOOST_TILT | <code>number</code> | 40 |
+| DUPLO_TRAIN_BASE_MOTOR | <code>number</code> | 41 |
+| DUPLO_TRAIN_BASE_SPEAKER | <code>number</code> | 42 |
+| DUPLO_TRAIN_BASE_COLOR | <code>number</code> | 43 |
+| DUPLO_TRAIN_BASE_SPEEDOMETER | <code>number</code> | 44 |
+| POWERED_UP_REMOTE_BUTTON | <code>number</code> | 55 |
+
+<a name="Color"></a>
+
+## Color
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| BLACK | <code>number</code> | 0 |
+| PINK | <code>number</code> | 1 |
+| PURPLE | <code>number</code> | 2 |
+| BLUE | <code>number</code> | 3 |
+| LIGHT_BLUE | <code>number</code> | 4 |
+| CYAN | <code>number</code> | 5 |
+| GREEN | <code>number</code> | 6 |
+| YELLOW | <code>number</code> | 7 |
+| ORANGE | <code>number</code> | 8 |
+| RED | <code>number</code> | 9 |
+| WHITE | <code>number</code> | 10 |
+| NONE | <code>number</code> | 255 |
+
+<a name="ButtonState"></a>
+
+## ButtonState
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| PRESSED | <code>number</code> | 0 |
+| RELEASED | <code>number</code> | 1 |
+| UP | <code>number</code> | 2 |
+| DOWN | <code>number</code> | 3 |
+| STOP | <code>number</code> | 4 |
+
+<a name="DuploTrainBaseSound"></a>
+
+## DuploTrainBaseSound
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| BRAKE | <code>number</code> | 3 |
+| STATION_DEPARTURE | <code>number</code> | 5 |
+| WATER_REFILL | <code>number</code> | 7 |
+| HORN | <code>number</code> | 9 |
+| STEAM | <code>number</code> | 10 |
 

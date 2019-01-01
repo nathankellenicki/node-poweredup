@@ -1,3 +1,7 @@
+[![CircleCI](https://circleci.com/gh/nathankellenicki/node-poweredup.svg?style=shield)](https://circleci.com/gh/nathankellenicki/node-poweredup)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/node-poweredup?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+![NPM Version](https://img.shields.io/npm/v/node-poweredup.svg?style=flat)
+
 # **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
 
 ### Introduction
@@ -28,15 +32,25 @@ Note: node-poweredup has been tested on macOS 10.13 and Debian/Raspbian on the R
 
 While most Powered UP components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.
 
-| Name                            | Type          | WeDo 2.0 Smart Hub | Boost Move Hub | Powered UP Hub | Availability |
-| ------------------------------- | ------------- | ------------------ | -------------- | -------------- | ------------ |
-| WeDo 2.0 Tilt Sensor            | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
-| WeDo 2.0 Motion Sensor          | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
-| WeDo 2.0 Medium Motor           | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a> |
-| Boost Color and Distance Sensor | Sensor        |     *Partial*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
-| Boost Tacho Motor  | Motor/Sensor  |     *Partial*    |       Yes      |       *Partial*      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
-| Powered UP Train Motor          | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
-| Powered UP LED Lights           | Light         |       Yes      |     Yes    |     Yes    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
+| Device Name                     | Product Code | Type          | WeDo 2.0 Smart Hub | Boost Move Hub | Powered UP Hub | Availability |
+| ------------------------------- | ------------ | ------------- | ------------------ | -------------- | -------------- | ------------ |
+| WeDo 2.0 Tilt Sensor            | <a href="https://brickset.com/sets/45305-1/">45305</a>        | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| WeDo 2.0 Motion Sensor          | <a href="https://brickset.com/sets/45304-1/">45304</a>        | Sensor        |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| WeDo 2.0 Medium Motor           | <a href="https://brickset.com/sets/45303-1/">45303</a>        | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a> |
+| Boost Color and Distance Sensor | <a href="https://brickset.com/sets/88007-1/">88007</a>        | Sensor        |     *Partial*    |       Yes      |       Yes      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Boost Tacho Motor               | <a href="https://brickset.com/sets/88008-1/">88008</a>        | Motor/Sensor  |     *Partial*    |       Yes      |       *Partial*      | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Powered UP Train Motor          | <a href="https://brickset.com/sets/88011-1/">88011</a>        | Motor         |         Yes        |       Yes      |       Yes      | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
+| Powered UP LED Lights           | <a href="https://brickset.com/sets/88005-1/">88005</a>        | Light         |       Yes      |     Yes    |     Yes    | <a href="https://brickset.com/sets/88005-1/">88005</a> |
+
+In addition, the Hubs themselves have certain built-in features which this library exposes.
+
+| Hub Name           | Product Code | Built-In Features      | Availability |
+| ------------------ | ------------ | ---------------------- | ------------ |
+| WeDo 2.0 Smart hub | <a href="https://brickset.com/sets/45301-1/">45301</a> | RGB LED<br />Piezo Buzzer<br />Button                  | <a href="https://brickset.com/sets/45300-1/">45300</a> |
+| Boost Move Hub     | <a href="https://brickset.com/sets/88006-1/">88006</a> | RGB LED<br />Tilt Sensor<br />2x Tacho Motors<br />Button               | <a href="https://brickset.com/sets/17101-1/">17101</a> |
+| Powered UP Hub     | <a href="https://brickset.com/sets/88009-1/">88009</a> | RGB LED<br />Button                                                     | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a><br /><a href="https://brickset.com/sets/76112-1/">76112</a> |
+| Powered UP Remote  | <a href="https://brickset.com/sets/88010-1/">88010</a> | RGB LED<br />Left and Right Control Buttons<br />Button                 | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
+| Duplo Train Base   | 28743 | RGB LED/Headlights<br />Speaker<br />Speedometer<br />Motor<br />Color and Distance Sensor<br />Button | <a href="https://brickset.com/sets/10874-1/">10874</a><br /><a href="https://brickset.com/sets/10875-1/">10875</a> |
 
 
 ### Known Issues and Limitations

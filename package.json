@@ -1,13 +1,13 @@
 {
   "name": "node-poweredup",
-  "version": "1.1.7",
+  "version": "1.4.5",
   "description": "A Node.js module to interface with LEGO Powered UP components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tslint -c tslint.json \"*.ts\" && tsc",
-    "docs": "jsdoc2md dist/poweredup.js dist/lpf2hub.js dist/wedo2smarthub.js dist/boostmovehub.js dist/puphub.js dist/pupremote.js dist/duplotrainbase.js dist/hub.js dist/consts.js > DOCS.md",
+    "docs": "jsdoc2md dist/consts.js dist/poweredup.js dist/lpf2hub.js dist/wedo2smarthub.js dist/boostmovehub.js dist/puphub.js dist/pupremote.js dist/duplotrainbase.js dist/hub.js dist/consts.js > DOCS.md",
     "readme": "cat ABOUT.md DOCS.md > README.md",
     "all": "npm run build && npm run docs && npm run readme",
     "prepublishOnly": "npm run build"
@@ -15,17 +15,17 @@
   "author": "Nathan Kellenicki <nathan@kellenicki.com>",
   "license": "MIT",
   "dependencies": {
-    "debug": "^3.1.0",
+    "debug": "^4.1.0",
     "noble": "1.9.1",
-    "noble-mac": "https://github.com/Timeular/noble-mac.git#a776e9a"
+    "noble-mac": "https://github.com/Timeular/noble-mac.git#af4418e"
   },
   "devDependencies": {
     "jsdoc-to-markdown": "^4.0.1",
-    "typescript": "^2.9.2",
-    "tslint": "^5.10.0",
-    "@types/debug": "0.0.30",
+    "typescript": "^3.1.6",
+    "tslint": "^5.11.0",
+    "@types/debug": "0.0.31",
     "@types/noble": "0.0.37",
-    "@types/node": "^10.3.4"
+    "@types/node": "^10.12.9"
   },
   "resolutions": {
     "xpc-connection": "sandeepmistry/node-xpc-connection#pull/26/head"

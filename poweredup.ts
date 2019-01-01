@@ -22,7 +22,7 @@ let wantScan = false;
 
 const startScanning = () => {
     if (isBrowserContext) {
-        noble.startScanning([Consts.BLEServices.WEDO2_SMART_HUB, Consts.BLEServices.LPF2_HUB]);
+        noble.startScanning([Consts.BLEService.WEDO2_SMART_HUB, Consts.BLEService.LPF2_HUB]);
     } else {
         noble.startScanning();
     }

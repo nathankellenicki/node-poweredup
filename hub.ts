@@ -19,7 +19,7 @@ export class Hub extends EventEmitter {
 
     public autoSubscribe: boolean = true;
     public useSpeedMap: boolean = true;
-    public type: Consts.Hubs = Consts.Hubs.UNKNOWN;
+    public type: Consts.HubType = Consts.HubType.UNKNOWN;
 
     protected _ports: {[port: string]: Port} = {};
     protected _characteristics: {[uuid: string]: Characteristic} = {};
@@ -216,6 +216,27 @@ export class Hub extends EventEmitter {
     }
 
 
+    /**
+     * Get the hub type.
+     * @method Hub#getHubType
+     * @returns {HubType}
+     */
+    public getHubType () {
+        return this.type;
+    }
+
+
+    /**
+     * Get the device type for a given port.
+     * @method Hub#getPortDeviceType
+     * @param {string} port
+     * @returns {DeviceType}
+     */
+    public getPortDeviceType (port: string) {
+        return this._portLookup(port).type;
+    }
+
+
     protected _getCharacteristic (uuid: string) {
         return this._characteristics[uuid.replace(/-/g, "")];
     }
@@ -257,12 +278,12 @@ export class Hub extends EventEmitter {
                  * Emits when a motor or sensor is attached to the Hub.
                  * @event Hub#attach
                  * @param {string} port
-                 * @param {number} type A number representing one of the peripheral consts.
+                 * @param {DeviceType} type
                  */
                 this.emit("attach", port.id, type);
             }
         } else {
-            port.type = Consts.Devices.UNKNOWN;
+            port.type = Consts.DeviceType.UNKNOWN;
             debug(`Port ${port.id} disconnected`);
             /**
              * Emits when an attached motor or sensor is detached from the Hub.
@@ -349,19 +370,19 @@ export class Hub extends EventEmitter {
     }
 
 
-    private _getModeForDeviceType (type: Consts.Devices) {
+    private _getModeForDeviceType (type: Consts.DeviceType) {
         switch (type) {
-            case Consts.Devices.BASIC_MOTOR:
+            case Consts.DeviceType.BASIC_MOTOR:
                 return 0x02;
-            case Consts.Devices.TRAIN_MOTOR:
+            case Consts.DeviceType.TRAIN_MOTOR:
                 return 0x02;
-            case Consts.Devices.BOOST_TACHO_MOTOR:
+            case Consts.DeviceType.BOOST_TACHO_MOTOR:
                 return 0x02;
-            case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
+            case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
                 return 0x02;
-            case Consts.Devices.BOOST_DISTANCE:
-                return (this.type === Consts.Hubs.WEDO2_SMART_HUB ? 0x00 : 0x08);
-            case Consts.Devices.BOOST_TILT:
+            case Consts.DeviceType.BOOST_DISTANCE:
+                return (this.type === Consts.HubType.WEDO2_SMART_HUB ? 0x00 : 0x08);
+            case Consts.DeviceType.BOOST_TILT:
                 return 0x04;
             default:
                 return 0x00;

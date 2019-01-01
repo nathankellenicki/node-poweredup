@@ -52,13 +52,13 @@ export class DuploTrainBase extends LPF2Hub {
 
 
     public static IsDuploTrainBase (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEServices.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
     }
 
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
-        this.type = Consts.Hubs.DUPLO_TRAIN_HUB;
+        this.type = Consts.HubType.DUPLO_TRAIN_HUB;
         this._ports = {
             "MOTOR": new Port("MOTOR", 0),
             "COLOR": new Port("COLOR", 18),
@@ -81,7 +81,7 @@ export class DuploTrainBase extends LPF2Hub {
     /**
      * Set the color of the LED on the train via a color value.
      * @method DuploTrainBase#setLEDColor
-     * @param {number} color A number representing one of the LED color consts.
+     * @param {Color} color
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
@@ -90,7 +90,7 @@ export class DuploTrainBase extends LPF2Hub {
                 color = 0;
             }
             const data = Buffer.from([0x81, 0x11, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }
@@ -119,16 +119,16 @@ export class DuploTrainBase extends LPF2Hub {
         return new Promise((resolve, reject) => {
             if (time && typeof time === "number") {
                 const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                 const timeout = global.setTimeout(() => {
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                    this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                     return resolve();
                 }, time);
                 portObj.setEventTimer(timeout);
             } else {
                 const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
                 return resolve();
             }
         });
@@ -138,13 +138,13 @@ export class DuploTrainBase extends LPF2Hub {
     /**
      * Play a built-in train sound.
      * @method DuploTrainBase#playSound
-     * @param {number} sound A number representing one of the Train Base sound consts.
+     * @param {DuploTrainBaseSound} sound
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public playSound (sound: number) {
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x81, 0x01, 0x11, 0x51, 0x01, sound]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }

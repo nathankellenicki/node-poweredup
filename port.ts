@@ -6,7 +6,7 @@ export class Port {
 
     public id: string;
     public value: number;
-    public type: Consts.Devices;
+    public type: Consts.DeviceType;
     public connected: boolean = false;
     public busy: boolean = false;
     public finished: (() => void) | null = null;
@@ -16,7 +16,7 @@ export class Port {
     constructor (id: string, value: number) {
         this.id = id;
         this.value = value;
-        this.type = Consts.Devices.UNKNOWN;
+        this.type = Consts.DeviceType.UNKNOWN;
     }
 
     public cancelEventTimer () {

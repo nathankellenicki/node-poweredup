@@ -37,13 +37,13 @@ export class LPF2Hub extends Hub {
     public connect () {
         return new Promise(async (resolve, reject) => {
             await super.connect();
-            const characteristic = this._getCharacteristic(Consts.BLECharacteristics.LPF2_ALL);
+            const characteristic = this._getCharacteristic(Consts.BLECharacteristic.LPF2_ALL);
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
-            if (this.type === Consts.Hubs.DUPLO_TRAIN_HUB) {
-                this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
+            if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
             }
             return resolve();
         });
@@ -64,8 +64,8 @@ export class LPF2Hub extends Hub {
             let data = Buffer.from([0x01, 0x01, 0x01]);
             data = Buffer.concat([data, Buffer.from(name, "ascii")]);
             // Send this twice, as sometimes the first time doesn't take
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             this._name = name;
             return resolve();
         });
@@ -75,18 +75,18 @@ export class LPF2Hub extends Hub {
     /**
      * Set the color of the LED on the Hub via a color value.
      * @method LPF2Hub#setLEDColor
-     * @param {number} color A number representing one of the LED color consts.
+     * @param {Color} color
      * @returns {Promise} Resolved upon successful issuance of command.
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x41, 0x32, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             if (color === false) {
                 color = 0;
             }
             data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }
@@ -103,21 +103,21 @@ export class LPF2Hub extends Hub {
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x41, 0x32, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x01, red, green, blue]);
-            this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }
 
 
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
 
 
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        this._writeMessage(Consts.BLECharacteristics.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
     }
 
 
@@ -186,12 +186,12 @@ export class LPF2Hub extends Hub {
                  * Emits when a button is pressed.
                  * @event LPF2Hub#button
                  * @param {string} button
-                 * @param {number} state A number representing one of the button state consts.
+                 * @param {ButtonState} state
                  */
-                this.emit("button", "GREEN", Consts.ButtonStates.PRESSED);
+                this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
                 return;
             } else if (data[5] === 0) {
-                this.emit("button", "GREEN", Consts.ButtonStates.RELEASED);
+                this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
                 return;
             }
         }
@@ -242,12 +242,12 @@ export class LPF2Hub extends Hub {
 
     private _parseSensorMessage (data: Buffer) {
 
-        if ((data[3] === 0x3b && this.type === Consts.Hubs.POWERED_UP_REMOTE) || (data[3] === 0x3c && this.type !== Consts.Hubs.POWERED_UP_REMOTE)) { // Voltage
+        if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE) || (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE)) { // Voltage
             data = this._padMessage(data, 6);
             const batteryLevel = (data.readUInt16LE(4) / 4096) * 100;
             this._batteryLevel = Math.floor(batteryLevel);
             return;
-        } else if (data[3] === 0x3b && this.type !== Consts.Hubs.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
+        } else if (data[3] === 0x3b && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
             data = this._padMessage(data, 6);
             const current = data.readUInt16LE(4) / 4096;
             this._current = current * 100;
@@ -267,7 +267,7 @@ export class LPF2Hub extends Hub {
 
         if (port && port.connected) {
             switch (port.type) {
-                case Consts.Devices.WEDO2_DISTANCE:
+                case Consts.DeviceType.WEDO2_DISTANCE:
                 {
                     let distance = data[4];
                     if (data[5] === 1) {
@@ -282,14 +282,14 @@ export class LPF2Hub extends Hub {
                     this.emit("distance", port.id, distance * 10);
                     break;
                 }
-                case Consts.Devices.BOOST_DISTANCE:
+                case Consts.DeviceType.BOOST_DISTANCE:
                 {
 
                     /**
                      * Emits when a color sensor is activated.
                      * @event LPF2Hub#color
                      * @param {string} port
-                     * @param {number} color A number representing one of the LED color consts.
+                     * @param {Color} color
                      */
                     if (data[4] <= 10) {
                         this.emit("color", port.id, data[4]);
@@ -299,13 +299,26 @@ export class LPF2Hub extends Hub {
                     const partial = data[7];
 
                     if (partial > 0) {
-                        distance += 1 / partial;
+                        distance += 1.0 / partial;
                     }
 
-                    this.emit("distance", port.id, Math.floor(distance * 25.4) - 20);
+                    distance = Math.floor(distance * 25.4) - 20;
+
+                    this.emit("distance", port.id, distance);
+
+                    /**
+                     * A combined color and distance event, emits when the sensor is activated.
+                     * @event LPF2Hub#colorAndDistance
+                     * @param {string} port
+                     * @param {Color} color
+                     * @param {number} distance Distance, in millimeters.
+                     */
+                    if (data[4] <= 10) {
+                        this.emit("colorAndDistance", port.id, data[4], distance);
+                    }
                     break;
                 }
-                case Consts.Devices.WEDO2_TILT:
+                case Consts.DeviceType.WEDO2_TILT:
                 {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4] - (data[4] * 2);
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
@@ -321,9 +334,9 @@ export class LPF2Hub extends Hub {
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
                     break;
                 }
-                case Consts.Devices.BOOST_TACHO_MOTOR:
+                case Consts.DeviceType.BOOST_TACHO_MOTOR:
                 {
-                    const rotation = data.readInt32LE(2);
+                    const rotation = data.readInt32LE(4);
                     /**
                      * Emits when a rotation sensor is activated.
                      * @event LPF2Hub#rotate
@@ -333,53 +346,53 @@ export class LPF2Hub extends Hub {
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
-                case Consts.Devices.BOOST_MOVE_HUB_MOTOR:
+                case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
                 {
-                    const rotation = data.readInt32LE(2);
+                    const rotation = data.readInt32LE(4);
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
-                case Consts.Devices.BOOST_TILT:
+                case Consts.DeviceType.BOOST_TILT:
                 {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
                     this.emit("tilt", port.id, tiltX, tiltY);
                     break;
                 }
-                case Consts.Devices.POWERED_UP_REMOTE_BUTTON:
+                case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON:
                 {
                     switch (data[4]) {
                         case 0x01:
                         {
-                            this.emit("button", port.id, Consts.ButtonStates.UP);
+                            this.emit("button", port.id, Consts.ButtonState.UP);
                             break;
                         }
                         case 0xff:
                         {
-                            this.emit("button", port.id, Consts.ButtonStates.DOWN);
+                            this.emit("button", port.id, Consts.ButtonState.DOWN);
                             break;
                         }
                         case 0x7f:
                         {
-                            this.emit("button", port.id, Consts.ButtonStates.STOP);
+                            this.emit("button", port.id, Consts.ButtonState.STOP);
                             break;
                         }
                         case 0x00:
                         {
-                            this.emit("button", port.id, Consts.ButtonStates.RELEASED);
+                            this.emit("button", port.id, Consts.ButtonState.RELEASED);
                             break;
                         }
                     }
                     break;
                 }
-                case Consts.Devices.DUPLO_TRAIN_BASE_COLOR:
+                case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR:
                 {
                     if (data[4] <= 10) {
                         this.emit("color", port.id, data[4]);
                     }
                     break;
                 }
-                case Consts.Devices.DUPLO_TRAIN_BASE_SPEEDOMETER:
+                case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER:
                 {
                     /**
                      * Emits on a speed change.
