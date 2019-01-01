@@ -113,7 +113,7 @@ export enum ButtonState {
  * @property {number} STEAM 10
  */
 export enum DuploTrainBaseSound {
-    BREAK = 3,
+    BRAKE = 3,
     STATION_DEPARTURE = 5,
     WATER_REFILL = 7,
     HORN = 9,
