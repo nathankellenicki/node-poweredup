@@ -148,23 +148,19 @@ export class LPF2Hub extends Hub {
             this._messageBuffer = this._messageBuffer.slice(len);
 
             switch (message[2]) {
-                case 0x01:
-                {
+                case 0x01: {
                     this._parseDeviceInfo(message);
                     break;
                 }
-                case 0x04:
-                {
+                case 0x04: {
                     this._parsePortMessage(message);
                     break;
                 }
-                case 0x45:
-                {
+                case 0x45: {
                     this._parseSensorMessage(message);
                     break;
                 }
-                case 0x82:
-                {
+                case 0x82: {
                     this._parsePortAction(message);
                     break;
                 }
@@ -267,8 +263,7 @@ export class LPF2Hub extends Hub {
 
         if (port && port.connected) {
             switch (port.type) {
-                case Consts.DeviceType.WEDO2_DISTANCE:
-                {
+                case Consts.DeviceType.WEDO2_DISTANCE: {
                     let distance = data[4];
                     if (data[5] === 1) {
                         distance = data[4] + 255;
@@ -282,8 +277,7 @@ export class LPF2Hub extends Hub {
                     this.emit("distance", port.id, distance * 10);
                     break;
                 }
-                case Consts.DeviceType.BOOST_DISTANCE:
-                {
+                case Consts.DeviceType.BOOST_DISTANCE: {
 
                     /**
                      * Emits when a color sensor is activated.
@@ -318,8 +312,7 @@ export class LPF2Hub extends Hub {
                     }
                     break;
                 }
-                case Consts.DeviceType.WEDO2_TILT:
-                {
+                case Consts.DeviceType.WEDO2_TILT: {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4] - (data[4] * 2);
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
                     this._lastTiltX = tiltX;
@@ -334,8 +327,7 @@ export class LPF2Hub extends Hub {
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
                     break;
                 }
-                case Consts.DeviceType.BOOST_TACHO_MOTOR:
-                {
+                case Consts.DeviceType.BOOST_TACHO_MOTOR: {
                     const rotation = data.readInt32LE(4);
                     /**
                      * Emits when a rotation sensor is activated.
@@ -346,54 +338,45 @@ export class LPF2Hub extends Hub {
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
-                case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
-                {
+                case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR: {
                     const rotation = data.readInt32LE(4);
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
-                case Consts.DeviceType.BOOST_TILT:
-                {
+                case Consts.DeviceType.BOOST_TILT: {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
                     this.emit("tilt", port.id, tiltX, tiltY);
                     break;
                 }
-                case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON:
-                {
+                case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON: {
                     switch (data[4]) {
-                        case 0x01:
-                        {
+                        case 0x01: {
                             this.emit("button", port.id, Consts.ButtonState.UP);
                             break;
                         }
-                        case 0xff:
-                        {
+                        case 0xff: {
                             this.emit("button", port.id, Consts.ButtonState.DOWN);
                             break;
                         }
-                        case 0x7f:
-                        {
+                        case 0x7f: {
                             this.emit("button", port.id, Consts.ButtonState.STOP);
                             break;
                         }
-                        case 0x00:
-                        {
+                        case 0x00: {
                             this.emit("button", port.id, Consts.ButtonState.RELEASED);
                             break;
                         }
                     }
                     break;
                 }
-                case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR:
-                {
+                case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
                     if (data[4] <= 10) {
                         this.emit("color", port.id, data[4]);
                     }
                     break;
                 }
-                case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER:
-                {
+                case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER: {
                     /**
                      * Emits on a speed change.
                      * @event LPF2Hub#speed

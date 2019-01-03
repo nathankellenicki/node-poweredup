@@ -293,8 +293,7 @@ export class WeDo2SmartHub extends Hub {
 
         if (port && port.connected) {
             switch (port.type) {
-                case Consts.DeviceType.WEDO2_DISTANCE:
-                {
+                case Consts.DeviceType.WEDO2_DISTANCE: {
                     let distance = data[2];
                     if (data[3] === 1) {
                         distance = data[2] + 255;
@@ -308,8 +307,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("distance", port.id, distance * 10);
                     break;
                 }
-                case Consts.DeviceType.BOOST_DISTANCE:
-                {
+                case Consts.DeviceType.BOOST_DISTANCE: {
                     const distance = data[2];
                     /**
                      * Emits when a color sensor is activated.
@@ -320,8 +318,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("color", port.id, distance);
                     break;
                 }
-                case Consts.DeviceType.WEDO2_TILT:
-                {
+                case Consts.DeviceType.WEDO2_TILT: {
                     this._lastTiltX = data[2];
                     if (this._lastTiltX > 100) {
                         this._lastTiltX = -(255 - this._lastTiltX);
@@ -340,8 +337,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
                     break;
                 }
-                case Consts.DeviceType.BOOST_TACHO_MOTOR:
-                {
+                case Consts.DeviceType.BOOST_TACHO_MOTOR: {
                     const rotation = data.readInt32LE(2);
                     /**
                      * Emits when a rotation sensor is activated.
