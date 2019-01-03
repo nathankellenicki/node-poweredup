@@ -67,8 +67,8 @@ poweredUP.on("discover", async (hub) => { // Wait to discover Vernie and Remote
     }
 
     if (vernie && remote) {
-        vernie.setLEDColor(PoweredUP.Consts.Colors.BLUE);
-        remote.setLEDColor(PoweredUP.Consts.Colors.BLUE);
+        vernie.setLEDColor(PoweredUP.Consts.Color.BLUE);
+        remote.setLEDColor(PoweredUP.Consts.Color.BLUE);
         console.log("You're now ready to go!");
     }
     

@@ -5,7 +5,7 @@ const poweredUP = new PoweredUP.PoweredUP()
 const trains = [
     {
         name: "Maersk Intermodal",
-        color: PoweredUP.Consts.Colors.LIGHT_BLUE,
+        color: PoweredUP.Consts.Color.LIGHT_BLUE,
         hubs: [
             {
                 name: "NK_Maersk",
@@ -15,7 +15,7 @@ const trains = [
     },
     {
         name: "Horizon Express",
-        color: PoweredUP.Consts.Colors.ORANGE,
+        color: PoweredUP.Consts.Color.ORANGE,
         hubs: [
             {
                 name: "NK_Horizon_1",
@@ -32,7 +32,7 @@ const trains = [
     },
     {
         name: "Emerald Night",
-        color: PoweredUP.Consts.Colors.GREEN,
+        color: PoweredUP.Consts.Color.GREEN,
         hubs: [
             {
                 name: "NK_Emerald",
@@ -44,7 +44,7 @@ const trains = [
     },
     {
         name: "Metroliner",
-        color: PoweredUP.Consts.Colors.WHITE,
+        color: PoweredUP.Consts.Color.WHITE,
         hubs: [
             {
                 name: "NK_Metroliner",

@@ -85,8 +85,8 @@ poweredUP.on("discover", async (hub) => { // Wait to Batmobile and Remote
     }
 
     if (batmobile && remote) {
-        batmobile.setLEDColor(PoweredUP.Consts.Colors.WHITE);
-        remote.setLEDColor(PoweredUP.Consts.Colors.RED);
+        batmobile.setLEDColor(PoweredUP.Consts.Color.WHITE);
+        remote.setLEDColor(PoweredUP.Consts.Color.RED);
         console.log("You're now ready to go!");
     }
     

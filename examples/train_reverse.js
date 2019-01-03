@@ -4,8 +4,8 @@ const poweredUP = new PoweredUP.PoweredUP();
 poweredUP.scan(); // Start scanning for trains
 
 // Change these to make the train behave as you want
-const FORWARD_DIRECTION_COLOR = PoweredUP.Consts.Colors.YELLOW;
-const BACKWARDS_DIRECTION_COLOR = PoweredUP.Consts.Colors.RED;
+const FORWARD_DIRECTION_COLOR = PoweredUP.Consts.Color.YELLOW;
+const BACKWARDS_DIRECTION_COLOR = PoweredUP.Consts.Color.RED;
 const TRAIN_SPEED = 40;
 const STOPPING_SPEED = 2000;
 const STOP_DELAY = 2000;
