@@ -65,7 +65,7 @@ poweredUP.on("discover", async (hub) => {
         hub.on("button", (button, state) => {
 
             if (button === "GREEN") {
-                if (state === PoweredUP.Consts.ButtonStates.PRESSED) {
+                if (state === PoweredUP.Consts.ButtonState.PRESSED) {
                     hub._currentTrain++;
                     if (hub._currentTrain >= trains.length) {
                         hub._currentTrain = 0;
@@ -73,19 +73,19 @@ poweredUP.on("discover", async (hub) => {
                     hub.setLEDColor(trains[hub._currentTrain].color);
                     console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name}`);
                 }
-            } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonStates.RELEASED) {
+            } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonState.RELEASED) {
                 trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
-                if (state === PoweredUP.Consts.ButtonStates.UP) {
+                if (state === PoweredUP.Consts.ButtonState.UP) {
                     trains[hub._currentTrain]._speed += 10;
                     if (trains[hub._currentTrain]._speed > 100) {
                         trains[hub._currentTrain]._speed = 100;
                     }
-                } else if (state === PoweredUP.Consts.ButtonStates.DOWN) {
+                } else if (state === PoweredUP.Consts.ButtonState.DOWN) {
                     trains[hub._currentTrain]._speed -= 10;
                     if (trains[hub._currentTrain]._speed < -100) {
                         trains[hub._currentTrain]._speed = -100;
                     }
-                } else if (state === PoweredUP.Consts.ButtonStates.STOP) {
+                } else if (state === PoweredUP.Consts.ButtonState.STOP) {
                     trains[hub._currentTrain]._speed = 0;
                 }
                 for (let trainHub in trains[hub._currentTrain].hubs) {

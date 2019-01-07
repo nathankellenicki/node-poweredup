@@ -28,29 +28,29 @@ poweredUP.on("discover", async (hub) => { // Wait to discover Vernie and Remote
         remote.on("button", async (button, state) => {
             if (vernie) {
                 switch (state) {
-                    case PoweredUP.Consts.ButtonStates.UP: // If up is pressed, move the track forward
+                    case PoweredUP.Consts.ButtonState.UP: // If up is pressed, move the track forward
                     {
                         vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 50);
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.DOWN: // If down is pressed, move the track backwards
+                    case PoweredUP.Consts.ButtonState.DOWN: // If down is pressed, move the track backwards
                     {
                         vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", -50);
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.RELEASED: // Stop the track when the button is released
+                    case PoweredUP.Consts.ButtonState.RELEASED: // Stop the track when the button is released
                     {
                         if (button !== "GREEN") {
                             vernie.setMotorSpeed(button === "LEFT" ? "A" : "B", 0);
                         }
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.STOP: // Move the head left or right when a red button is pressed
+                    case PoweredUP.Consts.ButtonState.STOP: // Move the head left or right when a red button is pressed
                     {
                         await vernie.setMotorAngle("D", 35, button === "LEFT" ? -20 : 20);
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.PRESSED: // Fire when the green button is pressed
+                    case PoweredUP.Consts.ButtonState.PRESSED: // Fire when the green button is pressed
                     {
                         if (button === "GREEN") {
                             await vernie.setMotorAngle("D", 80, 20);
