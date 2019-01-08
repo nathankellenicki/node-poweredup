@@ -147,6 +147,17 @@ export class PUPHub extends LPF2Hub {
 
 
     /**
+     * Fully (hard) stop the motor on a given port.
+     * @method PUPHub#hardStopMotor
+     * @param {string} port
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public hardStopMotor (port: string) {
+        return this.setMotorSpeed(port, 127);
+    }
+
+
+    /**
      * Set the light brightness on a given port.
      * @method PUPHub#setLightBrightness
      * @param {string} port

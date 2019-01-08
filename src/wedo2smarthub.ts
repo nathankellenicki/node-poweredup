@@ -181,6 +181,17 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
+     * Fully (hard) stop the motor on a given port.
+     * @method WeDo2SmartHub#hardStopMotor
+     * @param {string} port
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public hardStopMotor (port: string) {
+        return this.setMotorSpeed(port, 127);
+    }
+
+
+    /**
      * Play a tone on the Hub's in-built buzzer
      * @method WeDo2SmartHub#playTone
      * @param {number} frequency

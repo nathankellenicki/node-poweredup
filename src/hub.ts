@@ -313,21 +313,18 @@ export class Hub extends EventEmitter {
         if (!this.useSpeedMap) {
             return speed;
         }
-        if (speed > 0) {
-            if (speed > 100) {
-                speed = 100;
-            }
-            return speed;
-            // return Math.round((speed - 1) * (97 - 15) / (100 - 1) + 15); // Forward, minimum speed is 15, maximum speed is 97
-        } else if (speed < 0) {
-            if (speed < -100) {
-                speed = -100;
-            }
-            return speed;
-            // return Math.round((speed - -100) * (240 - 158) / (-1 - -100) + 158); // In reverse, minimum speed is 240, maximum speed is 158
-        } else {
-            return 0;
+
+        if (speed === 127) {
+            return 127; // Hard stop
         }
+
+        if (speed > 100) {
+            speed = 100;
+        } else if (speed < -100) {
+            speed = -100;
+        }
+
+        return speed;
     }
 
 

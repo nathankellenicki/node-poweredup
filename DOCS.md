@@ -100,6 +100,7 @@ Emits when a Powered UP Hub device is found.
     * [.setLEDRGB(red, green, blue)](#WeDo2SmartHub+setLEDRGB) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#WeDo2SmartHub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#WeDo2SmartHub+rampMotorSpeed) ⇒ <code>Promise</code>
+    * [.hardStopMotor(port)](#WeDo2SmartHub+hardStopMotor) ⇒ <code>Promise</code>
     * [.playTone(frequency, time)](#WeDo2SmartHub+playTone) ⇒ <code>Promise</code>
     * [.setLightBrightness(port, brightness, [time])](#WeDo2SmartHub+setLightBrightness) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
@@ -233,6 +234,18 @@ Ramp the motor speed on a given port.
 | fromSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | toSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | time | <code>number</code> | How long the ramp should last (in milliseconds). |
+
+<a name="WeDo2SmartHub+hardStopMotor"></a>
+
+### weDo2SmartHub.hardStopMotor(port) ⇒ <code>Promise</code>
+Fully (hard) stop the motor on a given port.
+
+**Kind**: instance method of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="WeDo2SmartHub+playTone"></a>
 
@@ -446,6 +459,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.setMotorSpeed(port, speed, [time])](#BoostMoveHub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#BoostMoveHub+rampMotorSpeed) ⇒ <code>Promise</code>
     * [.setMotorAngle(port, angle, [speed])](#BoostMoveHub+setMotorAngle) ⇒ <code>Promise</code>
+    * [.hardStopMotor(port)](#BoostMoveHub+hardStopMotor) ⇒ <code>Promise</code>
     * [.setLightBrightness(port, brightness, [time])](#BoostMoveHub+setLightBrightness) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
@@ -573,6 +587,18 @@ Rotate a motor by a given angle.
 | port | <code>string</code> |  |  |
 | angle | <code>number</code> |  | How much the motor should be rotated (in degrees). |
 | [speed] | <code>number</code> \| <code>Array.&lt;number&gt;</code> | <code>100</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
+
+<a name="BoostMoveHub+hardStopMotor"></a>
+
+### boostMoveHub.hardStopMotor(port) ⇒ <code>Promise</code>
+Fully (hard) stop the motor on a given port.
+
+**Kind**: instance method of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="BoostMoveHub+setLightBrightness"></a>
 
@@ -832,6 +858,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [.batteryLevel](#Hub+batteryLevel)
     * [.setMotorSpeed(port, speed, [time])](#PUPHub+setMotorSpeed) ⇒ <code>Promise</code>
     * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#PUPHub+rampMotorSpeed) ⇒ <code>Promise</code>
+    * [.hardStopMotor(port)](#PUPHub+hardStopMotor) ⇒ <code>Promise</code>
     * [.setLightBrightness(port, brightness, [time])](#PUPHub+setLightBrightness) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.setLEDColor(color)](#LPF2Hub+setLEDColor) ⇒ <code>Promise</code>
@@ -944,6 +971,18 @@ Ramp the motor speed on a given port.
 | fromSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | toSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | time | <code>number</code> | How long the ramp should last (in milliseconds). |
+
+<a name="PUPHub+hardStopMotor"></a>
+
+### pupHub.hardStopMotor(port) ⇒ <code>Promise</code>
+Fully (hard) stop the motor on a given port.
+
+**Kind**: instance method of [<code>PUPHub</code>](#PUPHub)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
 
 <a name="PUPHub+setLightBrightness"></a>
 
@@ -1439,8 +1478,9 @@ A combined color and distance event, emits when the sensor is activated.
     * [.batteryLevel](#Hub+batteryLevel)
     * [.setLEDColor(color)](#DuploTrainBase+setLEDColor) ⇒ <code>Promise</code>
     * [.setMotorSpeed(port, speed, [time])](#DuploTrainBase+setMotorSpeed) ⇒ <code>Promise</code>
-    * [.playSound(sound)](#DuploTrainBase+playSound) ⇒ <code>Promise</code>
     * [.rampMotorSpeed(port, fromSpeed, toSpeed, time)](#DuploTrainBase+rampMotorSpeed) ⇒ <code>Promise</code>
+    * [.hardStopMotor(port)](#DuploTrainBase+hardStopMotor) ⇒ <code>Promise</code>
+    * [.playSound(sound)](#DuploTrainBase+playSound) ⇒ <code>Promise</code>
     * [.setName(name)](#LPF2Hub+setName) ⇒ <code>Promise</code>
     * [.setLEDRGB(red, green, blue)](#LPF2Hub+setLEDRGB) ⇒ <code>Promise</code>
     * [.connect()](#Hub+connect) ⇒ <code>Promise</code>
@@ -1546,18 +1586,6 @@ Set the motor speed on a given port.
 | speed | <code>number</code> \| <code>Array.&lt;number&gt;</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds. |
 | [time] | <code>number</code> | How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely. |
 
-<a name="DuploTrainBase+playSound"></a>
-
-### duploTrainBase.playSound(sound) ⇒ <code>Promise</code>
-Play a built-in train sound.
-
-**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
-**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
-
-| Param | Type |
-| --- | --- |
-| sound | [<code>DuploTrainBaseSound</code>](#DuploTrainBaseSound) | 
-
 <a name="DuploTrainBase+rampMotorSpeed"></a>
 
 ### duploTrainBase.rampMotorSpeed(port, fromSpeed, toSpeed, time) ⇒ <code>Promise</code>
@@ -1572,6 +1600,30 @@ Ramp the motor speed on a given port.
 | fromSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | toSpeed | <code>number</code> | For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. |
 | time | <code>number</code> | How long the ramp should last (in milliseconds). |
+
+<a name="DuploTrainBase+hardStopMotor"></a>
+
+### duploTrainBase.hardStopMotor(port) ⇒ <code>Promise</code>
+Fully (hard) stop the motor on a given port.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Returns**: <code>Promise</code> - Resolved upon successful completion of command.  
+
+| Param | Type |
+| --- | --- |
+| port | <code>string</code> | 
+
+<a name="DuploTrainBase+playSound"></a>
+
+### duploTrainBase.playSound(sound) ⇒ <code>Promise</code>
+Play a built-in train sound.
+
+**Kind**: instance method of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Returns**: <code>Promise</code> - Resolved upon successful issuance of command.  
+
+| Param | Type |
+| --- | --- |
+| sound | [<code>DuploTrainBaseSound</code>](#DuploTrainBaseSound) | 
 
 <a name="LPF2Hub+setName"></a>
 
