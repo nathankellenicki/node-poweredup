@@ -240,7 +240,7 @@ export class LPF2Hub extends Hub {
 
         if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE) || (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE)) { // Voltage
             data = this._padMessage(data, 6);
-            const batteryLevel = (data.readUInt16LE(4) / 4096) * 100;
+            const batteryLevel = data.readUInt16LE(4) / 400;
             this._batteryLevel = Math.floor(batteryLevel);
             return;
         } else if (data[3] === 0x3b && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)

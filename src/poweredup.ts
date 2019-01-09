@@ -19,6 +19,7 @@ import noble = require("noble-mac");
 
 let ready = false;
 let wantScan = false;
+let discoveryEventAttached = false;
 
 const startScanning = () => {
     if (isBrowserContext) {
@@ -55,6 +56,7 @@ export class PoweredUP extends EventEmitter {
 
     constructor () {
         super();
+        this._discoveryEventHandler = this._discoveryEventHandler.bind(this);
     }
 
 
@@ -65,53 +67,10 @@ export class PoweredUP extends EventEmitter {
     public scan () {
         wantScan = true;
 
-        noble.on("discover", async (peripheral: Peripheral) => {
-
-            let hub: Hub;
-
-            if (await WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
-                hub = new WeDo2SmartHub(peripheral, this.autoSubscribe);
-            } else if (await BoostMoveHub.IsBoostMoveHub(peripheral)) {
-                hub = new BoostMoveHub(peripheral, this.autoSubscribe);
-            } else if (await PUPHub.IsPUPHub(peripheral)) {
-                hub = new PUPHub(peripheral, this.autoSubscribe);
-            } else if (await PUPRemote.IsPUPRemote(peripheral)) {
-                hub = new PUPRemote(peripheral, this.autoSubscribe);
-            } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
-                hub = new DuploTrainBase(peripheral, this.autoSubscribe);
-            } else {
-                return;
-            }
-
-            peripheral.removeAllListeners();
-            noble.stopScanning();
-            if (!isBrowserContext) {
-                startScanning();
-            }
-
-            hub.on("connect", () => {
-                debug(`Hub ${hub.uuid} connected`);
-                this._connectedHubs[hub.uuid] = hub;
-            });
-
-            hub.on("disconnect", () => {
-                debug(`Hub ${hub.uuid} disconnected`);
-                delete this._connectedHubs[hub.uuid];
-
-                if (wantScan) {
-                    startScanning();
-                }
-            });
-
-            debug(`Hub ${hub.uuid} discovered`);
-            /**
-             * Emits when a Powered UP Hub device is found.
-             * @event PoweredUP#discover
-             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
-             */
-            this.emit("discover", hub);
-
-        });
+        if (!discoveryEventAttached) {
+            noble.on("discover", this._discoveryEventHandler);
+            discoveryEventAttached = true;
+        }
 
         if (ready) {
             debug("Scanning started");
@@ -126,6 +85,12 @@ export class PoweredUP extends EventEmitter {
      */
     public stop () {
         wantScan = false;
+
+        if (discoveryEventAttached) {
+            noble.removeListener("discover", this._discoveryEventHandler);
+            discoveryEventAttached = false;
+        }
+
         noble.stopScanning();
     }
 
@@ -149,6 +114,55 @@ export class PoweredUP extends EventEmitter {
     public getConnectedHubs () {
         return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]);
     }
+
+
+    private async _discoveryEventHandler (peripheral: Peripheral) {
+
+        let hub: Hub;
+
+        if (await WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
+            hub = new WeDo2SmartHub(peripheral, this.autoSubscribe);
+        } else if (await BoostMoveHub.IsBoostMoveHub(peripheral)) {
+            hub = new BoostMoveHub(peripheral, this.autoSubscribe);
+        } else if (await PUPHub.IsPUPHub(peripheral)) {
+            hub = new PUPHub(peripheral, this.autoSubscribe);
+        } else if (await PUPRemote.IsPUPRemote(peripheral)) {
+            hub = new PUPRemote(peripheral, this.autoSubscribe);
+        } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
+            hub = new DuploTrainBase(peripheral, this.autoSubscribe);
+        } else {
+            return;
+        }
+
+        peripheral.removeAllListeners();
+        noble.stopScanning();
+        if (!isBrowserContext) {
+            startScanning();
+        }
+
+        hub.on("connect", () => {
+            debug(`Hub ${hub.uuid} connected`);
+            this._connectedHubs[hub.uuid] = hub;
+        });
+
+        hub.on("disconnect", () => {
+            debug(`Hub ${hub.uuid} disconnected`);
+            delete this._connectedHubs[hub.uuid];
+
+            if (wantScan) {
+                startScanning();
+            }
+        });
+
+        debug(`Hub ${hub.uuid} discovered`);
+        /**
+         * Emits when a Powered UP Hub device is found.
+         * @event PoweredUP#discover
+         * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
+         */
+        this.emit("discover", hub);
+
+}
 
 
 }
