@@ -1585,7 +1585,6 @@ A combined color and distance event, emits when the sensor is activated.
     * [.getHubType()](#Hub+getHubType) ⇒ [<code>HubType</code>](#HubType)
     * [.getPortDeviceType(port)](#Hub+getPortDeviceType) ⇒ [<code>DeviceType</code>](#DeviceType)
     * ["color" (port, color)](#LPF2Hub+event_color)
-    * ["colorAndDistance" (port, color, distance)](#LPF2Hub+event_colorAndDistance)
     * ["speed" (port, speed)](#LPF2Hub+event_speed)
 
 <a name="new_DuploTrainBase_new"></a>
@@ -1847,19 +1846,6 @@ Emits when a color sensor is activated.
 | --- | --- |
 | port | <code>string</code> | 
 | color | [<code>Color</code>](#Color) | 
-
-<a name="LPF2Hub+event_colorAndDistance"></a>
-
-### "colorAndDistance" (port, color, distance)
-A combined color and distance event, emits when the sensor is activated.
-
-**Kind**: event emitted by [<code>DuploTrainBase</code>](#DuploTrainBase)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| port | <code>string</code> |  |
-| color | [<code>Color</code>](#Color) |  |
-| distance | <code>number</code> | Distance, in millimeters. |
 
 <a name="LPF2Hub+event_speed"></a>
 
