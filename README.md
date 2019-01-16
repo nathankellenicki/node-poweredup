@@ -185,6 +185,7 @@ Emits when a Powered UP Hub device is found.
 * [WeDo2SmartHub](#WeDo2SmartHub) ⇐ <code>Hub</code>
     * [new WeDo2SmartHub()](#new_WeDo2SmartHub_new)
     * [.name](#Hub+name)
+    * [.firmwareVersion](#Hub+firmwareVersion)
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
@@ -227,6 +228,17 @@ The WeDo2SmartHub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
 | Name | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | Name of the hub |
+
+<a name="Hub+firmwareVersion"></a>
+
+### weDo2SmartHub.firmwareVersion
+**Kind**: instance property of [<code>WeDo2SmartHub</code>](#WeDo2SmartHub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| firmwareVersion | <code>string</code> | Firmware version of the hub |
 
 <a name="Hub+uuid"></a>
 
@@ -546,6 +558,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [new BoostMoveHub()](#new_BoostMoveHub_new)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
+    * [.firmwareVersion](#Hub+firmwareVersion)
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
@@ -601,6 +614,18 @@ The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
 | Name | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | Name of the hub |
+
+<a name="Hub+firmwareVersion"></a>
+
+### boostMoveHub.firmwareVersion
+**Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Overrides**: [<code>firmwareVersion</code>](#Hub+firmwareVersion)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| firmwareVersion | <code>string</code> | Firmware version of the hub |
 
 <a name="Hub+uuid"></a>
 
@@ -946,6 +971,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [new PUPHub()](#new_PUPHub_new)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
+    * [.firmwareVersion](#Hub+firmwareVersion)
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
@@ -999,6 +1025,18 @@ The PUPHub is emitted if the discovered device is a Powered UP Hub.
 | Name | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | Name of the hub |
+
+<a name="Hub+firmwareVersion"></a>
+
+### pupHub.firmwareVersion
+**Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Overrides**: [<code>firmwareVersion</code>](#Hub+firmwareVersion)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| firmwareVersion | <code>string</code> | Firmware version of the hub |
 
 <a name="Hub+uuid"></a>
 
@@ -1318,6 +1356,7 @@ Emits when an attached motor or sensor is detached from the Hub.
     * [new PUPRemote()](#new_PUPRemote_new)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
+    * [.firmwareVersion](#Hub+firmwareVersion)
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
@@ -1362,6 +1401,18 @@ The PUPRemote is emitted if the discovered device is a Powered UP Remote.
 | Name | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | Name of the hub |
+
+<a name="Hub+firmwareVersion"></a>
+
+### pupRemote.firmwareVersion
+**Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Overrides**: [<code>firmwareVersion</code>](#Hub+firmwareVersion)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| firmwareVersion | <code>string</code> | Firmware version of the hub |
 
 <a name="Hub+uuid"></a>
 
@@ -1566,6 +1617,7 @@ A combined color and distance event, emits when the sensor is activated.
     * [new DuploTrainBase()](#new_DuploTrainBase_new)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
+    * [.firmwareVersion](#Hub+firmwareVersion)
     * [.uuid](#Hub+uuid)
     * [.rssi](#Hub+rssi)
     * [.batteryLevel](#Hub+batteryLevel)
@@ -1615,6 +1667,18 @@ The DuploTrainBase is emitted if the discovered device is a Duplo Train Base.
 | Name | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | Name of the hub |
+
+<a name="Hub+firmwareVersion"></a>
+
+### duploTrainBase.firmwareVersion
+**Kind**: instance property of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Overrides**: [<code>firmwareVersion</code>](#Hub+firmwareVersion)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| firmwareVersion | <code>string</code> | Firmware version of the hub |
 
 <a name="Hub+uuid"></a>
 

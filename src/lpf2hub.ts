@@ -40,6 +40,7 @@ export class LPF2Hub extends Hub {
             const characteristic = this._getCharacteristic(Consts.BLECharacteristic.LPF2_ALL);
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Get firmware version
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
@@ -190,6 +191,18 @@ export class LPF2Hub extends Hub {
                 this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
                 return;
             }
+        } else if (data[3] === 3) {
+            const fwData = data.slice(5, data.length);
+            let bcd = fwData.readUInt8(3);
+            const major = bcd >>> 4;
+            const minor = bcd & 0xf;
+            bcd = fwData.readUInt8(2);
+            const bugFix = bcd >>> 4 * 10 + bcd & 0xf;
+            bcd = fwData.readUInt8(1);
+            let build = bcd >>> 4 * 1000 + bcd & 0xf * 100;
+            bcd = fwData.readUInt8(0);
+            build = build + bcd >>> 4 * 10 + bcd & 0xf;
+            this._firmwareVersion = `${major}.${minor}.${bugFix}.${build}`;
         }
 
     }
@@ -238,7 +251,17 @@ export class LPF2Hub extends Hub {
 
     private _parseSensorMessage (data: Buffer) {
 
-        if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE) || (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE)) { // Voltage
+        if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
+            data = this._padMessage(data, 6);
+            const batteryLevel = data.readUInt16LE(4) / 500;
+            this._batteryLevel = Math.floor(batteryLevel);
+            return;
+        } else if (data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_REMOTE) { // Current (PUP Remote)
+            data = this._padMessage(data, 6);
+            const current = data.readUInt16LE(4) / 1000;
+            this._current = current;
+            return;
+        } else if (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Voltage (Non-PUP Remote)
             data = this._padMessage(data, 6);
             const batteryLevel = data.readUInt16LE(4) / 400;
             this._batteryLevel = Math.floor(batteryLevel);
@@ -247,11 +270,6 @@ export class LPF2Hub extends Hub {
             data = this._padMessage(data, 6);
             const current = data.readUInt16LE(4) / 4096;
             this._current = current * 100;
-            return;
-        } else if (data[3] === 0x3c) { // Current (PUP Remote)
-            data = this._padMessage(data, 6);
-            const current = data.readUInt16LE(4) / 1000;
-            this._current = current;
             return;
         }
 

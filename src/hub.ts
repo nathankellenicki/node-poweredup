@@ -25,6 +25,7 @@ export class Hub extends EventEmitter {
     protected _characteristics: {[uuid: string]: Characteristic} = {};
 
     protected _name: string;
+    protected _firmwareVersion: string = "0.0.0.0";
     protected _batteryLevel: number = 100;
 
     private _peripheral: Peripheral;
@@ -46,6 +47,15 @@ export class Hub extends EventEmitter {
      */
     public get name () {
         return this._name;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} firmwareVersion Firmware version of the hub
+     */
+    public get firmwareVersion () {
+        return this._firmwareVersion;
     }
 
 
