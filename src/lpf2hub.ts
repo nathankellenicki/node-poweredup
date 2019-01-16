@@ -41,6 +41,7 @@ export class LPF2Hub extends Hub {
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Get firmware version
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Get battery level?
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
@@ -176,6 +177,8 @@ export class LPF2Hub extends Hub {
 
 
     private _parseDeviceInfo (data: Buffer) {
+
+        console.log(data);
 
         if (data[3] === 2) {
             if (data[5] === 1) {
