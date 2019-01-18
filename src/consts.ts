@@ -137,6 +137,7 @@ export enum BLEService {
 
 export enum BLECharacteristic {
     WEDO2_BATTERY = "2a19",
+    WEDO2_FIRMWARE_REVISION = "2a26",
     WEDO2_BUTTON = "00001526-1212-efde-1523-785feabcd123", // "1526"
     WEDO2_PORT_TYPE = "00001527-1212-efde-1523-785feabcd123", // "1527" // Handles plugging and unplugging of devices on WeDo 2.0 Smart Hub
     WEDO2_LOW_VOLTAGE_ALERT = "00001528-1212-efde-1523-785feabcd123", // "1528"

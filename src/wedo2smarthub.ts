@@ -57,6 +57,9 @@ export class WeDo2SmartHub extends Hub {
             this._getCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY).read((err, data) => {
                 this._parseBatteryMessage(data);
             });
+            this._getCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION).read((err, data) => {
+                this._parseFirmwareRevisionString(data);
+            });
             debug("Connect completed");
             return resolve();
         });
@@ -237,6 +240,15 @@ export class WeDo2SmartHub extends Hub {
     }
 
 
+    public sendRaw (message: Buffer, characteristic: string = Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE) {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(characteristic, message, () => {
+                return resolve();
+            });
+        });
+    }
+
+
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
             this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
     }
@@ -262,6 +274,12 @@ export class WeDo2SmartHub extends Hub {
 
     private _parseBatteryMessage (data: Buffer) {
         this._batteryLevel = data[0];
+    }
+
+
+    private _parseFirmwareRevisionString (data: Buffer) {
+        const parts = data.toString().split(".");
+        this._firmwareInfo = { major: parseInt(parts[0], 10), minor: parseInt(parts[1], 10), bugFix: parseInt(parts[2], 10), build: parseInt(parts[3], 10) };
     }
 
 

@@ -9,6 +9,14 @@ import Debug = require("debug");
 const debug = Debug("hub");
 
 
+export interface IFirmwareInfo {
+    major: number;
+    minor: number;
+    bugFix: number;
+    build: number;
+}
+
+
 /**
  * @class Hub
  * @ignore
@@ -25,7 +33,7 @@ export class Hub extends EventEmitter {
     protected _characteristics: {[uuid: string]: Characteristic} = {};
 
     protected _name: string;
-    protected _firmwareVersion: string = "0.0.0.0";
+    protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
     protected _batteryLevel: number = 100;
 
     private _peripheral: Peripheral;
@@ -55,7 +63,7 @@ export class Hub extends EventEmitter {
      * @property {string} firmwareVersion Firmware version of the hub
      */
     public get firmwareVersion () {
-        return this._firmwareVersion;
+        return `${this._firmwareInfo.major}.${this._firmwareInfo.minor}.${this._lpad(this._firmwareInfo.bugFix.toString(), 2)}.${this._lpad(this._firmwareInfo.build.toString(), 4)}`;
     }
 
 
@@ -366,7 +374,7 @@ export class Hub extends EventEmitter {
         }, delay);
         port.setEventTimer(interval);
         return emitter;
-}
+    }
 
 
     protected _portLookup (port: string) {
@@ -374,6 +382,14 @@ export class Hub extends EventEmitter {
             throw new Error(`Port ${port.toUpperCase()} does not exist on this Hub type`);
         }
         return this._ports[port];
+    }
+
+
+    protected _lpad (str: string, length: number) {
+        while (str.length < length) {
+            str = "0" + str;
+        }
+        return str;
     }
 
 
