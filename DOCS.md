@@ -463,6 +463,7 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 * [BoostMoveHub](#BoostMoveHub) ⇐ <code>LPF2Hub</code>
     * [new BoostMoveHub()](#new_BoostMoveHub_new)
+    * [.voltage](#LPF2Hub+voltage)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
     * [.firmwareVersion](#Hub+firmwareVersion)
@@ -498,6 +499,17 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 ### new BoostMoveHub()
 The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
+
+<a name="LPF2Hub+voltage"></a>
+
+### boostMoveHub.voltage
+**Kind**: instance property of [<code>BoostMoveHub</code>](#BoostMoveHub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| voltage | <code>number</code> | Voltage of the hub (Volts) |
 
 <a name="LPF2Hub+current"></a>
 
@@ -876,6 +888,7 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 * [PUPHub](#PUPHub) ⇐ <code>LPF2Hub</code>
     * [new PUPHub()](#new_PUPHub_new)
+    * [.voltage](#LPF2Hub+voltage)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
     * [.firmwareVersion](#Hub+firmwareVersion)
@@ -909,6 +922,17 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 ### new PUPHub()
 The PUPHub is emitted if the discovered device is a Powered UP Hub.
+
+<a name="LPF2Hub+voltage"></a>
+
+### pupHub.voltage
+**Kind**: instance property of [<code>PUPHub</code>](#PUPHub)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| voltage | <code>number</code> | Voltage of the hub (Volts) |
 
 <a name="LPF2Hub+current"></a>
 
@@ -1261,6 +1285,7 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 * [PUPRemote](#PUPRemote) ⇐ <code>LPF2Hub</code>
     * [new PUPRemote()](#new_PUPRemote_new)
+    * [.voltage](#LPF2Hub+voltage)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
     * [.firmwareVersion](#Hub+firmwareVersion)
@@ -1285,6 +1310,17 @@ Emits when an attached motor or sensor is detached from the Hub.
 
 ### new PUPRemote()
 The PUPRemote is emitted if the discovered device is a Powered UP Remote.
+
+<a name="LPF2Hub+voltage"></a>
+
+### pupRemote.voltage
+**Kind**: instance property of [<code>PUPRemote</code>](#PUPRemote)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| voltage | <code>number</code> | Voltage of the hub (Volts) |
 
 <a name="LPF2Hub+current"></a>
 
@@ -1522,6 +1558,7 @@ A combined color and distance event, emits when the sensor is activated.
 
 * [DuploTrainBase](#DuploTrainBase) ⇐ <code>LPF2Hub</code>
     * [new DuploTrainBase()](#new_DuploTrainBase_new)
+    * [.voltage](#LPF2Hub+voltage)
     * [.current](#LPF2Hub+current)
     * [.name](#Hub+name)
     * [.firmwareVersion](#Hub+firmwareVersion)
@@ -1551,6 +1588,17 @@ A combined color and distance event, emits when the sensor is activated.
 
 ### new DuploTrainBase()
 The DuploTrainBase is emitted if the discovered device is a Duplo Train Base.
+
+<a name="LPF2Hub+voltage"></a>
+
+### duploTrainBase.voltage
+**Kind**: instance property of [<code>DuploTrainBase</code>](#DuploTrainBase)  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| voltage | <code>number</code> | Voltage of the hub (Volts) |
 
 <a name="LPF2Hub+current"></a>
 

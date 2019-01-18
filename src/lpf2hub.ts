@@ -6,7 +6,6 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { promises } from "fs";
 const debug = Debug("lpf2hub");
 
 
@@ -17,13 +16,22 @@ const debug = Debug("lpf2hub");
  */
 export class LPF2Hub extends Hub {
 
-
+    protected _voltage: number = 0;
     protected _current: number = 0;
 
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
 
     private _messageBuffer: Buffer = Buffer.alloc(0);
+
+
+    /**
+     * @readonly
+     * @property {number} voltage Voltage of the hub (Volts)
+     */
+    public get voltage () {
+        return this._voltage;
+    }
 
 
     /**
@@ -41,8 +49,8 @@ export class LPF2Hub extends Hub {
             const characteristic = this._getCharacteristic(Consts.BLECharacteristic.LPF2_ALL);
             this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
             setTimeout(() => {
-                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
@@ -190,7 +198,8 @@ export class LPF2Hub extends Hub {
 
     private _parseDeviceInfo (data: Buffer) {
 
-        if (data[3] === 2) {
+        // Button press reports
+        if (data[3] === 0x02) {
             if (data[5] === 1) {
                 /**
                  * Emits when a button is pressed.
@@ -204,12 +213,18 @@ export class LPF2Hub extends Hub {
                 this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
                 return;
             }
-        } else if (data[3] === 3) {
+
+        // Firmware version
+        } else if (data[3] === 0x03) {
             const build = data.readUInt16LE(5);
             const bugFix = data.readUInt8(7);
             const major = data.readUInt8(8) >>> 4;
             const minor = data.readUInt8(8) & 0xf;
             this._firmwareInfo = { major, minor, bugFix, build };
+
+        // Battery level reports
+        } else if (data[3] === 0x06) {
+            this._batteryLevel = data[5];
         }
 
     }
@@ -260,8 +275,8 @@ export class LPF2Hub extends Hub {
 
         if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
             data = this._padMessage(data, 6);
-            const batteryLevel = data.readUInt16LE(4) / 500;
-            this._batteryLevel = Math.floor(batteryLevel);
+            const voltage = data.readUInt16LE(4) / 500;
+            this._voltage = Math.floor(voltage);
             return;
         } else if (data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_REMOTE) { // Current (PUP Remote)
             data = this._padMessage(data, 6);
@@ -270,8 +285,8 @@ export class LPF2Hub extends Hub {
             return;
         } else if (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Voltage (Non-PUP Remote)
             data = this._padMessage(data, 6);
-            const batteryLevel = data.readUInt16LE(4) / 400;
-            this._batteryLevel = Math.floor(batteryLevel);
+            const voltage = data.readUInt16LE(4) / 400;
+            this._voltage = Math.floor(voltage);
             return;
         } else if (data[3] === 0x3b && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
             data = this._padMessage(data, 6);
