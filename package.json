@@ -1,6 +1,6 @@
 {
   "name": "node-poweredup",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A Node.js module to interface with LEGO Powered UP components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
   "main": "dist/index.js",
