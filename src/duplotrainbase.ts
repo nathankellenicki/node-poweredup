@@ -26,6 +26,11 @@ export class DuploTrainBase extends LPF2Hub {
      */
 
     /**
+     * @event DuploTrainBase#colorAndDistance
+     * @ignore
+     */
+
+    /**
      * @event DuploTrainBase#tilt
      * @ignore
      */
