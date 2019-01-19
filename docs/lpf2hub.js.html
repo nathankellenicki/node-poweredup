@@ -1,48 +1,72 @@
-import { Peripheral } from "noble";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: lpf2hub.js</title>
 
-import { Hub } from "./hub";
-import { Port } from "./port";
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
 
-import * as Consts from "./consts";
+<body>
 
-import Debug = require("debug");
+<div id="main">
+
+    <h1 class="page-title">Source: lpf2hub.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
+    if (mod &amp;&amp; mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const hub_1 = require("./hub");
+const Consts = __importStar(require("./consts"));
+const Debug = require("debug");
 const debug = Debug("lpf2hub");
-
-
 /**
  * @class LPF2Hub
  * @extends Hub
  */
-export class LPF2Hub extends Hub {
-
-    protected _voltage: number = 0;
-    protected _current: number = 0;
-
-    private _lastTiltX: number = 0;
-    private _lastTiltY: number = 0;
-
-    private _messageBuffer: Buffer = Buffer.alloc(0);
-
-
+class LPF2Hub extends hub_1.Hub {
+    constructor() {
+        super(...arguments);
+        this._voltage = 0;
+        this._current = 0;
+        this._lastTiltX = 0;
+        this._lastTiltY = 0;
+        this._messageBuffer = Buffer.alloc(0);
+    }
     /**
      * @readonly
      * @property {number} voltage Voltage of the hub (Volts)
      */
-    public get voltage () {
+    get voltage() {
         return this._voltage;
     }
-
-
     /**
      * @readonly
      * @property {number} current Current usage of the hub (Amps)
      */
-    public get current () {
+    get current() {
         return this._current;
     }
-
-
-    public connect () {
+    connect() {
         return new Promise(async (resolve, reject) => {
             await super.connect();
             const characteristic = this._getCharacteristic(Consts.BLECharacteristic.LPF2_ALL);
@@ -60,15 +84,13 @@ export class LPF2Hub extends Hub {
             return resolve();
         });
     }
-
-
     /**
      * Set the name of the Hub.
      * @method LPF2Hub#setName
      * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */
-    public setName (name: string) {
+    setName(name) {
         if (name.length > 14) {
             throw new Error("Name must be 14 characters or less");
         }
@@ -82,15 +104,13 @@ export class LPF2Hub extends Hub {
             return resolve();
         });
     }
-
-
     /**
      * Set the color of the LED on the Hub via a color value.
      * @method LPF2Hub#setLEDColor
      * @param {Color} color
      * @returns {Promise} Resolved upon successful issuance of command.
      */
-    public setLEDColor (color: number | boolean) {
+    setLEDColor(color) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x41, 0x32, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
@@ -102,8 +122,6 @@ export class LPF2Hub extends Hub {
             return resolve();
         });
     }
-
-
     /**
      * Set the color of the LED on the Hub via RGB values.
      * @method LPF2Hub#setLEDRGB
@@ -112,7 +130,7 @@ export class LPF2Hub extends Hub {
      * @param {number} blue
      * @returns {Promise} Resolved upon successful issuance of command.
      */
-    public setLEDRGB (red: number, green: number, blue: number) {
+    setLEDRGB(red, green, blue) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x41, 0x32, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
@@ -121,28 +139,20 @@ export class LPF2Hub extends Hub {
             return resolve();
         });
     }
-
-
-    public sendRaw (message: Buffer) {
+    sendRaw(message) {
         return new Promise((resolve, reject) => {
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, message, () => {
                 return resolve();
             });
         });
     }
-
-
-    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
+    _activatePortDevice(port, type, mode, format, callback) {
         this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
     }
-
-
-    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
+    _deactivatePortDevice(port, type, mode, format, callback) {
         this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
     }
-
-
-    protected _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
+    _writeMessage(uuid, message, callback) {
         const characteristic = this._getCharacteristic(uuid);
         if (characteristic) {
             message = Buffer.concat([Buffer.alloc(2), message]);
@@ -150,24 +160,17 @@ export class LPF2Hub extends Hub {
             characteristic.write(message, false, callback);
         }
     }
-
-
-    private _parseMessage (data?: Buffer) {
-
+    _parseMessage(data) {
         if (data) {
             this._messageBuffer = Buffer.concat([this._messageBuffer, data]);
         }
-
-        if (this._messageBuffer.length <= 0) {
+        if (this._messageBuffer.length &lt;= 0) {
             return;
         }
-
         const len = this._messageBuffer[0];
         if (len >= this._messageBuffer.length) {
-
             const message = this._messageBuffer.slice(0, len);
             this._messageBuffer = this._messageBuffer.slice(len);
-
             switch (message[2]) {
                 case 0x01: {
                     this._parseDeviceInfo(message);
@@ -186,17 +189,12 @@ export class LPF2Hub extends Hub {
                     break;
                 }
             }
-
             if (this._messageBuffer.length > 0) {
                 this._parseMessage();
             }
-
         }
     }
-
-
-    private _parseDeviceInfo (data: Buffer) {
-
+    _parseDeviceInfo(data) {
         // Button press reports
         if (data[3] === 0x02) {
             if (data[5] === 1) {
@@ -208,49 +206,38 @@ export class LPF2Hub extends Hub {
                  */
                 this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
                 return;
-            } else if (data[5] === 0) {
+            }
+            else if (data[5] === 0) {
                 this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
                 return;
             }
-
-        // Firmware version
-        } else if (data[3] === 0x03) {
+            // Firmware version
+        }
+        else if (data[3] === 0x03) {
             const build = data.readUInt16LE(5);
             const bugFix = data.readUInt8(7);
             const major = data.readUInt8(8) >>> 4;
-            const minor = data.readUInt8(8) & 0xf;
+            const minor = data.readUInt8(8) &amp; 0xf;
             this._firmwareInfo = { major, minor, bugFix, build };
-
-        // Battery level reports
-        } else if (data[3] === 0x06) {
+            // Battery level reports
+        }
+        else if (data[3] === 0x06) {
             this._batteryLevel = data[5];
         }
-
     }
-
-
-    private _parsePortMessage (data: Buffer) {
-
+    _parsePortMessage(data) {
         const port = this._getPortForPortNumber(data[3]);
-
         if (!port) {
             return;
         }
-
         port.connected = (data[4] === 1 || data[4] === 2) ? true : false;
         this._registerDeviceAttachment(port, data[5]);
-
     }
-
-
-    private _parsePortAction (data: Buffer) {
-
+    _parsePortAction(data) {
         const port = this._getPortForPortNumber(data[3]);
-
         if (!port) {
             return;
         }
-
         if (data[4] === 0x0a) {
             port.busy = false;
             if (port.finished) {
@@ -258,49 +245,43 @@ export class LPF2Hub extends Hub {
                 port.finished = null;
             }
         }
-
     }
-
-
-    private _padMessage (data: Buffer, len: number) {
-        if (data.length < len) {
+    _padMessage(data, len) {
+        if (data.length &lt; len) {
             data = Buffer.concat([data, Buffer.alloc(len - data.length)]);
         }
         return data;
     }
-
-
-    private _parseSensorMessage (data: Buffer) {
-
-        if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
+    _parseSensorMessage(data) {
+        if ((data[3] === 0x3b &amp;&amp; this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
             data = this._padMessage(data, 6);
             const voltage = data.readUInt16LE(4) / 500;
             this._voltage = Math.floor(voltage);
             return;
-        } else if (data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_REMOTE) { // Current (PUP Remote)
+        }
+        else if (data[3] === 0x3c &amp;&amp; this.type === Consts.HubType.POWERED_UP_REMOTE) { // Current (PUP Remote)
             data = this._padMessage(data, 6);
             const current = data.readUInt16LE(4) / 1000;
             this._current = current;
             return;
-        } else if (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Voltage (Non-PUP Remote)
+        }
+        else if (data[3] === 0x3c &amp;&amp; this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Voltage (Non-PUP Remote)
             data = this._padMessage(data, 6);
             const voltage = data.readUInt16LE(4) / 400;
             this._voltage = Math.floor(voltage);
             return;
-        } else if (data[3] === 0x3b && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
+        }
+        else if (data[3] === 0x3b &amp;&amp; this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
             data = this._padMessage(data, 6);
             const current = data.readUInt16LE(4) / 4096;
             this._current = current * 100;
             return;
         }
-
         const port = this._getPortForPortNumber(data[3]);
-
         if (!port) {
             return;
         }
-
-        if (port && port.connected) {
+        if (port &amp;&amp; port.connected) {
             switch (port.type) {
                 case Consts.DeviceType.WEDO2_DISTANCE: {
                     let distance = data[4];
@@ -317,28 +298,22 @@ export class LPF2Hub extends Hub {
                     break;
                 }
                 case Consts.DeviceType.BOOST_DISTANCE: {
-
                     /**
                      * Emits when a color sensor is activated.
                      * @event LPF2Hub#color
                      * @param {string} port
                      * @param {Color} color
                      */
-                    if (data[4] <= 10) {
+                    if (data[4] &lt;= 10) {
                         this.emit("color", port.id, data[4]);
                     }
-
                     let distance = data[5];
                     const partial = data[7];
-
                     if (partial > 0) {
                         distance += 1.0 / partial;
                     }
-
                     distance = Math.floor(distance * 25.4) - 20;
-
                     this.emit("distance", port.id, distance);
-
                     /**
                      * A combined color and distance event, emits when the sensor is activated.
                      * @event LPF2Hub#colorAndDistance
@@ -346,7 +321,7 @@ export class LPF2Hub extends Hub {
                      * @param {Color} color
                      * @param {number} distance Distance, in millimeters.
                      */
-                    if (data[4] <= 10) {
+                    if (data[4] &lt;= 10) {
                         this.emit("colorAndDistance", port.id, data[4], distance);
                     }
                     break;
@@ -410,7 +385,7 @@ export class LPF2Hub extends Hub {
                     break;
                 }
                 case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
-                    if (data[4] <= 10) {
+                    if (data[4] &lt;= 10) {
                         this.emit("color", port.id, data[4]);
                     }
                     break;
@@ -428,8 +403,29 @@ export class LPF2Hub extends Hub {
                 }
             }
         }
-
     }
-
-
 }
+exports.LPF2Hub = LPF2Hub;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="Hub.html">Hub</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li></ul><h3>Events</h3><ul><li><a href="BoostMoveHub.html#event:attach">attach</a></li><li><a href="BoostMoveHub.html#event:button">button</a></li><li><a href="BoostMoveHub.html#event:color">color</a></li><li><a href="BoostMoveHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="BoostMoveHub.html#event:detach">detach</a></li><li><a href="BoostMoveHub.html#event:distance">distance</a></li><li><a href="BoostMoveHub.html#event:rotate">rotate</a></li><li><a href="BoostMoveHub.html#event:tilt">tilt</a></li><li><a href="DuploTrainBase.html#event:color">color</a></li><li><a href="DuploTrainBase.html#event:speed">speed</a></li><li><a href="Hub.html#event:attach">attach</a></li><li><a href="Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:attach">attach</a></li><li><a href="LPF2Hub.html#event:button">button</a></li><li><a href="LPF2Hub.html#event:color">color</a></li><li><a href="LPF2Hub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="LPF2Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:distance">distance</a></li><li><a href="LPF2Hub.html#event:rotate">rotate</a></li><li><a href="LPF2Hub.html#event:speed">speed</a></li><li><a href="LPF2Hub.html#event:tilt">tilt</a></li><li><a href="PoweredUP.html#event:discover">discover</a></li><li><a href="PUPHub.html#event:attach">attach</a></li><li><a href="PUPHub.html#event:button">button</a></li><li><a href="PUPHub.html#event:color">color</a></li><li><a href="PUPHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="PUPHub.html#event:detach">detach</a></li><li><a href="PUPHub.html#event:distance">distance</a></li><li><a href="PUPHub.html#event:tilt">tilt</a></li><li><a href="PUPRemote.html#event:button">button</a></li><li><a href="PUPRemote.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="WeDo2SmartHub.html#event:attach">attach</a></li><li><a href="WeDo2SmartHub.html#event:button">button</a></li><li><a href="WeDo2SmartHub.html#event:color">color</a></li><li><a href="WeDo2SmartHub.html#event:detach">detach</a></li><li><a href="WeDo2SmartHub.html#event:distance">distance</a></li><li><a href="WeDo2SmartHub.html#event:rotate">rotate</a></li><li><a href="WeDo2SmartHub.html#event:tilt">tilt</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jan 18 2019 16:10:38 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

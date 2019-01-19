@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pupremote.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pupremote.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
+    if (mod &amp;&amp; mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const lpf2hub_1 = require("./lpf2hub");
+const port_1 = require("./port");
+const Consts = __importStar(require("./consts"));
+const Debug = require("debug");
+const debug = Debug("pupremote");
+/**
+ * The PUPRemote is emitted if the discovered device is a Powered UP Remote.
+ * @class PUPRemote
+ * @extends LPF2Hub
+ * @extends Hub
+ */
+class PUPRemote extends lpf2hub_1.LPF2Hub {
+    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
+    /**
+     * @event PUPRemote#distance
+     * @ignore
+     */
+    /**
+     * @event PUPRemote#color
+     * @ignore
+     */
+    /**
+     * @event PUPRemote#tilt
+     * @ignore
+     */
+    /**
+     * @event PUPRemote#rotate
+     * @ignore
+     */
+    /**
+     * @event PUPRemote#speed
+     * @ignore
+     */
+    /**
+     * @event PUPRemote#attach
+     * @ignore
+     */
+    /**
+     * @event PUPRemote#detach
+     * @ignore
+     */
+    static IsPUPRemote(peripheral) {
+        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &amp;&amp; peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
+    }
+    constructor(peripheral, autoSubscribe = true) {
+        super(peripheral, autoSubscribe);
+        this.type = Consts.HubType.POWERED_UP_REMOTE;
+        this._ports = {
+            "LEFT": new port_1.Port("LEFT", 0),
+            "RIGHT": new port_1.Port("RIGHT", 1)
+        };
+        debug("Discovered Powered UP Remote");
+    }
+    connect() {
+        return new Promise(async (resolve, reject) => {
+            debug("Connecting to Powered UP Remote");
+            await super.connect();
+            debug("Connect completed");
+            return resolve();
+        });
+    }
+    /**
+     * Set the color of the LED on the Remote via a color value.
+     * @method PUPRemote#setLEDColor
+     * @param {Color} color
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    setLEDColor(color) {
+        return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x41, 0x34, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            if (color === false) {
+                color = 0;
+            }
+            data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x00, color]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            return resolve();
+        });
+    }
+    /**
+     * Set the color of the LED on the Hub via RGB values.
+     * @method PUPRemote#setLEDRGB
+     * @param {number} red
+     * @param {number} green
+     * @param {number} blue
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    setLEDRGB(red, green, blue) {
+        return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x41, 0x34, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x01, red, green, blue]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            return resolve();
+        });
+    }
+}
+exports.PUPRemote = PUPRemote;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="Hub.html">Hub</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li></ul><h3>Events</h3><ul><li><a href="BoostMoveHub.html#event:attach">attach</a></li><li><a href="BoostMoveHub.html#event:button">button</a></li><li><a href="BoostMoveHub.html#event:color">color</a></li><li><a href="BoostMoveHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="BoostMoveHub.html#event:detach">detach</a></li><li><a href="BoostMoveHub.html#event:distance">distance</a></li><li><a href="BoostMoveHub.html#event:rotate">rotate</a></li><li><a href="BoostMoveHub.html#event:tilt">tilt</a></li><li><a href="DuploTrainBase.html#event:color">color</a></li><li><a href="DuploTrainBase.html#event:speed">speed</a></li><li><a href="Hub.html#event:attach">attach</a></li><li><a href="Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:attach">attach</a></li><li><a href="LPF2Hub.html#event:button">button</a></li><li><a href="LPF2Hub.html#event:color">color</a></li><li><a href="LPF2Hub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="LPF2Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:distance">distance</a></li><li><a href="LPF2Hub.html#event:rotate">rotate</a></li><li><a href="LPF2Hub.html#event:speed">speed</a></li><li><a href="LPF2Hub.html#event:tilt">tilt</a></li><li><a href="PoweredUP.html#event:discover">discover</a></li><li><a href="PUPHub.html#event:attach">attach</a></li><li><a href="PUPHub.html#event:button">button</a></li><li><a href="PUPHub.html#event:color">color</a></li><li><a href="PUPHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="PUPHub.html#event:detach">detach</a></li><li><a href="PUPHub.html#event:distance">distance</a></li><li><a href="PUPHub.html#event:tilt">tilt</a></li><li><a href="PUPRemote.html#event:button">button</a></li><li><a href="PUPRemote.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="WeDo2SmartHub.html#event:attach">attach</a></li><li><a href="WeDo2SmartHub.html#event:button">button</a></li><li><a href="WeDo2SmartHub.html#event:color">color</a></li><li><a href="WeDo2SmartHub.html#event:detach">detach</a></li><li><a href="WeDo2SmartHub.html#event:distance">distance</a></li><li><a href="WeDo2SmartHub.html#event:rotate">rotate</a></li><li><a href="WeDo2SmartHub.html#event:tilt">tilt</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jan 18 2019 16:10:38 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

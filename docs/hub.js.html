@@ -1,113 +1,111 @@
-import { EventEmitter } from "events";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: hub.js</title>
 
-import { Characteristic, Peripheral, Service } from "noble";
-import { Port } from "./port";
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
 
-import * as Consts from "./consts";
+<body>
 
-import Debug = require("debug");
+<div id="main">
+
+    <h1 class="page-title">Source: hub.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
+    if (mod &amp;&amp; mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const events_1 = require("events");
+const Consts = __importStar(require("./consts"));
+const Debug = require("debug");
 const debug = Debug("hub");
-
-
-export interface IFirmwareInfo {
-    major: number;
-    minor: number;
-    bugFix: number;
-    build: number;
-}
-
-
 /**
  * @class Hub
  * @extends EventEmitter
  */
-export class Hub extends EventEmitter {
-
-
-    public autoSubscribe: boolean = true;
-    public useSpeedMap: boolean = true;
-    public type: Consts.HubType = Consts.HubType.UNKNOWN;
-
-    protected _ports: {[port: string]: Port} = {};
-    protected _characteristics: {[uuid: string]: Characteristic} = {};
-
-    protected _name: string;
-    protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
-    protected _batteryLevel: number = 100;
-
-    private _peripheral: Peripheral;
-    private _uuid: string;
-    private _rssi: number = -100;
-
-    constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
+class Hub extends events_1.EventEmitter {
+    constructor(peripheral, autoSubscribe = true) {
         super();
+        this.autoSubscribe = true;
+        this.useSpeedMap = true;
+        this.type = Consts.HubType.UNKNOWN;
+        this._ports = {};
+        this._characteristics = {};
+        this._firmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
+        this._batteryLevel = 100;
+        this._rssi = -100;
         this.autoSubscribe = !!autoSubscribe;
         this._peripheral = peripheral;
         this._uuid = peripheral.uuid;
         this._name = peripheral.advertisement.localName;
     }
-
-
     /**
      * @readonly
      * @property {string} name Name of the hub
      */
-    public get name () {
+    get name() {
         return this._name;
     }
-
-
     /**
      * @readonly
      * @property {string} firmwareVersion Firmware version of the hub
      */
-    public get firmwareVersion () {
+    get firmwareVersion() {
         return `${this._firmwareInfo.major}.${this._firmwareInfo.minor}.${this._lpad(this._firmwareInfo.bugFix.toString(), 2)}.${this._lpad(this._firmwareInfo.build.toString(), 4)}`;
     }
-
-
     /**
      * @readonly
      * @property {string} uuid UUID of the hub
      */
-    public get uuid () {
+    get uuid() {
         return this._uuid;
     }
-
-
     /**
      * @readonly
      * @property {number} rssi Signal strength of the hub
      */
-    public get rssi () {
+    get rssi() {
         return this._rssi;
     }
-
-
     /**
      * @readonly
      * @property {number} batteryLevel Battery level of the hub (Percentage between 0-100)
      */
-    public get batteryLevel () {
+    get batteryLevel() {
         return this._batteryLevel;
     }
-
-
     /**
      * Connect to the Hub.
      * @method Hub#connect
      * @returns {Promise} Resolved upon successful connect.
      */
-    public connect () {
+    connect() {
         return new Promise((connectResolve, connectReject) => {
-
             const self = this;
-
-            this._peripheral.connect((err: string) => {
-
+            this._peripheral.connect((err) => {
                 this._rssi = this._peripheral.rssi;
                 const rssiUpdateInterval = setInterval(() => {
-                    this._peripheral.updateRssi((err: string, rssi: number) => {
+                    this._peripheral.updateRssi((err, rssi) => {
                         if (!err) {
                             if (this._rssi !== rssi) {
                                 this._rssi = rssi;
@@ -115,21 +113,17 @@ export class Hub extends EventEmitter {
                         }
                     });
                 }, 2000);
-
                 self._peripheral.on("disconnect", () => {
                     clearInterval(rssiUpdateInterval);
                     this.emit("disconnect");
                 });
-
-                self._peripheral.discoverServices([], (err: string, services: Service[]) => {
-
+                self._peripheral.discoverServices([], (err, services) => {
                     if (err) {
                         this.emit("error", err);
                         return;
                     }
-
                     debug("Service/characteristic discovery started");
-                    const servicePromises: Array<Promise<null>> = [];
+                    const servicePromises = [];
                     services.forEach((service) => {
                         servicePromises.push(new Promise((resolve, reject) => {
                             service.discoverCharacteristics([], (err, characteristics) => {
@@ -140,36 +134,27 @@ export class Hub extends EventEmitter {
                             });
                         }));
                     });
-
                     Promise.all(servicePromises).then(() => {
                         debug("Service/characteristic discovery finished");
                         this.emit("connect");
                         return connectResolve();
                     });
-
                 });
-
             });
-
         });
-
     }
-
-
     /**
      * Disconnect the Hub.
      * @method Hub#disconnect
      * @returns {Promise} Resolved upon successful disconnect.
      */
-    public disconnect () {
+    disconnect() {
         return new Promise((resolve, reject) => {
             this._peripheral.disconnect(() => {
                 return resolve();
             });
         });
     }
-
-
     /**
      * Subscribe to sensor notifications on a given port.
      * @method Hub#subscribe
@@ -177,7 +162,7 @@ export class Hub extends EventEmitter {
      * @param {number} [mode] The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
      * @returns {Promise} Resolved upon successful issuance of command.
      */
-    public subscribe (port: string, mode?: number) {
+    subscribe(port, mode) {
         return new Promise((resolve, reject) => {
             let newMode = this._getModeForDeviceType(this._portLookup(port).type);
             if (mode) {
@@ -188,14 +173,13 @@ export class Hub extends EventEmitter {
             });
         });
     }
-
     /**
      * Unsubscribe to sensor notifications on a given port.
      * @method Hub#unsubscribe
      * @param {string} port
      * @returns {Promise} Resolved upon successful issuance of command.
      */
-    public unsubscribe (port: string) {
+    unsubscribe(port) {
         return new Promise((resolve, reject) => {
             const mode = this._getModeForDeviceType(this._portLookup(port).type);
             this._deactivatePortDevice(this._portLookup(port).value, this._portLookup(port).type, mode, 0x00, () => {
@@ -203,8 +187,6 @@ export class Hub extends EventEmitter {
             });
         });
     }
-
-
     /**
      * Sleep a given amount of time.
      *
@@ -213,54 +195,44 @@ export class Hub extends EventEmitter {
      * @param {number} delay How long to sleep (in milliseconds).
      * @returns {Promise} Resolved after the delay is finished.
      */
-    public sleep (delay: number) {
+    sleep(delay) {
         return new Promise((resolve) => {
             global.setTimeout(resolve, delay);
         });
     }
-
-
     /**
      * Wait until a given list of concurrently running commands are complete.
      *
      * This is a helper method to make it easier to wait for concurrent commands to complete.
      * @method Hub#wait
-     * @param {Array<Promise<any>>} commands Array of executing commands.
+     * @param {Array&lt;Promise&lt;any>>} commands Array of executing commands.
      * @returns {Promise} Resolved after the commands are finished.
      */
-    public wait (commands: Array<Promise<any>>) {
+    wait(commands) {
         return Promise.all(commands);
     }
-
-
     /**
      * Get the hub type.
      * @method Hub#getHubType
      * @returns {HubType}
      */
-    public getHubType () {
+    getHubType() {
         return this.type;
     }
-
-
     /**
      * Get the device type for a given port.
      * @method Hub#getPortDeviceType
      * @param {string} port
      * @returns {DeviceType}
      */
-    public getPortDeviceType (port: string) {
+    getPortDeviceType(port) {
         return this._portLookup(port).type;
     }
-
-
-    protected _getCharacteristic (uuid: string) {
+    _getCharacteristic(uuid) {
         return this._characteristics[uuid.replace(/-/g, "")];
     }
-
-
-    protected _subscribeToCharacteristic (characteristic: Characteristic, callback: (data: Buffer) => void) {
-        characteristic.on("data", (data: Buffer) => {
+    _subscribeToCharacteristic(characteristic, callback) {
+        characteristic.on("data", (data) => {
             return callback(data);
         });
         characteristic.subscribe((err) => {
@@ -269,24 +241,17 @@ export class Hub extends EventEmitter {
             }
         });
     }
-
-
-    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
+    _activatePortDevice(port, type, mode, format, callback) {
         if (callback) {
             callback();
         }
     }
-
-
-    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
+    _deactivatePortDevice(port, type, mode, format, callback) {
         if (callback) {
             callback();
         }
     }
-
-
-    protected _registerDeviceAttachment (port: Port, type: number) {
-
+    _registerDeviceAttachment(port, type) {
         if (port.connected) {
             port.type = type;
             if (this.autoSubscribe) {
@@ -299,7 +264,8 @@ export class Hub extends EventEmitter {
                  */
                 this.emit("attach", port.id, type);
             }
-        } else {
+        }
+        else {
             port.type = Consts.DeviceType.UNKNOWN;
             debug(`Port ${port.id} disconnected`);
             /**
@@ -309,48 +275,36 @@ export class Hub extends EventEmitter {
              */
             this.emit("detach", port.id);
         }
-
     }
-
-
-    protected _getPortForPortNumber (num: number) {
-
+    _getPortForPortNumber(num) {
         for (const key of Object.keys(this._ports)) {
             if (this._ports[key].value === num) {
                 return this._ports[key];
             }
         }
-
         return false;
-
     }
-
-
-    protected _mapSpeed (speed: number) { // Speed range of -100 to 100 is supported unless speed mapping is turned off, in which case, you're on your own!
+    _mapSpeed(speed) {
         if (!this.useSpeedMap) {
             return speed;
         }
-
         if (speed === 127) {
             return 127; // Hard stop
         }
-
         if (speed > 100) {
             speed = 100;
-        } else if (speed < -100) {
+        }
+        else if (speed &lt; -100) {
             speed = -100;
         }
-
         return speed;
     }
-
-
-    protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number, port: Port) {
-        const emitter = new EventEmitter();
+    _calculateRamp(fromSpeed, toSpeed, time, port) {
+        const emitter = new events_1.EventEmitter();
         const steps = Math.abs(toSpeed - fromSpeed);
         let delay = time / steps;
         let increment = 1;
-        if (delay < 50 && steps > 0) {
+        if (delay &lt; 50 &amp;&amp; steps > 0) {
             increment = 50 / delay;
             delay = 50;
         }
@@ -360,9 +314,10 @@ export class Hub extends EventEmitter {
         let i = 0;
         const interval = setInterval(() => {
             let speed = Math.round(fromSpeed + (++i * increment));
-            if (toSpeed > fromSpeed && speed > toSpeed) {
+            if (toSpeed > fromSpeed &amp;&amp; speed > toSpeed) {
                 speed = toSpeed;
-            } else if (fromSpeed > toSpeed && speed < toSpeed) {
+            }
+            else if (fromSpeed > toSpeed &amp;&amp; speed &lt; toSpeed) {
                 speed = toSpeed;
             }
             emitter.emit("changeSpeed", speed);
@@ -374,25 +329,19 @@ export class Hub extends EventEmitter {
         port.setEventTimer(interval);
         return emitter;
     }
-
-
-    protected _portLookup (port: string) {
+    _portLookup(port) {
         if (!this._ports[port.toUpperCase()]) {
             throw new Error(`Port ${port.toUpperCase()} does not exist on this Hub type`);
         }
         return this._ports[port];
     }
-
-
-    protected _lpad (str: string, length: number) {
-        while (str.length < length) {
+    _lpad(str, length) {
+        while (str.length &lt; length) {
             str = "0" + str;
         }
         return str;
     }
-
-
-    private _getModeForDeviceType (type: Consts.DeviceType) {
+    _getModeForDeviceType(type) {
         switch (type) {
             case Consts.DeviceType.BASIC_MOTOR:
                 return 0x02;
@@ -410,6 +359,28 @@ export class Hub extends EventEmitter {
                 return 0x00;
         }
     }
-
-
 }
+exports.Hub = Hub;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="Hub.html">Hub</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li></ul><h3>Events</h3><ul><li><a href="BoostMoveHub.html#event:attach">attach</a></li><li><a href="BoostMoveHub.html#event:button">button</a></li><li><a href="BoostMoveHub.html#event:color">color</a></li><li><a href="BoostMoveHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="BoostMoveHub.html#event:detach">detach</a></li><li><a href="BoostMoveHub.html#event:distance">distance</a></li><li><a href="BoostMoveHub.html#event:rotate">rotate</a></li><li><a href="BoostMoveHub.html#event:tilt">tilt</a></li><li><a href="DuploTrainBase.html#event:color">color</a></li><li><a href="DuploTrainBase.html#event:speed">speed</a></li><li><a href="Hub.html#event:attach">attach</a></li><li><a href="Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:attach">attach</a></li><li><a href="LPF2Hub.html#event:button">button</a></li><li><a href="LPF2Hub.html#event:color">color</a></li><li><a href="LPF2Hub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="LPF2Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:distance">distance</a></li><li><a href="LPF2Hub.html#event:rotate">rotate</a></li><li><a href="LPF2Hub.html#event:speed">speed</a></li><li><a href="LPF2Hub.html#event:tilt">tilt</a></li><li><a href="PoweredUP.html#event:discover">discover</a></li><li><a href="PUPHub.html#event:attach">attach</a></li><li><a href="PUPHub.html#event:button">button</a></li><li><a href="PUPHub.html#event:color">color</a></li><li><a href="PUPHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="PUPHub.html#event:detach">detach</a></li><li><a href="PUPHub.html#event:distance">distance</a></li><li><a href="PUPHub.html#event:tilt">tilt</a></li><li><a href="PUPRemote.html#event:button">button</a></li><li><a href="PUPRemote.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="WeDo2SmartHub.html#event:attach">attach</a></li><li><a href="WeDo2SmartHub.html#event:button">button</a></li><li><a href="WeDo2SmartHub.html#event:color">color</a></li><li><a href="WeDo2SmartHub.html#event:detach">detach</a></li><li><a href="WeDo2SmartHub.html#event:distance">distance</a></li><li><a href="WeDo2SmartHub.html#event:rotate">rotate</a></li><li><a href="WeDo2SmartHub.html#event:tilt">tilt</a></li></ul><h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jan 18 2019 16:10:38 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

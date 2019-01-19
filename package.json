@@ -7,9 +7,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tslint -c tslint.json \"src/*.ts\" && tsc",
-    "docs": "jsdoc2md dist/consts.js dist/poweredup.js dist/lpf2hub.js dist/wedo2smarthub.js dist/boostmovehub.js dist/puphub.js dist/pupremote.js dist/duplotrainbase.js dist/hub.js dist/consts.js > DOCS.md",
-    "readme": "cat ABOUT.md DOCS.md > README.md",
-    "all": "npm run build && npm run docs && npm run readme",
+    "docs": "jsdoc README.md dist/consts.js dist/poweredup.js dist/lpf2hub.js dist/wedo2smarthub.js dist/boostmovehub.js dist/puphub.js dist/pupremote.js dist/duplotrainbase.js dist/hub.js dist/consts.js -d docs",
+    "all": "npm run build && npm run docs",
     "prepublishOnly": "npm run build"
   },
   "author": "Nathan Kellenicki <nathan@kellenicki.com>",
@@ -20,12 +19,13 @@
     "noble-mac": "https://github.com/Timeular/noble-mac.git#af4418e"
   },
   "devDependencies": {
-    "jsdoc-to-markdown": "^4.0.1",
-    "typescript": "^3.2.2",
-    "tslint": "^5.12.0",
     "@types/debug": "0.0.31",
     "@types/noble": "0.0.38",
-    "@types/node": "^10.12.18"
+    "@types/node": "^10.12.18",
+    "jsdoc": "^3.5.5",
+    "jsdoc-to-markdown": "^4.0.1",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
   },
   "resolutions": {
     "xpc-connection": "sandeepmistry/node-xpc-connection#pull/26/head"
