@@ -60,6 +60,10 @@ export class WeDo2SmartHub extends Hub {
             this._getCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION).read((err, data) => {
                 this._parseFirmwareRevisionString(data);
             });
+            setTimeout(() => {
+                this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
+                this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
+            }, 1000);
             debug("Connect completed");
             return resolve();
         });
@@ -299,7 +303,6 @@ export class WeDo2SmartHub extends Hub {
 
     private _parseSensorMessage (data: Buffer) {
 
-
         if (data[0] === 0x01) {
             /**
              * Emits when a button is pressed.
@@ -312,6 +315,18 @@ export class WeDo2SmartHub extends Hub {
         } else if (data[0] === 0x00) {
             this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
             return;
+        }
+
+        // Voltage
+        if (data[1] === 0x03) {
+            const voltage = data.readInt16LE(2);
+            this._voltage = voltage;
+            console.log("Voltage", voltage);
+        // Current
+        } else if (data[1] === 0x04) {
+            const current = data.readInt16LE(2);
+            this._current = current;
+            console.log("Current", current);
         }
 
         const port = this._getPortForPortNumber(data[1]);

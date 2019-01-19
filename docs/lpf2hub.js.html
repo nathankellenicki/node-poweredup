@@ -104,25 +104,9 @@ const debug = Debug("lpf2hub");
 class LPF2Hub extends hub_1.Hub {
     constructor() {
         super(...arguments);
-        this._voltage = 0;
-        this._current = 0;
         this._lastTiltX = 0;
         this._lastTiltY = 0;
         this._messageBuffer = Buffer.alloc(0);
-    }
-    /**
-     * @readonly
-     * @property {number} voltage Voltage of the hub (Volts)
-     */
-    get voltage() {
-        return this._voltage;
-    }
-    /**
-     * @readonly
-     * @property {number} current Current usage of the hub (Amps)
-     */
-    get current() {
-        return this._current;
     }
     connect() {
         return new Promise(async (resolve, reject) => {
@@ -133,8 +117,8 @@ class LPF2Hub extends hub_1.Hub {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
-                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
                 if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
                     this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
                 }

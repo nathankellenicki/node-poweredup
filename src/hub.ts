@@ -34,6 +34,8 @@ export class Hub extends EventEmitter {
     protected _name: string;
     protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
     protected _batteryLevel: number = 100;
+    protected _voltage: number = 0;
+    protected _current: number = 0;
 
     private _peripheral: Peripheral;
     private _uuid: string;
@@ -90,6 +92,24 @@ export class Hub extends EventEmitter {
      */
     public get batteryLevel () {
         return this._batteryLevel;
+    }
+
+
+    /**
+     * @readonly
+     * @property {number} voltage Voltage of the hub (Volts)
+     */
+    public get voltage () {
+        return this._voltage;
+    }
+
+
+    /**
+     * @readonly
+     * @property {number} current Current usage of the hub (Amps)
+     */
+    public get current () {
+        return this._current;
     }
 
 

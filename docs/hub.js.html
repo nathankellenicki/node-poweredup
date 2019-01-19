@@ -111,6 +111,8 @@ class Hub extends events_1.EventEmitter {
         this._characteristics = {};
         this._firmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
         this._batteryLevel = 100;
+        this._voltage = 0;
+        this._current = 0;
         this._rssi = -100;
         this.autoSubscribe = !!autoSubscribe;
         this._peripheral = peripheral;
@@ -151,6 +153,20 @@ class Hub extends events_1.EventEmitter {
      */
     get batteryLevel() {
         return this._batteryLevel;
+    }
+    /**
+     * @readonly
+     * @property {number} voltage Voltage of the hub (Volts)
+     */
+    get voltage() {
+        return this._voltage;
+    }
+    /**
+     * @readonly
+     * @property {number} current Current usage of the hub (Amps)
+     */
+    get current() {
+        return this._current;
     }
     /**
      * Connect to the Hub.
