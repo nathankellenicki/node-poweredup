@@ -1,66 +1,127 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>JSDoc: Class: LPF2Hub</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Class: LPF2Hub</title>
 
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
 </head>
 
 <body>
 
-<div id="main">
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="Hub.html">Hub</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="BoostMoveHub.html#event:attach">BoostMoveHub#event:attach</a></li><li><a href="BoostMoveHub.html#event:button">BoostMoveHub#event:button</a></li><li><a href="BoostMoveHub.html#event:color">BoostMoveHub#event:color</a></li><li><a href="BoostMoveHub.html#event:colorAndDistance">BoostMoveHub#event:colorAndDistance</a></li><li><a href="BoostMoveHub.html#event:detach">BoostMoveHub#event:detach</a></li><li><a href="BoostMoveHub.html#event:distance">BoostMoveHub#event:distance</a></li><li><a href="BoostMoveHub.html#event:rotate">BoostMoveHub#event:rotate</a></li><li><a href="BoostMoveHub.html#event:tilt">BoostMoveHub#event:tilt</a></li><li><a href="DuploTrainBase.html#event:color">DuploTrainBase#event:color</a></li><li><a href="DuploTrainBase.html#event:speed">DuploTrainBase#event:speed</a></li><li><a href="Hub.html#event:attach">Hub#event:attach</a></li><li><a href="Hub.html#event:detach">Hub#event:detach</a></li><li><a href="LPF2Hub.html#event:attach">LPF2Hub#event:attach</a></li><li><a href="LPF2Hub.html#event:button">LPF2Hub#event:button</a></li><li><a href="LPF2Hub.html#event:color">LPF2Hub#event:color</a></li><li><a href="LPF2Hub.html#event:colorAndDistance">LPF2Hub#event:colorAndDistance</a></li><li><a href="LPF2Hub.html#event:detach">LPF2Hub#event:detach</a></li><li><a href="LPF2Hub.html#event:distance">LPF2Hub#event:distance</a></li><li><a href="LPF2Hub.html#event:rotate">LPF2Hub#event:rotate</a></li><li><a href="LPF2Hub.html#event:speed">LPF2Hub#event:speed</a></li><li><a href="LPF2Hub.html#event:tilt">LPF2Hub#event:tilt</a></li><li><a href="PoweredUP.html#event:discover">PoweredUP#event:discover</a></li><li><a href="PUPHub.html#event:attach">PUPHub#event:attach</a></li><li><a href="PUPHub.html#event:button">PUPHub#event:button</a></li><li><a href="PUPHub.html#event:color">PUPHub#event:color</a></li><li><a href="PUPHub.html#event:colorAndDistance">PUPHub#event:colorAndDistance</a></li><li><a href="PUPHub.html#event:detach">PUPHub#event:detach</a></li><li><a href="PUPHub.html#event:distance">PUPHub#event:distance</a></li><li><a href="PUPHub.html#event:tilt">PUPHub#event:tilt</a></li><li><a href="PUPRemote.html#event:button">PUPRemote#event:button</a></li><li><a href="PUPRemote.html#event:colorAndDistance">PUPRemote#event:colorAndDistance</a></li><li><a href="WeDo2SmartHub.html#event:attach">WeDo2SmartHub#event:attach</a></li><li><a href="WeDo2SmartHub.html#event:button">WeDo2SmartHub#event:button</a></li><li><a href="WeDo2SmartHub.html#event:color">WeDo2SmartHub#event:color</a></li><li><a href="WeDo2SmartHub.html#event:detach">WeDo2SmartHub#event:detach</a></li><li><a href="WeDo2SmartHub.html#event:distance">WeDo2SmartHub#event:distance</a></li><li><a href="WeDo2SmartHub.html#event:rotate">WeDo2SmartHub#event:rotate</a></li><li><a href="WeDo2SmartHub.html#event:tilt">WeDo2SmartHub#event:tilt</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html">Global</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
 
-    <h1 class="page-title">Class: LPF2Hub</h1>
-
-    
-
+</div>
+</div>
 
 
+<div class="container" id="toc-content">
+<div class="row">
 
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	<h1 class="page-title">Class: LPF2Hub</h1>
 <section>
 
 <header>
     
-        <h2><span class="attribs"><span class="type-signature"></span></span>LPF2Hub<span class="signature">()</span><span class="type-signature"></span></h2>
+        <h2>
+        LPF2Hub
+        </h2>
         
     
 </header>
+
 
 <article>
     <div class="container-overview">
     
         
+<hr>
+<dt>
+    <h4 class="name" id="LPF2Hub"><span class="type-signature"></span>new LPF2Hub()</h4>
+    
+    
+</dt>
+<dd>
 
     
 
     
-    <h4 class="name" id="LPF2Hub"><span class="type-signature"></span>new LPF2Hub<span class="signature">()</span><span class="type-signature"></span></h4>
-    
 
     
 
+    
+    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -70,52 +131,52 @@
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-14">line 14</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line14">line 14</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
     
     </div>
@@ -142,28 +203,30 @@
     
 
     
-
-    
         <h3 class="subsection-title">Members</h3>
 
-        
+        <dl>
             
-<h4 class="name" id="batteryLevel"><span class="type-signature">(readonly) </span>batteryLevel<span class="type-signature"></span></h4>
+<hr>
+<dt class="name" id="batteryLevel">
+    <h4 id="batteryLevel"><span class="type-signature">&lt;readonly> </span>batteryLevel<span class="type-signature"></span></h4>
 
+    
+</dt>
+<dd>
+    
 
+    
 
-
-
-
-
-
-
+    
+<dl class="details">
+    
 
     <h5 class="subsection-title">Properties:</h5>
 
-    
+    <dl>
 
-<table class="props">
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -194,6 +257,7 @@
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -201,36 +265,30 @@
 
             
 
-            <td class="description last">Battery level of the hub (Percentage between 0-100)</td>
+            <td class="description last"><p>Battery level of the hub (Percentage between 0-100)</p></td>
         </tr>
 
     
     </tbody>
 </table>
-
-
-
-
-<dl class="details">
+</dl>
 
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#batteryLevel">Hub#batteryLevel</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#batteryLevel">Hub#batteryLevel</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -240,45 +298,63 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line66">line 66</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-66">line 66</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
-
-
-
+    
+</dd>
 
         
             
-<h4 class="name" id="current"><span class="type-signature">(readonly) </span>current<span class="type-signature"></span></h4>
+<hr>
+<dt class="name" id="current">
+    <h4 id="current"><span class="type-signature">&lt;readonly> </span>current<span class="type-signature"></span></h4>
 
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
+    
+</dt>
+<dd>
+    
 
     
 
-<table class="props">
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -309,6 +385,7 @@
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -316,17 +393,21 @@
 
             
 
-            <td class="description last">Current usage of the hub (Amps)</td>
+            <td class="description last"><p>Current usage of the hub (Amps)</p></td>
         </tr>
 
     
     </tbody>
 </table>
+</dl>
 
+    
 
+	
 
+	
 
-<dl class="details">
+	
 
     
 
@@ -336,59 +417,63 @@
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-38">line 38</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line38">line 38</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
-
-
-
+    
+</dd>
 
         
             
-<h4 class="name" id="firmwareVersion"><span class="type-signature">(readonly) </span>firmwareVersion<span class="type-signature"></span></h4>
+<hr>
+<dt class="name" id="firmwareVersion">
+    <h4 id="firmwareVersion"><span class="type-signature">&lt;readonly> </span>firmwareVersion<span class="type-signature"></span></h4>
 
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
+    
+</dt>
+<dd>
+    
 
     
 
-<table class="props">
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -419,6 +504,7 @@
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -426,36 +512,30 @@
 
             
 
-            <td class="description last">Firmware version of the hub</td>
+            <td class="description last"><p>Firmware version of the hub</p></td>
         </tr>
 
     
     </tbody>
 </table>
-
-
-
-
-<dl class="details">
+</dl>
 
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#firmwareVersion">Hub#firmwareVersion</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#firmwareVersion">Hub#firmwareVersion</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -465,45 +545,63 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line45">line 45</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-45">line 45</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
-
-
-
+    
+</dd>
 
         
             
-<h4 class="name" id="name"><span class="type-signature">(readonly) </span>name<span class="type-signature"></span></h4>
+<hr>
+<dt class="name" id="name">
+    <h4 id="name"><span class="type-signature">&lt;readonly> </span>name<span class="type-signature"></span></h4>
 
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
+    
+</dt>
+<dd>
+    
 
     
 
-<table class="props">
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -534,6 +632,7 @@
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -541,36 +640,30 @@
 
             
 
-            <td class="description last">Name of the hub</td>
+            <td class="description last"><p>Name of the hub</p></td>
         </tr>
 
     
     </tbody>
 </table>
-
-
-
-
-<dl class="details">
+</dl>
 
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#name">Hub#name</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#name">Hub#name</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -580,45 +673,63 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line38">line 38</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-38">line 38</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
-
-
-
+    
+</dd>
 
         
             
-<h4 class="name" id="rssi"><span class="type-signature">(readonly) </span>rssi<span class="type-signature"></span></h4>
+<hr>
+<dt class="name" id="rssi">
+    <h4 id="rssi"><span class="type-signature">&lt;readonly> </span>rssi<span class="type-signature"></span></h4>
 
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
+    
+</dt>
+<dd>
+    
 
     
 
-<table class="props">
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -649,6 +760,7 @@
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -656,36 +768,30 @@
 
             
 
-            <td class="description last">Signal strength of the hub</td>
+            <td class="description last"><p>Signal strength of the hub</p></td>
         </tr>
 
     
     </tbody>
 </table>
-
-
-
-
-<dl class="details">
+</dl>
 
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#rssi">Hub#rssi</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#rssi">Hub#rssi</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -695,45 +801,63 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line59">line 59</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-59">line 59</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
-
-
-
+    
+</dd>
 
         
             
-<h4 class="name" id="uuid"><span class="type-signature">(readonly) </span>uuid<span class="type-signature"></span></h4>
+<hr>
+<dt class="name" id="uuid">
+    <h4 id="uuid"><span class="type-signature">&lt;readonly> </span>uuid<span class="type-signature"></span></h4>
 
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
+    
+</dt>
+<dd>
+    
 
     
 
-<table class="props">
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -764,6 +888,7 @@
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -771,36 +896,30 @@
 
             
 
-            <td class="description last">UUID of the hub</td>
+            <td class="description last"><p>UUID of the hub</p></td>
         </tr>
 
     
     </tbody>
 </table>
-
-
-
-
-<dl class="details">
+</dl>
 
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#uuid">Hub#uuid</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#uuid">Hub#uuid</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -810,45 +929,63 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line52">line 52</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-52">line 52</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
-
-
-
+    
+</dd>
 
         
             
-<h4 class="name" id="voltage"><span class="type-signature">(readonly) </span>voltage<span class="type-signature"></span></h4>
+<hr>
+<dt class="name" id="voltage">
+    <h4 id="voltage"><span class="type-signature">&lt;readonly> </span>voltage<span class="type-signature"></span></h4>
 
-
-
-
-
-
-
-
-
-
-    <h5 class="subsection-title">Properties:</h5>
+    
+</dt>
+<dd>
+    
 
     
 
-<table class="props">
+    
+<dl class="details">
+    
+
+    <h5 class="subsection-title">Properties:</h5>
+
+    <dl>
+
+<table class="props table table-striped">
     <thead>
     <tr>
         
@@ -879,6 +1016,7 @@
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -886,17 +1024,21 @@
 
             
 
-            <td class="description last">Voltage of the hub (Volts)</td>
+            <td class="description last"><p>Voltage of the hub (Volts)</p></td>
         </tr>
 
     
     </tbody>
 </table>
+</dl>
 
+    
 
+	
 
+	
 
-<dl class="details">
+	
 
     
 
@@ -906,83 +1048,88 @@
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-31">line 31</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line31">line 31</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
+</dd>
 
-
-
-
-        
+        </dl>
     
 
     
         <h3 class="subsection-title">Methods</h3>
 
-        
+        <dl>
             
+<hr>
+<dt>
+    <h4 class="name" id="connect"><span class="type-signature"></span>connect()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Connect to the Hub.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="connect"><span class="type-signature"></span>connect<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
-
-
-
-<div class="description">
-    Connect to the Hub.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <dl class="details">
-
     
 
-    
+	
 
-    
+	
+
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#connect">Hub#connect</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
     <dt class="tag-overrides">Overrides:</dt>
@@ -997,47 +1144,54 @@
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line69">line 69</a>
-    </li></ul></dd>
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-69">line 69</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved upon successful connect.
+    <p>Resolved upon successful connect.</p>
 </div>
 
 
@@ -1051,64 +1205,57 @@
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="disconnect"><span class="type-signature"></span>disconnect()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Disconnect the Hub.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="disconnect"><span class="type-signature"></span>disconnect<span class="signature">()</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
 
     
-
-
-
-<div class="description">
-    Disconnect the Hub.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#disconnect">Hub#disconnect</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#disconnect">Hub#disconnect</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -1118,39 +1265,54 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line118">line 118</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-118">line 118</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved upon successful disconnect.
+    <p>Resolved upon successful disconnect.</p>
 </div>
 
 
@@ -1164,64 +1326,57 @@
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="getHubType"><span class="type-signature"></span>getHubType()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the hub type.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="getHubType"><span class="type-signature"></span>getHubType<span class="signature">()</span><span class="type-signature"> &rarr; {<a href="global.html#HubType">HubType</a>}</span></h4>
     
 
     
-
-
-
-<div class="description">
-    Get the hub type.
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#getHubType">Hub#getHubType</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#getHubType">Hub#getHubType</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -1231,37 +1386,52 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line186">line 186</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-186">line 186</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 
 
 <dl>
@@ -1273,44 +1443,42 @@
 <span class="param-type"><a href="global.html#HubType">HubType</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="getPortDeviceType"><span class="type-signature"></span>getPortDeviceType(port)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Get the device type for a given port.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="getPortDeviceType"><span class="type-signature"></span>getPortDeviceType<span class="signature">(port)</span><span class="type-signature"> &rarr; {<a href="global.html#DeviceType">DeviceType</a>}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Get the device type for a given port.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1341,6 +1509,7 @@
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -1355,31 +1524,26 @@
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#getPortDeviceType">Hub#getPortDeviceType</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#getPortDeviceType">Hub#getPortDeviceType</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -1389,37 +1553,52 @@
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line194">line 194</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-194">line 194</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 
 
 <dl>
@@ -1431,44 +1610,42 @@
 <span class="param-type"><a href="global.html#DeviceType">DeviceType</a></span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="setLEDColor"><span class="type-signature"></span>setLEDColor(color)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the color of the LED on the Hub via a color value.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="setLEDColor"><span class="type-signature"></span>setLEDColor<span class="signature">(color)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Set the color of the LED on the Hub via a color value.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1499,6 +1676,7 @@
 <span class="param-type"><a href="global.html#Color">Color</a></span>
 
 
+
             
             </td>
 
@@ -1513,12 +1691,17 @@
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -1528,53 +1711,54 @@
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-79">line 79</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line79">line 79</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved upon successful issuance of command.
+    <p>Resolved upon successful issuance of command.</p>
 </div>
 
 
@@ -1588,44 +1772,42 @@
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="setLEDRGB"><span class="type-signature"></span>setLEDRGB(red, green, blue)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the color of the LED on the Hub via RGB values.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="setLEDRGB"><span class="type-signature"></span>setLEDRGB<span class="signature">(red, green, blue)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Set the color of the LED on the Hub via RGB values.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1656,6 +1838,7 @@
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -1677,6 +1860,7 @@
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -1702,6 +1886,7 @@
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -1716,12 +1901,17 @@
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -1731,53 +1921,54 @@
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-97">line 97</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line97">line 97</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved upon successful issuance of command.
+    <p>Resolved upon successful issuance of command.</p>
 </div>
 
 
@@ -1791,44 +1982,42 @@
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="setName"><span class="type-signature"></span>setName(name)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the name of the Hub.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="setName"><span class="type-signature"></span>setName<span class="signature">(name)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Set the name of the Hub.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -1859,6 +2048,7 @@
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -1866,19 +2056,24 @@
 
             
 
-            <td class="description last">New name of the hub (14 characters or less, ASCII only).</td>
+            <td class="description last"><p>New name of the hub (14 characters or less, ASCII only).</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -1888,53 +2083,54 @@
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-59">line 59</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line59">line 59</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved upon successful issuance of command.
+    <p>Resolved upon successful issuance of command.</p>
 </div>
 
 
@@ -1948,46 +2144,43 @@
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="sleep"><span class="type-signature"></span>sleep(delay)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Sleep a given amount of time.</p>
+<p>This is a helper method to make it easier to add delays into a chain of commands.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="sleep"><span class="type-signature"></span>sleep<span class="signature">(delay)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Sleep a given amount of time.
-
-This is a helper method to make it easier to add delays into a chain of commands.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2018,6 +2211,7 @@ This is a helper method to make it easier to add delays into a chain of commands
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -2025,38 +2219,33 @@ This is a helper method to make it easier to add delays into a chain of commands
 
             
 
-            <td class="description last">How long to sleep (in milliseconds).</td>
+            <td class="description last"><p>How long to sleep (in milliseconds).</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#sleep">Hub#sleep</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#sleep">Hub#sleep</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -2066,39 +2255,54 @@ This is a helper method to make it easier to add delays into a chain of commands
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line162">line 162</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-162">line 162</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved after the delay is finished.
+    <p>Resolved after the delay is finished.</p>
 </div>
 
 
@@ -2112,44 +2316,42 @@ This is a helper method to make it easier to add delays into a chain of commands
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe(port [, mode])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Subscribe to sensor notifications on a given port.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="subscribe"><span class="type-signature"></span>subscribe<span class="signature">(port, mode<span class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Subscribe to sensor notifications on a given port.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2159,7 +2361,7 @@ This is a helper method to make it easier to add delays into a chain of commands
         <th>Type</th>
 
         
-        <th>Attributes</th>
+        <th>Argument</th>
         
 
         
@@ -2180,6 +2382,7 @@ This is a helper method to make it easier to add delays into a chain of commands
             
                 
 <span class="param-type">string</span>
+
 
 
             
@@ -2213,6 +2416,7 @@ This is a helper method to make it easier to add delays into a chain of commands
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -2230,38 +2434,33 @@ This is a helper method to make it easier to add delays into a chain of commands
 
             
 
-            <td class="description last">The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.</td>
+            <td class="description last"><p>The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#subscribe">Hub#subscribe</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#subscribe">Hub#subscribe</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -2271,39 +2470,54 @@ This is a helper method to make it easier to add delays into a chain of commands
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line130">line 130</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-130">line 130</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved upon successful issuance of command.
+    <p>Resolved upon successful issuance of command.</p>
 </div>
 
 
@@ -2317,44 +2531,42 @@ This is a helper method to make it easier to add delays into a chain of commands
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="unsubscribe"><span class="type-signature"></span>unsubscribe(port)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Unsubscribe to sensor notifications on a given port.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="unsubscribe"><span class="type-signature"></span>unsubscribe<span class="signature">(port)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Unsubscribe to sensor notifications on a given port.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2385,6 +2597,7 @@ This is a helper method to make it easier to add delays into a chain of commands
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -2399,31 +2612,26 @@ This is a helper method to make it easier to add delays into a chain of commands
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#unsubscribe">Hub#unsubscribe</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#unsubscribe">Hub#unsubscribe</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -2433,39 +2641,54 @@ This is a helper method to make it easier to add delays into a chain of commands
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line148">line 148</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-148">line 148</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved upon successful issuance of command.
+    <p>Resolved upon successful issuance of command.</p>
 </div>
 
 
@@ -2479,46 +2702,43 @@ This is a helper method to make it easier to add delays into a chain of commands
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
+
+        
+
     
-
-
-
-
+</dd>
 
         
             
+<hr>
+<dt>
+    <h4 class="name" id="wait"><span class="type-signature"></span>wait(commands)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Wait until a given list of concurrently running commands are complete.</p>
+<p>This is a helper method to make it easier to wait for concurrent commands to complete.</p>
+    </div>
+    
+
+    
 
     
 
     
-    <h4 class="name" id="wait"><span class="type-signature"></span>wait<span class="signature">(commands)</span><span class="type-signature"> &rarr; {Promise}</span></h4>
     
+        <h5>Parameters:</h5>
+        
 
-    
-
-
-
-<div class="description">
-    Wait until a given list of concurrently running commands are complete.
-
-This is a helper method to make it easier to wait for concurrent commands to complete.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
-    
-
-<table class="params">
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2549,6 +2769,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">Array.&lt;Promise.&lt;any>></span>
 
 
+
             
             </td>
 
@@ -2556,38 +2777,33 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
             
 
-            <td class="description last">Array of executing commands.</td>
+            <td class="description last"><p>Array of executing commands.</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#wait">Hub#wait</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#wait">Hub#wait</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -2597,39 +2813,54 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line175">line 175</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-175">line 175</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-<h5>Returns:</h5>
-
-        
+    
+    <h5>Returns:</h5>
+    
+            
 <div class="param-desc">
-    Resolved after the commands are finished.
+    <p>Resolved after the commands are finished.</p>
 </div>
 
 
@@ -2643,16 +2874,17 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">Promise</span>
 
 
+
     </dd>
 </dl>
 
-    
-
-
-
-
 
         
+
+    
+</dd>
+
+        </dl>
     
 
     
@@ -2660,35 +2892,32 @@ This is a helper method to make it easier to wait for concurrent commands to com
     
         <h3 class="subsection-title">Events</h3>
 
-        
+        <dl>
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:attach">attach</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits when a motor or sensor is attached to the Hub.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits when a motor or sensor is attached to the Hub.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2719,6 +2948,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -2742,6 +2972,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type"><a href="global.html#DeviceType">DeviceType</a></span>
 
 
+
             
             </td>
 
@@ -2756,31 +2987,26 @@ This is a helper method to make it easier to wait for concurrent commands to com
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#event:attach">Hub#event:attach</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#event:attach">Hub#event:attach</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -2790,68 +3016,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line231">line 231</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-231">line 231</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:button">button</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits when a button is pressed.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits when a button is pressed.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -2882,6 +3119,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -2905,6 +3143,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type"><a href="global.html#ButtonState">ButtonState</a></span>
 
 
+
             
             </td>
 
@@ -2919,12 +3158,17 @@ This is a helper method to make it easier to wait for concurrent commands to com
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -2934,82 +3178,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-173">line 173</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line173">line 173</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:color">color</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits when a color sensor is activated.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits when a color sensor is activated.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3040,6 +3281,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -3063,6 +3305,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type"><a href="global.html#Color">Color</a></span>
 
 
+
             
             </td>
 
@@ -3077,12 +3320,17 @@ This is a helper method to make it easier to wait for concurrent commands to com
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -3092,82 +3340,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-273">line 273</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line273">line 273</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:colorAndDistance">colorAndDistance</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>A combined color and distance event, emits when the sensor is activated.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    A combined color and distance event, emits when the sensor is activated.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3196,6 +3441,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
             
                 
 <span class="param-type">string</span>
+
 
 
             
@@ -3221,6 +3467,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type"><a href="global.html#Color">Color</a></span>
 
 
+
             
             </td>
 
@@ -3244,6 +3491,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -3251,19 +3499,24 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
             
 
-            <td class="description last">Distance, in millimeters.</td>
+            <td class="description last"><p>Distance, in millimeters.</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -3273,82 +3526,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-289">line 289</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line289">line 289</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:detach">detach</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits when an attached motor or sensor is detached from the Hub.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits when an attached motor or sensor is detached from the Hub.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3377,6 +3627,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
             
                 
 <span class="param-type">string</span>
+
 
 
             
@@ -3393,31 +3644,26 @@ This is a helper method to make it easier to wait for concurrent commands to com
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
-
     
 
-    
+	
 
-    
-    <dt class="inherited-from">Inherited From:</dt>
-    <dd class="inherited-from"><ul class="dummy"><li>
-        <a href="Hub.html#event:detach">Hub#event:detach</a>
-    </li></ul></dd>
-    
+	
 
-    
-
-    
-
-    
-
-    
+	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="Hub.html#event:detach">Hub#event:detach</a>
+			</li>
+		</ul>
+	</dd>
+	
 
     
 
@@ -3427,68 +3673,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="hub.js.html">hub.js</a>, <a href="hub.js.html#line243">line 243</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="hub.js.html">hub.js</a>,
+				 <a href="hub.js.html#sunlight-1-line-243">line 243</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:distance">distance</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits when a distance sensor is activated.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits when a distance sensor is activated.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3517,6 +3774,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
             
                 
 <span class="param-type">string</span>
+
 
 
             
@@ -3542,6 +3800,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -3549,19 +3808,24 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
             
 
-            <td class="description last">Distance, in millimeters.</td>
+            <td class="description last"><p>Distance, in millimeters.</p></td>
         </tr>
 
     
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -3571,82 +3835,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-263">line 263</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line263">line 263</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:rotate">rotate</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits when a rotation sensor is activated.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits when a rotation sensor is activated.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3675,6 +3936,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
             
                 
 <span class="param-type">string</span>
+
 
 
             
@@ -3700,6 +3962,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -3714,12 +3977,17 @@ This is a helper method to make it easier to wait for concurrent commands to com
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -3729,82 +3997,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-318">line 318</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line318">line 318</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:speed">speed</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits on a speed change.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits on a speed change.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3833,6 +4098,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
             
                 
 <span class="param-type">string</span>
+
 
 
             
@@ -3858,6 +4124,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -3872,12 +4139,17 @@ This is a helper method to make it easier to wait for concurrent commands to com
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -3887,82 +4159,79 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-366">line 366</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line366">line 366</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
-
-
-
-
-
-
-
-
-
+    
+</dd>
 
         
             
-
-    
-
-    
+<hr>
+<dt>
     <h4 class="name" id="event:tilt">tilt</h4>
     
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Emits when a tilt sensor is activated.</p>
+    </div>
+    
 
     
 
-
-
-<div class="description">
-    Emits when a tilt sensor is activated.
-</div>
-
-
-
-
-
-
-
-
-
-    <h5>Parameters:</h5>
     
 
-<table class="params">
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
     <thead>
     <tr>
         
@@ -3993,6 +4262,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">string</span>
 
 
+
             
             </td>
 
@@ -4000,7 +4270,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
             
 
-            <td class="description last">If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.</td>
+            <td class="description last"><p>If the event is fired from the Move Hub's in-built tilt sensor, the special port &quot;TILT&quot; is used.</p></td>
         </tr>
 
     
@@ -4014,6 +4284,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
             
                 
 <span class="param-type">number</span>
+
 
 
             
@@ -4039,6 +4310,7 @@ This is a helper method to make it easier to wait for concurrent commands to com
 <span class="param-type">number</span>
 
 
+
             
             </td>
 
@@ -4053,12 +4325,17 @@ This is a helper method to make it easier to wait for concurrent commands to com
     </tbody>
 </table>
 
+    
 
-
-
-
-
+    
 <dl class="details">
+    
+
+	
+
+	
+
+	
 
     
 
@@ -4068,54 +4345,54 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
     
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
+	
 
-    
 
-    
 
-    
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-306">line 306</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="lpf2hub.js.html">lpf2hub.js</a>, <a href="lpf2hub.js.html#line306">line 306</a>
-    </li></ul></dd>
-    
+	
 
-    
+	
 
-    
-
-    
+	
 </dl>
 
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
 
+    
+</dd>
 
-
-
-
-
-
-
-
-
-
-        
+        </dl>
     
 </article>
 
@@ -4124,19 +4401,136 @@ This is a helper method to make it easier to wait for concurrent commands to com
 
 
 
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
 </div>
 
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="Hub.html">Hub</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li></ul><h3>Events</h3><ul><li><a href="BoostMoveHub.html#event:attach">attach</a></li><li><a href="BoostMoveHub.html#event:button">button</a></li><li><a href="BoostMoveHub.html#event:color">color</a></li><li><a href="BoostMoveHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="BoostMoveHub.html#event:detach">detach</a></li><li><a href="BoostMoveHub.html#event:distance">distance</a></li><li><a href="BoostMoveHub.html#event:rotate">rotate</a></li><li><a href="BoostMoveHub.html#event:tilt">tilt</a></li><li><a href="DuploTrainBase.html#event:color">color</a></li><li><a href="DuploTrainBase.html#event:speed">speed</a></li><li><a href="Hub.html#event:attach">attach</a></li><li><a href="Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:attach">attach</a></li><li><a href="LPF2Hub.html#event:button">button</a></li><li><a href="LPF2Hub.html#event:color">color</a></li><li><a href="LPF2Hub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="LPF2Hub.html#event:detach">detach</a></li><li><a href="LPF2Hub.html#event:distance">distance</a></li><li><a href="LPF2Hub.html#event:rotate">rotate</a></li><li><a href="LPF2Hub.html#event:speed">speed</a></li><li><a href="LPF2Hub.html#event:tilt">tilt</a></li><li><a href="PoweredUP.html#event:discover">discover</a></li><li><a href="PUPHub.html#event:attach">attach</a></li><li><a href="PUPHub.html#event:button">button</a></li><li><a href="PUPHub.html#event:color">color</a></li><li><a href="PUPHub.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="PUPHub.html#event:detach">detach</a></li><li><a href="PUPHub.html#event:distance">distance</a></li><li><a href="PUPHub.html#event:tilt">tilt</a></li><li><a href="PUPRemote.html#event:button">button</a></li><li><a href="PUPRemote.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="WeDo2SmartHub.html#event:attach">attach</a></li><li><a href="WeDo2SmartHub.html#event:button">button</a></li><li><a href="WeDo2SmartHub.html#event:color">color</a></li><li><a href="WeDo2SmartHub.html#event:detach">detach</a></li><li><a href="WeDo2SmartHub.html#event:distance">distance</a></li><li><a href="WeDo2SmartHub.html#event:rotate">rotate</a></li><li><a href="WeDo2SmartHub.html#event:tilt">tilt</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
 
-<br class="clear">
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Fri Jan 18 2019 16:16:36 GMT-0800 (Pacific Standard Time)
+
+
+	<span class="copyright">
+	node-poweredup by Nathan Kellenicki licensed under the MIT license.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Fri Jan 18th 2019
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
 </footer>
 
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
 </body>
 </html>
