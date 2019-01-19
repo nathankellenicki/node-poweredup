@@ -63,7 +63,11 @@ In addition, the Hubs themselves have certain built-in features which this libra
 
 * Plugging two Boost Tacho Motors into the Powered UP Hub will crash the Hub (This requires a firmware update from LEGO to fix).
 
-### Usage
+### Documentation
+
+[Full documentation is available here.](https://nathankellenicki.github.io/node-poweredup/)
+
+### Sample Usage
 
 ```javascript
 const PoweredUP = require("node-poweredup");
