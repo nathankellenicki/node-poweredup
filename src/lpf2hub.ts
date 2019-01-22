@@ -126,6 +126,7 @@ export class LPF2Hub extends Hub {
         if (characteristic) {
             message = Buffer.concat([Buffer.alloc(2), message]);
             message[0] = message.length;
+            debug("Sent Message (LPF2_ALL)", message);
             characteristic.write(message, false, callback);
         }
     }
@@ -146,6 +147,8 @@ export class LPF2Hub extends Hub {
 
             const message = this._messageBuffer.slice(0, len);
             this._messageBuffer = this._messageBuffer.slice(len);
+
+            debug("Received Message (LPF2_ALL)", message);
 
             switch (message[2]) {
                 case 0x01: {

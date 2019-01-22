@@ -256,11 +256,11 @@ class WeDo2SmartHub extends hub_1.Hub {
     }
     /**
      * Fully (hard) stop the motor on a given port.
-     * @method WeDo2SmartHub#hardStopMotor
+     * @method WeDo2SmartHub#brakeMotor
      * @param {string} port
      * @returns {Promise} Resolved upon successful completion of command.
      */
-    hardStopMotor(port) {
+    brakeMotor(port) {
         return this.setMotorSpeed(port, 127);
     }
     /**
@@ -322,20 +322,25 @@ class WeDo2SmartHub extends hub_1.Hub {
     _writeMessage(uuid, message, callback) {
         const characteristic = this._getCharacteristic(uuid);
         if (characteristic) {
+            debug(`Sent Message (${uuid})`, message);
             characteristic.write(message, false, callback);
         }
     }
     _parseHighCurrentAlert(data) {
+        debug("Received Message (WEDO2_HIGH_CURRENT_ALERT)", data);
         // console.log(data);
     }
     _parseBatteryMessage(data) {
+        debug("Received Message (WEDO2_BATTERY)", data);
         this._batteryLevel = data[0];
     }
     _parseFirmwareRevisionString(data) {
+        debug("Received Message (WEDO2_FIRMWARE_REVISION)", data);
         const parts = data.toString().split(".");
         this._firmwareInfo = { major: parseInt(parts[0], 10), minor: parseInt(parts[1], 10), bugFix: parseInt(parts[2], 10), build: parseInt(parts[3], 10) };
     }
     _parsePortMessage(data) {
+        debug("Received Message (WEDO2_PORT_TYPE)", data);
         const port = this._getPortForPortNumber(data[0]);
         if (!port) {
             return;
@@ -344,6 +349,7 @@ class WeDo2SmartHub extends hub_1.Hub {
         this._registerDeviceAttachment(port, data[3]);
     }
     _parseSensorMessage(data) {
+        debug("Received Message (WEDO2_SENSOR_VALUE)", data);
         if (data[0] === 0x01) {
             /**
              * Emits when a button is pressed.

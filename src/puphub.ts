@@ -148,11 +148,11 @@ export class PUPHub extends LPF2Hub {
 
     /**
      * Fully (hard) stop the motor on a given port.
-     * @method PUPHub#hardStopMotor
+     * @method PUPHub#brakeMotor
      * @param {string} port
      * @returns {Promise} Resolved upon successful completion of command.
      */
-    public hardStopMotor (port: string) {
+    public brakeMotor (port: string) {
         return this.setMotorSpeed(port, 127);
     }
 
