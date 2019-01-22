@@ -104,13 +104,13 @@ export class Hub extends EventEmitter {
     }
 
 
-    /**
-     * @readonly
-     * @property {number} current Current usage of the hub (Amps)
-     */
-    public get current () {
-        return this._current;
-    }
+    // /**
+    //  * @readonly
+    //  * @property {number} current Current usage of the hub (Amps)
+    //  */
+    // public get current () {
+    //     return this._current;
+    // }
 
 
     /**

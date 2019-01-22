@@ -254,22 +254,22 @@ export class LPF2Hub extends Hub {
         if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
             data = this._padMessage(data, 6);
             const voltage = data.readUInt16LE(4) / 500;
-            this._voltage = Math.floor(voltage);
+            this._voltage = voltage;
             return;
         } else if (data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_REMOTE) { // Current (PUP Remote)
             data = this._padMessage(data, 6);
-            const current = data.readUInt16LE(4) / 1000;
+            const current = data.readUInt16LE(4);
             this._current = current;
             return;
         } else if (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Voltage (Non-PUP Remote)
             data = this._padMessage(data, 6);
             const voltage = data.readUInt16LE(4) / 400;
-            this._voltage = Math.floor(voltage);
+            this._voltage = voltage;
             return;
         } else if (data[3] === 0x3b && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
             data = this._padMessage(data, 6);
-            const current = data.readUInt16LE(4) / 4096;
-            this._current = current * 100;
+            const current = data.readUInt16LE(4) / 1000;
+            this._current = current;
             return;
         }
 

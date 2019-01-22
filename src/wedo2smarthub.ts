@@ -320,13 +320,11 @@ export class WeDo2SmartHub extends Hub {
         // Voltage
         if (data[1] === 0x03) {
             const voltage = data.readInt16LE(2);
-            this._voltage = voltage;
-            console.log("Voltage", voltage);
+            this._voltage = voltage / 40;
         // Current
         } else if (data[1] === 0x04) {
             const current = data.readInt16LE(2);
-            this._current = current;
-            console.log("Current", current);
+            this._current = current / 1000;
         }
 
         const port = this._getPortForPortNumber(data[1]);
