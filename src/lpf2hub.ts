@@ -42,6 +42,20 @@ export class LPF2Hub extends Hub {
 
 
     /**
+     * Shutdown the Hub.
+     * @method LPF2Hub#shutdown
+     * @returns {Promise} Resolved upon successful disconnect.
+     */
+    public shutdown () {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x02, 0x01]), () => {
+                return resolve();
+            });
+        });
+    }
+
+
+    /**
      * Set the name of the Hub.
      * @method LPF2Hub#setName
      * @param {string} name New name of the hub (14 characters or less, ASCII only).

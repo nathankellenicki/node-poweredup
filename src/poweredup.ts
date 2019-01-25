@@ -162,7 +162,6 @@ export class PoweredUP extends EventEmitter {
          */
         this.emit("discover", hub);
 
-}
-
+    }
 
 }
