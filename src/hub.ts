@@ -49,6 +49,7 @@ export class Hub extends EventEmitter {
         // NK: This hack allows LPF2.0 hubs to send a second advertisement packet consisting of the hub name before we try to read it
         setTimeout(() => {
             this._name = peripheral.advertisement.localName;
+            this.emit("ready");
         }, 200);
     }
 
