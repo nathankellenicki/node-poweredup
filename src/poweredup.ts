@@ -154,13 +154,16 @@ export class PoweredUP extends EventEmitter {
             }
         });
 
-        debug(`Hub ${hub.uuid} discovered`);
-        /**
-         * Emits when a Powered UP Hub device is found.
-         * @event PoweredUP#discover
-         * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
-         */
-        this.emit("discover", hub);
+        // NK: This hack allows LPF2.0 hubs to send a second advertisement packet consisting of the hub name before we try to read it
+        setTimeout(() => {
+            debug(`Hub ${hub.uuid} discovered`);
+            /**
+             * Emits when a Powered UP Hub device is found.
+             * @event PoweredUP#discover
+             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
+             */
+            this.emit("discover", hub);
+        }, 500);
 
     }
 

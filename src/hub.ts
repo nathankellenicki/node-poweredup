@@ -31,7 +31,7 @@ export class Hub extends EventEmitter {
     protected _ports: {[port: string]: Port} = {};
     protected _characteristics: {[uuid: string]: Characteristic} = {};
 
-    protected _name: string;
+    protected _name: string = "";
     protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
     protected _batteryLevel: number = 100;
     protected _voltage: number = 0;
@@ -46,7 +46,10 @@ export class Hub extends EventEmitter {
         this.autoSubscribe = !!autoSubscribe;
         this._peripheral = peripheral;
         this._uuid = peripheral.uuid;
-        this._name = peripheral.advertisement.localName;
+        // NK: This hack allows LPF2.0 hubs to send a second advertisement packet consisting of the hub name before we try to read it
+        setTimeout(() => {
+            this._name = peripheral.advertisement.localName;
+        }, 200);
     }
 
 
