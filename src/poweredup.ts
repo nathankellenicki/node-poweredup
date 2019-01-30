@@ -135,10 +135,10 @@ export class PoweredUP extends EventEmitter {
         }
 
         peripheral.removeAllListeners();
-        noble.stopScanning();
-        if (!isBrowserContext) {
-            startScanning();
-        }
+        // noble.stopScanning();
+        // if (!isBrowserContext) {
+        //     startScanning();
+        // }
 
         hub.on("discoverComplete", () => {
 

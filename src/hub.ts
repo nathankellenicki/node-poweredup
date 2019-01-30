@@ -50,7 +50,7 @@ export class Hub extends EventEmitter {
         setTimeout(() => {
             this._name = peripheral.advertisement.localName;
             this.emit("discoverComplete");
-        }, 500);
+        }, 1000);
     }
 
 
