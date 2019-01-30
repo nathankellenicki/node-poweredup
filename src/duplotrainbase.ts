@@ -6,7 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-const debug = Debug("duploTrainBase");
+const debug = Debug("duplotrainbase");
 
 
 /**

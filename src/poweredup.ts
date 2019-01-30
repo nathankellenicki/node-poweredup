@@ -14,7 +14,7 @@ import * as Consts from "./consts";
 import { EventEmitter } from "events";
 
 import Debug = require("debug");
-const debug = Debug("PoweredUP");
+const debug = Debug("poweredup");
 import noble = require("noble-mac");
 
 let ready = false;
