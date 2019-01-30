@@ -140,28 +140,31 @@ export class PoweredUP extends EventEmitter {
             startScanning();
         }
 
-        hub.on("connect", () => {
-            debug(`Hub ${hub.uuid} connected`);
-            this._connectedHubs[hub.uuid] = hub;
-        });
+        hub.on("discoverComplete", () => {
 
-        hub.on("disconnect", () => {
-            debug(`Hub ${hub.uuid} disconnected`);
-            delete this._connectedHubs[hub.uuid];
+            hub.on("connect", () => {
+                debug(`Hub ${hub.uuid} connected`);
+                this._connectedHubs[hub.uuid] = hub;
+            });
 
-            if (wantScan) {
-                startScanning();
-            }
-        });
+            hub.on("disconnect", () => {
+                debug(`Hub ${hub.uuid} disconnected`);
+                delete this._connectedHubs[hub.uuid];
 
-        hub.on("ready", () => {
+                if (wantScan) {
+                    startScanning();
+                }
+            });
+
             debug(`Hub ${hub.uuid} discovered`);
+
             /**
              * Emits when a Powered UP Hub device is found.
              * @event PoweredUP#discover
              * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
              */
             this.emit("discover", hub);
+
         });
 
     }

@@ -266,9 +266,23 @@ export class WeDo2SmartHub extends Hub {
     private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
         const characteristic = this._getCharacteristic(uuid);
         if (characteristic) {
-            debug(`Sent Message (${uuid})`, message);
+            if (debug.enabled) {
+                debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
+            }
             characteristic.write(message, false, callback);
         }
+    }
+
+
+    private _getCharacteristicNameFromUUID (uuid: string) {
+        const keys = Object.keys(Consts.BLECharacteristic);
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            if (Consts.BLECharacteristic[key as any] === uuid) {
+                return key;
+            }
+        }
+        return "UNKNOWN";
     }
 
 

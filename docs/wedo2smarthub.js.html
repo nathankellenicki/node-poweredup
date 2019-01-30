@@ -322,9 +322,21 @@ class WeDo2SmartHub extends hub_1.Hub {
     _writeMessage(uuid, message, callback) {
         const characteristic = this._getCharacteristic(uuid);
         if (characteristic) {
-            debug(`Sent Message (${uuid})`, message);
+            if (debug.enabled) {
+                debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
+            }
             characteristic.write(message, false, callback);
         }
+    }
+    _getCharacteristicNameFromUUID(uuid) {
+        const keys = Object.keys(Consts.BLECharacteristic);
+        for (let i = 0; i &lt; keys.length; i++) {
+            const key = keys[i];
+            if (Consts.BLECharacteristic[key] === uuid) {
+                return key;
+            }
+        }
+        return "UNKNOWN";
     }
     _parseHighCurrentAlert(data) {
         debug("Received Message (WEDO2_HIGH_CURRENT_ALERT)", data);
