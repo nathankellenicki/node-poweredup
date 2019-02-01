@@ -96,6 +96,16 @@ export class PoweredUP extends EventEmitter {
 
 
     /**
+     * Retrieve a list of Powered UP Hubs.
+     * @method PoweredUP#getConnectedHubs
+     * @returns {Hub[]}
+     */
+    public getConnectedHubs () {
+        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]);
+    }
+
+
+    /**
      * Retrieve a Powered UP Hub by UUID.
      * @method PoweredUP#getConnectedHubByUUID
      * @param {string} uuid
@@ -107,12 +117,13 @@ export class PoweredUP extends EventEmitter {
 
 
     /**
-     * Retrieve a list of Powered UP Hubs.
-     * @method PoweredUP#getConnectedHubs
-     * @returns {Hub[]}
+     * Retrieve a Powered UP Hub by name.
+     * @method PoweredUP#getConnectedHubsByName
+     * @param {string} name
+     * @returns {Hub | null}
      */
-    public getConnectedHubs () {
-        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]);
+    public getConnectedHubsByName (name: string) {
+        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]).filter((hub) => hub.name === name);
     }
 
 
