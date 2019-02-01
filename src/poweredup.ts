@@ -120,7 +120,7 @@ export class PoweredUP extends EventEmitter {
      * Retrieve a Powered UP Hub by name.
      * @method PoweredUP#getConnectedHubsByName
      * @param {string} name
-     * @returns {Hub | null}
+     * @returns {Hub[]}
      */
     public getConnectedHubsByName (name: string) {
         return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]).filter((hub) => hub.name === name);
