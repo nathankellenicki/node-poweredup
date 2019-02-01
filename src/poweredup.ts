@@ -117,7 +117,7 @@ export class PoweredUP extends EventEmitter {
 
 
     /**
-     * Retrieve a Powered UP Hub by name.
+     * Retrieve a list of Powered UP Hub by name.
      * @method PoweredUP#getConnectedHubsByName
      * @param {string} name
      * @returns {Hub[]}
