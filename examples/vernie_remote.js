@@ -20,7 +20,8 @@ poweredUP.on("discover", async (hub) => { // Wait to discover Vernie and Remote
 
         vernie = hub;
         await vernie.connect();
-        console.log("Connected to Vernie!");
+        vernie.setLEDColor(PoweredUP.Consts.Color.BLUE);
+        console.log(`Connected to Vernie (${vernie.name})!`);
 
     } else if (hub instanceof PoweredUP.PUPRemote) {
         remote = hub;
@@ -63,12 +64,11 @@ poweredUP.on("discover", async (hub) => { // Wait to discover Vernie and Remote
         })
 
         await remote.connect();
-        console.log("Connected to Powered UP Remote!");
+        remote.setLEDColor(PoweredUP.Consts.Color.BLUE);
+        console.log(`Connected to Powered UP Remote (${remote.name})!`);
     }
 
     if (vernie && remote) {
-        vernie.setLEDColor(PoweredUP.Consts.Color.BLUE);
-        remote.setLEDColor(PoweredUP.Consts.Color.BLUE);
         console.log("You're now ready to go!");
     }
     
