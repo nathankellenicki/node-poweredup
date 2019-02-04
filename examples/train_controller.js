@@ -117,7 +117,7 @@ poweredUP.on("discover", async (hub) => {
                 hub.setLEDColor(train.color);
                 console.log(`Connected to ${train.name} (${hub.name})`);
                 hub.on("attach", (port, type) => {
-                    if (type === PoweredUP.Consts.Devices.LED_LIGHTS && trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
+                    if (type === PoweredUP.Consts.DeviceType.LED_LIGHTS && trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
                         hub.setLightBrightness(port, 100);
                     }
                 });
