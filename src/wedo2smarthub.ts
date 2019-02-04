@@ -112,6 +112,20 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
+     * Shutdown the Hub.
+     * @method WeDo2SmartHub#shutdown
+     * @returns {Promise} Resolved upon successful disconnect.
+     */
+    public shutdown () {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(Consts.BLECharacteristic.WEDO2_DISCONNECT, Buffer.from([0x00]), () => {
+                return resolve();
+            });
+        });
+    }
+
+
+    /**
      * Set the color of the LED on the Hub via RGB values.
      * @method WeDo2SmartHub#setLEDRGB
      * @param {number} red

@@ -142,7 +142,8 @@ export enum BLECharacteristic {
     WEDO2_PORT_TYPE = "00001527-1212-efde-1523-785feabcd123", // "1527" // Handles plugging and unplugging of devices on WeDo 2.0 Smart Hub
     WEDO2_LOW_VOLTAGE_ALERT = "00001528-1212-efde-1523-785feabcd123", // "1528"
     WEDO2_HIGH_CURRENT_ALERT = "00001529-1212-efde-1523-785feabcd123", // "1529"
-    WEDO2_LOW_SIGNAL_ALERT = "0000152a-1212-efde-1523-785feabcd123", // "152a"
+    WEDO2_LOW_SIGNAL_ALERT = "0000152a-1212-efde-1523-785feabcd123", // "152a",
+    WEDO2_DISCONNECT = "0000152b-1212-efde-1523-785feabcd123", // "152b"
     WEDO2_SENSOR_VALUE = "00001560-1212-efde-1523-785feabcd123", // "1560"
     WEDO2_VALUE_FORMAT = "00001561-1212-efde-1523-785feabcd123", // "1561"
     WEDO2_PORT_TYPE_WRITE = "00001563-1212-efde-1523-785feabcd123", // "1563"
