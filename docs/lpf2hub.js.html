@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: lpf2hub.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="Hub.html">Hub</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="BoostMoveHub.html#event:attach">BoostMoveHub#event:attach</a></li><li><a href="BoostMoveHub.html#event:button">BoostMoveHub#event:button</a></li><li><a href="BoostMoveHub.html#event:color">BoostMoveHub#event:color</a></li><li><a href="BoostMoveHub.html#event:colorAndDistance">BoostMoveHub#event:colorAndDistance</a></li><li><a href="BoostMoveHub.html#event:detach">BoostMoveHub#event:detach</a></li><li><a href="BoostMoveHub.html#event:distance">BoostMoveHub#event:distance</a></li><li><a href="BoostMoveHub.html#event:rotate">BoostMoveHub#event:rotate</a></li><li><a href="BoostMoveHub.html#event:tilt">BoostMoveHub#event:tilt</a></li><li><a href="DuploTrainBase.html#event:color">DuploTrainBase#event:color</a></li><li><a href="DuploTrainBase.html#event:speed">DuploTrainBase#event:speed</a></li><li><a href="Hub.html#event:attach">Hub#event:attach</a></li><li><a href="Hub.html#event:detach">Hub#event:detach</a></li><li><a href="LPF2Hub.html#event:attach">LPF2Hub#event:attach</a></li><li><a href="LPF2Hub.html#event:button">LPF2Hub#event:button</a></li><li><a href="LPF2Hub.html#event:color">LPF2Hub#event:color</a></li><li><a href="LPF2Hub.html#event:colorAndDistance">LPF2Hub#event:colorAndDistance</a></li><li><a href="LPF2Hub.html#event:detach">LPF2Hub#event:detach</a></li><li><a href="LPF2Hub.html#event:distance">LPF2Hub#event:distance</a></li><li><a href="LPF2Hub.html#event:rotate">LPF2Hub#event:rotate</a></li><li><a href="LPF2Hub.html#event:speed">LPF2Hub#event:speed</a></li><li><a href="LPF2Hub.html#event:tilt">LPF2Hub#event:tilt</a></li><li><a href="PoweredUP.html#event:discover">PoweredUP#event:discover</a></li><li><a href="PUPHub.html#event:attach">PUPHub#event:attach</a></li><li><a href="PUPHub.html#event:button">PUPHub#event:button</a></li><li><a href="PUPHub.html#event:color">PUPHub#event:color</a></li><li><a href="PUPHub.html#event:colorAndDistance">PUPHub#event:colorAndDistance</a></li><li><a href="PUPHub.html#event:detach">PUPHub#event:detach</a></li><li><a href="PUPHub.html#event:distance">PUPHub#event:distance</a></li><li><a href="PUPHub.html#event:tilt">PUPHub#event:tilt</a></li><li><a href="PUPRemote.html#event:button">PUPRemote#event:button</a></li><li><a href="PUPRemote.html#event:colorAndDistance">PUPRemote#event:colorAndDistance</a></li><li><a href="WeDo2SmartHub.html#event:attach">WeDo2SmartHub#event:attach</a></li><li><a href="WeDo2SmartHub.html#event:button">WeDo2SmartHub#event:button</a></li><li><a href="WeDo2SmartHub.html#event:color">WeDo2SmartHub#event:color</a></li><li><a href="WeDo2SmartHub.html#event:detach">WeDo2SmartHub#event:detach</a></li><li><a href="WeDo2SmartHub.html#event:distance">WeDo2SmartHub#event:distance</a></li><li><a href="WeDo2SmartHub.html#event:rotate">WeDo2SmartHub#event:rotate</a></li><li><a href="WeDo2SmartHub.html#event:tilt">WeDo2SmartHub#event:tilt</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html">Global</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: lpf2hub.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">"use strict";
+var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
+    if (mod &amp;&amp; mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const hub_1 = require("./hub");
+const Consts = __importStar(require("./consts"));
+const Debug = require("debug");
+const debug = Debug("lpf2hub");
+/**
+ * @class LPF2Hub
+ * @extends Hub
+ */
+class LPF2Hub extends hub_1.Hub {
+    constructor() {
+        super(...arguments);
+        this._lastTiltX = 0;
+        this._lastTiltY = 0;
+        this._messageBuffer = Buffer.alloc(0);
+    }
+    connect() {
+        return new Promise(async (resolve, reject) => {
+            await super.connect();
+            const characteristic = this._getCharacteristic(Consts.BLECharacteristic.LPF2_ALL);
+            this._subscribeToCharacteristic(characteristic, this._parseMessage.bind(this));
+            setTimeout(() => {
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+                if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
+                }
+            }, 1000);
+            return resolve();
+        });
+    }
+    /**
+     * Shutdown the Hub.
+     * @method LPF2Hub#shutdown
+     * @returns {Promise} Resolved upon successful disconnect.
+     */
+    shutdown() {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x02, 0x01]), () => {
+                return resolve();
+            });
+        });
+    }
+    /**
+     * Set the name of the Hub.
+     * @method LPF2Hub#setName
+     * @param {string} name New name of the hub (14 characters or less, ASCII only).
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    setName(name) {
+        if (name.length > 14) {
+            throw new Error("Name must be 14 characters or less");
+        }
+        return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x01, 0x01, 0x01]);
+            data = Buffer.concat([data, Buffer.from(name, "ascii")]);
+            // Send this twice, as sometimes the first time doesn't take
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this._name = name;
+            return resolve();
+        });
+    }
+    /**
+     * Set the color of the LED on the Hub via a color value.
+     * @method LPF2Hub#setLEDColor
+     * @param {Color} color
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    setLEDColor(color) {
+        return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x41, 0x32, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            if (color === false) {
+                color = 0;
+            }
+            data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            return resolve();
+        });
+    }
+    /**
+     * Set the color of the LED on the Hub via RGB values.
+     * @method LPF2Hub#setLEDRGB
+     * @param {number} red
+     * @param {number} green
+     * @param {number} blue
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    setLEDRGB(red, green, blue) {
+        return new Promise((resolve, reject) => {
+            let data = Buffer.from([0x41, 0x32, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x01, red, green, blue]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            return resolve();
+        });
+    }
+    sendRaw(message) {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, message, () => {
+                return resolve();
+            });
+        });
+    }
+    _activatePortDevice(port, type, mode, format, callback) {
+        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), callback);
+    }
+    _deactivatePortDevice(port, type, mode, format, callback) {
+        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), callback);
+    }
+    _writeMessage(uuid, message, callback) {
+        const characteristic = this._getCharacteristic(uuid);
+        if (characteristic) {
+            message = Buffer.concat([Buffer.alloc(2), message]);
+            message[0] = message.length;
+            debug("Sent Message (LPF2_ALL)", message);
+            characteristic.write(message, false, callback);
+        }
+    }
+    _parseMessage(data) {
+        if (data) {
+            this._messageBuffer = Buffer.concat([this._messageBuffer, data]);
+        }
+        if (this._messageBuffer.length &lt;= 0) {
+            return;
+        }
+        const len = this._messageBuffer[0];
+        if (len >= this._messageBuffer.length) {
+            const message = this._messageBuffer.slice(0, len);
+            this._messageBuffer = this._messageBuffer.slice(len);
+            debug("Received Message (LPF2_ALL)", message);
+            switch (message[2]) {
+                case 0x01: {
+                    this._parseDeviceInfo(message);
+                    break;
+                }
+                case 0x04: {
+                    this._parsePortMessage(message);
+                    break;
+                }
+                case 0x45: {
+                    this._parseSensorMessage(message);
+                    break;
+                }
+                case 0x82: {
+                    this._parsePortAction(message);
+                    break;
+                }
+            }
+            if (this._messageBuffer.length > 0) {
+                this._parseMessage();
+            }
+        }
+    }
+    _parseDeviceInfo(data) {
+        // Button press reports
+        if (data[3] === 0x02) {
+            if (data[5] === 1) {
+                /**
+                 * Emits when a button is pressed.
+                 * @event LPF2Hub#button
+                 * @param {string} button
+                 * @param {ButtonState} state
+                 */
+                this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
+                return;
+            }
+            else if (data[5] === 0) {
+                this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
+                return;
+            }
+            // Firmware version
+        }
+        else if (data[3] === 0x03) {
+            const build = data.readUInt16LE(5);
+            const bugFix = data.readUInt8(7);
+            const major = data.readUInt8(8) >>> 4;
+            const minor = data.readUInt8(8) &amp; 0xf;
+            this._firmwareInfo = { major, minor, bugFix, build };
+            // Battery level reports
+        }
+        else if (data[3] === 0x06) {
+            this._batteryLevel = data[5];
+        }
+    }
+    _parsePortMessage(data) {
+        const port = this._getPortForPortNumber(data[3]);
+        if (!port) {
+            return;
+        }
+        port.connected = (data[4] === 1 || data[4] === 2) ? true : false;
+        this._registerDeviceAttachment(port, data[5]);
+    }
+    _parsePortAction(data) {
+        const port = this._getPortForPortNumber(data[3]);
+        if (!port) {
+            return;
+        }
+        if (data[4] === 0x0a) {
+            port.busy = false;
+            if (port.finished) {
+                port.finished();
+                port.finished = null;
+            }
+        }
+    }
+    _padMessage(data, len) {
+        if (data.length &lt; len) {
+            data = Buffer.concat([data, Buffer.alloc(len - data.length)]);
+        }
+        return data;
+    }
+    _parseSensorMessage(data) {
+        if ((data[3] === 0x3b &amp;&amp; this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
+            data = this._padMessage(data, 6);
+            const voltage = data.readUInt16LE(4) / 500;
+            this._voltage = voltage;
+            return;
+        }
+        else if (data[3] === 0x3c &amp;&amp; this.type === Consts.HubType.POWERED_UP_REMOTE) { // Current (PUP Remote)
+            data = this._padMessage(data, 6);
+            const current = data.readUInt16LE(4);
+            this._current = current;
+            return;
+        }
+        else if (data[3] === 0x3c &amp;&amp; this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Voltage (Non-PUP Remote)
+            data = this._padMessage(data, 6);
+            const voltage = data.readUInt16LE(4) / 400;
+            this._voltage = voltage;
+            return;
+        }
+        else if (data[3] === 0x3b &amp;&amp; this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
+            data = this._padMessage(data, 6);
+            const current = data.readUInt16LE(4) / 1000;
+            this._current = current;
+            return;
+        }
+        const port = this._getPortForPortNumber(data[3]);
+        if (!port) {
+            return;
+        }
+        if (port &amp;&amp; port.connected) {
+            switch (port.type) {
+                case Consts.DeviceType.WEDO2_DISTANCE: {
+                    let distance = data[4];
+                    if (data[5] === 1) {
+                        distance = data[4] + 255;
+                    }
+                    /**
+                     * Emits when a distance sensor is activated.
+                     * @event LPF2Hub#distance
+                     * @param {string} port
+                     * @param {number} distance Distance, in millimeters.
+                     */
+                    this.emit("distance", port.id, distance * 10);
+                    break;
+                }
+                case Consts.DeviceType.BOOST_DISTANCE: {
+                    /**
+                     * Emits when a color sensor is activated.
+                     * @event LPF2Hub#color
+                     * @param {string} port
+                     * @param {Color} color
+                     */
+                    if (data[4] &lt;= 10) {
+                        this.emit("color", port.id, data[4]);
+                    }
+                    let distance = data[5];
+                    const partial = data[7];
+                    if (partial > 0) {
+                        distance += 1.0 / partial;
+                    }
+                    distance = Math.floor(distance * 25.4) - 20;
+                    this.emit("distance", port.id, distance);
+                    /**
+                     * A combined color and distance event, emits when the sensor is activated.
+                     * @event LPF2Hub#colorAndDistance
+                     * @param {string} port
+                     * @param {Color} color
+                     * @param {number} distance Distance, in millimeters.
+                     */
+                    if (data[4] &lt;= 10) {
+                        this.emit("colorAndDistance", port.id, data[4], distance);
+                    }
+                    break;
+                }
+                case Consts.DeviceType.WEDO2_TILT: {
+                    const tiltX = data[4] > 160 ? data[4] - 255 : data[4] - (data[4] * 2);
+                    const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    this._lastTiltX = tiltX;
+                    this._lastTiltY = tiltY;
+                    /**
+                     * Emits when a tilt sensor is activated.
+                     * @event LPF2Hub#tilt
+                     * @param {string} port If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.
+                     * @param {number} x
+                     * @param {number} y
+                     */
+                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
+                    break;
+                }
+                case Consts.DeviceType.BOOST_TACHO_MOTOR: {
+                    const rotation = data.readInt32LE(4);
+                    /**
+                     * Emits when a rotation sensor is activated.
+                     * @event LPF2Hub#rotate
+                     * @param {string} port
+                     * @param {number} rotation
+                     */
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR: {
+                    const rotation = data.readInt32LE(4);
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.DeviceType.BOOST_TILT: {
+                    const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
+                    const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    this.emit("tilt", port.id, tiltX, tiltY);
+                    break;
+                }
+                case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON: {
+                    switch (data[4]) {
+                        case 0x01: {
+                            this.emit("button", port.id, Consts.ButtonState.UP);
+                            break;
+                        }
+                        case 0xff: {
+                            this.emit("button", port.id, Consts.ButtonState.DOWN);
+                            break;
+                        }
+                        case 0x7f: {
+                            this.emit("button", port.id, Consts.ButtonState.STOP);
+                            break;
+                        }
+                        case 0x00: {
+                            this.emit("button", port.id, Consts.ButtonState.RELEASED);
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
+                    if (data[4] &lt;= 10) {
+                        this.emit("color", port.id, data[4]);
+                    }
+                    break;
+                }
+                case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER: {
+                    /**
+                     * Emits on a speed change.
+                     * @event LPF2Hub#speed
+                     * @param {string} port
+                     * @param {number} speed
+                     */
+                    const speed = data.readInt16LE(4);
+                    this.emit("speed", port.id, speed);
+                    break;
+                }
+            }
+        }
+    }
+}
+exports.LPF2Hub = LPF2Hub;
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	node-poweredup by Nathan Kellenicki licensed under the MIT license.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Mon Feb 4th 2019
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

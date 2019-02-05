@@ -30,26 +30,26 @@ poweredUP.on("discover", async (hub) => { // Wait to Batmobile and Remote
         remote.on("button", async (button, state) => {
             if (batmobile) {
                 switch (state) {
-                    case PoweredUP.Consts.ButtonStates.UP: // If up is pressed, move the wheels forward
+                    case PoweredUP.Consts.ButtonState.UP: // If up is pressed, move the wheels forward
                     {
                         lastButton = state;
                         batmobile.setMotorSpeed(button === "LEFT" ? "B" : "A", button === "LEFT" ? -100 : 100);
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.DOWN: // If down is pressed, move the wheels backwards
+                    case PoweredUP.Consts.ButtonState.DOWN: // If down is pressed, move the wheels backwards
                     {
                         lastButton = state;
                         batmobile.setMotorSpeed(button === "LEFT" ? "B" : "A", button === "LEFT" ? 100 : -100);
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.RELEASED: // Stop the wheels when the button is released
+                    case PoweredUP.Consts.ButtonState.RELEASED: // Stop the wheels when the button is released
                     {
-                        if (lastButton === PoweredUP.Consts.ButtonStates.UP || lastButton === PoweredUP.Consts.ButtonStates.DOWN) {
+                        if (lastButton === PoweredUP.Consts.ButtonState.UP || lastButton === PoweredUP.Consts.ButtonState.DOWN) {
                             batmobile.setMotorSpeed(button === "LEFT" ? "B" : "A", 0);
                         }
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.STOP: // When left red button is pressed, do a retreat. When right red button is pressed, scan the area.
+                    case PoweredUP.Consts.ButtonState.STOP: // When left red button is pressed, do a retreat. When right red button is pressed, scan the area.
                     {
                         lastButton = state;
                         if (button === "LEFT") {
@@ -66,7 +66,7 @@ poweredUP.on("discover", async (hub) => { // Wait to Batmobile and Remote
                         }
                         break;
                     }
-                    case PoweredUP.Consts.ButtonStates.PRESSED: // Do a wheelie when the green button is pressed
+                    case PoweredUP.Consts.ButtonState.PRESSED: // Do a wheelie when the green button is pressed
                     {
                         lastButton = state;
                         if (button === "GREEN") {
@@ -85,8 +85,8 @@ poweredUP.on("discover", async (hub) => { // Wait to Batmobile and Remote
     }
 
     if (batmobile && remote) {
-        batmobile.setLEDColor(PoweredUP.Consts.Colors.WHITE);
-        remote.setLEDColor(PoweredUP.Consts.Colors.RED);
+        batmobile.setLEDColor(PoweredUP.Consts.Color.WHITE);
+        remote.setLEDColor(PoweredUP.Consts.Color.RED);
         console.log("You're now ready to go!");
     }
     

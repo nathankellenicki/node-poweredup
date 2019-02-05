@@ -57,6 +57,13 @@ export class WeDo2SmartHub extends Hub {
             this._getCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY).read((err, data) => {
                 this._parseBatteryMessage(data);
             });
+            this._getCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION).read((err, data) => {
+                this._parseFirmwareRevisionString(data);
+            });
+            setTimeout(() => {
+                this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
+                this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
+            }, 1000);
             debug("Connect completed");
             return resolve();
         });
@@ -100,6 +107,20 @@ export class WeDo2SmartHub extends Hub {
             data = Buffer.from([0x06, 0x04, 0x01, color]);
             this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
             return resolve();
+        });
+    }
+
+
+    /**
+     * Shutdown the Hub.
+     * @method WeDo2SmartHub#shutdown
+     * @returns {Promise} Resolved upon successful disconnect.
+     */
+    public shutdown () {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(Consts.BLECharacteristic.WEDO2_DISCONNECT, Buffer.from([0x00]), () => {
+                return resolve();
+            });
         });
     }
 
@@ -181,6 +202,17 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
+     * Fully (hard) stop the motor on a given port.
+     * @method WeDo2SmartHub#brakeMotor
+     * @param {string} port
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public brakeMotor (port: string) {
+        return this.setMotorSpeed(port, 127);
+    }
+
+
+    /**
      * Play a tone on the Hub's in-built buzzer
      * @method WeDo2SmartHub#playTone
      * @param {number} frequency
@@ -226,6 +258,15 @@ export class WeDo2SmartHub extends Hub {
     }
 
 
+    public sendRaw (message: Buffer, characteristic: string = Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE) {
+        return new Promise((resolve, reject) => {
+            this._writeMessage(characteristic, message, () => {
+                return resolve();
+            });
+        });
+    }
+
+
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
             this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
     }
@@ -239,22 +280,48 @@ export class WeDo2SmartHub extends Hub {
     private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
         const characteristic = this._getCharacteristic(uuid);
         if (characteristic) {
+            if (debug.enabled) {
+                debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
+            }
             characteristic.write(message, false, callback);
         }
     }
 
 
+    private _getCharacteristicNameFromUUID (uuid: string) {
+        const keys = Object.keys(Consts.BLECharacteristic);
+        for (let i = 0; i < keys.length; i++) {
+            const key = keys[i];
+            if (Consts.BLECharacteristic[key as any] === uuid) {
+                return key;
+            }
+        }
+        return "UNKNOWN";
+    }
+
+
     private _parseHighCurrentAlert (data: Buffer) {
+        debug("Received Message (WEDO2_HIGH_CURRENT_ALERT)", data);
         // console.log(data);
     }
 
 
     private _parseBatteryMessage (data: Buffer) {
+        debug("Received Message (WEDO2_BATTERY)", data);
         this._batteryLevel = data[0];
     }
 
 
+    private _parseFirmwareRevisionString (data: Buffer) {
+        debug("Received Message (WEDO2_FIRMWARE_REVISION)", data);
+        const parts = data.toString().split(".");
+        this._firmwareInfo = { major: parseInt(parts[0], 10), minor: parseInt(parts[1], 10), bugFix: parseInt(parts[2], 10), build: parseInt(parts[3], 10) };
+    }
+
+
     private _parsePortMessage (data: Buffer) {
+
+        debug("Received Message (WEDO2_PORT_TYPE)", data);
 
         const port = this._getPortForPortNumber(data[0]);
 
@@ -270,6 +337,7 @@ export class WeDo2SmartHub extends Hub {
 
     private _parseSensorMessage (data: Buffer) {
 
+        debug("Received Message (WEDO2_SENSOR_VALUE)", data);
 
         if (data[0] === 0x01) {
             /**
@@ -285,6 +353,16 @@ export class WeDo2SmartHub extends Hub {
             return;
         }
 
+        // Voltage
+        if (data[1] === 0x03) {
+            const voltage = data.readInt16LE(2);
+            this._voltage = voltage / 40;
+        // Current
+        } else if (data[1] === 0x04) {
+            const current = data.readInt16LE(2);
+            this._current = current / 1000;
+        }
+
         const port = this._getPortForPortNumber(data[1]);
 
         if (!port) {
@@ -293,8 +371,7 @@ export class WeDo2SmartHub extends Hub {
 
         if (port && port.connected) {
             switch (port.type) {
-                case Consts.DeviceType.WEDO2_DISTANCE:
-                {
+                case Consts.DeviceType.WEDO2_DISTANCE: {
                     let distance = data[2];
                     if (data[3] === 1) {
                         distance = data[2] + 255;
@@ -308,8 +385,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("distance", port.id, distance * 10);
                     break;
                 }
-                case Consts.DeviceType.BOOST_DISTANCE:
-                {
+                case Consts.DeviceType.BOOST_DISTANCE: {
                     const distance = data[2];
                     /**
                      * Emits when a color sensor is activated.
@@ -320,8 +396,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("color", port.id, distance);
                     break;
                 }
-                case Consts.DeviceType.WEDO2_TILT:
-                {
+                case Consts.DeviceType.WEDO2_TILT: {
                     this._lastTiltX = data[2];
                     if (this._lastTiltX > 100) {
                         this._lastTiltX = -(255 - this._lastTiltX);
@@ -340,8 +415,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
                     break;
                 }
-                case Consts.DeviceType.BOOST_TACHO_MOTOR:
-                {
+                case Consts.DeviceType.BOOST_TACHO_MOTOR: {
                     const rotation = data.readInt32LE(2);
                     /**
                      * Emits when a rotation sensor is activated.

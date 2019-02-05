@@ -6,7 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-const debug = Debug("duploTrainBase");
+const debug = Debug("duplotrainbase");
 
 
 /**
@@ -22,6 +22,11 @@ export class DuploTrainBase extends LPF2Hub {
 
     /**
      * @event DuploTrainBase#distance
+     * @ignore
+     */
+
+    /**
+     * @event DuploTrainBase#colorAndDistance
      * @ignore
      */
 
@@ -136,21 +141,6 @@ export class DuploTrainBase extends LPF2Hub {
 
 
     /**
-     * Play a built-in train sound.
-     * @method DuploTrainBase#playSound
-     * @param {DuploTrainBaseSound} sound
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public playSound (sound: number) {
-        return new Promise((resolve, reject) => {
-            const data = Buffer.from([0x81, 0x01, 0x11, 0x51, 0x01, sound]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
-            return resolve();
-        });
-    }
-
-
-    /**
      * Ramp the motor speed on a given port.
      * @method DuploTrainBase#rampMotorSpeed
      * @param {string} port
@@ -168,6 +158,32 @@ export class DuploTrainBase extends LPF2Hub {
                 this.setMotorSpeed(port, speed, true);
             })
             .on("finished", resolve);
+        });
+    }
+
+
+    /**
+     * Fully (hard) stop the motor on a given port.
+     * @method DuploTrainBase#brakeMotor
+     * @param {string} port
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public brakeMotor (port: string) {
+        return this.setMotorSpeed(port, 127);
+    }
+
+
+    /**
+     * Play a built-in train sound.
+     * @method DuploTrainBase#playSound
+     * @param {DuploTrainBaseSound} sound
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
+    public playSound (sound: number) {
+        return new Promise((resolve, reject) => {
+            const data = Buffer.from([0x81, 0x01, 0x11, 0x51, 0x01, sound]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            return resolve();
         });
     }
 

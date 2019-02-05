@@ -9,9 +9,16 @@ import Debug = require("debug");
 const debug = Debug("hub");
 
 
+export interface IFirmwareInfo {
+    major: number;
+    minor: number;
+    bugFix: number;
+    build: number;
+}
+
+
 /**
  * @class Hub
- * @ignore
  * @extends EventEmitter
  */
 export class Hub extends EventEmitter {
@@ -24,19 +31,29 @@ export class Hub extends EventEmitter {
     protected _ports: {[port: string]: Port} = {};
     protected _characteristics: {[uuid: string]: Characteristic} = {};
 
-    protected _name: string;
+    protected _name: string = "";
+    protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
     protected _batteryLevel: number = 100;
+    protected _voltage: number = 0;
+    protected _current: number = 0;
 
     private _peripheral: Peripheral;
     private _uuid: string;
     private _rssi: number = -100;
+
+    private _isConnecting = false;
+    private _isConnected = false;
 
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super();
         this.autoSubscribe = !!autoSubscribe;
         this._peripheral = peripheral;
         this._uuid = peripheral.uuid;
-        this._name = peripheral.advertisement.localName;
+        // NK: This hack allows LPF2.0 hubs to send a second advertisement packet consisting of the hub name before we try to read it
+        setTimeout(() => {
+            this._name = peripheral.advertisement.localName;
+            this.emit("discoverComplete");
+        }, 1000);
     }
 
 
@@ -46,6 +63,15 @@ export class Hub extends EventEmitter {
      */
     public get name () {
         return this._name;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} firmwareVersion Firmware version of the hub
+     */
+    public get firmwareVersion () {
+        return `${this._firmwareInfo.major}.${this._firmwareInfo.minor}.${this._lpad(this._firmwareInfo.bugFix.toString(), 2)}.${this._lpad(this._firmwareInfo.build.toString(), 4)}`;
     }
 
 
@@ -77,6 +103,24 @@ export class Hub extends EventEmitter {
 
 
     /**
+     * @readonly
+     * @property {number} voltage Voltage of the hub (Volts)
+     */
+    public get voltage () {
+        return this._voltage;
+    }
+
+
+    // /**
+    //  * @readonly
+    //  * @property {number} current Current usage of the hub (Amps)
+    //  */
+    // public get current () {
+    //     return this._current;
+    // }
+
+
+    /**
      * Connect to the Hub.
      * @method Hub#connect
      * @returns {Promise} Resolved upon successful connect.
@@ -86,6 +130,13 @@ export class Hub extends EventEmitter {
 
             const self = this;
 
+            if (this._isConnecting) {
+                return connectReject("Already connecting");
+            } else if (this._isConnected) {
+                return connectReject("Already connected");
+            }
+
+            this._isConnecting = true;
             this._peripheral.connect((err: string) => {
 
                 this._rssi = this._peripheral.rssi;
@@ -101,6 +152,8 @@ export class Hub extends EventEmitter {
 
                 self._peripheral.on("disconnect", () => {
                     clearInterval(rssiUpdateInterval);
+                    this._isConnecting = false;
+                    this._isConnected = false;
                     this.emit("disconnect");
                 });
 
@@ -126,6 +179,8 @@ export class Hub extends EventEmitter {
 
                     Promise.all(servicePromises).then(() => {
                         debug("Service/characteristic discovery finished");
+                        this._isConnecting = false;
+                        this._isConnected = true;
                         this.emit("connect");
                         return connectResolve();
                     });
@@ -313,21 +368,18 @@ export class Hub extends EventEmitter {
         if (!this.useSpeedMap) {
             return speed;
         }
-        if (speed > 0) {
-            if (speed > 100) {
-                speed = 100;
-            }
-            return speed;
-            // return Math.round((speed - 1) * (97 - 15) / (100 - 1) + 15); // Forward, minimum speed is 15, maximum speed is 97
-        } else if (speed < 0) {
-            if (speed < -100) {
-                speed = -100;
-            }
-            return speed;
-            // return Math.round((speed - -100) * (240 - 158) / (-1 - -100) + 158); // In reverse, minimum speed is 240, maximum speed is 158
-        } else {
-            return 0;
+
+        if (speed === 127) {
+            return 127; // Hard stop
         }
+
+        if (speed > 100) {
+            speed = 100;
+        } else if (speed < -100) {
+            speed = -100;
+        }
+
+        return speed;
     }
 
 
@@ -359,7 +411,7 @@ export class Hub extends EventEmitter {
         }, delay);
         port.setEventTimer(interval);
         return emitter;
-}
+    }
 
 
     protected _portLookup (port: string) {
@@ -367,6 +419,14 @@ export class Hub extends EventEmitter {
             throw new Error(`Port ${port.toUpperCase()} does not exist on this Hub type`);
         }
         return this._ports[port];
+    }
+
+
+    protected _lpad (str: string, length: number) {
+        while (str.length < length) {
+            str = "0" + str;
+        }
+        return str;
     }
 
 

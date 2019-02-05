@@ -5,7 +5,7 @@ const poweredUP = new PoweredUP.PoweredUP()
 const trains = [
     {
         name: "Maersk Intermodal",
-        color: PoweredUP.Consts.Colors.LIGHT_BLUE,
+        color: PoweredUP.Consts.Color.LIGHT_BLUE,
         hubs: [
             {
                 name: "NK_Maersk",
@@ -15,7 +15,7 @@ const trains = [
     },
     {
         name: "Horizon Express",
-        color: PoweredUP.Consts.Colors.ORANGE,
+        color: PoweredUP.Consts.Color.ORANGE,
         hubs: [
             {
                 name: "NK_Horizon_1",
@@ -32,7 +32,7 @@ const trains = [
     },
     {
         name: "Emerald Night",
-        color: PoweredUP.Consts.Colors.GREEN,
+        color: PoweredUP.Consts.Color.GREEN,
         hubs: [
             {
                 name: "NK_Emerald",
@@ -44,7 +44,7 @@ const trains = [
     },
     {
         name: "Metroliner",
-        color: PoweredUP.Consts.Colors.WHITE,
+        color: PoweredUP.Consts.Color.WHITE,
         hubs: [
             {
                 name: "NK_Metroliner",
@@ -65,7 +65,7 @@ poweredUP.on("discover", async (hub) => {
         hub.on("button", (button, state) => {
 
             if (button === "GREEN") {
-                if (state === PoweredUP.Consts.ButtonStates.PRESSED) {
+                if (state === PoweredUP.Consts.ButtonState.PRESSED) {
                     hub._currentTrain++;
                     if (hub._currentTrain >= trains.length) {
                         hub._currentTrain = 0;
@@ -73,19 +73,19 @@ poweredUP.on("discover", async (hub) => {
                     hub.setLEDColor(trains[hub._currentTrain].color);
                     console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name}`);
                 }
-            } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonStates.RELEASED) {
+            } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonState.RELEASED) {
                 trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
-                if (state === PoweredUP.Consts.ButtonStates.UP) {
+                if (state === PoweredUP.Consts.ButtonState.UP) {
                     trains[hub._currentTrain]._speed += 10;
                     if (trains[hub._currentTrain]._speed > 100) {
                         trains[hub._currentTrain]._speed = 100;
                     }
-                } else if (state === PoweredUP.Consts.ButtonStates.DOWN) {
+                } else if (state === PoweredUP.Consts.ButtonState.DOWN) {
                     trains[hub._currentTrain]._speed -= 10;
                     if (trains[hub._currentTrain]._speed < -100) {
                         trains[hub._currentTrain]._speed = -100;
                     }
-                } else if (state === PoweredUP.Consts.ButtonStates.STOP) {
+                } else if (state === PoweredUP.Consts.ButtonState.STOP) {
                     trains[hub._currentTrain]._speed = 0;
                 }
                 for (let trainHub in trains[hub._currentTrain].hubs) {
@@ -117,7 +117,7 @@ poweredUP.on("discover", async (hub) => {
                 hub.setLEDColor(train.color);
                 console.log(`Connected to ${train.name} (${hub.name})`);
                 hub.on("attach", (port, type) => {
-                    if (type === PoweredUP.Consts.Devices.LED_LIGHTS && trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
+                    if (type === PoweredUP.Consts.DeviceType.LED_LIGHTS && trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
                         hub.setLightBrightness(port, 100);
                     }
                 });

@@ -193,6 +193,17 @@ export class BoostMoveHub extends LPF2Hub {
 
 
     /**
+     * Fully (hard) stop the motor on a given port.
+     * @method BoostMoveHub#brakeMotor
+     * @param {string} port
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public brakeMotor (port: string) {
+        return this.setMotorSpeed(port, 127);
+    }
+
+
+    /**
      * Set the light brightness on a given port.
      * @method BoostMoveHub#setLightBrightness
      * @param {string} port
