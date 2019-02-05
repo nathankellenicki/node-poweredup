@@ -41,6 +41,9 @@ export class Hub extends EventEmitter {
     private _uuid: string;
     private _rssi: number = -100;
 
+    private _isConnecting = false;
+    private _isConnected = false;
+
     constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
         super();
         this.autoSubscribe = !!autoSubscribe;
@@ -127,6 +130,13 @@ export class Hub extends EventEmitter {
 
             const self = this;
 
+            if (this._isConnecting) {
+                return connectReject("Already connecting");
+            } else if (this._isConnected) {
+                return connectReject("Already connected");
+            }
+
+            this._isConnecting = true;
             this._peripheral.connect((err: string) => {
 
                 this._rssi = this._peripheral.rssi;
@@ -142,6 +152,8 @@ export class Hub extends EventEmitter {
 
                 self._peripheral.on("disconnect", () => {
                     clearInterval(rssiUpdateInterval);
+                    this._isConnecting = false;
+                    this._isConnected = false;
                     this.emit("disconnect");
                 });
 
@@ -167,6 +179,8 @@ export class Hub extends EventEmitter {
 
                     Promise.all(servicePromises).then(() => {
                         debug("Service/characteristic discovery finished");
+                        this._isConnecting = false;
+                        this._isConnected = true;
                         this.emit("connect");
                         return connectResolve();
                     });
