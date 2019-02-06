@@ -131,6 +131,9 @@ export enum BLEManufacturerData {
 
 export enum BLEService {
     WEDO2_SMART_HUB = "00001523-1212-efde-1523-785feabcd123",
+    WEDO2_SMART_HUB_2 = "00004f0e-1212-efde-1523-785feabcd123",
+    WEDO2_SMART_HUB_3 = "2a19",
+    WEDO2_SMART_HUB_4 = "180f",
     LPF2_HUB = "00001623-1212-efde-1623-785feabcd123"
 }
 

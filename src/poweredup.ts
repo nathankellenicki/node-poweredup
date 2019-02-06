@@ -1,5 +1,6 @@
 import { Peripheral } from "noble-mac";
 
+import { BLEDevice } from "./bledevice";
 import { BoostMoveHub } from "./boostmovehub";
 import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
@@ -129,18 +130,20 @@ export class PoweredUP extends EventEmitter {
 
     private async _discoveryEventHandler (peripheral: Peripheral) {
 
+        const device = new BLEDevice(peripheral);
+
         let hub: Hub;
 
         if (await WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
-            hub = new WeDo2SmartHub(peripheral, this.autoSubscribe);
+            hub = new WeDo2SmartHub(device, this.autoSubscribe);
         } else if (await BoostMoveHub.IsBoostMoveHub(peripheral)) {
-            hub = new BoostMoveHub(peripheral, this.autoSubscribe);
+            hub = new BoostMoveHub(device, this.autoSubscribe);
         } else if (await PUPHub.IsPUPHub(peripheral)) {
-            hub = new PUPHub(peripheral, this.autoSubscribe);
+            hub = new PUPHub(device, this.autoSubscribe);
         } else if (await PUPRemote.IsPUPRemote(peripheral)) {
-            hub = new PUPRemote(peripheral, this.autoSubscribe);
+            hub = new PUPRemote(device, this.autoSubscribe);
         } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
-            hub = new DuploTrainBase(peripheral, this.autoSubscribe);
+            hub = new DuploTrainBase(device, this.autoSubscribe);
         } else {
             return;
         }
@@ -151,7 +154,7 @@ export class PoweredUP extends EventEmitter {
         //     startScanning();
         // }
 
-        hub.on("discoverComplete", () => {
+        device.on("discoverComplete", () => {
 
             hub.on("connect", () => {
                 debug(`Hub ${hub.uuid} connected`);

@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import { Characteristic, Peripheral, Service } from "noble";
+import { BLEDevice } from "./bledevice";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
@@ -29,7 +29,6 @@ export class Hub extends EventEmitter {
     public type: Consts.HubType = Consts.HubType.UNKNOWN;
 
     protected _ports: {[port: string]: Port} = {};
-    protected _characteristics: {[uuid: string]: Characteristic} = {};
 
     protected _name: string = "";
     protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
@@ -37,23 +36,16 @@ export class Hub extends EventEmitter {
     protected _voltage: number = 0;
     protected _current: number = 0;
 
-    private _peripheral: Peripheral;
-    private _uuid: string;
+    protected _bleDevice: BLEDevice;
     private _rssi: number = -100;
 
     private _isConnecting = false;
     private _isConnected = false;
 
-    constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
+    constructor (device: BLEDevice, autoSubscribe: boolean = true) {
         super();
         this.autoSubscribe = !!autoSubscribe;
-        this._peripheral = peripheral;
-        this._uuid = peripheral.uuid;
-        // NK: This hack allows LPF2.0 hubs to send a second advertisement packet consisting of the hub name before we try to read it
-        setTimeout(() => {
-            this._name = peripheral.advertisement.localName;
-            this.emit("discoverComplete");
-        }, 1000);
+        this._bleDevice = device;
     }
 
 
@@ -62,7 +54,7 @@ export class Hub extends EventEmitter {
      * @property {string} name Name of the hub
      */
     public get name () {
-        return this._name;
+        return this._bleDevice.name;
     }
 
 
@@ -80,7 +72,7 @@ export class Hub extends EventEmitter {
      * @property {string} uuid UUID of the hub
      */
     public get uuid () {
-        return this._uuid;
+        return this._bleDevice.uuid;
     }
 
 
@@ -126,7 +118,7 @@ export class Hub extends EventEmitter {
      * @returns {Promise} Resolved upon successful connect.
      */
     public connect () {
-        return new Promise((connectResolve, connectReject) => {
+        return new Promise(async (connectResolve, connectReject) => {
 
             const self = this;
 
@@ -137,57 +129,59 @@ export class Hub extends EventEmitter {
             }
 
             this._isConnecting = true;
-            this._peripheral.connect((err: string) => {
+            await this._bleDevice.connect();
+            return connectResolve();
+            // this._peripheral.connect((err: string) => {
 
-                this._rssi = this._peripheral.rssi;
-                const rssiUpdateInterval = setInterval(() => {
-                    this._peripheral.updateRssi((err: string, rssi: number) => {
-                        if (!err) {
-                            if (this._rssi !== rssi) {
-                                this._rssi = rssi;
-                            }
-                        }
-                    });
-                }, 2000);
+            //     this._rssi = this._peripheral.rssi;
+            //     const rssiUpdateInterval = setInterval(() => {
+            //         this._peripheral.updateRssi((err: string, rssi: number) => {
+            //             if (!err) {
+            //                 if (this._rssi !== rssi) {
+            //                     this._rssi = rssi;
+            //                 }
+            //             }
+            //         });
+            //     }, 2000);
 
-                self._peripheral.on("disconnect", () => {
-                    clearInterval(rssiUpdateInterval);
-                    this._isConnecting = false;
-                    this._isConnected = false;
-                    this.emit("disconnect");
-                });
+            //     self._peripheral.on("disconnect", () => {
+            //         clearInterval(rssiUpdateInterval);
+            //         this._isConnecting = false;
+            //         this._isConnected = false;
+            //         this.emit("disconnect");
+            //     });
 
-                self._peripheral.discoverServices([], (err: string, services: Service[]) => {
+            //     self._peripheral.discoverServices([], (err: string, services: Service[]) => {
 
-                    if (err) {
-                        this.emit("error", err);
-                        return;
-                    }
+            //         if (err) {
+            //             this.emit("error", err);
+            //             return;
+            //         }
 
-                    debug("Service/characteristic discovery started");
-                    const servicePromises: Array<Promise<null>> = [];
-                    services.forEach((service) => {
-                        servicePromises.push(new Promise((resolve, reject) => {
-                            service.discoverCharacteristics([], (err, characteristics) => {
-                                characteristics.forEach((characteristic) => {
-                                    this._characteristics[characteristic.uuid] = characteristic;
-                                });
-                                return resolve();
-                            });
-                        }));
-                    });
+            //         debug("Service/characteristic discovery started");
+            //         const servicePromises: Array<Promise<null>> = [];
+            //         services.forEach((service) => {
+            //             servicePromises.push(new Promise((resolve, reject) => {
+            //                 service.discoverCharacteristics([], (err, characteristics) => {
+            //                     characteristics.forEach((characteristic) => {
+            //                         this._characteristics[characteristic.uuid] = characteristic;
+            //                     });
+            //                     return resolve();
+            //                 });
+            //             }));
+            //         });
 
-                    Promise.all(servicePromises).then(() => {
-                        debug("Service/characteristic discovery finished");
-                        this._isConnecting = false;
-                        this._isConnected = true;
-                        this.emit("connect");
-                        return connectResolve();
-                    });
+            //         Promise.all(servicePromises).then(() => {
+            //             debug("Service/characteristic discovery finished");
+            //             this._isConnecting = false;
+            //             this._isConnected = true;
+            //             this.emit("connect");
+            //             return connectResolve();
+            //         });
 
-                });
+            //     });
 
-            });
+            // });
 
         });
 
@@ -199,12 +193,8 @@ export class Hub extends EventEmitter {
      * @method Hub#disconnect
      * @returns {Promise} Resolved upon successful disconnect.
      */
-    public disconnect () {
-        return new Promise((resolve, reject) => {
-            this._peripheral.disconnect(() => {
-                return resolve();
-            });
-        });
+    public async disconnect () {
+        await this._bleDevice.disconnect();
     }
 
 
@@ -292,21 +282,21 @@ export class Hub extends EventEmitter {
     }
 
 
-    protected _getCharacteristic (uuid: string) {
-        return this._characteristics[uuid.replace(/-/g, "")];
-    }
+    // protected _getCharacteristic (uuid: string) {
+    //     return this._characteristics[uuid.replace(/-/g, "")];
+    // }
 
 
-    protected _subscribeToCharacteristic (characteristic: Characteristic, callback: (data: Buffer) => void) {
-        characteristic.on("data", (data: Buffer) => {
-            return callback(data);
-        });
-        characteristic.subscribe((err) => {
-            if (err) {
-                this.emit("error", err);
-            }
-        });
-    }
+    // protected _subscribeToCharacteristic (characteristic: Characteristic, callback: (data: Buffer) => void) {
+    //     characteristic.on("data", (data: Buffer) => {
+    //         return callback(data);
+    //     });
+    //     characteristic.subscribe((err) => {
+    //         if (err) {
+    //             this.emit("error", err);
+    //         }
+    //     });
+    // }
 
 
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {

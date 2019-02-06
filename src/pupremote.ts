@@ -1,5 +1,6 @@
 import { Peripheral } from "noble";
 
+import { BLEDevice } from "./bledevice";
 import { LPF2Hub } from "./lpf2hub";
 import { Port } from "./port";
 
@@ -57,11 +58,13 @@ export class PUPRemote extends LPF2Hub {
 
 
     public static IsPUPRemote (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
+        return (peripheral.advertisement &&
+            peripheral.advertisement.serviceUuids &&
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
     }
 
 
-    constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
+    constructor (peripheral: BLEDevice, autoSubscribe: boolean = true) {
         super(peripheral, autoSubscribe);
         this.type = Consts.HubType.POWERED_UP_REMOTE;
         this._ports = {
