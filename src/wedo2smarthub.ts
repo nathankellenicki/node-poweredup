@@ -37,8 +37,8 @@ export class WeDo2SmartHub extends Hub {
     private _lastTiltY: number = 0;
 
 
-    constructor (peripheral: BLEDevice, autoSubscribe: boolean = true) {
-        super(peripheral, autoSubscribe);
+    constructor (device: BLEDevice, autoSubscribe: boolean = true) {
+        super(device, autoSubscribe);
         this.type = Consts.HubType.WEDO2_SMART_HUB;
         this._ports = {
             "A": new Port("A", 1),
@@ -312,7 +312,6 @@ export class WeDo2SmartHub extends Hub {
 
     private _parseHighCurrentAlert (data: Buffer) {
         debug("Received Message (WEDO2_HIGH_CURRENT_ALERT)", data);
-        // console.log(data);
     }
 
 

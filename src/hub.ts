@@ -119,70 +119,14 @@ export class Hub extends EventEmitter {
      */
     public connect () {
         return new Promise(async (connectResolve, connectReject) => {
-
-            const self = this;
-
             if (this._isConnecting) {
                 return connectReject("Already connecting");
             } else if (this._isConnected) {
                 return connectReject("Already connected");
             }
-
             this._isConnecting = true;
             await this._bleDevice.connect();
             return connectResolve();
-            // this._peripheral.connect((err: string) => {
-
-            //     this._rssi = this._peripheral.rssi;
-            //     const rssiUpdateInterval = setInterval(() => {
-            //         this._peripheral.updateRssi((err: string, rssi: number) => {
-            //             if (!err) {
-            //                 if (this._rssi !== rssi) {
-            //                     this._rssi = rssi;
-            //                 }
-            //             }
-            //         });
-            //     }, 2000);
-
-            //     self._peripheral.on("disconnect", () => {
-            //         clearInterval(rssiUpdateInterval);
-            //         this._isConnecting = false;
-            //         this._isConnected = false;
-            //         this.emit("disconnect");
-            //     });
-
-            //     self._peripheral.discoverServices([], (err: string, services: Service[]) => {
-
-            //         if (err) {
-            //             this.emit("error", err);
-            //             return;
-            //         }
-
-            //         debug("Service/characteristic discovery started");
-            //         const servicePromises: Array<Promise<null>> = [];
-            //         services.forEach((service) => {
-            //             servicePromises.push(new Promise((resolve, reject) => {
-            //                 service.discoverCharacteristics([], (err, characteristics) => {
-            //                     characteristics.forEach((characteristic) => {
-            //                         this._characteristics[characteristic.uuid] = characteristic;
-            //                     });
-            //                     return resolve();
-            //                 });
-            //             }));
-            //         });
-
-            //         Promise.all(servicePromises).then(() => {
-            //             debug("Service/characteristic discovery finished");
-            //             this._isConnecting = false;
-            //             this._isConnected = true;
-            //             this.emit("connect");
-            //             return connectResolve();
-            //         });
-
-            //     });
-
-            // });
-
         });
 
     }

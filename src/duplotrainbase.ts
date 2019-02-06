@@ -64,8 +64,8 @@ export class DuploTrainBase extends LPF2Hub {
     }
 
 
-    constructor (peripheral: BLEDevice, autoSubscribe: boolean = true) {
-        super(peripheral, autoSubscribe);
+    constructor (device: BLEDevice, autoSubscribe: boolean = true) {
+        super(device, autoSubscribe);
         this.type = Consts.HubType.DUPLO_TRAIN_HUB;
         this._ports = {
             "MOTOR": new Port("MOTOR", 0),

@@ -34,8 +34,8 @@ export class BoostMoveHub extends LPF2Hub {
     }
 
 
-    constructor (peripheral: BLEDevice, autoSubscribe: boolean = true) {
-        super(peripheral, autoSubscribe);
+    constructor (device: BLEDevice, autoSubscribe: boolean = true) {
+        super(device, autoSubscribe);
         this.type = Consts.HubType.BOOST_MOVE_HUB;
         this._ports = {
             "A": new Port("A", 55),
