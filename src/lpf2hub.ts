@@ -140,7 +140,7 @@ export class LPF2Hub extends Hub {
         message = Buffer.concat([Buffer.alloc(2), message]);
         message[0] = message.length;
         debug("Sent Message (LPF2_ALL)", message);
-        this._bleDevice.writeDataToCharacteristic(uuid, message, callback);
+        this._bleDevice.writeToCharacteristic(uuid, message, callback);
     }
 
 

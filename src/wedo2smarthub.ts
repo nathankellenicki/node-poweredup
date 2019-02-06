@@ -56,17 +56,22 @@ export class WeDo2SmartHub extends Hub {
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_2);
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_3);
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_4);
+            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_5);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_PORT_TYPE, this._parsePortMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_SENSOR_VALUE, this._parseSensorMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BUTTON, this._parseSensorMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, this._parseBatteryMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_HIGH_CURRENT_ALERT, this._parseHighCurrentAlert.bind(this));
-            // this._getCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY).read((err, data) => {
-            //     this._parseBatteryMessage(data);
-            // });
-            // this._getCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION).read((err, data) => {
-            //     this._parseFirmwareRevisionString(data);
-            // });
+            this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, (err, data) => {
+                if (data) {
+                    this._parseBatteryMessage(data);
+                }
+            });
+            this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION, (err, data) => {
+                if (data) {
+                    this._parseFirmwareRevisionString(data);
+                }
+            });
             setTimeout(() => {
                 this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
                 this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
@@ -289,7 +294,7 @@ export class WeDo2SmartHub extends Hub {
         if (debug.enabled) {
             debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
         }
-        this._bleDevice.writeDataToCharacteristic(uuid, message, callback);
+        this._bleDevice.writeToCharacteristic(uuid, message, callback);
     }
 
 

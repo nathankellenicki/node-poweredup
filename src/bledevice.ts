@@ -29,7 +29,9 @@ export class BLEDevice extends EventEmitter {
             }, 1000);
         } else {
             this._webBLEServer = device;
-            this._uuid = device.uuid;
+            this._uuid = device.id;
+            this._name = device.name;
+            this.emit("discoverComplete");
         }
     }
 
@@ -135,7 +137,26 @@ export class BLEDevice extends EventEmitter {
     }
 
 
-    public writeDataToCharacteristic (uuid: string, data: Buffer, callback?: () => void) {
+    public readFromCharacteristic (uuid: string, callback: (err: string | null, data: Buffer | null) => void) {
+        uuid = this._sanitizeUUID(uuid);
+        if (this._noblePeripheral) {
+            this._characteristics[uuid].read((err: string, data: Buffer) => {
+                return callback(err, data);
+            });
+        } else if (this._webBLEServer) {
+            try {
+                // @ts-ignore
+                this._characteristics[uuid].readValue().then((data) => {
+                    callback(null, data);
+                });
+            } catch (err) {
+                callback(err, null);
+            }
+        }
+    }
+
+
+    public writeToCharacteristic (uuid: string, data: Buffer, callback?: () => void) {
         uuid = this._sanitizeUUID(uuid);
         if (this._noblePeripheral) {
             this._characteristics[uuid].write(data, false, callback);
