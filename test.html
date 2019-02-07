@@ -3,39 +3,41 @@
 
 <head>
 <title>node-poweredup Web Bluetooth Test</title>
-<script src="./dist/bundle.js"></script>
+<script src="./dist/browser/poweredup.js"></script>
 <script>
 
 const poweredUP = new PoweredUP.PoweredUP();
 
+console.log("Looking for Hubs...");
+
+poweredUP.on("discover", async (hub) => { // Wait to discover hubs
+    
+    await hub.connect(); // Connect to hub
+    console.log(`Connected to ${hub.name}!`);
+
+    hub.on("disconnect", () => {
+        console.log("Hub disconnected");
+    })
+
+});
+
 const scan = async function () {
-
     poweredUP.scan(); // Start scanning for hubs
-
-    poweredUP.on("discover", async (hub) => { // Wait to discover hubs
-
-        hub.on("attach", (port, device) => {
-            console.log("ATTACH", port, device);
-        });
-
-        hub.on("button", (button, state) => {
-            console.log("BUTTON", button, state);
-        })
-
-        hub.on("distance", (port, distance) => {
-            console.log("DISTANCE", port, distance);
-        });
-
-        await hub.connect(); // Connect to hub
-        console.log(`Connected to ${hub.name}!`);
-
-        hub.on("disconnect", () => {
-            console.log("Hub disconnected");
-        })
-
-    });
-
 }
+
+let color = 1;
+setInterval(() => {
+
+    const hubs = poweredUP.getConnectedHubs(); // Get an array of all connected hubs
+    hubs.forEach((hub) => {
+        hub.setLEDColor(color); // Set the color
+    })
+    color++;
+    if (color > 10) {
+        color = 1;
+    }
+
+}, 2000);
 
 </script>
 </head>

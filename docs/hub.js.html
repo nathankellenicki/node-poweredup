@@ -118,6 +118,9 @@ class Hub extends events_1.EventEmitter {
         this._isConnected = false;
         this.autoSubscribe = !!autoSubscribe;
         this._bleDevice = device;
+        device.on("disconnect", () => {
+            this.emit("disconnect");
+        });
     }
     /**
      * @readonly
@@ -174,7 +177,6 @@ class Hub extends events_1.EventEmitter {
      * @returns {Promise} Resolved upon successful connect.
      */
     connect() {
-        console.log(this.name);
         return new Promise(async (connectResolve, connectReject) => {
             if (this._bleDevice.connecting) {
                 return connectReject("Already connecting");

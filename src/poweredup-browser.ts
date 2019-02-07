@@ -126,7 +126,7 @@ export class PoweredUP extends EventEmitter {
                             }
                         });
                     } else {
-                        device.rejectFromCharacteristic(Consts.BLECharacteristic.LPF2_ALL, message);
+                        device.addToCharacteristicMailbox(Consts.BLECharacteristic.LPF2_ALL, message);
                     }
                 }
             });

@@ -63,6 +63,11 @@ export class WeDo2SmartHub extends Hub {
                 await this._bleDevice.discoverCharacteristicsForService("battery_service");
                 await this._bleDevice.discoverCharacteristicsForService("device_information");
             }
+            this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
+            this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
+            debug("Connect completed");
+            this.emit("connect");
+            resolve();
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_PORT_TYPE, this._parsePortMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_SENSOR_VALUE, this._parseSensorMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BUTTON, this._parseSensorMessage.bind(this));
@@ -95,13 +100,6 @@ export class WeDo2SmartHub extends Hub {
                     }
                 });
             }
-            setTimeout(() => {
-                // this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
-                // this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
-                debug("Connect completed");
-                this.emit("connect");
-                return resolve();
-            }, 1000);
         });
     }
 

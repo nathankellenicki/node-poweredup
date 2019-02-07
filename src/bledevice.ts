@@ -30,6 +30,11 @@ export class BLEDevice extends EventEmitter {
         if (device._noble) {
             this._noblePeripheral = device;
             this._uuid = device.uuid;
+            device.on("disconnect", () => {
+                this._connected = false;
+                this._connected = false;
+                this.emit("disconnect");
+            });
             // NK: This hack allows LPF2.0 hubs to send a second advertisement packet consisting of the hub name before we try to read it
             setTimeout(() => {
                 this._name = device.advertisement.localName;
@@ -39,9 +44,14 @@ export class BLEDevice extends EventEmitter {
             this._webBLEServer = device;
             this._uuid = device.device.id;
             this._name = device.device.name;
+            device.device.addEventListener("gattserverdisconnected", () => {
+                this._connected = false;
+                this._connected = false;
+                this.emit("disconnect");
+            });
             setTimeout(() => {
                 this.emit("discoverComplete");
-            }, 5000);
+            }, 2000);
         }
     }
 
@@ -90,6 +100,7 @@ export class BLEDevice extends EventEmitter {
                     return resolve();
                 });
             } else {
+                this._webBLEServer.device.gatt.disconnect();
                 return resolve();
             }
         });
@@ -178,7 +189,7 @@ export class BLEDevice extends EventEmitter {
     }
 
 
-    public rejectFromCharacteristic (uuid: string, data: Buffer) {
+    public addToCharacteristicMailbox (uuid: string, data: Buffer) {
         this._mailbox.push(data);
     }
 
