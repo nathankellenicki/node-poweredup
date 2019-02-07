@@ -15,9 +15,14 @@ export class BLEDevice extends EventEmitter {
     private _uuid: string;
     private _name: string = "";
 
+    private _listeners: {[uuid: string]: any} = {};
     private _characteristics: {[uuid: string]: Characteristic} = {};
 
-    private _writeQueue: Promise<any> = Promise.resolve();
+    private _queue: Promise<any> = Promise.resolve();
+    private _mailbox: Buffer[] = [];
+
+    private _connected: boolean = false;
+    private _connecting: boolean = false;
 
 
     constructor (device: any) {
@@ -51,13 +56,27 @@ export class BLEDevice extends EventEmitter {
     }
 
 
+    public get connecting () {
+        return this._connecting;
+    }
+
+
+    public get connected () {
+        return this._connected;
+    }
+
+
     public connect () {
         return new Promise((resolve, reject) => {
             if (this._noblePeripheral) {
+                this._connecting = true;
                 this._noblePeripheral.connect((err: string) => {
+                    this._connecting = false;
+                    this._connected = true;
                     return resolve();
                 });
             } else {
+                this._connected = true;
                 return resolve();
             }
         });
@@ -134,18 +153,33 @@ export class BLEDevice extends EventEmitter {
                 }
             });
         } else if (this._webBLEServer) {
+            if (this._listeners[uuid]) {
+                // @ts-ignore
+                this._characteristics[uuid].removeEventListener("characteristicvaluechanged", this._listeners[uuid]);
+            }
             // @ts-ignore
-            this._characteristics[uuid].addEventListener("characteristicvaluechanged", (event) => {
+            this._listeners[uuid] = (event) => {
                 const buf = Buffer.alloc(event.target.value.buffer.byteLength);
                 const view = new Uint8Array(event.target.value.buffer);
                 for (let i = 0; i < buf.length; i++) {
                     buf[i] = view[i];
                 }
                 return callback(buf);
-            });
+            };
+            // @ts-ignore
+            this._characteristics[uuid].addEventListener("characteristicvaluechanged", this._listeners[uuid]);
+            for (const data of this._mailbox) {
+                callback(data);
+            }
+            this._mailbox = [];
             // @ts-ignore
             this._characteristics[uuid].startNotifications();
         }
+    }
+
+
+    public rejectFromCharacteristic (uuid: string, data: Buffer) {
+        this._mailbox.push(data);
     }
 
 
@@ -175,7 +209,7 @@ export class BLEDevice extends EventEmitter {
             this._characteristics[uuid].write(data, false, callback);
         } else {
             // @ts-ignore
-            this._writeQueue = this._writeQueue.then(() => this._characteristics[uuid].writeValue(data)).then(() => {
+            this._queue = this._queue.then(() => this._characteristics[uuid].writeValue(data)).then(() => {
                 if (callback) {
                     callback();
                 }

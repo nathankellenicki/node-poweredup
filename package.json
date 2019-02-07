@@ -3,12 +3,12 @@
   "version": "1.9.1",
   "description": "A Node.js module to interface with LEGO Powered UP components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
-  "main": "dist/index-node.js",
+  "main": "dist/node/index-node.js",
   "types": "dist/index-node.d.ts",
   "scripts": {
     "build:node": "tslint -c tslint.json \"./src/*.ts\" && tsc",
     "build:browser": "webpack --mode=production",
-    "docs": "jsdoc -d docs -c jsdoc.conf.json -t ./node_modules/ink-docstrap/template -R README.md dist/consts.js dist/poweredup-node.js dist/lpf2hub.js dist/wedo2smarthub.js dist/boostmovehub.js dist/puphub.js dist/pupremote.js dist/duplotrainbase.js dist/hub.js dist/consts.js",
+    "docs": "jsdoc -d docs -c jsdoc.conf.json -t ./node_modules/ink-docstrap/template -R README.md dist/node/consts.js dist/node/poweredup-node.js dist/node/lpf2hub.js dist/node/wedo2smarthub.js dist/node/boostmovehub.js dist/node/puphub.js dist/node/pupremote.js dist/node/duplotrainbase.js dist/node/hub.js dist/node/consts.js",
     "all": "npm run build:node && npm run docs",
     "prepublishOnly": "npm run build:node"
   },

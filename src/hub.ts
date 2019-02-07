@@ -118,10 +118,11 @@ export class Hub extends EventEmitter {
      * @returns {Promise} Resolved upon successful connect.
      */
     public connect () {
+        console.log(this.name);
         return new Promise(async (connectResolve, connectReject) => {
-            if (this._isConnecting) {
+            if (this._bleDevice.connecting) {
                 return connectReject("Already connecting");
-            } else if (this._isConnected) {
+            } else if (this._bleDevice.connected) {
                 return connectReject("Already connected");
             }
             this._isConnecting = true;

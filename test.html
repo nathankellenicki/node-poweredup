@@ -6,23 +6,28 @@
 <script src="./dist/bundle.js"></script>
 <script>
 
+const poweredUP = new PoweredUP.PoweredUP();
+
 const scan = async function () {
-
-    localStorage.debug = "";
-
-    const poweredUP = new PoweredUP.PoweredUP();
 
     poweredUP.scan(); // Start scanning for hubs
 
     poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 
+        hub.on("attach", (port, device) => {
+            console.log("ATTACH", port, device);
+        });
+
+        hub.on("button", (button, state) => {
+            console.log("BUTTON", button, state);
+        })
+
+        hub.on("distance", (port, distance) => {
+            console.log("DISTANCE", port, distance);
+        });
+
         await hub.connect(); // Connect to hub
         console.log(`Connected to ${hub.name}!`);
-
-        await hub.sleep(2000);
-        console.log(hub.firmwareVersion);
-        hub.setLEDColor(PoweredUP.Consts.Color.RED);
-        hub.rampMotorSpeed("A", 0, 100, 10000);
 
         hub.on("disconnect", () => {
             console.log("Hub disconnected");

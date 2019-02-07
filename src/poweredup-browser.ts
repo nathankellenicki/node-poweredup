@@ -11,6 +11,7 @@ import * as Consts from "./consts";
 import { EventEmitter } from "events";
 
 import Debug = require("debug");
+import { LPF2Hub } from "./lpf2hub";
 const debug = Debug("poweredup");
 
 
@@ -98,6 +99,42 @@ export class PoweredUP extends EventEmitter {
     }
 
 
+    private _determineLPF2HubType (device: BLEDevice) {
+        return new Promise((resolve, reject) => {
+            let buf: Buffer = Buffer.alloc(0);
+            device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
+                buf = Buffer.concat([buf, data]);
+                const len = buf[0];
+                if (len >= buf.length) {
+                    const message = buf.slice(0, len);
+                    buf = buf.slice(len);
+                    if (message[2] === 0x01 && message[3] === 0x0b) {
+                        process.nextTick(() => {
+                            switch (message[5]) {
+                                case Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID:
+                                    resolve(Consts.HubType.POWERED_UP_REMOTE);
+                                    break;
+                                case Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID:
+                                    resolve(Consts.HubType.BOOST_MOVE_HUB);
+                                    break;
+                                case Consts.BLEManufacturerData.POWERED_UP_HUB_ID:
+                                    resolve(Consts.HubType.POWERED_UP_HUB);
+                                    break;
+                                case Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID:
+                                    resolve(Consts.HubType.DUPLO_TRAIN_HUB);
+                                    break;
+                            }
+                        });
+                    } else {
+                        device.rejectFromCharacteristic(Consts.BLECharacteristic.LPF2_ALL, message);
+                    }
+                }
+            });
+            device.writeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x05, 0x00, 0x01, 0x0b, 0x05]));
+        });
+    }
+
+
     private async _discoveryEventHandler (server: BluetoothRemoteGATTServer) {
 
         const device = new BLEDevice(server);
@@ -119,7 +156,30 @@ export class PoweredUP extends EventEmitter {
         // tslint:disable-next-line
         } catch (error) {}
 
-        hub = new WeDo2SmartHub(device, this.autoSubscribe);
+        if (isLPF2Hub) {
+            // @ts-ignore
+            hubType = await this._determineLPF2HubType(device);
+        }
+
+        switch (hubType) {
+            case Consts.HubType.WEDO2_SMART_HUB:
+                hub = new WeDo2SmartHub(device, this.autoSubscribe);
+                break;
+            case Consts.HubType.BOOST_MOVE_HUB:
+                hub = new BoostMoveHub(device, this.autoSubscribe);
+                break;
+            case Consts.HubType.POWERED_UP_HUB:
+                hub = new PUPHub(device, this.autoSubscribe);
+                break;
+            case Consts.HubType.POWERED_UP_REMOTE:
+                hub = new PUPRemote(device, this.autoSubscribe);
+                break;
+            case Consts.HubType.DUPLO_TRAIN_HUB:
+                hub = new DuploTrainBase(device, this.autoSubscribe);
+                break;
+            default:
+                return;
+        }
 
         device.on("discoverComplete", () => {
 
