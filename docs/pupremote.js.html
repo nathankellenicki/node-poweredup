@@ -139,8 +139,8 @@ class PUPRemote extends lpf2hub_1.LPF2Hub {
             peripheral.advertisement.serviceUuids &amp;&amp;
             peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &amp;&amp; peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
     }
-    constructor(peripheral, autoSubscribe = true) {
-        super(peripheral, autoSubscribe);
+    constructor(device, autoSubscribe = true) {
+        super(device, autoSubscribe);
         this.type = Consts.HubType.POWERED_UP_REMOTE;
         this._ports = {
             "LEFT": new port_1.Port("LEFT", 0),
@@ -193,7 +193,7 @@ class PUPRemote extends lpf2hub_1.LPF2Hub {
     }
 }
 exports.PUPRemote = PUPRemote;
-</pre>
+//# sourceMappingURL=pupremote.js.map</pre>
     </article>
 </section>
 

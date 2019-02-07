@@ -7,6 +7,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { isBrowserContext } from "./utils";
 const debug = Debug("wedo2smarthub");
 
 
@@ -54,27 +55,49 @@ export class WeDo2SmartHub extends Hub {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB);
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_2);
-            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_3);
-            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_4);
-            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_5);
+            if (!isBrowserContext) {
+                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_3);
+                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_4);
+                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_5);
+            } else {
+                await this._bleDevice.discoverCharacteristicsForService("battery_service");
+                await this._bleDevice.discoverCharacteristicsForService("device_information");
+            }
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_PORT_TYPE, this._parsePortMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_SENSOR_VALUE, this._parseSensorMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BUTTON, this._parseSensorMessage.bind(this));
-            this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, this._parseBatteryMessage.bind(this));
+            if (!isBrowserContext) {
+                this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, this._parseBatteryMessage.bind(this));
+                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, (err, data) => {
+                    if (data) {
+                        this._parseBatteryMessage(data);
+                    }
+                });
+            } else {
+                this._bleDevice.readFromCharacteristic("00002a19-0000-1000-8000-00805f9b34fb", (err, data) => {
+                    if (data) {
+                        this._parseBatteryMessage(data);
+                    }
+                });
+                this._bleDevice.subscribeToCharacteristic("00002a19-0000-1000-8000-00805f9b34fb", this._parseHighCurrentAlert.bind(this));
+            }
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_HIGH_CURRENT_ALERT, this._parseHighCurrentAlert.bind(this));
-            this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, (err, data) => {
-                if (data) {
-                    this._parseBatteryMessage(data);
-                }
-            });
-            this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION, (err, data) => {
-                if (data) {
-                    this._parseFirmwareRevisionString(data);
-                }
-            });
+            if (!isBrowserContext) {
+                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION, (err, data) => {
+                    if (data) {
+                        this._parseFirmwareRevisionString(data);
+                    }
+                });
+            } else {
+                this._bleDevice.readFromCharacteristic("00002a26-0000-1000-8000-00805f9b34fb", (err, data) => {
+                    if (data) {
+                        this._parseFirmwareRevisionString(data);
+                    }
+                });
+            }
             setTimeout(() => {
-                this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
-                this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
+                // this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
+                // this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
                 debug("Connect completed");
                 this.emit("connect");
                 return resolve();

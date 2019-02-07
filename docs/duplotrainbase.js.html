@@ -139,8 +139,8 @@ class DuploTrainBase extends lpf2hub_1.LPF2Hub {
             peripheral.advertisement.serviceUuids &amp;&amp;
             peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &amp;&amp; peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
     }
-    constructor(peripheral, autoSubscribe = true) {
-        super(peripheral, autoSubscribe);
+    constructor(device, autoSubscribe = true) {
+        super(device, autoSubscribe);
         this.type = Consts.HubType.DUPLO_TRAIN_HUB;
         this._ports = {
             "MOTOR": new port_1.Port("MOTOR", 0),
@@ -255,7 +255,7 @@ class DuploTrainBase extends lpf2hub_1.LPF2Hub {
     }
 }
 exports.DuploTrainBase = DuploTrainBase;
-</pre>
+//# sourceMappingURL=duplotrainbase.js.map</pre>
     </article>
 </section>
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>node-poweredup Web Bluetooth Test</title>
+<script src="./dist/bundle.js"></script>
+<script>
+
+const scan = async function () {
+
+    localStorage.debug = "";
+
+    const poweredUP = new PoweredUP.PoweredUP();
+
+    poweredUP.scan(); // Start scanning for hubs
+
+    poweredUP.on("discover", async (hub) => { // Wait to discover hubs
+
+        await hub.connect(); // Connect to hub
+        console.log(`Connected to ${hub.name}!`);
+
+        await hub.sleep(2000);
+        console.log(hub.firmwareVersion);
+        hub.setLEDColor(PoweredUP.Consts.Color.RED);
+        hub.rampMotorSpeed("A", 0, 100, 10000);
+
+        hub.on("disconnect", () => {
+            console.log("Hub disconnected");
+        })
+
+    });
+
+}
+
+</script>
+</head>
+
+<body>
+<div>
+<button onclick="scan()">Scan</button>
+</div>
+</body>
+
+</html>

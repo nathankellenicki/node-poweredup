@@ -2,6 +2,7 @@ import { Characteristic, Peripheral, Service } from "noble";
 
 import Debug = require("debug");
 import { EventEmitter } from "events";
+import { write } from "fs";
 const debug = Debug("bledevice");
 
 
@@ -16,6 +17,8 @@ export class BLEDevice extends EventEmitter {
 
     private _characteristics: {[uuid: string]: Characteristic} = {};
 
+    private _writeQueue: Promise<any> = Promise.resolve();
+
 
     constructor (device: any) {
         super();
@@ -29,9 +32,11 @@ export class BLEDevice extends EventEmitter {
             }, 1000);
         } else {
             this._webBLEServer = device;
-            this._uuid = device.id;
-            this._name = device.name;
-            this.emit("discoverComplete");
+            this._uuid = device.device.id;
+            this._name = device.device.name;
+            setTimeout(() => {
+                this.emit("discoverComplete");
+            }, 5000);
         }
     }
 
@@ -73,9 +78,9 @@ export class BLEDevice extends EventEmitter {
 
 
     public discoverCharacteristicsForService (uuid: string) {
-        uuid = this._sanitizeUUID(uuid);
         return new Promise(async (discoverResolve, discoverReject) => {
             if (this._noblePeripheral) {
+                uuid = this._sanitizeUUID(uuid);
                 this._noblePeripheral.discoverServices([uuid], (err: string, services: Service[]) => {
                     if (err) {
                         return discoverReject(err);
@@ -118,8 +123,8 @@ export class BLEDevice extends EventEmitter {
 
 
     public subscribeToCharacteristic (uuid: string, callback: (data: Buffer) => void) {
-        uuid = this._sanitizeUUID(uuid);
         if (this._noblePeripheral) {
+            uuid = this._sanitizeUUID(uuid);
             this._characteristics[uuid].on("data", (data: Buffer) => {
                 return callback(data);
             });
@@ -131,35 +136,50 @@ export class BLEDevice extends EventEmitter {
         } else if (this._webBLEServer) {
             // @ts-ignore
             this._characteristics[uuid].addEventListener("characteristicvaluechanged", (event) => {
-                return callback(event.target.value.buffer);
+                const buf = Buffer.alloc(event.target.value.buffer.byteLength);
+                const view = new Uint8Array(event.target.value.buffer);
+                for (let i = 0; i < buf.length; i++) {
+                    buf[i] = view[i];
+                }
+                return callback(buf);
             });
+            // @ts-ignore
+            this._characteristics[uuid].startNotifications();
         }
     }
 
 
     public readFromCharacteristic (uuid: string, callback: (err: string | null, data: Buffer | null) => void) {
-        uuid = this._sanitizeUUID(uuid);
         if (this._noblePeripheral) {
+            uuid = this._sanitizeUUID(uuid);
             this._characteristics[uuid].read((err: string, data: Buffer) => {
                 return callback(err, data);
             });
         } else if (this._webBLEServer) {
-            try {
-                // @ts-ignore
-                this._characteristics[uuid].readValue().then((data) => {
-                    callback(null, data);
-                });
-            } catch (err) {
-                callback(err, null);
-            }
+            // @ts-ignore
+            this._characteristics[uuid].readValue().then((data) => {
+                const buf = Buffer.alloc(data.buffer.byteLength);
+                const view = new Uint8Array(data.buffer);
+                for (let i = 0; i < buf.length; i++) {
+                    buf[i] = view[i];
+                }
+                callback(null, buf);
+            });
         }
     }
 
 
     public writeToCharacteristic (uuid: string, data: Buffer, callback?: () => void) {
-        uuid = this._sanitizeUUID(uuid);
         if (this._noblePeripheral) {
+            uuid = this._sanitizeUUID(uuid);
             this._characteristics[uuid].write(data, false, callback);
+        } else {
+            // @ts-ignore
+            this._writeQueue = this._writeQueue.then(() => this._characteristics[uuid].writeValue(data)).then(() => {
+                if (callback) {
+                    callback();
+                }
+            });
         }
     }
 
