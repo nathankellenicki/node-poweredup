@@ -1,0 +1,26 @@
+body {
+    font-family: Verdana;
+    font-size: 12px;
+}
+
+table td {
+    width: 150px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+table thead.headings td {
+    background-color: #666666;
+    color: #ffffff;
+}
+
+table tr td {
+    background-color: #cccccc;
+}
+
+a.button {
+    padding: 5px;
+    border-radius: 3px;
+    background-color: #666666;
+    color: #ffffff;
+}
