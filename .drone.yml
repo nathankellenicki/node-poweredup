@@ -1,0 +1,7 @@
+pipeline:
+  install:
+    image: node:8.11.4
+    commands:
+      - sudo apt-get update
+      - sudo apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
+      - npm install
