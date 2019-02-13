@@ -1,7 +1,13 @@
 pipeline:
+
   install:
     image: node:8.11.4
     commands:
       - apt-get update
       - apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
       - npm install
+
+  build:
+    image: node:8.11.4
+    commands:
+      - npm run all
