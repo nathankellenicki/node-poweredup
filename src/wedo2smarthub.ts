@@ -1,12 +1,12 @@
 import { Peripheral } from "noble";
 
-import { BLEDevice } from "./bledevice";
 import { Hub } from "./hub";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { IBLEDevice } from "./interfaces";
 import { isBrowserContext } from "./utils";
 const debug = Debug("wedo2smarthub");
 
@@ -38,7 +38,7 @@ export class WeDo2SmartHub extends Hub {
     private _lastTiltY: number = 0;
 
 
-    constructor (device: BLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
         this.type = Consts.HubType.WEDO2_SMART_HUB;
         this._ports = {

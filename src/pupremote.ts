@@ -1,12 +1,12 @@
 import { Peripheral } from "noble";
 
-import { BLEDevice } from "./bledevice";
 import { LPF2Hub } from "./lpf2hub";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { IBLEDevice } from "./interfaces";
 const debug = Debug("pupremote");
 
 
@@ -64,7 +64,7 @@ export class PUPRemote extends LPF2Hub {
     }
 
 
-    constructor (device: BLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
         this.type = Consts.HubType.POWERED_UP_REMOTE;
         this._ports = {

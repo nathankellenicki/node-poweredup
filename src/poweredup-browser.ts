@@ -1,9 +1,9 @@
-import { BLEDevice } from "./bledevice";
 import { BoostMoveHub } from "./boostmovehub";
 import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
 import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
+import { WebBLEDevice } from "./webbledevice";
 import { WeDo2SmartHub } from "./wedo2smarthub";
 
 import * as Consts from "./consts";
@@ -11,7 +11,7 @@ import * as Consts from "./consts";
 import { EventEmitter } from "events";
 
 import Debug = require("debug");
-import { LPF2Hub } from "./lpf2hub";
+import { IBLEDevice } from "./interfaces";
 const debug = Debug("poweredup");
 
 
@@ -99,7 +99,7 @@ export class PoweredUP extends EventEmitter {
     }
 
 
-    private _determineLPF2HubType (device: BLEDevice) {
+    private _determineLPF2HubType (device: IBLEDevice): Promise<Consts.HubType> {
         return new Promise((resolve, reject) => {
             let buf: Buffer = Buffer.alloc(0);
             device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
@@ -137,7 +137,7 @@ export class PoweredUP extends EventEmitter {
 
     private async _discoveryEventHandler (server: BluetoothRemoteGATTServer) {
 
-        const device = new BLEDevice(server);
+        const device = new WebBLEDevice(server);
 
         let hub: Hub;
 
@@ -157,7 +157,6 @@ export class PoweredUP extends EventEmitter {
         } catch (error) {}
 
         if (isLPF2Hub) {
-            // @ts-ignore
             hubType = await this._determineLPF2HubType(device);
         }
 

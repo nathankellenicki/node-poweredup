@@ -1,20 +1,12 @@
 import { EventEmitter } from "events";
 
-import { BLEDevice } from "./bledevice";
+import { IBLEDevice, IFirmwareInfo } from "./interfaces";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
 
 import Debug = require("debug");
 const debug = Debug("hub");
-
-
-export interface IFirmwareInfo {
-    major: number;
-    minor: number;
-    bugFix: number;
-    build: number;
-}
 
 
 /**
@@ -36,13 +28,13 @@ export class Hub extends EventEmitter {
     protected _voltage: number = 0;
     protected _current: number = 0;
 
-    protected _bleDevice: BLEDevice;
+    protected _bleDevice: IBLEDevice;
     private _rssi: number = -100;
 
     private _isConnecting = false;
     private _isConnected = false;
 
-    constructor (device: BLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super();
         this.autoSubscribe = !!autoSubscribe;
         this._bleDevice = device;

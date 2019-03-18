@@ -1,9 +1,9 @@
 import { Peripheral } from "noble-mac";
 
-import { BLEDevice } from "./bledevice";
 import { BoostMoveHub } from "./boostmovehub";
 import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
+import { NobleDevice } from "./nobledevice";
 import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
 import { WeDo2SmartHub } from "./wedo2smarthub";
@@ -130,7 +130,7 @@ export class PoweredUP extends EventEmitter {
 
     private async _discoveryEventHandler (peripheral: Peripheral) {
 
-        const device = new BLEDevice(peripheral);
+        const device = new NobleDevice(peripheral);
 
         let hub: Hub;
 
