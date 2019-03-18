@@ -7,5 +7,7 @@ import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
 import { WeDo2SmartHub } from "./wedo2smarthub";
 
+import { isWebBluetooth } from "./utils";
+
 // @ts-ignore
-window.PoweredUP = { PoweredUP, Hub, WeDo2SmartHub, BoostMoveHub, PUPHub, PUPRemote, DuploTrainBase, Consts };
+window.PoweredUP = { PoweredUP, Hub, WeDo2SmartHub, BoostMoveHub, PUPHub, PUPRemote, DuploTrainBase, Consts, isWebBluetooth };

@@ -133,7 +133,8 @@ export class Hub extends EventEmitter {
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public async disconnect () {
-        await this._bleDevice.disconnect();
+        this.emit("disconnect");
+        this._bleDevice.disconnect();
     }
 
 

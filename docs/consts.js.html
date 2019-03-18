@@ -104,6 +104,12 @@ var HubType;
     HubType[HubType["POWERED_UP_REMOTE"] = 4] = "POWERED_UP_REMOTE";
     HubType[HubType["DUPLO_TRAIN_HUB"] = 5] = "DUPLO_TRAIN_HUB";
 })(HubType = exports.HubType || (exports.HubType = {}));
+// tslint:disable-next-line
+exports.HubTypeNames = Object.keys(HubType).reduce((result, item) => {
+    // @ts-ignore
+    result[HubType[item]] = item;
+    return result;
+}, {});
 /**
  * @typedef DeviceType
  * @property {number} UNKNOWN 0
@@ -142,6 +148,12 @@ var DeviceType;
     DeviceType[DeviceType["DUPLO_TRAIN_BASE_SPEEDOMETER"] = 44] = "DUPLO_TRAIN_BASE_SPEEDOMETER";
     DeviceType[DeviceType["POWERED_UP_REMOTE_BUTTON"] = 55] = "POWERED_UP_REMOTE_BUTTON";
 })(DeviceType = exports.DeviceType || (exports.DeviceType = {}));
+// tslint:disable-next-line
+exports.DeviceTypeNames = Object.keys(DeviceType).reduce((result, item) => {
+    // @ts-ignore
+    result[DeviceType[item]] = item;
+    return result;
+}, {});
 /**
  * @typedef Color
  * @property {number} BLACK 0
@@ -172,6 +184,12 @@ var Color;
     Color[Color["WHITE"] = 10] = "WHITE";
     Color[Color["NONE"] = 255] = "NONE";
 })(Color = exports.Color || (exports.Color = {}));
+// tslint:disable-next-line
+exports.ColorNames = Object.keys(Color).reduce((result, item) => {
+    // @ts-ignore
+    result[Color[item]] = item;
+    return result;
+}, {});
 /**
  * @typedef ButtonState
  * @property {number} PRESSED 0

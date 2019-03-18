@@ -74,9 +74,8 @@ export class NobleDevice extends EventEmitter implements IBLEDevice {
 
     public disconnect () {
         return new Promise((resolve, reject) => {
-            this._noblePeripheral.connect((err: string) => {
-                return resolve();
-            });
+            this._noblePeripheral.disconnect();
+            return resolve();
         });
     }
 

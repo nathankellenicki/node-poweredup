@@ -7,7 +7,7 @@ import * as Consts from "./consts";
 
 import Debug = require("debug");
 import { IBLEDevice } from "./interfaces";
-import { isBrowserContext } from "./utils";
+import { isWebBluetooth } from "./utils";
 const debug = Debug("wedo2smarthub");
 
 
@@ -55,7 +55,7 @@ export class WeDo2SmartHub extends Hub {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB);
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_2);
-            if (!isBrowserContext) {
+            if (!isWebBluetooth) {
                 await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_3);
                 await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_4);
                 await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_5);
@@ -71,7 +71,7 @@ export class WeDo2SmartHub extends Hub {
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_PORT_TYPE, this._parsePortMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_SENSOR_VALUE, this._parseSensorMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BUTTON, this._parseSensorMessage.bind(this));
-            if (!isBrowserContext) {
+            if (!isWebBluetooth) {
                 this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, this._parseBatteryMessage.bind(this));
                 this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, (err, data) => {
                     if (data) {
@@ -87,7 +87,7 @@ export class WeDo2SmartHub extends Hub {
                 this._bleDevice.subscribeToCharacteristic("00002a19-0000-1000-8000-00805f9b34fb", this._parseHighCurrentAlert.bind(this));
             }
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_HIGH_CURRENT_ALERT, this._parseHighCurrentAlert.bind(this));
-            if (!isBrowserContext) {
+            if (!isWebBluetooth) {
                 this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION, (err, data) => {
                     if (data) {
                         this._parseFirmwareRevisionString(data);

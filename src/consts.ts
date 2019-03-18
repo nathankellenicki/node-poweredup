@@ -17,6 +17,14 @@ export enum HubType {
 }
 
 
+// tslint:disable-next-line
+export let HubTypeNames = Object.keys(HubType).reduce((result: {[hubType: string]: string}, item) => {
+    // @ts-ignore
+    result[HubType[item]] = item;
+    return result;
+}, {});
+
+
 /**
  * @typedef DeviceType
  * @property {number} UNKNOWN 0
@@ -56,6 +64,14 @@ export enum DeviceType {
 }
 
 
+// tslint:disable-next-line
+export let DeviceTypeNames = Object.keys(DeviceType).reduce((result: {[deviceType: string]: string}, item) => {
+    // @ts-ignore
+    result[DeviceType[item]] = item;
+    return result;
+}, {});
+
+
 /**
  * @typedef Color
  * @property {number} BLACK 0
@@ -85,6 +101,14 @@ export enum Color {
     WHITE = 10,
     NONE = 255
 }
+
+
+// tslint:disable-next-line
+export let ColorNames = Object.keys(Color).reduce((result: {[color: string]: string}, item) => {
+    // @ts-ignore
+    result[Color[item]] = item;
+    return result;
+}, {});
 
 
 /**

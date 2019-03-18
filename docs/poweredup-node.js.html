@@ -85,13 +85,6 @@
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">"use strict";
-var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
-    if (mod &amp;&amp; mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const boostmovehub_1 = require("./boostmovehub");
 const duplotrainbase_1 = require("./duplotrainbase");
@@ -99,8 +92,6 @@ const nobledevice_1 = require("./nobledevice");
 const puphub_1 = require("./puphub");
 const pupremote_1 = require("./pupremote");
 const wedo2smarthub_1 = require("./wedo2smarthub");
-const utils_1 = require("./utils");
-const Consts = __importStar(require("./consts"));
 const events_1 = require("events");
 const Debug = require("debug");
 const debug = Debug("poweredup");
@@ -109,12 +100,7 @@ let ready = false;
 let wantScan = false;
 let discoveryEventAttached = false;
 const startScanning = () => {
-    if (utils_1.isBrowserContext) {
-        noble.startScanning([Consts.BLEService.WEDO2_SMART_HUB, Consts.BLEService.LPF2_HUB]);
-    }
-    else {
-        noble.startScanning();
-    }
+    noble.startScanning();
 };
 noble.on("stateChange", (state) => {
     ready = (state === "poweredOn");
@@ -214,10 +200,6 @@ class PoweredUP extends events_1.EventEmitter {
             return;
         }
         peripheral.removeAllListeners();
-        // noble.stopScanning();
-        // if (!isBrowserContext) {
-        //     startScanning();
-        // }
         device.on("discoverComplete", () => {
             hub.on("connect", () => {
                 debug(`Hub ${hub.uuid} connected`);

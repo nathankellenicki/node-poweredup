@@ -195,7 +195,8 @@ class Hub extends events_1.EventEmitter {
      * @returns {Promise} Resolved upon successful disconnect.
      */
     async disconnect() {
-        await this._bleDevice.disconnect();
+        this.emit("disconnect");
+        this._bleDevice.disconnect();
     }
     /**
      * Subscribe to sensor notifications on a given port.

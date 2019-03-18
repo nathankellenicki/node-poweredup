@@ -8,8 +8,6 @@ import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
 import { WeDo2SmartHub } from "./wedo2smarthub";
 
-import { isBrowserContext } from "./utils";
-
 import * as Consts from "./consts";
 
 import { EventEmitter } from "events";
@@ -23,11 +21,7 @@ let wantScan = false;
 let discoveryEventAttached = false;
 
 const startScanning = () => {
-    if (isBrowserContext) {
-        noble.startScanning([Consts.BLEService.WEDO2_SMART_HUB, Consts.BLEService.LPF2_HUB]);
-    } else {
-        noble.startScanning();
-    }
+    noble.startScanning();
 };
 
 noble.on("stateChange", (state: string) => {
@@ -149,10 +143,6 @@ export class PoweredUP extends EventEmitter {
         }
 
         peripheral.removeAllListeners();
-        // noble.stopScanning();
-        // if (!isBrowserContext) {
-        //     startScanning();
-        // }
 
         device.on("discoverComplete", () => {
 
