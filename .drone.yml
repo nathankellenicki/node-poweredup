@@ -1,0 +1,13 @@
+pipeline:
+
+  install:
+    image: node:10.15.1
+    commands:
+      - apt-get update
+      - apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
+      - npm install
+
+  build:
+    image: node:10.15.1
+    commands:
+      - npm run all

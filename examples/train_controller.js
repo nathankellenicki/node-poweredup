@@ -60,8 +60,6 @@ const trains = [
 poweredUP.on("discover", async (hub) => {
 
     if (hub instanceof PoweredUP.PUPRemote) {
-        await hub.connect();
-        hub._currentTrain = 2;
         hub.on("button", (button, state) => {
 
             if (button === "GREEN") {
@@ -71,7 +69,14 @@ poweredUP.on("discover", async (hub) => {
                         hub._currentTrain = 0;
                     }
                     hub.setLEDColor(trains[hub._currentTrain].color);
-                    console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name}`);
+                    const batteryLevels = [];
+                    const train = trains[hub._currentTrain];
+                    for (let trainHub of train.hubs) {
+                        if (trainHub._hub) {
+                            batteryLevels.push(`${trainHub.name}: ${trainHub._hub.batteryLevel}%`);
+                        }
+                    }
+                    console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name} (${batteryLevels.join(", ")})`);
                 }
             } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonState.RELEASED) {
                 trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
@@ -102,6 +107,8 @@ poweredUP.on("discover", async (hub) => {
             }
 
         });
+        await hub.connect();
+        hub._currentTrain = 2;
         hub.setLEDColor(trains[hub._currentTrain].color);
         console.log(`Connected to Powered UP remote (${hub.name})`);
         return;
@@ -112,12 +119,8 @@ poweredUP.on("discover", async (hub) => {
         for (let trainHub in train.hubs) {
             trainHub = train.hubs[trainHub];
             if (hub.name === trainHub.name) {
-                await hub.connect();
-                trainHub._hub = hub;
-                hub.setLEDColor(train.color);
-                console.log(`Connected to ${train.name} (${hub.name})`);
                 hub.on("attach", (port, type) => {
-                    if (type === PoweredUP.Consts.DeviceType.LED_LIGHTS && trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
+                    if (trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
                         hub.setLightBrightness(port, 100);
                     }
                 });
@@ -125,6 +128,10 @@ poweredUP.on("discover", async (hub) => {
                     console.log(`Disconnected from ${train.name} (${hub.name})`);
                     delete trainHub._hub;
                 })
+                await hub.connect();
+                trainHub._hub = hub;
+                hub.setLEDColor(train.color);
+                console.log(`Connected to ${train.name} (${hub.name})`);
             }
         }
     }
