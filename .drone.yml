@@ -18,5 +18,5 @@ pipeline:
       token:
         from_secret: NPM_TOKEN
     when:
-      event: [tag]
-      ref: [refs/tags/v*]
+      ref:
+        - refs/tags/v*
