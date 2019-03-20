@@ -15,6 +15,7 @@ pipeline:
   publish:
     image: plugins/npm
     settings:
+      username: nathankellenicki
       token:
         from_secret: NPM_TOKEN
     when:
