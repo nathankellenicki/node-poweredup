@@ -1,8 +1,7 @@
-[![CircleCI](https://circleci.com/gh/nathankellenicki/node-poweredup.svg?style=shield)](https://circleci.com/gh/nathankellenicki/node-poweredup)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/node-poweredup?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-![NPM Version](https://img.shields.io/npm/v/node-poweredup.svg?style=flat)
+[![Drone](https://drone.kellenicki.com/api/badges/nkellenicki/node-poweredup/status.svg)](https://drone.kellenicki.com/nkellenicki/node-poweredup)
+[![NPM Version](https://www.npmjs.com/package/node-poweredup)](https://img.shields.io/npm/v/node-poweredup.svg?style=flat)
 
-# **node-poweredup** - A Node.js module to interface with LEGO Powered UP components.
+# **node-poweredup** - A Javascript module to interface with LEGO Powered UP components.
 
 ### Introduction
 
@@ -16,7 +15,7 @@ Powered UP has a few improvements over Power Functions:
 
 3. As Powered UP hubs and remotes pair with each other, the system allows for a near unlimited number of independently controlled models in the same room. Power Functions was limited to 8 due to the use of infra-red for communication.
 
-### Installation
+### Node.js Installation
 
 Node.js v8.0 required.
 
