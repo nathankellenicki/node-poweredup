@@ -10,7 +10,7 @@
         "dateFormat": "ddd MMM Do YYYY",
         "outputSourceFiles": true,
         "outputSourcePath": true,
-        "systemName": "DocStrap",
+        "systemName": "node-poweredup",
         "footer": "",
         "copyright": "node-poweredup by Nathan Kellenicki licensed under the MIT license.",
         "navType": "vertical",

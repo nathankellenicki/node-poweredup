@@ -11,3 +11,12 @@ pipeline:
     image: node:10.15.1
     commands:
       - npm run all
+
+  publish:
+    image: plugins/npm
+    settings:
+      token:
+        from_secret: NPM_TOKEN
+    when:
+      event: [tag]
+      ref: [refs/tags/v*]
