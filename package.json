@@ -1,10 +1,10 @@
 {
   "name": "node-poweredup",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "A Javascript module to interface with LEGO Powered UP components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
   "main": "dist/node/index-node.js",
-  "types": "dist/index-node.d.ts",
+  "types": "dist/node/index-node.d.ts",
   "scripts": {
     "build:node": "tslint -c tslint.json \"./src/*.ts\" && tsc",
     "build:browser": "tslint -c tslint.json \"./src/*.ts\" && webpack --mode=production",
