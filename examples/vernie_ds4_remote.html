@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Vernie / PlayStation DualShock 4 Remote Control</title>
+<script src="../dist/browser/poweredup.js"></script>
+<link rel="stylesheet" type="text/css" href="./web_bluetooth.css" />
+<script>
+
+const poweredUP = new PoweredUP.PoweredUP();
+
+let vernie = null;
+let controller = null;
+
+poweredUP.on("discover", async (hub) => { // Wait to discover Vernie
+
+    if (hub instanceof PoweredUP.BoostMoveHub) {
+        vernie = hub;
+        await vernie.connect();
+        vernie.setLEDColor(PoweredUP.Consts.Color.BLUE);
+        document.getElementById("color").style.backgroundColor = PoweredUP.Consts.ColorNames[PoweredUP.Consts.Color.BLUE];
+        console.log(`Connected to Vernie (${vernie.name})!`);
+    }
+
+    if (vernie && controller) {
+        console.log("You're now ready to go!");
+    }
+    
+});
+
+const scan = function () {
+    if (PoweredUP.isWebBluetooth) {
+        poweredUP.scan(); // Start scanning for hubs
+    } else {
+        alert("Your browser does not support the Web Bluetooth specification.");
+    }
+}
+
+window.addEventListener("gamepadconnected", (event) => {
+
+    controller = event.gamepad;
+    if (!(controller.id.indexOf("54c") >= 0 && controller.id.indexOf("5c4") >= 0)) {
+        return;
+    }
+
+    console.log("Connected to PlayStation DualShock 4!");
+
+    let start = null;
+    let previousLeft = 0;
+    let previousRight = 0;
+
+    const inputLoop = async () => {
+        controller = navigator.getGamepads()[0];
+        if (vernie) {
+
+            if (controller.buttons[14].pressed) { // Move the head left when left is pressed
+                await vernie.setMotorAngle("D", 35, -20);
+            } else if (controller.buttons[15].pressed) { // Move the head right when right is pressed
+                await vernie.setMotorAngle("D", 35, 20);
+            } else if (controller.buttons[17].pressed) { // Fire when the touchpad is pressed down
+                await vernie.setMotorAngle("D", 80, 20);
+                await vernie.setMotorAngle("D", 80, -20);
+            }
+
+            const left = Math.floor(50 * (controller.axes[1] * -1));
+            const right = Math.floor(50 * (controller.axes[3] * -1));
+            if (left !== previousLeft || right !== previousRight) {
+                vernie.setMotorSpeed("AB", [left, right]); // Move tracks based on analog stick input
+                previousLeft = left;
+                previousRight = right;
+            }
+        }
+        start = requestAnimationFrame(inputLoop);
+    }
+
+    inputLoop();
+
+    if (vernie && controller) {
+        console.log("You're now ready to go!");
+    }
+
+});
+
+</script>
+</head>
+
+<body>
+<div><h1>Vernie / PlayStation DualShock 4 Remote Control</h1></div>
+<div>
+<a class="button" href="#" onclick="scan();">Scan for Vernie</a>
+</div>
+<div id="current_color">
+<span>Current Color: </span><div id="color">&nbsp;</div>
+</div>
+</body>
+
+</html>

@@ -59,7 +59,7 @@ export class PoweredUP extends EventEmitter {
      * Begin scanning for Powered UP Hub devices.
      * @method PoweredUP#scan
      */
-    public scan () {
+    public async scan () {
         wantScan = true;
 
         if (!discoveryEventAttached) {
@@ -71,6 +71,8 @@ export class PoweredUP extends EventEmitter {
             debug("Scanning started");
             startScanning();
         }
+
+        return true;
     }
 
 

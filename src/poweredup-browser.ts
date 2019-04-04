@@ -40,29 +40,36 @@ export class PoweredUP extends EventEmitter {
      */
     public async scan () {
 
-        const device = await navigator.bluetooth.requestDevice({
-            filters: [
-                {
-                    services: [
-                        Consts.BLEService.WEDO2_SMART_HUB
-                    ]
-                },
-                {
-                    services: [
-                        Consts.BLEService.LPF2_HUB
-                    ]
-                }
-            ],
-            optionalServices: [
-                Consts.BLEService.WEDO2_SMART_HUB_2,
-                "battery_service",
-                "device_information"
-            ]
-        });
+        try {
 
-        // @ts-ignore
-        const server = await device.gatt.connect();
-        this._discoveryEventHandler.call(this, server);
+            const device = await navigator.bluetooth.requestDevice({
+                filters: [
+                    {
+                        services: [
+                            Consts.BLEService.WEDO2_SMART_HUB
+                        ]
+                    },
+                    {
+                        services: [
+                            Consts.BLEService.LPF2_HUB
+                        ]
+                    }
+                ],
+                optionalServices: [
+                    Consts.BLEService.WEDO2_SMART_HUB_2,
+                    "battery_service",
+                    "device_information"
+                ]
+            });
+
+            // @ts-ignore
+            const server = await device.gatt.connect();
+            this._discoveryEventHandler.call(this, server);
+            return true;
+
+        } catch (err) {
+            return false;
+        }
 
     }
 
