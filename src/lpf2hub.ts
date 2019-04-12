@@ -26,8 +26,6 @@ export class LPF2Hub extends Hub {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-            this.emit("connect");
-            resolve();
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
@@ -36,6 +34,11 @@ export class LPF2Hub extends Hub {
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
             }
+            this.emit("connect");
+            resolve();
+            setTimeout(() => {
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version again
+            }, 200);
         });
     }
 
@@ -142,6 +145,21 @@ export class LPF2Hub extends Hub {
     }
 
 
+    protected _combinePorts (port: string, type: number) {
+        if (!this._ports[port]) {
+            return;
+        }
+        const portObj = this._portLookup(port);
+        if (portObj) {
+            Object.keys(this._ports).forEach((id) => {
+                if (this._ports[id].type === type && this._ports[id].value !== portObj.value && !this._virtualPorts[`${portObj.value < this._ports[id].value ? portObj.id : this._ports[id].id}${portObj.value > this._ports[id].value ? portObj.id : this._ports[id].id}`]) {
+                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x61, 0x01, portObj.value < this._ports[id].value ? portObj.value : this._ports[id].value, portObj.value > this._ports[id].value ? portObj.value : this._ports[id].value]));
+                }
+            });
+        }
+    }
+
+
     private _parseMessage (data?: Buffer) {
 
         if (data) {
@@ -223,14 +241,31 @@ export class LPF2Hub extends Hub {
 
     private _parsePortMessage (data: Buffer) {
 
-        const port = this._getPortForPortNumber(data[3]);
+        let port = this._getPortForPortNumber(data[3]);
 
         if (!port) {
-            return;
+            if (data[4] === 0x02) {
+                const portA = this._getPortForPortNumber(data[7]);
+                const portB = this._getPortForPortNumber(data[8]);
+                if (portA && portB) {
+                    this._virtualPorts[`${portA.id}${portB.id}`] = new Port(`${portA.id}${portB.id}`, data[3]);
+                    port = this._getPortForPortNumber(data[3]);
+                    if (port) {
+                        port.connected = true;
+                        this._registerDeviceAttachment(port, data[5]);
+                    } else {
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            } else {
+                return;
+            }
+        } else {
+            port.connected = (data[4] === 0x01 || data[4] === 0x02) ? true : false;
+            this._registerDeviceAttachment(port, data[5]);
         }
-
-        port.connected = (data[4] === 1 || data[4] === 2) ? true : false;
-        this._registerDeviceAttachment(port, data[5]);
 
     }
 

@@ -101,12 +101,12 @@
 
     <section class="readme-section">
         <article><p><a href="https://drone.kellenicki.com/nkellenicki/node-poweredup"><img src="https://drone.kellenicki.com/api/badges/nkellenicki/node-poweredup/status.svg" alt="Drone"></a><br><a href="https://www.npmjs.com/package/node-poweredup"><img src="https://img.shields.io/npm/v/node-poweredup.svg?style=flat" alt="NPM Version"></a></p>
-<h1><strong>node-poweredup</strong> - A Javascript module to interface with LEGO Powered UP components.</h1><h3>Introduction</h3><p>LEGO Powered UP is the successor to Power Functions, the system for adding electronics to LEGO models. Powered UP is a collection of ranges - starting with LEGO WeDo 2.0 released in 2016, LEGO Boost released in 2017, and LEGO Powered UP released in 2018. It also includes the 2018 Duplo App-Controlled Train sets.</p>
-<p>This library allows communication and control of Powered UP devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.</p>
+<h1><strong>node-poweredup</strong> - A Javascript module to interface with LEGO Powered Up components.</h1><h3>Introduction</h3><p>LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO WeDo 2.0 released in 2016, LEGO Boost released in 2017, and LEGO Powered Up released in 2018. It also includes the 2018 Duplo App-Controlled Train sets.</p>
+<p>This library allows communication and control of Powered Up devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.</p>
 <h3>Node.js Installation</h3><p>Node.js v8.0 required.</p>
 <pre class="prettyprint source lang-javascript"><code>npm install node-poweredup --save</code></pre><p>node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are <a href="https://github.com/noble/noble#prerequisites">certain dependencies which may need installed first</a>.</p>
 <p>Note: node-poweredup has been tested on macOS 10.13 and Debian/Raspbian on the Raspberry Pi 3 Model B.</p>
-<h3>Compatibility</h3><p>While most Powered UP components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.</p>
+<h3>Compatibility</h3><p>While most Powered Up components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.</p>
 <table>
 <thead>
 <tr>
@@ -115,7 +115,7 @@
 <th>Type</th>
 <th>WeDo 2.0 Smart Hub</th>
 <th>Boost Move Hub</th>
-<th>Powered UP Hub</th>
+<th>Powered Up Hub</th>
 <th>Availability</th>
 </tr>
 </thead>
@@ -162,11 +162,11 @@
 <td>Motor/Sensor</td>
 <td><em>Partial</em></td>
 <td>Yes</td>
-<td><em>Partial</em></td>
+<td>Yes</td>
 <td><a href="https://brickset.com/sets/17101-1/">17101</a></td>
 </tr>
 <tr>
-<td>Powered UP Train Motor</td>
+<td>Powered Up Train Motor</td>
 <td><a href="https://brickset.com/sets/88011-1/">88011</a></td>
 <td>Motor</td>
 <td>Yes</td>
@@ -175,7 +175,7 @@
 <td><a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a></td>
 </tr>
 <tr>
-<td>Powered UP LED Lights</td>
+<td>Powered Up LED Lights</td>
 <td><a href="https://brickset.com/sets/88005-1/">88005</a></td>
 <td>Light</td>
 <td>Yes</td>
@@ -209,13 +209,13 @@
 <td><a href="https://brickset.com/sets/17101-1/">17101</a></td>
 </tr>
 <tr>
-<td>Powered UP Hub</td>
+<td>Powered Up Hub</td>
 <td><a href="https://brickset.com/sets/88009-1/">88009</a></td>
 <td>RGB LED<br />Button</td>
 <td><a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a><br /><a href="https://brickset.com/sets/76112-1/">76112</a></td>
 </tr>
 <tr>
-<td>Powered UP Remote</td>
+<td>Powered Up Remote</td>
 <td><a href="https://brickset.com/sets/88010-1/">88010</a></td>
 <td>RGB LED<br />Left and Right Control Buttons<br />Button</td>
 <td><a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a></td>
@@ -232,10 +232,6 @@
 <li><p>The Boost Color and Distance sensor only works in color mode with the WeDo 2.0 Smart Hub.</p>
 </li>
 <li><p>When used with the WeDo 2.0 Smart Hub, the Boost Tacho Motor does not support rotating the motor by angle.</p>
-</li>
-<li><p>When used with the Powered UP Hub, the Boost Tacho Motor does not support rotating the motor by angle. It also does not support rotation detection.</p>
-</li>
-<li><p>Plugging two Boost Tacho Motors into the Powered UP Hub will crash the Hub (This requires a firmware update from LEGO to fix).</p>
 </li>
 </ul>
 <h3>Documentation</h3><p><a href="https://nathankellenicki.github.io/node-poweredup/">Full documentation is available here.</a></p>
@@ -262,7 +258,7 @@ poweredUP.on(&quot;discover&quot;, async (hub) => { // Wait to discover a Hub
 
 poweredUP.scan(); // Start scanning for Hubs
 console.log(&quot;Scanning for Hubs...&quot;);</code></pre><p>More examples are available in the &quot;examples&quot; directory.</p>
-<h3>Credits</h3><p>Thanks go to Jorge Pereira (<a href="https://github.com/JorgePe">@JorgePe</a>), Sebastian Raff (<a href="https://github.com/hobbyquaker">@hobbyquaker</a>), Valentin Heun (<a href="https://github.com/vheun">@vheun</a>), Johan Korten (<a href="https://github.com/jakorten">@jakorten</a>), and Andrey Pokhilko (<a href="https://github.com/undera">@undera</a>) for their various works, contributions, and assistance on figuring out the LEGO Boost, WeDo 2.0, and Powered UP protocols.</p></article>
+<h3>Credits</h3><p>Thanks go to Jorge Pereira (<a href="https://github.com/JorgePe">@JorgePe</a>), Sebastian Raff (<a href="https://github.com/hobbyquaker">@hobbyquaker</a>), Valentin Heun (<a href="https://github.com/vheun">@vheun</a>), Johan Korten (<a href="https://github.com/jakorten">@jakorten</a>), and Andrey Pokhilko (<a href="https://github.com/undera">@undera</a>) for their various works, contributions, and assistance on figuring out the LEGO Boost, WeDo 2.0, and Powered Up protocols.</p></article>
     </section>
 
 
@@ -312,7 +308,7 @@ console.log(&quot;Scanning for Hubs...&quot;);</code></pre><p>More examples are 
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
 	
-		on Thu Apr 4th 2019
+		on Fri Apr 12th 2019
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>

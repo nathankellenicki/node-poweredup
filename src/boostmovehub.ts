@@ -40,11 +40,13 @@ export class BoostMoveHub extends LPF2Hub {
         this._ports = {
             "A": new Port("A", 55),
             "B": new Port("B", 56),
-            "AB": new Port("AB", 57),
             "TILT": new Port("TILT", 58),
             "C": new Port("C", 1),
             "D": new Port("D", 2)
         };
+        this.on("attach", (port, type) => {
+            this._combinePorts(port, type);
+        });
         debug("Discovered Boost Move Hub");
     }
 
@@ -69,7 +71,7 @@ export class BoostMoveHub extends LPF2Hub {
      */
     public setMotorSpeed (port: string, speed: number | [number, number], time?: number | boolean) {
         const portObj = this._portLookup(port);
-        if (portObj.id !== "AB" && speed instanceof Array) {
+        if (!this._virtualPorts[portObj.id] && speed instanceof Array) {
             throw new Error(`Port ${portObj.id} can only accept a single speed`);
         }
         let cancelEventTimer = true;
@@ -88,7 +90,7 @@ export class BoostMoveHub extends LPF2Hub {
                 if (portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
-                    if (portObj.id === "AB") {
+                    if (this._virtualPorts[portObj.id]) {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
                     } else {
                         // @ts-ignore: The type of speed is properly checked at the start
@@ -117,7 +119,7 @@ export class BoostMoveHub extends LPF2Hub {
                 if (portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
-                    if (portObj.id === "AB") {
+                    if (this._virtualPorts[portObj.id]) {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
                     } else {
                         // @ts-ignore: The type of speed is properly checked at the start
@@ -173,14 +175,14 @@ export class BoostMoveHub extends LPF2Hub {
         if (!(portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR)) {
             throw new Error("Angle rotation is only available when using a Boost Tacho Motor or Boost Move Hub Motor");
         }
-        if (portObj.id !== "AB" && speed instanceof Array) {
+        if (!this._virtualPorts[portObj.id] && speed instanceof Array) {
             throw new Error(`Port ${portObj.id} can only accept a single speed`);
         }
         portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             portObj.busy = true;
             let data = null;
-            if (portObj.id === "AB") {
+            if (this._virtualPorts[portObj.id]) {
                 data = Buffer.from([0x81, portObj.value, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
             } else {
                 // @ts-ignore: The type of speed is properly checked at the start

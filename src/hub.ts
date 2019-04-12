@@ -21,6 +21,7 @@ export class Hub extends EventEmitter {
     public type: Consts.HubType = Consts.HubType.UNKNOWN;
 
     protected _ports: {[port: string]: Port} = {};
+    protected _virtualPorts: {[port: string]: Port} = {};
 
     protected _name: string = "";
     protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
@@ -275,6 +276,9 @@ export class Hub extends EventEmitter {
              * @event Hub#detach
              * @param {string} port
              */
+            if (this._virtualPorts[port.id]) {
+                delete this._virtualPorts[port.id];
+            }
             this.emit("detach", port.id);
         }
 
@@ -286,6 +290,12 @@ export class Hub extends EventEmitter {
         for (const key of Object.keys(this._ports)) {
             if (this._ports[key].value === num) {
                 return this._ports[key];
+            }
+        }
+
+        for (const key of Object.keys(this._virtualPorts)) {
+            if (this._virtualPorts[key].value === num) {
+                return this._virtualPorts[key];
             }
         }
 
@@ -345,10 +355,10 @@ export class Hub extends EventEmitter {
 
 
     protected _portLookup (port: string) {
-        if (!this._ports[port.toUpperCase()]) {
+        if (!this._ports[port.toUpperCase()] && !this._virtualPorts[port.toUpperCase()]) {
             throw new Error(`Port ${port.toUpperCase()} does not exist on this Hub type`);
         }
-        return this._ports[port];
+        return this._ports[port] || this._virtualPorts[port];
     }
 
 
