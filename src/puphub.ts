@@ -1,3 +1,4 @@
+import compareVersion from "compare-versions";
 import { Peripheral } from "noble";
 
 import { LPF2Hub } from "./lpf2hub";
@@ -235,6 +236,13 @@ export class PUPHub extends LPF2Hub {
                 return resolve();
             }
         });
+    }
+
+
+    protected _checkFirmware (version: string) {
+        if (compareVersion("1.1.00.0004", version) === 1) {
+            throw new Error(`Your Powered Up Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
+        }
     }
 
 

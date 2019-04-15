@@ -1,6 +1,6 @@
 {
   "name": "node-poweredup",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "A Javascript module to interface with LEGO Powered Up components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
   "main": "dist/node/index-node.js",
@@ -16,6 +16,7 @@
   "author": "Nathan Kellenicki <nathan@kellenicki.com>",
   "license": "MIT",
   "dependencies": {
+    "compare-versions": "^3.4.0",
     "debug": "^4.1.1",
     "noble": "1.9.1",
     "noble-mac": "git+https://github.com/Timeular/noble-mac.git#af4418e"

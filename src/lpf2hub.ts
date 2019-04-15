@@ -160,6 +160,11 @@ export class LPF2Hub extends Hub {
     }
 
 
+    protected _checkFirmware (version: string) {
+        return;
+    }
+
+
     private _parseMessage (data?: Buffer) {
 
         if (data) {
@@ -230,6 +235,7 @@ export class LPF2Hub extends Hub {
             const major = data.readUInt8(8) >>> 4;
             const minor = data.readUInt8(8) & 0xf;
             this._firmwareInfo = { major, minor, bugFix, build };
+            this._checkFirmware(this.firmwareVersion);
 
         // Battery level reports
         } else if (data[3] === 0x06) {
