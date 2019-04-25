@@ -126,6 +126,7 @@ export class PoweredUP extends EventEmitter {
 
     private async _discoveryEventHandler (peripheral: Peripheral) {
 
+        peripheral.removeAllListeners();
         const device = new NobleDevice(peripheral);
 
         let hub: Hub;
@@ -143,8 +144,6 @@ export class PoweredUP extends EventEmitter {
         } else {
             return;
         }
-
-        peripheral.removeAllListeners();
 
         device.on("discoverComplete", () => {
 

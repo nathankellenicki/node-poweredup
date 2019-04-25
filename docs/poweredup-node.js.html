@@ -180,6 +180,7 @@ class PoweredUP extends events_1.EventEmitter {
         return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]).filter((hub) => hub.name === name);
     }
     async _discoveryEventHandler(peripheral) {
+        peripheral.removeAllListeners();
         const device = new nobledevice_1.NobleDevice(peripheral);
         let hub;
         if (await wedo2smarthub_1.WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
@@ -200,7 +201,6 @@ class PoweredUP extends events_1.EventEmitter {
         else {
             return;
         }
-        peripheral.removeAllListeners();
         device.on("discoverComplete", () => {
             hub.on("connect", () => {
                 debug(`Hub ${hub.uuid} connected`);
