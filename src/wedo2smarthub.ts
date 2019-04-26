@@ -135,7 +135,7 @@ export class WeDo2SmartHub extends Hub {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
             this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
-            if (color === false) {
+            if (typeof color === "boolean") {
                 color = 0;
             }
             data = Buffer.from([0x06, 0x04, 0x01, color]);

@@ -94,7 +94,7 @@ export class DuploTrainBase extends LPF2Hub {
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
-            if (color === false) {
+            if (typeof color === "boolean") {
                 color = 0;
             }
             const data = Buffer.from([0x81, 0x11, 0x11, 0x51, 0x00, color]);
