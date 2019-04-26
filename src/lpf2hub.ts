@@ -307,23 +307,25 @@ export class LPF2Hub extends Hub {
 
         if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
             data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4) / 500;
-            this._voltage = voltage;
+            const voltage = data.readUInt16LE(4);
+            this._voltage = 6400.0 * voltage / 3200.0 / 1000.0;
             return;
-        } else if (data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_REMOTE) { // Current (PUP Remote)
+        } else if ((data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_HUB)) { // Voltage (PUP Hub)
+            data = this._padMessage(data, 6);
+            const voltage = data.readUInt16LE(4);
+            this._voltage = 9620.0 * voltage / 3893.0 / 1000.0;
+            return;
+        } else if (data[3] === 0x3c) { // Voltage (Others)
+            data = this._padMessage(data, 6);
+            const voltage = data.readUInt16LE(4);
+            this._voltage = 9600.0 * voltage / 3893.0 / 1000.0;
+            return;
+        } else if (data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_REMOTE) { // RSSI (PUP Remote)
+            return;
+        } else if (data[3] === 0x3b) { // Current (Others)
             data = this._padMessage(data, 6);
             const current = data.readUInt16LE(4);
-            this._current = current;
-            return;
-        } else if (data[3] === 0x3c && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Voltage (Non-PUP Remote)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4) / 400;
-            this._voltage = voltage;
-            return;
-        } else if (data[3] === 0x3b && this.type !== Consts.HubType.POWERED_UP_REMOTE) { // Current (Non-PUP Remote)
-            data = this._padMessage(data, 6);
-            const current = data.readUInt16LE(4) / 1000;
-            this._current = current;
+            this._current = 2444 * current / 4095.0;
             return;
         }
 
