@@ -1,3 +1,4 @@
+import compareVersion from "compare-versions";
 import { Peripheral } from "noble";
 
 import { LPF2Hub } from "./lpf2hub";
@@ -38,11 +39,11 @@ export class BoostMoveHub extends LPF2Hub {
         super(device, autoSubscribe);
         this.type = Consts.HubType.BOOST_MOVE_HUB;
         this._ports = {
-            "A": new Port("A", 55),
-            "B": new Port("B", 56),
+            "A": new Port("A", 0),
+            "B": new Port("B", 1),
             "TILT": new Port("TILT", 58),
-            "C": new Port("C", 1),
-            "D": new Port("D", 2)
+            "C": new Port("C", 2),
+            "D": new Port("D", 3)
         };
         this.on("attach", (port, type) => {
             this._combinePorts(port, type);
@@ -233,6 +234,13 @@ export class BoostMoveHub extends LPF2Hub {
                 return resolve();
             }
         });
+    }
+
+
+    protected _checkFirmware (version: string) {
+        if (compareVersion("2.0.00.0023", version) === 1) {
+            throw new Error(`Your Boost Move Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
+        }
     }
 
 
