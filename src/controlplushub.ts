@@ -8,53 +8,53 @@ import * as Consts from "./consts";
 
 import Debug = require("debug");
 import { IBLEDevice } from "./interfaces";
-const debug = Debug("boostmovehub");
+const debug = Debug("ControlPlusHub");
 
 
 /**
- * The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
- * @class BoostMoveHub
+ * The ControlPlusHub is emitted if the discovered device is a Control+ Hub.
+ * @class ControlPlusHub
  * @extends LPF2Hub
  * @extends Hub
  */
-export class BoostMoveHub extends LPF2Hub {
+export class ControlPlusHub extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Boost Move Hub will never emit them.
+    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
 
     /**
-     * @event BoostMoveHub#speed
+     * @event ControlPlusHub#speed
      * @ignore
      */
 
 
-    public static IsBoostMoveHub (peripheral: Peripheral) {
+    public static IsControlPlusHub (peripheral: Peripheral) {
         return (peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&
-            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID);
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.CONTROL_PLUS_LARGE_HUB);
     }
 
 
     constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
-        this.type = Consts.HubType.BOOST_MOVE_HUB;
+        this.type = Consts.HubType.CONTROL_PLUS_HUB;
         this._ports = {
             "A": new Port("A", 0),
             "B": new Port("B", 1),
             "C": new Port("C", 2),
             "D": new Port("D", 3),
-            "TILT": new Port("TILT", 58)
+            // "TILT": new Port("TILT", 60)
         };
         this.on("attach", (port, type) => {
             this._combinePorts(port, type);
         });
-        debug("Discovered Boost Move Hub");
+        debug("Discovered Control+ Hub");
     }
 
 
     public connect () {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Boost Move Hub");
+            debug("Connecting to Control+ Hub");
             await super.connect();
             debug("Connect completed");
             return resolve();
@@ -64,7 +64,7 @@ export class BoostMoveHub extends LPF2Hub {
 
     /**
      * Set the motor speed on a given port.
-     * @method BoostMoveHub#setMotorSpeed
+     * @method ControlPlusHub#setMotorSpeed
      * @param {string} port
      * @param {number | Array.<number>} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
@@ -122,12 +122,7 @@ export class BoostMoveHub extends LPF2Hub {
 
             } else {
 
-                if (
-                    portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR ||
-                    portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR ||
-                    portObj.type === Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR ||
-                    portObj.type === Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR
-                ) {
+                if (portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR) {
                     portObj.busy = true;
                     let data = null;
                     if (this._virtualPorts[portObj.id]) {
@@ -153,7 +148,7 @@ export class BoostMoveHub extends LPF2Hub {
 
     /**
      * Ramp the motor speed on a given port.
-     * @method BoostMoveHub#rampMotorSpeed
+     * @method ControlPlusHub#rampMotorSpeed
      * @param {string} port
      * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
@@ -175,7 +170,7 @@ export class BoostMoveHub extends LPF2Hub {
 
     /**
      * Rotate a motor by a given angle.
-     * @method BoostMoveHub#setMotorAngle
+     * @method ControlPlusHub#setMotorAngle
      * @param {string} port
      * @param {number} angle How much the motor should be rotated (in degrees).
      * @param {number | Array.<number>} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
@@ -215,7 +210,7 @@ export class BoostMoveHub extends LPF2Hub {
 
     /**
      * Fully (hard) stop the motor on a given port.
-     * @method BoostMoveHub#brakeMotor
+     * @method ControlPlusHub#brakeMotor
      * @param {string} port
      * @returns {Promise} Resolved upon successful completion of command.
      */
@@ -226,7 +221,7 @@ export class BoostMoveHub extends LPF2Hub {
 
     /**
      * Set the light brightness on a given port.
-     * @method BoostMoveHub#setLightBrightness
+     * @method ControlPlusHub#setLightBrightness
      * @param {string} port
      * @param {number} brightness Brightness value between 0-100 (0 is off)
      * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
@@ -249,13 +244,6 @@ export class BoostMoveHub extends LPF2Hub {
                 return resolve();
             }
         });
-    }
-
-
-    protected _checkFirmware (version: string) {
-        if (compareVersion("2.0.00.0023", version) === 1) {
-            throw new Error(`Your Boost Move Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
-        }
     }
 
 

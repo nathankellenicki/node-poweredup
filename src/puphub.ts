@@ -23,11 +23,6 @@ export class PUPHub extends LPF2Hub {
     // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
 
     /**
-     * @event PUPHub#rotate
-     * @ignore
-     */
-
-    /**
      * @event PUPHub#speed
      * @ignore
      */
@@ -90,7 +85,12 @@ export class PUPHub extends LPF2Hub {
         return new Promise((resolve, reject) => {
             if (time && typeof time === "number") {
 
-                if (portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR) {
+                if (
+                    portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR ||
+                    portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR ||
+                    portObj.type === Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR ||
+                    portObj.type === Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR
+                ) {
                     portObj.busy = true;
                     let data = null;
                     if (this._virtualPorts[portObj.id]) {
@@ -175,8 +175,13 @@ export class PUPHub extends LPF2Hub {
      */
     public setMotorAngle (port: string, angle: number, speed: number | [number, number] = 100) {
         const portObj = this._portLookup(port);
-        if (!(portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR)) {
-            throw new Error("Angle rotation is only available when using a Boost Tacho Motor or Boost Move Hub Motor");
+        if (!(
+            portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR ||
+            portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR ||
+            portObj.type === Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR ||
+            portObj.type === Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR
+        )) {
+            throw new Error("Angle rotation is only available when using a Boost Tacho Motor, Boost Move Hub Motor, Control+ Medium Motor, or Control+ Large Motor");
         }
         if (!this._virtualPorts[portObj.id] && speed instanceof Array) {
             throw new Error(`Port ${portObj.id} can only accept a single speed`);

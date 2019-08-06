@@ -418,6 +418,16 @@ export class LPF2Hub extends Hub {
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
+                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
+                    const rotation = data.readInt32LE(4);
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
+                    const rotation = data.readInt32LE(4);
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
                 case Consts.DeviceType.BOOST_TILT: {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);

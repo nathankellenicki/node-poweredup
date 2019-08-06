@@ -454,6 +454,17 @@ export class WeDo2SmartHub extends Hub {
                      * @param {number} rotation
                      */
                     this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
+                    const rotation = data.readInt32LE(2);
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
+                    const rotation = data.readInt32LE(2);
+                    this.emit("rotate", port.id, rotation);
+                    break;
                 }
             }
         }

@@ -1,6 +1,7 @@
 import { Peripheral } from "noble-mac";
 
 import { BoostMoveHub } from "./boostmovehub";
+import { ControlPlusHub } from "./controlplushub";
 import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
 import { NobleDevice } from "./nobledevice";
@@ -141,6 +142,8 @@ export class PoweredUP extends EventEmitter {
             hub = new PUPRemote(device, this.autoSubscribe);
         } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
             hub = new DuploTrainBase(device, this.autoSubscribe);
+        } else if (await ControlPlusHub.IsControlPlusHub(peripheral)) {
+            hub = new ControlPlusHub(device, this.autoSubscribe);
         } else {
             return;
         }

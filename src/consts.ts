@@ -6,6 +6,7 @@
  * @property {number} POWERED_UP_HUB 3
  * @property {number} POWERED_UP_REMOTE 4
  * @property {number} DUPLO_TRAIN_HUB 5
+ * @property {number} CONTROL_PLUS_HUB 6
  */
 export enum HubType {
     UNKNOWN = 0,
@@ -13,7 +14,8 @@ export enum HubType {
     BOOST_MOVE_HUB = 2,
     POWERED_UP_HUB = 3,
     POWERED_UP_REMOTE = 4,
-    DUPLO_TRAIN_HUB = 5
+    DUPLO_TRAIN_HUB = 5,
+    CONTROL_PLUS_HUB = 6
 }
 
 
@@ -42,6 +44,8 @@ export let HubTypeNames = Object.keys(HubType).reduce((result: {[hubType: string
  * @property {number} DUPLO_TRAIN_BASE_SPEAKER 42
  * @property {number} DUPLO_TRAIN_BASE_COLOR 43
  * @property {number} DUPLO_TRAIN_BASE_SPEEDOMETER 44
+ * @property {number} CONTROL_PLUS_LARGE_MOTOR 46
+ * @property {number} CONTROL_PLUS_XLARGE_MOTOR 47
  * @property {number} POWERED_UP_REMOTE_BUTTON 55
  */
 export enum DeviceType {
@@ -60,6 +64,8 @@ export enum DeviceType {
     DUPLO_TRAIN_BASE_SPEAKER = 42,
     DUPLO_TRAIN_BASE_COLOR = 43,
     DUPLO_TRAIN_BASE_SPEEDOMETER = 44,
+    CONTROL_PLUS_LARGE_MOTOR = 46,
+    CONTROL_PLUS_XLARGE_MOTOR = 47,
     POWERED_UP_REMOTE_BUTTON = 55
 }
 
@@ -146,10 +152,11 @@ export enum DuploTrainBaseSound {
 
 
 export enum BLEManufacturerData {
+    DUPLO_TRAIN_HUB_ID = 32,
     BOOST_MOVE_HUB_ID = 64,
     POWERED_UP_HUB_ID = 65,
     POWERED_UP_REMOTE_ID = 66,
-    DUPLO_TRAIN_HUB_ID = 32
+    CONTROL_PLUS_LARGE_HUB = 128
 }
 
 

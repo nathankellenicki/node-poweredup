@@ -380,6 +380,10 @@ export class Hub extends EventEmitter {
                 return 0x02;
             case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
                 return 0x02;
+            case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
+                return 0x02;
+            case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
+                return 0x02;
             case Consts.DeviceType.BOOST_DISTANCE:
                 return (this.type === Consts.HubType.WEDO2_SMART_HUB ? 0x00 : 0x08);
             case Consts.DeviceType.BOOST_TILT:
