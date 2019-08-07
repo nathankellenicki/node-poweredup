@@ -7,6 +7,7 @@ import * as Consts from "./consts";
 
 import Debug = require("debug");
 const debug = Debug("lpf2hub");
+const modeInfoDebug = Debug("lpf2hubmodeinfo");
 
 
 /**
@@ -193,6 +194,14 @@ export class LPF2Hub extends Hub {
                     this._parsePortMessage(message);
                     break;
                 }
+                case 0x43: {
+                    this._parsePortInformationResponse(message);
+                    break;
+                }
+                case 0x44: {
+                    this._parseModeInformationResponse(message);
+                    break;
+                }
                 case 0x45: {
                     this._parseSensorMessage(message);
                     break;
@@ -250,6 +259,10 @@ export class LPF2Hub extends Hub {
 
         let port = this._getPortForPortNumber(data[3]);
 
+        if (data[4] === 0x01) {
+            this._sendPortInformationRequest(data[3]);
+        }
+
         if (!port) {
             if (data[4] === 0x02) {
                 const portA = this._getPortForPortNumber(data[7]);
@@ -274,6 +287,57 @@ export class LPF2Hub extends Hub {
             this._registerDeviceAttachment(port, data[5]);
         }
 
+    }
+
+
+    private _sendPortInformationRequest (port: number) {
+        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x21, port, 0x01]));
+    }
+
+
+    private _parsePortInformationResponse (data: Buffer) {
+        const port = data[3];
+        const count = data[6];
+        const input = data.readUInt16LE(7);
+        const output = data.readUInt16LE(9);
+        modeInfoDebug(`Port ${port}, total modes ${count}, input modes ${input.toString(2)}, output modes ${output.toString(2)}`);
+
+        for (let i = 0; i < count; i++) {
+            this._sendModeInformationRequest(port, i, 0x00); // Mode Name
+            this._sendModeInformationRequest(port, i, 0x01); // RAW Range
+            this._sendModeInformationRequest(port, i, 0x02); // PCT Range
+            this._sendModeInformationRequest(port, i, 0x03); // SI Range
+            this._sendModeInformationRequest(port, i, 0x04); // SI Symbol
+        }
+    }
+
+
+    private _sendModeInformationRequest (port: number, mode: number, type: number) {
+        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x22, port, mode, type]));
+    }
+
+
+    private _parseModeInformationResponse (data: Buffer) {
+        const port = data[3];
+        const mode = data[4];
+        const type = data[5];
+        switch (type) {
+            case 0x00: // Mode Name
+                modeInfoDebug(`Port ${port}, mode ${mode}, name ${data.slice(6, data.length).toString()}`);
+                break;
+            case 0x01: // RAW Range
+                modeInfoDebug(`Port ${port}, mode ${mode}, RAW min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                break;
+            case 0x02: // PCT Range
+                modeInfoDebug(`Port ${port}, mode ${mode}, PCT min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                break;
+            case 0x03: // SI Range
+                modeInfoDebug(`Port ${port}, mode ${mode}, SI min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                break;
+            case 0x04: // SI Symbol
+                modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${data.slice(6, data.length).toString()}`);
+                break;
+        }
     }
 
 
