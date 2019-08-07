@@ -19,44 +19,6 @@ const debug = Debug("pupremote");
 export class PUPRemote extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
-
-    /**
-     * @event PUPRemote#distance
-     * @ignore
-     */
-
-    /**
-     * @event PUPRemote#color
-     * @ignore
-     */
-
-    /**
-     * @event PUPRemote#tilt
-     * @ignore
-     */
-
-    /**
-     * @event PUPRemote#rotate
-     * @ignore
-     */
-
-    /**
-     * @event PUPRemote#speed
-     * @ignore
-     */
-
-    /**
-     * @event PUPRemote#attach
-     * @ignore
-     */
-
-    /**
-     * @event PUPRemote#detach
-     * @ignore
-     */
-
-
     public static IsPUPRemote (peripheral: Peripheral) {
         return (peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&

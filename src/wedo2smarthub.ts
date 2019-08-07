@@ -19,14 +19,6 @@ const debug = Debug("wedo2smarthub");
 export class WeDo2SmartHub extends Hub {
 
 
-    // We set JSDoc to ignore these events as a WeDo 2.0 Smart Hub will never emit them.
-
-    /**
-     * @event WeDo2SmartHub#speed
-     * @ignore
-     */
-
-
     public static IsWeDo2SmartHub (peripheral: Peripheral) {
         return (peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&

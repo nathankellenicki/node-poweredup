@@ -20,14 +20,6 @@ const debug = Debug("ControlPlusHub");
 export class ControlPlusHub extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
-
-    /**
-     * @event ControlPlusHub#speed
-     * @ignore
-     */
-
-
     public static IsControlPlusHub (peripheral: Peripheral) {
         return (peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&
@@ -56,6 +48,9 @@ export class ControlPlusHub extends LPF2Hub {
         return new Promise(async (resolve, reject) => {
             debug("Connecting to Control+ Hub");
             await super.connect();
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x62, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01])); // Accelerometer
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x63, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Gyro/Tilt
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3d, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01])); // Temperature
             debug("Connect completed");
             return resolve();
         });

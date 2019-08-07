@@ -19,44 +19,6 @@ const debug = Debug("duplotrainbase");
 export class DuploTrainBase extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Duplo Train Base will never emit them.
-
-    /**
-     * @event DuploTrainBase#distance
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#colorAndDistance
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#tilt
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#rotate
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#button
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#attach
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#detach
-     * @ignore
-     */
-
-
     public static IsDuploTrainBase (peripheral: Peripheral) {
         return (peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&

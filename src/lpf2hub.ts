@@ -18,6 +18,7 @@ export class LPF2Hub extends Hub {
 
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
+    private _lastTiltZ: number = 0;
 
     private _messageBuffer: Buffer = Buffer.alloc(0);
 
@@ -380,6 +381,11 @@ export class LPF2Hub extends Hub {
             const voltage = data.readUInt16LE(4);
             this._voltage = 9620.0 * voltage / 3893.0 / 1000.0;
             return;
+        } else if ((data[3] === 0x3c && this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Voltage (Control+ Hub)
+            data = this._padMessage(data, 6);
+            const voltage = data.readUInt16LE(4);
+            this._voltage = 9615.0 * voltage / 4095.0 / 1000.0;
+            return;
         } else if (data[3] === 0x3c) { // Voltage (Others)
             data = this._padMessage(data, 6);
             const voltage = data.readUInt16LE(4);
@@ -391,6 +397,44 @@ export class LPF2Hub extends Hub {
             data = this._padMessage(data, 6);
             const current = data.readUInt16LE(4);
             this._current = 2444 * current / 4095.0;
+            return;
+        }
+
+        if ((data[3] === 0x62 && this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ Accelerometer
+            const accelX = Math.round((data.readInt16LE(4) / 28571) * 2000);
+            const accelY = Math.round((data.readInt16LE(6) / 28571) * 2000);
+            const accelZ = Math.round((data.readInt16LE(8) / 28571) * 2000);
+            /**
+             * Emits when accelerometer detects movement. Measured in DPS - degrees per second.
+             * @event LPF2Hub#accel
+             * @param {string} port
+             * @param {number} x
+             * @param {number} y
+             * @param {number} z
+             */
+            this.emit("accel", "ACCEL", accelX, accelY, accelZ);
+            return;
+        }
+
+        if ((data[3] === 0x63 && this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ Accelerometer
+            const tiltZ = data.readInt16LE(4);
+            const tiltY = data.readInt16LE(6);
+            const tiltX = data.readInt16LE(8);
+            this._lastTiltX = tiltX;
+            this._lastTiltY = tiltY;
+            this._lastTiltZ = tiltZ;
+            this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
+            return;
+        }
+
+        if ((data[3] === 0x3d && this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ CPU Temperature
+            /**
+             * Emits when a change is detected on a temperature sensor. Measured in degrees centigrade.
+             * @event LPF2Hub#temp
+             * @param {string} port For Control+ Hubs, port will be "CPU" as the sensor reports CPU temperature.
+             * @param {number} temp
+             */
+            this.emit("temp", "CPU", ((data.readInt16LE(4) / 900) * 90).toFixed(2));
             return;
         }
 
@@ -459,11 +503,12 @@ export class LPF2Hub extends Hub {
                     /**
                      * Emits when a tilt sensor is activated.
                      * @event LPF2Hub#tilt
-                     * @param {string} port If the event is fired from the Move Hub's in-built tilt sensor, the special port "TILT" is used.
+                     * @param {string} port If the event is fired from the Move Hub or Control+ Hub's in-built tilt sensor, the special port "TILT" is used.
                      * @param {number} x
                      * @param {number} y
+                     * @param {number} z (Only available when using a Control+ Hub)
                      */
-                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
+                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltY);
                     break;
                 }
                 case Consts.DeviceType.BOOST_TACHO_MOTOR: {
@@ -495,7 +540,9 @@ export class LPF2Hub extends Hub {
                 case Consts.DeviceType.BOOST_TILT: {
                     const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
                     const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
-                    this.emit("tilt", port.id, tiltX, tiltY);
+                    this._lastTiltX = tiltX;
+                    this._lastTiltY = tiltY;
+                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
                     break;
                 }
                 case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON: {

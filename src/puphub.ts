@@ -20,14 +20,6 @@ const debug = Debug("puphub");
 export class PUPHub extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Powered UP Remote will never emit them.
-
-    /**
-     * @event PUPHub#speed
-     * @ignore
-     */
-
-
     public static IsPUPHub (peripheral: Peripheral) {
         return (peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&
