@@ -292,18 +292,36 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
             let data = null;
             if (this._virtualPorts[portObj.id]) {
                 data = Buffer.from([0x81, portObj.value, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                data.writeUInt32LE(pos, 4);
-                data.writeUInt32LE(pos, 8);
+                data.writeInt32LE(pos, 4);
+                data.writeInt32LE(pos, 8);
             }
             else {
                 // @ts-ignore: The type of speed is properly checked at the start
                 data = Buffer.from([0x81, portObj.value, 0x11, 0x0d, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-                data.writeUInt32LE(pos, 4);
+                data.writeInt32LE(pos, 4);
             }
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             portObj.finished = () => {
                 return resolve();
             };
+        });
+    }
+    /**
+     * Reset the current motor position as absolute position zero
+     * @method PUPHub#resetAbsolutePosition
+     * @param {string} port
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     */
+    resetAbsolutePosition(port) {
+        const portObj = this._portLookup(port);
+        if (!(portObj.type === Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR ||
+            portObj.type === Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR)) {
+            throw new Error("Absolute positioning is only available when using a Control+ Medium Motor, or Control+ Large Motor");
+        }
+        return new Promise((resolve) => {
+            const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            return resolve();
         });
     }
     /**

@@ -508,7 +508,7 @@ export class LPF2Hub extends Hub {
                      * @param {number} y
                      * @param {number} z (Only available when using a Control+ Hub)
                      */
-                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltY);
+                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
                     break;
                 }
                 case Consts.DeviceType.BOOST_TACHO_MOTOR: {
