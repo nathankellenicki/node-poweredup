@@ -204,6 +204,43 @@ export class ControlPlusHub extends LPF2Hub {
 
 
     /**
+     * Tell motor to goto an absolute position
+     * @method ControlPlusHub#setAbsolutePosition
+     * @param {string} port
+     * @param {number} pos The position of the motor to go to
+     * @param {number | Array.<number>} [speed=100] A value between 1 - 100 should be set (Direction does not apply when going to absolute position)
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     */
+    public setAbsolutePosition (port: string, pos: number, speed: number = 100) {
+        const portObj = this._portLookup(port);
+        if (!(
+            portObj.type === Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR ||
+            portObj.type === Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR
+        )) {
+            throw new Error("Absolute positioning is only available when using a Control+ Medium Motor, or Control+ Large Motor");
+        }
+        portObj.cancelEventTimer();
+        return new Promise((resolve, reject) => {
+            portObj.busy = true;
+            let data = null;
+            if (this._virtualPorts[portObj.id]) {
+                data = Buffer.from([0x81, portObj.value, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                data.writeUInt32LE(pos, 4);
+                data.writeUInt32LE(pos, 8);
+            } else {
+                // @ts-ignore: The type of speed is properly checked at the start
+                data = Buffer.from([0x81, portObj.value, 0x11, 0x0d, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
+                data.writeUInt32LE(pos, 4);
+            }
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            portObj.finished = () => {
+                return resolve();
+            };
+        });
+    }
+
+
+    /**
      * Fully (hard) stop the motor on a given port.
      * @method ControlPlusHub#brakeMotor
      * @param {string} port
