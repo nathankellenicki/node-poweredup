@@ -1,4 +1,5 @@
 import { BoostMoveHub } from "./boostmovehub";
+import { ControlPlusHub } from "./controlplushub";
 import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
 import { PUPHub } from "./puphub";
@@ -130,6 +131,9 @@ export class PoweredUP extends EventEmitter {
                                 case Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID:
                                     resolve(Consts.HubType.DUPLO_TRAIN_HUB);
                                     break;
+                                case Consts.BLEManufacturerData.CONTROL_PLUS_LARGE_HUB:
+                                    resolve(Consts.HubType.CONTROL_PLUS_HUB);
+                                    break;
                             }
                         });
                     } else {
@@ -183,6 +187,8 @@ export class PoweredUP extends EventEmitter {
             case Consts.HubType.DUPLO_TRAIN_HUB:
                 hub = new DuploTrainBase(device, this.autoSubscribe);
                 break;
+            case Consts.HubType.CONTROL_PLUS_HUB:
+                hub = new ControlPlusHub(device, this.autoSubscribe);
             default:
                 return;
         }
@@ -204,7 +210,7 @@ export class PoweredUP extends EventEmitter {
             /**
              * Emits when a Powered UP Hub device is found.
              * @event PoweredUP#discover
-             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
+             * @param {WeDo2SmartHub | BoostMoveHub | ControlPlusHub | PUPHub | PUPRemote | DuploTrainBase} hub
              */
             this.emit("discover", hub);
 
