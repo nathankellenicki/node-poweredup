@@ -189,6 +189,7 @@ export class PoweredUP extends EventEmitter {
                 break;
             case Consts.HubType.CONTROL_PLUS_HUB:
                 hub = new ControlPlusHub(device, this.autoSubscribe);
+                break;
             default:
                 return;
         }
