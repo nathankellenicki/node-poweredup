@@ -6,6 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { IBLEDevice } from "./interfaces";
 const debug = Debug("duplotrainbase");
 
 
@@ -18,51 +19,15 @@ const debug = Debug("duplotrainbase");
 export class DuploTrainBase extends LPF2Hub {
 
 
-    // We set JSDoc to ignore these events as a Duplo Train Base will never emit them.
-
-    /**
-     * @event DuploTrainBase#distance
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#colorAndDistance
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#tilt
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#rotate
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#button
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#attach
-     * @ignore
-     */
-
-    /**
-     * @event DuploTrainBase#detach
-     * @ignore
-     */
-
-
     public static IsDuploTrainBase (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
+        return (peripheral.advertisement &&
+            peripheral.advertisement.serviceUuids &&
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID);
     }
 
 
-    constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
-        super(peripheral, autoSubscribe);
+    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
+        super(device, autoSubscribe);
         this.type = Consts.HubType.DUPLO_TRAIN_HUB;
         this._ports = {
             "MOTOR": new Port("MOTOR", 0),
@@ -91,7 +56,7 @@ export class DuploTrainBase extends LPF2Hub {
      */
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
-            if (color === false) {
+            if (typeof color === "boolean") {
                 color = 0;
             }
             const data = Buffer.from([0x81, 0x11, 0x11, 0x51, 0x00, color]);

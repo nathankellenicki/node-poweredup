@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>node-poweredup Class: DuploTrainBase</title>
+	<title>node-poweredup Class: ControlPlusHub</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,13 +79,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: DuploTrainBase</h1>
+	<h1 class="page-title">Class: ControlPlusHub</h1>
 <section>
 
 <header>
     
         <h2>
-        DuploTrainBase
+        ControlPlusHub
         </h2>
         
     
@@ -98,7 +98,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="DuploTrainBase"><span class="type-signature"></span>new DuploTrainBase()</h4>
+    <h4 class="name" id="ControlPlusHub"><span class="type-signature"></span>new ControlPlusHub()</h4>
     
     
 </dt>
@@ -106,7 +106,7 @@
 
     
     <div class="description">
-        <p>The DuploTrainBase is emitted if the discovered device is a Duplo Train Base.</p>
+        <p>The ControlPlusHub is emitted if the discovered device is a Control+ Hub.</p>
     </div>
     
 
@@ -152,8 +152,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="duplotrainbase.js.html">duplotrainbase.js</a>,
-				 <a href="duplotrainbase.js.html#sunlight-1-line-15">line 15</a>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-15">line 15</a>
 			</li>
 		</ul>
 	</dd>
@@ -1256,8 +1256,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="duplotrainbase.js.html">duplotrainbase.js</a>,
-				 <a href="duplotrainbase.js.html#sunlight-1-line-119">line 119</a>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-242">line 242</a>
 			</li>
 		</ul>
 	</dd>
@@ -1860,168 +1860,6 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="playSound"><span class="type-signature"></span>playSound(sound)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Play a built-in train sound.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>sound</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type"><a href="global.html#DuploTrainBaseSound">DuploTrainBaseSound</a></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="duplotrainbase.js.html">duplotrainbase.js</a>,
-				 <a href="duplotrainbase.js.html#sunlight-1-line-128">line 128</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Resolved upon successful issuance of command.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
     <h4 class="name" id="rampMotorSpeed"><span class="type-signature"></span>rampMotorSpeed(port, fromSpeed, toSpeed, time)</h4>
     
     
@@ -2198,8 +2036,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="duplotrainbase.js.html">duplotrainbase.js</a>,
-				 <a href="duplotrainbase.js.html#sunlight-1-line-99">line 99</a>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-133">line 133</a>
 			</li>
 		</ul>
 	</dd>
@@ -2256,6 +2094,425 @@
             
 <hr>
 <dt>
+    <h4 class="name" id="resetAbsolutePosition"><span class="type-signature"></span>resetAbsolutePosition(port)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Reset the current motor position as absolute position zero</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>port</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-224">line 224</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Resolved upon successful completion of command (ie. once the motor is finished).</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="setAbsolutePosition"><span class="type-signature"></span>setAbsolutePosition(port, pos [, speed])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Tell motor to goto an absolute position</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>port</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>pos</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>The position of the motor to go to</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>speed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">Array.&lt;number></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    100
+                
+                </td>
+            
+
+            <td class="description last"><p>A value between 1 - 100 should be set (Direction does not apply when going to absolute position)</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-190">line 190</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Resolved upon successful completion of command (ie. once the motor is finished).</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="setLEDColor"><span class="type-signature"></span>setLEDColor(color)</h4>
     
     
@@ -2264,7 +2521,7 @@
 
     
     <div class="description">
-        <p>Set the color of the LED on the train via a color value.</p>
+        <p>Set the color of the LED on the Hub via a color value.</p>
     </div>
     
 
@@ -2334,12 +2591,16 @@
 	
 
 	
+	<dt class="inherited-from method-doc-label method-doc-details-label">Inherited From:</dt>
+	<dd class="inherited-from">
+		<ul class="dummy">
+			<li>
+				<a href="LPF2Hub.html#setLEDColor">LPF2Hub#setLEDColor</a>
+			</li>
+		</ul>
+	</dd>
+	
 
-    
-    <dt class="tag-overrides">Overrides:</dt>
-    <dd class="tag-overrides"><ul class="dummy"><li>
-        <a href="LPF2Hub.html#setLEDColor">LPF2Hub#setLEDColor</a>
-    </li></ul></dd>
     
 
     
@@ -2365,8 +2626,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="duplotrainbase.js.html">duplotrainbase.js</a>,
-				 <a href="duplotrainbase.js.html#sunlight-1-line-45">line 45</a>
+				<a href="lpf2hub.js.html">lpf2hub.js</a>,
+				 <a href="lpf2hub.js.html#sunlight-1-line-80">line 80</a>
 			</li>
 		</ul>
 	</dd>
@@ -2642,6 +2903,501 @@
             
 <hr>
 <dt>
+    <h4 class="name" id="setLightBrightness"><span class="type-signature"></span>setLightBrightness(port, brightness [, time])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Set the light brightness on a given port.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>port</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>brightness</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>Brightness value between 0-100 (0 is off)</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>time</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"><p>How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-251">line 251</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Resolved upon successful completion of command. If time is specified, this is once the light is turned off.</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="setMotorAngle"><span class="type-signature"></span>setMotorAngle(port, angle [, speed])</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>Rotate a motor by a given angle.</p>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>port</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>angle</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                </td>
+            
+
+            <td class="description last"><p>How much the motor should be rotated (in degrees).</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>speed</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+|
+
+<span class="param-type">Array.&lt;number></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+                <td class="default">
+                
+                    100
+                
+                </td>
+            
+
+            <td class="description last"><p>For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-153">line 153</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    <p>Resolved upon successful completion of command (ie. once the motor is finished).</p>
+</div>
+
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Promise</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
     <h4 class="name" id="setMotorSpeed"><span class="type-signature"></span>setMotorSpeed(port, speed [, time])</h4>
     
     
@@ -2825,8 +3581,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="duplotrainbase.js.html">duplotrainbase.js</a>,
-				 <a href="duplotrainbase.js.html#sunlight-1-line-61">line 61</a>
+				<a href="controlplushub.js.html">controlplushub.js</a>,
+				 <a href="controlplushub.js.html#sunlight-1-line-52">line 52</a>
 			</li>
 		</ul>
 	</dd>

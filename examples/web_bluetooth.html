@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Web Bluetooth node-poweredup Example</title>
+<script src="https://cdn.jsdelivr.net/npm/node-poweredup@latest/dist/browser/poweredup.js"></script>
+<link rel="stylesheet" type="text/css" href="./web_bluetooth.css" />
+<script>
+
+const poweredUP = new PoweredUP.PoweredUP();
+
+poweredUP.on("discover", async (hub) => { // Wait to discover hubs
+
+    await hub.connect(); // Connect to hub
+    console.log(`Connected to ${hub.name}!`);
+
+    hub.on("disconnect", () => {
+        console.log("Hub disconnected");
+    });
+
+    renderHub(hub);
+
+});
+
+let color = 1;
+setInterval(() => {
+
+    const hubs = poweredUP.getConnectedHubs(); // Get an array of all connected hubs
+    document.getElementById("color").style.backgroundColor = PoweredUP.Consts.ColorNames[color];
+    hubs.forEach((hub) => {
+        hub.setLEDColor(color); // Set the color
+    })
+    color++;
+    if (color > 10) {
+        color = 1;
+    }
+
+}, 2000);
+
+const renderHub = function (hub) {
+    const element = document.createElement("tr");
+    element.setAttribute("id", `hub-${encodeURIComponent(hub.uuid)}`);
+    element.innerHTML = `<td>${hub.name}</td><td>${PoweredUP.Consts.HubTypeNames[hub.type]}</td><td class="disconnect_btn"><a href="#" onclick="disconnect('${encodeURIComponent(hub.uuid)}');">Disconnect</a></td>`;
+    document.getElementById("hubs").appendChild(element);
+}
+
+const scan = function () {
+    if (PoweredUP.isWebBluetooth) {
+        poweredUP.scan(); // Start scanning for hubs
+    } else {
+        alert("Your browser does not support the Web Bluetooth specification.");
+    }
+}
+
+const disconnect = function (uuid) {
+    poweredUP.getConnectedHubByUUID(decodeURIComponent(uuid)).disconnect();
+    document.getElementById(`hub-${uuid}`).remove();
+}
+
+</script>
+</head>
+
+<body>
+<div><h1>Web Bluetooth node-poweredup Example</h1></div>
+<div>
+<a class="button" href="#" onclick="scan();">Add new Hub</a>
+</div>
+<div id="current_color">
+<span>Current Color: </span><div id="color">&nbsp;</div>
+</div>
+<div>
+<table id="hubs">
+<thead class="headings"><td>Name</td><td>Type</td></thead>
+</table>
+</div>
+</body>
+
+</html>

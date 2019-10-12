@@ -6,6 +6,8 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { IBLEDevice } from "./interfaces";
+import { isWebBluetooth } from "./utils";
 const debug = Debug("wedo2smarthub");
 
 
@@ -17,16 +19,10 @@ const debug = Debug("wedo2smarthub");
 export class WeDo2SmartHub extends Hub {
 
 
-    // We set JSDoc to ignore these events as a WeDo 2.0 Smart Hub will never emit them.
-
-    /**
-     * @event WeDo2SmartHub#speed
-     * @ignore
-     */
-
-
     public static IsWeDo2SmartHub (peripheral: Peripheral) {
-        return (peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, "")) >= 0);
+        return (peripheral.advertisement &&
+            peripheral.advertisement.serviceUuids &&
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, "")) >= 0);
     }
 
 
@@ -34,8 +30,8 @@ export class WeDo2SmartHub extends Hub {
     private _lastTiltY: number = 0;
 
 
-    constructor (peripheral: Peripheral, autoSubscribe: boolean = true) {
-        super(peripheral, autoSubscribe);
+    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
+        super(device, autoSubscribe);
         this.type = Consts.HubType.WEDO2_SMART_HUB;
         this._ports = {
             "A": new Port("A", 1),
@@ -49,23 +45,53 @@ export class WeDo2SmartHub extends Hub {
         return new Promise(async (resolve, reject) => {
             debug("Connecting to WeDo 2.0 Smart Hub");
             await super.connect();
-            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristic.WEDO2_PORT_TYPE), this._parsePortMessage.bind(this));
-            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristic.WEDO2_SENSOR_VALUE), this._parseSensorMessage.bind(this));
-            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristic.WEDO2_BUTTON), this._parseSensorMessage.bind(this));
-            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY), this._parseBatteryMessage.bind(this));
-            this._subscribeToCharacteristic(this._getCharacteristic(Consts.BLECharacteristic.WEDO2_HIGH_CURRENT_ALERT), this._parseHighCurrentAlert.bind(this));
-            this._getCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY).read((err, data) => {
-                this._parseBatteryMessage(data);
-            });
-            this._getCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION).read((err, data) => {
-                this._parseFirmwareRevisionString(data);
-            });
-            setTimeout(() => {
-                this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
-                this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
-            }, 1000);
+            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB);
+            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_2);
+            if (!isWebBluetooth) {
+                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_3);
+                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_4);
+                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_5);
+            } else {
+                await this._bleDevice.discoverCharacteristicsForService("battery_service");
+                await this._bleDevice.discoverCharacteristicsForService("device_information");
+            }
+            this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
+            this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
             debug("Connect completed");
-            return resolve();
+            this.emit("connect");
+            resolve();
+            this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_PORT_TYPE, this._parsePortMessage.bind(this));
+            this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_SENSOR_VALUE, this._parseSensorMessage.bind(this));
+            this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BUTTON, this._parseSensorMessage.bind(this));
+            if (!isWebBluetooth) {
+                this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, this._parseBatteryMessage.bind(this));
+                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, (err, data) => {
+                    if (data) {
+                        this._parseBatteryMessage(data);
+                    }
+                });
+            } else {
+                this._bleDevice.readFromCharacteristic("00002a19-0000-1000-8000-00805f9b34fb", (err, data) => {
+                    if (data) {
+                        this._parseBatteryMessage(data);
+                    }
+                });
+                this._bleDevice.subscribeToCharacteristic("00002a19-0000-1000-8000-00805f9b34fb", this._parseHighCurrentAlert.bind(this));
+            }
+            this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_HIGH_CURRENT_ALERT, this._parseHighCurrentAlert.bind(this));
+            if (!isWebBluetooth) {
+                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION, (err, data) => {
+                    if (data) {
+                        this._parseFirmwareRevisionString(data);
+                    }
+                });
+            } else {
+                this._bleDevice.readFromCharacteristic("00002a26-0000-1000-8000-00805f9b34fb", (err, data) => {
+                    if (data) {
+                        this._parseFirmwareRevisionString(data);
+                    }
+                });
+            }
         });
     }
 
@@ -101,7 +127,7 @@ export class WeDo2SmartHub extends Hub {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
             this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
-            if (color === false) {
+            if (typeof color === "boolean") {
                 color = 0;
             }
             data = Buffer.from([0x06, 0x04, 0x01, color]);
@@ -278,13 +304,10 @@ export class WeDo2SmartHub extends Hub {
 
 
     private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
-        const characteristic = this._getCharacteristic(uuid);
-        if (characteristic) {
-            if (debug.enabled) {
-                debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
-            }
-            characteristic.write(message, false, callback);
+        if (debug.enabled) {
+            debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
         }
+        this._bleDevice.writeToCharacteristic(uuid, message, callback);
     }
 
 
@@ -302,7 +325,6 @@ export class WeDo2SmartHub extends Hub {
 
     private _parseHighCurrentAlert (data: Buffer) {
         debug("Received Message (WEDO2_HIGH_CURRENT_ALERT)", data);
-        // console.log(data);
     }
 
 
@@ -424,6 +446,17 @@ export class WeDo2SmartHub extends Hub {
                      * @param {number} rotation
                      */
                     this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
+                    const rotation = data.readInt32LE(2);
+                    this.emit("rotate", port.id, rotation);
+                    break;
+                }
+                case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
+                    const rotation = data.readInt32LE(2);
+                    this.emit("rotate", port.id, rotation);
+                    break;
                 }
             }
         }

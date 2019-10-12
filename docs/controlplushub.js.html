@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>node-poweredup Source: puphub.js</title>
+	<title>node-poweredup Source: controlplushub.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,15 +79,12 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: puphub.js</h1>
+		<h1 class="page-title">Source: controlplushub.js</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">"use strict";
-var __importDefault = (this &amp;&amp; this.__importDefault) || function (mod) {
-    return (mod &amp;&amp; mod.__esModule) ? mod : { "default": mod };
-};
 var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
     if (mod &amp;&amp; mod.__esModule) return mod;
     var result = {};
@@ -96,47 +93,51 @@ var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const compare_versions_1 = __importDefault(require("compare-versions"));
 const lpf2hub_1 = require("./lpf2hub");
 const port_1 = require("./port");
 const Consts = __importStar(require("./consts"));
 const Debug = require("debug");
-const debug = Debug("puphub");
+const debug = Debug("ControlPlusHub");
 /**
- * The PUPHub is emitted if the discovered device is a Powered UP Hub.
- * @class PUPHub
+ * The ControlPlusHub is emitted if the discovered device is a Control+ Hub.
+ * @class ControlPlusHub
  * @extends LPF2Hub
  * @extends Hub
  */
-class PUPHub extends lpf2hub_1.LPF2Hub {
-    static IsPUPHub(peripheral) {
+class ControlPlusHub extends lpf2hub_1.LPF2Hub {
+    static IsControlPlusHub(peripheral) {
         return (peripheral.advertisement &amp;&amp;
             peripheral.advertisement.serviceUuids &amp;&amp;
-            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &amp;&amp; peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_HUB_ID);
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &amp;&amp; peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.CONTROL_PLUS_LARGE_HUB);
     }
     constructor(device, autoSubscribe = true) {
         super(device, autoSubscribe);
-        this.type = Consts.HubType.POWERED_UP_HUB;
+        this.type = Consts.HubType.CONTROL_PLUS_HUB;
         this._ports = {
             "A": new port_1.Port("A", 0),
-            "B": new port_1.Port("B", 1)
+            "B": new port_1.Port("B", 1),
+            "C": new port_1.Port("C", 2),
+            "D": new port_1.Port("D", 3),
         };
         this.on("attach", (port, type) => {
             this._combinePorts(port, type);
         });
-        debug("Discovered Powered UP Hub");
+        debug("Discovered Control+ Hub");
     }
     connect() {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Powered UP Hub");
+            debug("Connecting to Control+ Hub");
             await super.connect();
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x62, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01])); // Accelerometer
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x63, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Gyro/Tilt
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3d, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01])); // Temperature
             debug("Connect completed");
             return resolve();
         });
     }
     /**
      * Set the motor speed on a given port.
-     * @method PUPHub#setMotorSpeed
+     * @method ControlPlusHub#setMotorSpeed
      * @param {string} port
      * @param {number | Array.&lt;number>} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
      * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
@@ -217,7 +218,7 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
     }
     /**
      * Ramp the motor speed on a given port.
-     * @method PUPHub#rampMotorSpeed
+     * @method ControlPlusHub#rampMotorSpeed
      * @param {string} port
      * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
@@ -237,7 +238,7 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
     }
     /**
      * Rotate a motor by a given angle.
-     * @method PUPHub#setMotorAngle
+     * @method ControlPlusHub#setMotorAngle
      * @param {string} port
      * @param {number} angle How much the motor should be rotated (in degrees).
      * @param {number | Array.&lt;number>} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
@@ -274,7 +275,7 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
     }
     /**
      * Tell motor to goto an absolute position
-     * @method PUPHub#setAbsolutePosition
+     * @method ControlPlusHub#setAbsolutePosition
      * @param {string} port
      * @param {number} pos The position of the motor to go to
      * @param {number | Array.&lt;number>} [speed=100] A value between 1 - 100 should be set (Direction does not apply when going to absolute position)
@@ -308,7 +309,7 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
     }
     /**
      * Reset the current motor position as absolute position zero
-     * @method PUPHub#resetAbsolutePosition
+     * @method ControlPlusHub#resetAbsolutePosition
      * @param {string} port
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
@@ -326,7 +327,7 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
     }
     /**
      * Fully (hard) stop the motor on a given port.
-     * @method PUPHub#brakeMotor
+     * @method ControlPlusHub#brakeMotor
      * @param {string} port
      * @returns {Promise} Resolved upon successful completion of command.
      */
@@ -335,7 +336,7 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
     }
     /**
      * Set the light brightness on a given port.
-     * @method PUPHub#setLightBrightness
+     * @method ControlPlusHub#setLightBrightness
      * @param {string} port
      * @param {number} brightness Brightness value between 0-100 (0 is off)
      * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
@@ -360,14 +361,9 @@ class PUPHub extends lpf2hub_1.LPF2Hub {
             }
         });
     }
-    _checkFirmware(version) {
-        if (compare_versions_1.default("1.1.00.0004", version) === 1) {
-            throw new Error(`Your Powered Up Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
-        }
-    }
 }
-exports.PUPHub = PUPHub;
-//# sourceMappingURL=puphub.js.map</pre>
+exports.ControlPlusHub = ControlPlusHub;
+//# sourceMappingURL=controlplushub.js.map</pre>
     </article>
 </section>
 
