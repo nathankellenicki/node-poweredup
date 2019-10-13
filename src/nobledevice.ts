@@ -1,4 +1,4 @@
-import { Characteristic, Peripheral, Service } from "noble";
+import { Characteristic, Peripheral, Service } from "@abandonware/noble";
 
 import Debug = require("debug");
 import { EventEmitter } from "events";

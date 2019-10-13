@@ -1,3 +1,3 @@
 declare module "noble-mac" {
-    export * from "noble";
+    export * from "@abandonware/noble";
 }
