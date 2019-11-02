@@ -496,8 +496,8 @@ export class LPF2Hub extends Hub {
                     break;
                 }
                 case Consts.DeviceType.WEDO2_TILT: {
-                    const tiltX = data[4] > 160 ? data[4] - 255 : data[4] - (data[4] * 2);
-                    const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    const tiltX = data.readInt8(4);
+                    const tiltY = data.readInt8(5);
                     this._lastTiltX = tiltX;
                     this._lastTiltY = tiltY;
                     /**
@@ -538,8 +538,8 @@ export class LPF2Hub extends Hub {
                     break;
                 }
                 case Consts.DeviceType.BOOST_TILT: {
-                    const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
-                    const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    const tiltX = data.readInt8(4);
+                    const tiltY = data.readInt8(5);
                     this._lastTiltX = tiltX;
                     this._lastTiltY = tiltY;
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
