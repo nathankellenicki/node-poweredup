@@ -26,6 +26,9 @@ export class DuploTrainBase extends LPF2Hub {
     }
 
 
+    protected _ledPort = 0x11;
+
+
     constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
         this.type = Consts.HubType.DUPLO_TRAIN_HUB;
@@ -46,25 +49,6 @@ export class DuploTrainBase extends LPF2Hub {
             return resolve();
         });
     }
-
-
-    /**
-     * Set the color of the LED on the train via a color value.
-     * @method DuploTrainBase#setLEDColor
-     * @param {Color} color
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDColor (color: number | boolean) {
-        return new Promise((resolve, reject) => {
-            if (typeof color === "boolean") {
-                color = 0;
-            }
-            const data = Buffer.from([0x81, 0x11, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
-            return resolve();
-        });
-    }
-
 
     /**
      * Set the motor speed on a given port.

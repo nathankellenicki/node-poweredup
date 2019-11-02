@@ -16,6 +16,8 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
  */
 export class LPF2Hub extends Hub {
 
+    protected _ledPort: number = 0x32;
+
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
     private _lastTiltZ: number = 0;
@@ -111,9 +113,9 @@ export class LPF2Hub extends Hub {
      */
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, 0x32, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            let data = Buffer.from([0x41, this._ledPort, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
-            data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x01, red, green, blue]);
+            data = Buffer.from([0x81, this._ledPort, 0x11, 0x51, 0x01, red, green, blue]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
