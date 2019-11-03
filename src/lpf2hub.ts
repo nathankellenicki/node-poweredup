@@ -268,7 +268,7 @@ export class LPF2Hub extends Hub {
     private _parsePortMessage (data: Buffer) {
 
         let port = this._getPortForPortNumber(data[3]);
-        const type = data.readUInt16LE(5);
+        const type = data[4] ? data.readUInt16LE(5) : 0;
 
         if (data[4] === 0x01 && this.sendPortInformationRequests) {
             modeInfoDebug(`Port ${this._toHex(data[3])}, type ${this._toHex(type, 4)} (${Consts.DeviceTypeNames[data[5]] || "unknown"})`);
