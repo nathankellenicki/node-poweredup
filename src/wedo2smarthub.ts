@@ -419,14 +419,8 @@ export class WeDo2SmartHub extends Hub {
                     break;
                 }
                 case Consts.DeviceType.WEDO2_TILT: {
-                    this._lastTiltX = data[2];
-                    if (this._lastTiltX > 100) {
-                        this._lastTiltX = -(255 - this._lastTiltX);
-                    }
-                    this._lastTiltY = data[3];
-                    if (this._lastTiltY > 100) {
-                        this._lastTiltY = -(255 - this._lastTiltY);
-                    }
+                    this._lastTiltX = data.readInt8(2);
+                    this._lastTiltY = data.readInt8(3);
                     /**
                      * Emits when a tilt sensor is activated.
                      * @event WeDo2SmartHub#tilt
