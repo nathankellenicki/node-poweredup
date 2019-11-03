@@ -20,11 +20,7 @@ export enum HubType {
 
 
 // tslint:disable-next-line
-export let HubTypeNames = Object.keys(HubType).reduce((result: {[hubType: string]: string}, item) => {
-    // @ts-ignore
-    result[HubType[item]] = item;
-    return result;
-}, {});
+export const HubTypeNames = HubType;
 
 
 /**
@@ -75,11 +71,7 @@ export enum DeviceType {
 
 
 // tslint:disable-next-line
-export let DeviceTypeNames = Object.keys(DeviceType).reduce((result: {[deviceType: string]: string}, item) => {
-    // @ts-ignore
-    result[DeviceType[item]] = item;
-    return result;
-}, {});
+export const DeviceTypeNames = DeviceType;
 
 
 /**
@@ -114,11 +106,7 @@ export enum Color {
 
 
 // tslint:disable-next-line
-export let ColorNames = Object.keys(Color).reduce((result: {[color: string]: string}, item) => {
-    // @ts-ignore
-    result[Color[item]] = item;
-    return result;
-}, {});
+export const ColorNames = Color;
 
 
 /**
