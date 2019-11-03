@@ -381,6 +381,16 @@ export class Hub extends EventEmitter {
     }
 
 
+    protected _toHex (value: number, length: number = 2) {
+        return this._lpad(value.toString(16), length);
+    }
+
+
+    protected _toBin (value: number, length: number = 8) {
+        return this._lpad(value.toString(2), length);
+    }
+
+
     private _getModeForDeviceType (type: Consts.DeviceType) {
         switch (type) {
             case Consts.DeviceType.BASIC_MOTOR:
