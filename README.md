@@ -34,7 +34,7 @@ While most Powered Up components and Hubs are compatible with each other, there 
 | Boost Tacho Motor               | <a href="https://brickset.com/sets/88008-1/">88008</a>        | Motor/Sensor  |     *Partial*    |       Yes      |       Yes      | Yes | <a href="https://brickset.com/sets/17101-1/">17101</a> |
 | Powered Up Train Motor          | <a href="https://brickset.com/sets/88011-1/">88011</a>        | Motor         |         Yes        |       Yes      |       Yes      | Yes | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
 | Powered Up LED Lights           | <a href="https://brickset.com/sets/88005-1/">88005</a>        | Light         |       Yes      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/88005-1/">88005</a> |
-| Control+ Large Motor            | 22169        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a> |
+| Control+ Large Motor            | 22169        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 | Control+ XLarge Motor            | 22172        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 
 In addition, the Hubs themselves have certain built-in features which this library exposes.
