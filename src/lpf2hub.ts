@@ -271,7 +271,11 @@ export class LPF2Hub extends Hub {
         const type = data[4] ? data.readUInt16LE(5) : 0;
 
         if (data[4] === 0x01 && this.sendPortInformationRequests) {
-            modeInfoDebug(`Port ${this._toHex(data[3])}, type ${this._toHex(type, 4)} (${Consts.DeviceTypeNames[data[5]] || "unknown"})`);
+            const typeName = Consts.DeviceTypeNames[data[5]] || "unknown";
+            modeInfoDebug(`Port ${this._toHex(data[3])}, type ${this._toHex(type, 4)} (${typeName})`);
+            const hwVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
+            const swVersion = LPF2Hub.decodeVersion(data.readInt32LE(11));
+            modeInfoDebug(`Port ${this._toHex(data[3])}, hardware version ${hwVersion}, software version ${swVersion}`);
             this._sendPortInformationRequest(data[3]);
         }
 
