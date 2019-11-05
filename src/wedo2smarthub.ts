@@ -336,8 +336,7 @@ export class WeDo2SmartHub extends Hub {
 
     private _parseFirmwareRevisionString (data: Buffer) {
         debug("Received Message (WEDO2_FIRMWARE_REVISION)", data);
-        const parts = data.toString().split(".");
-        this._firmwareInfo = { major: parseInt(parts[0], 10), minor: parseInt(parts[1], 10), bugFix: parseInt(parts[2], 10), build: parseInt(parts[3], 10) };
+        this._firmwareVersion = data.toString();
     }
 
 

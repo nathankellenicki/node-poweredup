@@ -1,13 +1,5 @@
 import { EventEmitter } from "events";
 
-export interface IFirmwareInfo {
-    major: number;
-    minor: number;
-    bugFix: number;
-    build: number;
-}
-
-
 export interface IBLEDevice extends EventEmitter {
     uuid: string;
     name: string;
