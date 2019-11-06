@@ -379,14 +379,6 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _padMessage (data: Buffer, len: number) {
-        if (data.length < len) {
-            data = Buffer.concat([data, Buffer.alloc(len - data.length)]);
-        }
-        return data;
-    }
-
-
     private _parseSensorMessage (data: Buffer) {
 
         if (data[3] === this._voltagePort) {
