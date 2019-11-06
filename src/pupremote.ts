@@ -32,6 +32,9 @@ export class PUPRemote extends LPF2Hub {
 
 
     protected _ledPort = 0x34;
+    protected _voltagePort = 0x3b;
+    protected _voltageMaxV = 6.4;
+    protected _voltageMaxRaw = 3200;
 
 
     constructor (device: IBLEDevice, autoSubscribe: boolean = true) {

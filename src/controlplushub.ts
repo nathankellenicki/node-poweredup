@@ -30,6 +30,10 @@ export class ControlPlusHub extends LPF2Hub {
         );
     }
 
+    protected _currentPort = 0x3b;
+    protected _voltagePort = 0x3c;
+    protected _voltageMaxV = 9.612;
+    protected _voltageMaxRaw = 4095;
 
     constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
