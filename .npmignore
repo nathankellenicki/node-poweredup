@@ -1,17 +1,5 @@
-boostmovehub.ts
-consts.ts
-duplotrainbase.ts
-hub.ts
-index.ts
-lpf2hub.ts
-port.ts
-poweredup.ts
-puphub.ts
-pupremote.ts
 package-lock.json
 tsconfig.json
 tslint.json
-utils.ts
-wedo2smarthub.ts
 .vscode/
 examples/
