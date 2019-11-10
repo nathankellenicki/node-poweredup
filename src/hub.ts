@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import { IBLEDevice, IFirmwareInfo } from "./interfaces";
+import { IBLEDevice } from "./interfaces";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
@@ -24,7 +24,7 @@ export class Hub extends EventEmitter {
     protected _virtualPorts: {[port: string]: Port} = {};
 
     protected _name: string = "";
-    protected _firmwareInfo: IFirmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
+    protected _firmwareVersion: string = "0.0.00.0000";
     protected _batteryLevel: number = 100;
     protected _voltage: number = 0;
     protected _current: number = 0;
@@ -59,7 +59,7 @@ export class Hub extends EventEmitter {
      * @property {string} firmwareVersion Firmware version of the hub
      */
     public get firmwareVersion () {
-        return `${this._firmwareInfo.major}.${this._firmwareInfo.minor}.${this._lpad(this._firmwareInfo.bugFix.toString(), 2)}.${this._lpad(this._firmwareInfo.build.toString(), 4)}`;
+        return this._firmwareVersion;
     }
 
 
