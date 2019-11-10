@@ -15,6 +15,10 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
  * @extends Hub
  */
 export class LPF2Hub extends Hub {
+    private static decodeVersion(v: number) {
+        const t = v.toString(16).padStart(8, "0");
+        return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
+    }
 
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
@@ -241,12 +245,8 @@ export class LPF2Hub extends Hub {
 
         // Firmware version
         } else if (data[3] === 0x03) {
-            const build = data.readUInt16LE(5);
-            const bugFix = data.readUInt8(7);
-            const major = data.readUInt8(8) >>> 4;
-            const minor = data.readUInt8(8) & 0xf;
-            this._firmwareInfo = { major, minor, bugFix, build };
-            this._checkFirmware(this.firmwareVersion);
+            this._firmwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
+            this._checkFirmware(this._firmwareVersion);
 
         // Battery level reports
         } else if (data[3] === 0x06) {
