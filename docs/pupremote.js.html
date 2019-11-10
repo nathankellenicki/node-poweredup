@@ -105,6 +105,16 @@ const debug = Debug("pupremote");
  * @extends Hub
  */
 class PUPRemote extends lpf2hub_1.LPF2Hub {
+    constructor(device, autoSubscribe = true) {
+        super(device, autoSubscribe);
+        this._ledPort = 0x34;
+        this.type = Consts.HubType.POWERED_UP_REMOTE;
+        this._ports = {
+            "LEFT": new port_1.Port("LEFT", 0),
+            "RIGHT": new port_1.Port("RIGHT", 1)
+        };
+        debug("Discovered Powered UP Remote");
+    }
     static IsPUPRemote(peripheral) {
         return (peripheral.advertisement &amp;&amp;
             peripheral.advertisement.serviceUuids &amp;&amp;
@@ -113,55 +123,11 @@ class PUPRemote extends lpf2hub_1.LPF2Hub {
             peripheral.advertisement.manufacturerData.length > 3 &amp;&amp;
             peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID);
     }
-    constructor(device, autoSubscribe = true) {
-        super(device, autoSubscribe);
-        this.type = Consts.HubType.POWERED_UP_REMOTE;
-        this._ports = {
-            "LEFT": new port_1.Port("LEFT", 0),
-            "RIGHT": new port_1.Port("RIGHT", 1)
-        };
-        debug("Discovered Powered UP Remote");
-    }
     connect() {
         return new Promise(async (resolve, reject) => {
             debug("Connecting to Powered UP Remote");
             await super.connect();
             debug("Connect completed");
-            return resolve();
-        });
-    }
-    /**
-     * Set the color of the LED on the Remote via a color value.
-     * @method PUPRemote#setLEDColor
-     * @param {Color} color
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    setLEDColor(color) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, 0x34, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
-            if (typeof color === "boolean") {
-                color = 0;
-            }
-            data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x00, color]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
-            return resolve();
-        });
-    }
-    /**
-     * Set the color of the LED on the Hub via RGB values.
-     * @method PUPRemote#setLEDRGB
-     * @param {number} red
-     * @param {number} green
-     * @param {number} blue
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    setLEDRGB(red, green, blue) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, 0x34, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
-            data = Buffer.from([0x81, 0x34, 0x11, 0x51, 0x01, red, green, blue]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }

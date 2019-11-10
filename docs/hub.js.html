@@ -110,7 +110,7 @@ class Hub extends events_1.EventEmitter {
         this._ports = {};
         this._virtualPorts = {};
         this._name = "";
-        this._firmwareInfo = { major: 0, minor: 0, bugFix: 0, build: 0 };
+        this._firmwareVersion = "0.0.00.0000";
         this._batteryLevel = 100;
         this._voltage = 0;
         this._current = 0;
@@ -135,7 +135,7 @@ class Hub extends events_1.EventEmitter {
      * @property {string} firmwareVersion Firmware version of the hub
      */
     get firmwareVersion() {
-        return `${this._firmwareInfo.major}.${this._firmwareInfo.minor}.${this._lpad(this._firmwareInfo.bugFix.toString(), 2)}.${this._lpad(this._firmwareInfo.build.toString(), 4)}`;
+        return this._firmwareVersion;
     }
     /**
      * @readonly
@@ -209,7 +209,7 @@ class Hub extends events_1.EventEmitter {
     subscribe(port, mode) {
         return new Promise((resolve, reject) => {
             let newMode = this._getModeForDeviceType(this._portLookup(port).type);
-            if (mode) {
+            if (mode !== undefined) {
                 newMode = mode;
             }
             this._activatePortDevice(this._portLookup(port).value, this._portLookup(port).type, newMode, 0x00, () => {
@@ -381,11 +381,13 @@ class Hub extends events_1.EventEmitter {
         port.setEventTimer(interval);
         return emitter;
     }
-    _portLookup(port) {
-        if (!this._ports[port.toUpperCase()] &amp;&amp; !this._virtualPorts[port.toUpperCase()]) {
-            throw new Error(`Port ${port.toUpperCase()} does not exist on this Hub type`);
+    _portLookup(portName) {
+        const portNameUpper = portName.toUpperCase();
+        const port = this._ports[portNameUpper] || this._virtualPorts[portNameUpper];
+        if (!port) {
+            throw new Error(`Port ${portNameUpper} does not exist on this Hub type`);
         }
-        return this._ports[port] || this._virtualPorts[port];
+        return port;
     }
     _lpad(str, length) {
         while (str.length &lt; length) {

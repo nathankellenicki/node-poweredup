@@ -387,8 +387,7 @@ class WeDo2SmartHub extends hub_1.Hub {
     }
     _parseFirmwareRevisionString(data) {
         debug("Received Message (WEDO2_FIRMWARE_REVISION)", data);
-        const parts = data.toString().split(".");
-        this._firmwareInfo = { major: parseInt(parts[0], 10), minor: parseInt(parts[1], 10), bugFix: parseInt(parts[2], 10), build: parseInt(parts[3], 10) };
+        this._firmwareVersion = data.toString();
     }
     _parsePortMessage(data) {
         debug("Received Message (WEDO2_PORT_TYPE)", data);
@@ -457,14 +456,8 @@ class WeDo2SmartHub extends hub_1.Hub {
                     break;
                 }
                 case Consts.DeviceType.WEDO2_TILT: {
-                    this._lastTiltX = data[2];
-                    if (this._lastTiltX > 100) {
-                        this._lastTiltX = -(255 - this._lastTiltX);
-                    }
-                    this._lastTiltY = data[3];
-                    if (this._lastTiltY > 100) {
-                        this._lastTiltY = -(255 - this._lastTiltY);
-                    }
+                    this._lastTiltX = data.readInt8(2);
+                    this._lastTiltY = data.readInt8(3);
                     /**
                      * Emits when a tilt sensor is activated.
                      * @event WeDo2SmartHub#tilt

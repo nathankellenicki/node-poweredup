@@ -106,10 +106,15 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
 class LPF2Hub extends hub_1.Hub {
     constructor() {
         super(...arguments);
+        this._ledPort = 0x32;
         this._lastTiltX = 0;
         this._lastTiltY = 0;
         this._lastTiltZ = 0;
         this._messageBuffer = Buffer.alloc(0);
+    }
+    static decodeVersion(v) {
+        const t = v.toString(16).padStart(8, "0");
+        return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
     }
     connect() {
         return new Promise(async (resolve, reject) => {
@@ -171,12 +176,12 @@ class LPF2Hub extends hub_1.Hub {
      */
     setLEDColor(color) {
         return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, 0x32, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            let data = Buffer.from([0x41, this._ledPort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             if (typeof color === "boolean") {
                 color = 0;
             }
-            data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x00, color]);
+            data = Buffer.from([0x81, this._ledPort, 0x11, 0x51, 0x00, color]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
@@ -191,9 +196,9 @@ class LPF2Hub extends hub_1.Hub {
      */
     setLEDRGB(red, green, blue) {
         return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, 0x32, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
+            let data = Buffer.from([0x41, this._ledPort, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
-            data = Buffer.from([0x81, 0x32, 0x11, 0x51, 0x01, red, green, blue]);
+            data = Buffer.from([0x81, this._ledPort, 0x11, 0x51, 0x01, red, green, blue]);
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
@@ -297,12 +302,8 @@ class LPF2Hub extends hub_1.Hub {
             // Firmware version
         }
         else if (data[3] === 0x03) {
-            const build = data.readUInt16LE(5);
-            const bugFix = data.readUInt8(7);
-            const major = data.readUInt8(8) >>> 4;
-            const minor = data.readUInt8(8) &amp; 0xf;
-            this._firmwareInfo = { major, minor, bugFix, build };
-            this._checkFirmware(this.firmwareVersion);
+            this._firmwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
+            this._checkFirmware(this._firmwareVersion);
             // Battery level reports
         }
         else if (data[3] === 0x06) {
@@ -522,8 +523,8 @@ class LPF2Hub extends hub_1.Hub {
                     break;
                 }
                 case Consts.DeviceType.WEDO2_TILT: {
-                    const tiltX = data[4] > 160 ? data[4] - 255 : data[4] - (data[4] * 2);
-                    const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    const tiltX = data.readInt8(4);
+                    const tiltY = data.readInt8(5);
                     this._lastTiltX = tiltX;
                     this._lastTiltY = tiltY;
                     /**
@@ -564,8 +565,8 @@ class LPF2Hub extends hub_1.Hub {
                     break;
                 }
                 case Consts.DeviceType.BOOST_TILT: {
-                    const tiltX = data[4] > 160 ? data[4] - 255 : data[4];
-                    const tiltY = data[5] > 160 ? 255 - data[5] : data[5] - (data[5] * 2);
+                    const tiltX = data.readInt8(4);
+                    const tiltY = data.readInt8(5);
                     this._lastTiltX = tiltX;
                     this._lastTiltY = tiltY;
                     this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
