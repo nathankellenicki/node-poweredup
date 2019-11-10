@@ -1,4 +1,4 @@
-import { Peripheral } from "noble";
+import { Peripheral } from "@abandonware/noble";
 
 import { Hub } from "./hub";
 import { Port } from "./port";

@@ -1,5 +1,4 @@
-import compareVersion from "compare-versions";
-import { Peripheral } from "noble";
+import { Peripheral } from "@abandonware/noble";
 
 import { LPF2Hub } from "./lpf2hub";
 import { Port } from "./port";
