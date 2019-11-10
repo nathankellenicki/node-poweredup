@@ -149,7 +149,7 @@ export class Hub extends EventEmitter {
     public subscribe (port: string, mode?: number) {
         return new Promise((resolve, reject) => {
             let newMode = this._getModeForDeviceType(this._portLookup(port).type);
-            if (mode) {
+            if (mode !== undefined) {
                 newMode = mode;
             }
             this._activatePortDevice(this._portLookup(port).value, this._portLookup(port).type, newMode, 0x00, () => {
