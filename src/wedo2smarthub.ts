@@ -1,4 +1,4 @@
-import { Peripheral } from "noble";
+import { Peripheral } from "@abandonware/noble";
 
 import { Hub } from "./hub";
 import { Port } from "./port";
@@ -315,7 +315,7 @@ export class WeDo2SmartHub extends Hub {
         const keys = Object.keys(Consts.BLECharacteristic);
         for (let i = 0; i < keys.length; i++) {
             const key = keys[i];
-            if (Consts.BLECharacteristic[key as any] === uuid) {
+            if (Consts.BLECharacteristic[key as keyof typeof Consts.BLECharacteristic] === uuid) {
                 return key;
             }
         }
