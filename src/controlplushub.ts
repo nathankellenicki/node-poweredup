@@ -20,9 +20,14 @@ export class ControlPlusHub extends LPF2Hub {
 
 
     public static IsControlPlusHub (peripheral: Peripheral) {
-        return (peripheral.advertisement &&
+        return (
+            peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&
-            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 && peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.CONTROL_PLUS_LARGE_HUB);
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &&
+            peripheral.advertisement.manufacturerData &&
+            peripheral.advertisement.manufacturerData.length > 3 &&
+            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.CONTROL_PLUS_LARGE_HUB
+        );
     }
 
 

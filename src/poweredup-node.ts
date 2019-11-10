@@ -1,4 +1,4 @@
-import { Peripheral } from "noble-mac";
+import { Peripheral } from "@abandonware/noble";
 
 import { BoostMoveHub } from "./boostmovehub";
 import { ControlPlusHub } from "./controlplushub";
@@ -15,7 +15,7 @@ import { EventEmitter } from "events";
 
 import Debug = require("debug");
 const debug = Debug("poweredup");
-import noble = require("noble-mac");
+import noble = require("@abandonware/noble");
 
 let ready = false;
 let wantScan = false;

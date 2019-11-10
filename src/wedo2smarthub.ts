@@ -20,9 +20,11 @@ export class WeDo2SmartHub extends Hub {
 
 
     public static IsWeDo2SmartHub (peripheral: Peripheral) {
-        return (peripheral.advertisement &&
+        return (
+            peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&
-            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, "")) >= 0);
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, "")) >= 0
+        );
     }
 
 
