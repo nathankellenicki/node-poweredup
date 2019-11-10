@@ -354,11 +354,13 @@ export class Hub extends EventEmitter {
     }
 
 
-    protected _portLookup (port: string) {
-        if (!this._ports[port.toUpperCase()] && !this._virtualPorts[port.toUpperCase()]) {
-            throw new Error(`Port ${port.toUpperCase()} does not exist on this Hub type`);
+    protected _portLookup (portName: string) {
+        const portNameUpper = portName.toUpperCase();
+        const port = this._ports[portNameUpper] || this._virtualPorts[portNameUpper];
+        if (!port) {
+            throw new Error(`Port ${portNameUpper} does not exist on this Hub type`);
         }
-        return this._ports[port] || this._virtualPorts[port];
+        return port;
     }
 
 
