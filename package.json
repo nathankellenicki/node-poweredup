@@ -1,6 +1,6 @@
 {
   "name": "node-poweredup",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "A Javascript module to interface with LEGO Powered Up components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
   "main": "dist/node/index-node.js",
@@ -32,9 +32,5 @@
     "typescript": "^3.7.2",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
-  },
-  "resolutions": {
-    "noble-mac": "Timeular/noble-mac#pull/38/head",
-    "xpc-connection": "sandeepmistry/node-xpc-connection#pull/26/head"
   }
 }
