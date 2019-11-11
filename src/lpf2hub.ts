@@ -36,6 +36,7 @@ export class LPF2Hub extends Hub {
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request hardware version
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
@@ -249,6 +250,10 @@ export class LPF2Hub extends Hub {
         } else if (data[3] === 0x03) {
             this._firmwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
             this._checkFirmware(this._firmwareVersion);
+
+        // Hardware version
+        } else if (data[3] === 0x04) {
+            this._hardwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
 
         // Battery level reports
         } else if (data[3] === 0x06) {
