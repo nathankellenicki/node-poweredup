@@ -49,6 +49,6 @@ poweredUP.on("discover", async (hub) => {
 
     hub.on("detach", (port) => {
         console.log(`Device detached from port ${port}`) ;
-     });
+    });
 
 });
