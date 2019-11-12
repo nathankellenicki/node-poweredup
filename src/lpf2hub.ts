@@ -4,6 +4,7 @@ import { Hub } from "./hub";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
+import { toBin, toHex } from "./utils";
 
 import Debug = require("debug");
 const debug = Debug("lpf2hub");
@@ -272,10 +273,10 @@ export class LPF2Hub extends Hub {
 
         if (data[4] === 0x01 && this.sendPortInformationRequests) {
             const typeName = Consts.DeviceTypeNames[data[5]] || "unknown";
-            modeInfoDebug(`Port ${this._toHex(data[3])}, type ${this._toHex(type, 4)} (${typeName})`);
+            modeInfoDebug(`Port ${toHex(data[3])}, type ${toHex(type, 4)} (${typeName})`);
             const hwVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
             const swVersion = LPF2Hub.decodeVersion(data.readInt32LE(11));
-            modeInfoDebug(`Port ${this._toHex(data[3])}, hardware version ${hwVersion}, software version ${swVersion}`);
+            modeInfoDebug(`Port ${toHex(data[3])}, hardware version ${hwVersion}, software version ${swVersion}`);
             this._sendPortInformationRequest(data[3]);
         }
 
@@ -319,13 +320,13 @@ export class LPF2Hub extends Hub {
             for (let i = 5; i < data.length; i += 2) {
                 modeCombinationMasks.push(data.readUInt16LE(i));
             }
-            modeInfoDebug(`Port ${this._toHex(port)}, mode combinations [${modeCombinationMasks.map((c) => this._toBin(c, 0)).join(", ")}]`);
+            modeInfoDebug(`Port ${toHex(port)}, mode combinations [${modeCombinationMasks.map((c) => toBin(c, 0)).join(", ")}]`);
             return;
         }
         const count = data[6];
-        const input = this._toBin(data.readUInt16LE(7), count);
-        const output = this._toBin(data.readUInt16LE(9), count);
-        modeInfoDebug(`Port ${this._toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
+        const input = toBin(data.readUInt16LE(7), count);
+        const output = toBin(data.readUInt16LE(9), count);
+        modeInfoDebug(`Port ${toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
 
         for (let i = 0; i < count; i++) {
             this._sendModeInformationRequest(port, i, 0x00); // Mode Name
@@ -344,7 +345,7 @@ export class LPF2Hub extends Hub {
 
 
     private _parseModeInformationResponse (data: Buffer) {
-        const port = this._toHex(data[3]);
+        const port = toHex(data[3]);
         const mode = data[4];
         const type = data[5];
         switch (type) {
