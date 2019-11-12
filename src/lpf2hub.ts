@@ -43,10 +43,11 @@ export class LPF2Hub extends Hub {
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
             }
-            this.emit("connect");
-            resolve();
             setTimeout(() => {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version again
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request firmware version again
+                this.emit("connect");
+                resolve();
             }, 200);
         });
     }
@@ -267,7 +268,7 @@ export class LPF2Hub extends Hub {
 
         let port = this._getPortForPortNumber(data[3]);
 
-        if (data[4] === 0x01) {
+        if (data[4] === 0x01 && process.env["PORT_DEBUG_INFO"]) {
             this._sendPortInformationRequest(data[3]);
         }
 
