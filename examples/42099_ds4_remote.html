@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>4x4 Crawler / PlayStation DualShock 4 Remote Control</title>
+<!-- <script src="https://cdn.jsdelivr.net/npm/node-poweredup@latest/dist/browser/poweredup.js"></script> -->
+<script src="../dist/browser/poweredup.js"></script>
+<link rel="stylesheet" type="text/css" href="./web_bluetooth.css" />
+<script>
+
+const poweredUP = new PoweredUP.PoweredUP();
+
+let car = null;
+let controller = null;
+
+poweredUP.on("discover", async (hub) => { // Wait to discover car
+
+    if (hub instanceof PoweredUP.ControlPlusHub) {
+        car = hub;
+        await car.connect();
+        car.setLEDColor(PoweredUP.Consts.Color.BLUE);
+        document.getElementById("color").style.backgroundColor = PoweredUP.Consts.ColorNames[PoweredUP.Consts.Color.BLUE];
+        console.log(`Connected to 4x4 Crawler (${car.name})!`);
+    }
+
+    if (car && controller) {
+        console.log("You're now ready to go!");
+    }
+    
+});
+
+const scan = function () {
+    if (PoweredUP.isWebBluetooth) {
+        poweredUP.scan(); // Start scanning for hubs
+    } else {
+        alert("Your browser does not support the Web Bluetooth specification.");
+    }
+}
+
+window.addEventListener("gamepadconnected", (event) => {
+
+    controller = event.gamepad;
+    if (!(controller.id.indexOf("54c") >= 0)) {
+        return;
+    }
+
+    console.log("Connected to PlayStation DualShock 4!");
+
+    let start = null;
+    let previousLeft = 0;
+    let previousForward = 0;
+
+    const inputLoop = async () => {
+        controller = navigator.getGamepads()[1];
+        if (car) {
+            const left = Math.floor(100 * (controller.axes[0] * -1));
+            let forward = -(Math.floor(100 * (controller.axes[3] * -1) / 5) * 5);
+            if (forward < 10 && forward > -10) {
+                forward = 0;
+            }
+            if (forward !== previousForward) {
+                car.setMotorSpeed("A", forward); // Move tracks based on analog stick input
+                car.setMotorSpeed("B", forward); // Move tracks based on analog stick input
+                previousLeft = left;
+                previousForward = forward;
+            }
+        }
+        start = requestAnimationFrame(inputLoop);
+    }
+
+    inputLoop();
+
+    if (car && controller) {
+        console.log("You're now ready to go!");
+    }
+
+});
+
+</script>
+</head>
+
+<body>
+<div><h1>4x4 Crawler / PlayStation DualShock 4 Remote Control</h1></div>
+<div>
+<a class="button" href="#" onclick="scan();">Scan for car</a>
+</div>
+<div id="current_color">
+<span>Current Color: </span><div id="color">&nbsp;</div>
+</div>
+</body>
+
+</html>
