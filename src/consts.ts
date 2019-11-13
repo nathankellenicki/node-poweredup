@@ -20,11 +20,7 @@ export enum HubType {
 
 
 // tslint:disable-next-line
-export let HubTypeNames = Object.keys(HubType).reduce((result: {[hubType: string]: string}, item) => {
-    // @ts-ignore
-    result[HubType[item]] = item;
-    return result;
-}, {});
+export const HubTypeNames = HubType;
 
 
 /**
@@ -33,7 +29,10 @@ export let HubTypeNames = Object.keys(HubType).reduce((result: {[hubType: string
  * @property {number} BASIC_MOTOR 1
  * @property {number} TRAIN_MOTOR 2
  * @property {number} LED_LIGHTS 8
- * @property {number} BOOST_LED 22
+ * @property {number} VOLTAGE 20
+ * @property {number} CURRENT 21
+ * @property {number} PIEZO_TONE 22
+ * @property {number} RGB_LIGHT 23
  * @property {number} WEDO2_TILT 34
  * @property {number} WEDO2_DISTANCE 35
  * @property {number} BOOST_DISTANCE 37
@@ -47,6 +46,7 @@ export let HubTypeNames = Object.keys(HubType).reduce((result: {[hubType: string
  * @property {number} CONTROL_PLUS_LARGE_MOTOR 46
  * @property {number} CONTROL_PLUS_XLARGE_MOTOR 47
  * @property {number} POWERED_UP_REMOTE_BUTTON 55
+ * @property {number} RSSI 56
  * @property {number} CONTROL_PLUS_ACCELEROMETER 58
  * @property {number} CONTROL_PLUS_TILT 59
  */
@@ -55,7 +55,10 @@ export enum DeviceType {
     BASIC_MOTOR = 1,
     TRAIN_MOTOR = 2,
     LED_LIGHTS = 8,
-    BOOST_LED = 22,
+    VOLTAGE = 20,
+    CURRENT = 21,
+    PIEZO_TONE = 22,
+    RGB_LIGHT = 23,
     WEDO2_TILT = 34,
     WEDO2_DISTANCE = 35,
     BOOST_DISTANCE = 37,
@@ -69,17 +72,14 @@ export enum DeviceType {
     CONTROL_PLUS_LARGE_MOTOR = 46,
     CONTROL_PLUS_XLARGE_MOTOR = 47,
     POWERED_UP_REMOTE_BUTTON = 55,
+    RSSI = 56,
     CONTROL_PLUS_ACCELEROMETER = 58,
     CONTROL_PLUS_TILT = 59
 }
 
 
 // tslint:disable-next-line
-export let DeviceTypeNames = Object.keys(DeviceType).reduce((result: {[deviceType: string]: string}, item) => {
-    // @ts-ignore
-    result[DeviceType[item]] = item;
-    return result;
-}, {});
+export const DeviceTypeNames = DeviceType;
 
 
 /**
@@ -114,11 +114,7 @@ export enum Color {
 
 
 // tslint:disable-next-line
-export let ColorNames = Object.keys(Color).reduce((result: {[color: string]: string}, item) => {
-    // @ts-ignore
-    result[Color[item]] = item;
-    return result;
-}, {});
+export const ColorNames = Color;
 
 
 /**

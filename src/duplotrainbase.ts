@@ -32,7 +32,9 @@ export class DuploTrainBase extends LPF2Hub {
 
 
     protected _ledPort = 0x11;
-
+    protected _voltagePort = 0x14;
+    protected _voltageMaxV = 6.4;
+    protected _voltageMaxRaw = 3047;
 
     constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);

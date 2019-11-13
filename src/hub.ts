@@ -32,7 +32,6 @@ export class Hub extends EventEmitter {
     protected _current: number = 0;
 
     protected _bleDevice: IBLEDevice;
-    private _rssi: number = -100;
 
     private _isConnecting = false;
     private _isConnected = false;
@@ -89,15 +88,6 @@ export class Hub extends EventEmitter {
      */
     public get uuid () {
         return this._bleDevice.uuid;
-    }
-
-
-    /**
-     * @readonly
-     * @property {number} rssi Signal strength of the hub
-     */
-    public get rssi () {
-        return this._rssi;
     }
 
 
@@ -381,15 +371,6 @@ export class Hub extends EventEmitter {
         }
         return port;
     }
-
-
-    protected _lpad (str: string, length: number) {
-        while (str.length < length) {
-            str = "0" + str;
-        }
-        return str;
-    }
-
 
     private _getModeForDeviceType (type: Consts.DeviceType) {
         switch (type) {
