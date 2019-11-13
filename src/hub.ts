@@ -362,15 +362,6 @@ export class Hub extends EventEmitter {
         return port;
     }
 
-
-    protected _lpad (str: string, length: number) {
-        while (str.length < length) {
-            str = "0" + str;
-        }
-        return str;
-    }
-
-
     private _getModeForDeviceType (type: Consts.DeviceType) {
         switch (type) {
             case Consts.DeviceType.BASIC_MOTOR:
