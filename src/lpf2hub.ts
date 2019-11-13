@@ -20,6 +20,17 @@ export class LPF2Hub extends Hub {
         return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
     }
 
+    private static decodeMacAddress(v: Uint8Array) {
+        return [
+            ("00" + v[0].toString(16)).slice(-2),
+            ("00" + v[1].toString(16)).slice(-2),
+            ("00" + v[2].toString(16)).slice(-2),
+            ("00" + v[3].toString(16)).slice(-2),
+            ("00" + v[4].toString(16)).slice(-2),
+            ("00" + v[5].toString(16)).slice(-2),
+        ].join(":");
+    }
+
     protected _ledPort: number = 0x32;
 
     private _lastTiltX: number = 0;
@@ -37,6 +48,7 @@ export class LPF2Hub extends Hub {
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x0d, 0x05])); // Request primary MAC address
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
@@ -249,6 +261,10 @@ export class LPF2Hub extends Hub {
         } else if (data[3] === 0x03) {
             this._firmwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
             this._checkFirmware(this._firmwareVersion);
+
+        // primary MAC Address
+        } else if (data[3] === 0x0d) {
+            this._macAddress = LPF2Hub.decodeMacAddress(data.slice(4, 10));
 
         // Battery level reports
         } else if (data[3] === 0x06) {
