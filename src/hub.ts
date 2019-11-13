@@ -26,6 +26,7 @@ export class Hub extends EventEmitter {
     protected _name: string = "";
     protected _firmwareVersion: string = "0.0.00.0000";
     protected _hardwareVersion: string = "0.0.00.0000";
+    protected _primaryMACAddress: string = "00:00:00:00:00:00";
     protected _batteryLevel: number = 100;
     protected _voltage: number = 0;
     protected _current: number = 0;
@@ -69,6 +70,15 @@ export class Hub extends EventEmitter {
      */
     public get hardwareVersion () {
         return this._hardwareVersion;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} primaryMACAddress Primary MAC address of the hub
+     */
+    public get primaryMACAddress () {
+        return this._primaryMACAddress;
     }
 
 
