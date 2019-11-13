@@ -25,6 +25,7 @@ export class Hub extends EventEmitter {
 
     protected _name: string = "";
     protected _firmwareVersion: string = "0.0.00.0000";
+    protected _hardwareVersion: string = "0.0.00.0000";
     protected _macAddress: string = "00:00:00:00:00:00";
     protected _batteryLevel: number = 100;
     protected _voltage: number = 0;
@@ -61,6 +62,15 @@ export class Hub extends EventEmitter {
      */
     public get firmwareVersion () {
         return this._firmwareVersion;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} firmwareVersion Hardware version of the hub
+     */
+    public get hardwareVersion () {
+        return this._hardwareVersion;
     }
 
 
@@ -144,7 +154,6 @@ export class Hub extends EventEmitter {
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public async disconnect () {
-        this.emit("disconnect");
         this._bleDevice.disconnect();
     }
 
@@ -396,6 +405,10 @@ export class Hub extends EventEmitter {
                 return 0x02;
             case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
                 return 0x02;
+            case Consts.DeviceType.CONTROL_PLUS_TILT:
+                return 0x00;
+            case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER:
+                return 0x00;
             case Consts.DeviceType.BOOST_DISTANCE:
                 return (this.type === Consts.HubType.WEDO2_SMART_HUB ? 0x00 : 0x08);
             case Consts.DeviceType.BOOST_TILT:

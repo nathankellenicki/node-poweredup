@@ -23,8 +23,12 @@ poweredUP.on("discover", async (hub) => {
         console.log(`Disconnected ${hub.name}`);
     })
 
-    hub.on("tilt", (port, x, y) => {
-        console.log(`Tilt detected on port ${port} (X: ${x}, Y: ${y})`);
+    hub.on("tilt", (port, x, y, z) => {
+        console.log(`Tilt detected on port ${port} (X: ${x}, Y: ${y}${z !== "undefined" ? `, Z: ${z}`: ""})`);
+    });
+
+    hub.on("accel", (port, x, y, z) => {
+        console.log(`Accelerometer detected on port ${port} (X: ${x}, Y: ${y}, Z: ${z})`);
     });
 
     hub.on("distance", (port, distance) => {
@@ -49,6 +53,6 @@ poweredUP.on("discover", async (hub) => {
 
     hub.on("detach", (port) => {
         console.log(`Device detached from port ${port}`) ;
-     });
+    });
 
 });

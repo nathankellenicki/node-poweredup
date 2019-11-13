@@ -4,6 +4,7 @@
 <head>
 <title>Web Bluetooth node-poweredup Example</title>
 <script src="https://cdn.jsdelivr.net/npm/node-poweredup@latest/dist/browser/poweredup.js"></script>
+<!-- <script src="../dist/browser/poweredup.js"></script> -->
 <link rel="stylesheet" type="text/css" href="./web_bluetooth.css" />
 <script>
 
@@ -12,10 +13,43 @@ const poweredUP = new PoweredUP.PoweredUP();
 poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 
     await hub.connect(); // Connect to hub
-    console.log(`Connected to ${hub.name}!`);
+    log(`Connected to ${hub.name}!`);
 
     hub.on("disconnect", () => {
-        console.log("Hub disconnected");
+        log(`Disconnected ${hub.name}`);
+    })
+
+    hub.on("tilt", (port, x, y, z) => {
+        log(`Tilt detected on port ${port} (X: ${x}, Y: ${y}${z !== "undefined" ? `, Z: ${z}`: ""})`);
+    });
+
+    hub.on("accel", (port, x, y, z) => {
+        log(`Accelerometer detected on port ${port} (X: ${x}, Y: ${y}, Z: ${z})`);
+    });
+
+
+    hub.on("distance", (port, distance) => {
+        log(`Motion detected on port ${port} (Distance: ${distance})`);
+    });
+
+    hub.on("color", (port, color) => {
+        log(`Color detected on port ${port} (Color: ${color})`);
+    });
+
+    hub.on("rotate", (port, rotation) => {
+        log(`Rotation detected on port ${port} (Rotation: ${rotation})`);
+    });
+
+    hub.on("button", (button, state) => {
+        log(`Button press detected (Button: ${button}, State: ${state})`);
+    });
+
+    hub.on("attach", (port, device) => {
+        log(`Device attached to port ${port} (Device ID: ${device})`) ;
+    });
+
+    hub.on("detach", (port) => {
+        log(`Device detached from port ${port}`) ;
     });
 
     renderHub(hub);
@@ -36,6 +70,12 @@ setInterval(() => {
     }
 
 }, 2000);
+
+const log = function (str) {
+    const element = document.getElementById("console");
+    element.innerHTML += `${str}<br />`;
+    element.scrollTop = element.scrollHeight;
+}
 
 const renderHub = function (hub) {
     const element = document.createElement("tr");
@@ -73,6 +113,7 @@ const disconnect = function (uuid) {
 <thead class="headings"><td>Name</td><td>Type</td></thead>
 </table>
 </div>
+<div id="console"></div>
 </body>
 
 </html>

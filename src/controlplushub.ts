@@ -39,7 +39,8 @@ export class ControlPlusHub extends LPF2Hub {
             "B": new Port("B", 1),
             "C": new Port("C", 2),
             "D": new Port("D", 3),
-            // "TILT": new Port("TILT", 60)
+            "ACCEL": new Port("ACCEL", 98),
+            "TILT": new Port("TILT", 99)
         };
         this.on("attach", (port, type) => {
             this._combinePorts(port, type);
@@ -52,8 +53,6 @@ export class ControlPlusHub extends LPF2Hub {
         return new Promise(async (resolve, reject) => {
             debug("Connecting to Control+ Hub");
             await super.connect();
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x62, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01])); // Accelerometer
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x63, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Gyro/Tilt
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3d, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01])); // Temperature
             debug("Connect completed");
             return resolve();

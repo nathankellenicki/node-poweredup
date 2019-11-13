@@ -51,3 +51,14 @@ a.button {
     background-color: #666666;
     color: #ffffff;
 }
+
+div#console {
+    padding: 5px;
+    border-radius: 3px;
+    background-color: #333333;
+    color: #ffffff;
+    width: 700px;
+    height: 500px;
+    overflow: scroll;
+    font-family: "Courier New", Courier;
+}

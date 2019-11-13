@@ -47,6 +47,8 @@ export let HubTypeNames = Object.keys(HubType).reduce((result: {[hubType: string
  * @property {number} CONTROL_PLUS_LARGE_MOTOR 46
  * @property {number} CONTROL_PLUS_XLARGE_MOTOR 47
  * @property {number} POWERED_UP_REMOTE_BUTTON 55
+ * @property {number} CONTROL_PLUS_ACCELEROMETER 58
+ * @property {number} CONTROL_PLUS_TILT 59
  */
 export enum DeviceType {
     UNKNOWN = 0,
@@ -66,7 +68,9 @@ export enum DeviceType {
     DUPLO_TRAIN_BASE_SPEEDOMETER = 44,
     CONTROL_PLUS_LARGE_MOTOR = 46,
     CONTROL_PLUS_XLARGE_MOTOR = 47,
-    POWERED_UP_REMOTE_BUTTON = 55
+    POWERED_UP_REMOTE_BUTTON = 55,
+    CONTROL_PLUS_ACCELEROMETER = 58,
+    CONTROL_PLUS_TILT = 59
 }
 
 
