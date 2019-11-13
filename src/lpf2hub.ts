@@ -21,7 +21,7 @@ export class LPF2Hub extends Hub {
         return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
     }
 
-    private static decodeMacAddress(v: Uint8Array) {
+    private static decodeMACAddress(v: Uint8Array) {
         return Array.from(v).map((n) => toHex(n, 2)).join(":");
     }
 
@@ -274,7 +274,7 @@ export class LPF2Hub extends Hub {
 
         // primary MAC Address
         } else if (data[3] === 0x0d) {
-            this._macAddress = LPF2Hub.decodeMacAddress(data.slice(4, 10));
+            this._primaryMACAddress = LPF2Hub.decodeMACAddress(data.slice(4, 10));
 
         // Battery level reports
         } else if (data[3] === 0x06) {
