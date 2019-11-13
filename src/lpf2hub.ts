@@ -45,11 +45,6 @@ export class LPF2Hub extends Hub {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request hardware version
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x0d, 0x05])); // Request primary MAC address
             if (this._voltagePort !== undefined) {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, this._voltagePort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
             }
@@ -59,12 +54,14 @@ export class LPF2Hub extends Hub {
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
             }
-            setTimeout(() => {
-                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version again
-                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request firmware version again
-                this.emit("connect");
-                resolve();
-            }, 200);
+            await this.sleep(100);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request hardware version
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x0d, 0x05])); // Request primary MAC address
+            this.emit("connect");
+            resolve();
         });
     }
 
