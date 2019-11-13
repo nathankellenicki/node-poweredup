@@ -21,8 +21,6 @@ export class LPF2Hub extends Hub {
         return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
     }
 
-    public sendPortInformationRequests: boolean = false;
-
     protected _ledPort: number = 0x32;
 
     private _lastTiltX: number = 0;
@@ -271,7 +269,7 @@ export class LPF2Hub extends Hub {
         let port = this._getPortForPortNumber(data[3]);
         const type = data[4] ? data.readUInt16LE(5) : 0;
 
-        if (data[4] === 0x01 && this.sendPortInformationRequests) {
+        if (data[4] === 0x01 && modeInfoDebug.enabled) {
             const typeName = Consts.DeviceTypeNames[data[5]] || "unknown";
             modeInfoDebug(`Port ${toHex(data[3])}, type ${toHex(type, 4)} (${typeName})`);
             const hwVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
