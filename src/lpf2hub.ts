@@ -21,6 +21,12 @@ export class LPF2Hub extends Hub {
     }
 
     protected _ledPort: number = 0x32;
+    protected _voltagePort: number | undefined;
+    protected _voltageMaxV: number = 9.6;
+    protected _voltageMaxRaw: number = 3893;
+    protected _currentPort: number | undefined;
+    protected _currentMaxMA: number = 2444;
+    protected _currentMaxRaw: number = 4095;
 
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
@@ -38,8 +44,12 @@ export class LPF2Hub extends Hub {
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request hardware version
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+            if (this._voltagePort !== undefined) {
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, this._voltagePort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
+            }
+            if (this._currentPort !== undefined) {
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, this._currentPort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+            }
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
             }
@@ -369,42 +379,15 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _padMessage (data: Buffer, len: number) {
-        if (data.length < len) {
-            data = Buffer.concat([data, Buffer.alloc(len - data.length)]);
-        }
-        return data;
-    }
-
-
     private _parseSensorMessage (data: Buffer) {
 
-        if ((data[3] === 0x3b && this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 6400.0 * voltage / 3200.0 / 1000.0;
+        if (data[3] === this._voltagePort) {
+            const voltageRaw = data.readUInt16LE(4);
+            this._voltage = voltageRaw * this._voltageMaxV / this._voltageMaxRaw;
             return;
-        } else if ((data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_HUB)) { // Voltage (PUP Hub)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 9620.0 * voltage / 3893.0 / 1000.0;
-            return;
-        } else if ((data[3] === 0x3c && this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Voltage (Control+ Hub)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 9615.0 * voltage / 4095.0 / 1000.0;
-            return;
-        } else if (data[3] === 0x3c) { // Voltage (Others)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 9600.0 * voltage / 3893.0 / 1000.0;
-            return;
-        } else if (data[3] === 0x3c && this.type === Consts.HubType.POWERED_UP_REMOTE) { // RSSI (PUP Remote)
-            return;
-        } else if (data[3] === 0x3b) { // Current (Others)
-            data = this._padMessage(data, 6);
-            const current = data.readUInt16LE(4);
-            this._current = 2444 * current / 4095.0;
+        } else if (data[3] === this._currentPort) {
+            const currentRaw = data.readUInt16LE(4);
+            this._current = this._currentMaxMA * currentRaw / this._currentMaxRaw;
             return;
         }
 
