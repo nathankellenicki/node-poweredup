@@ -97,6 +97,17 @@ export class PoweredUP extends EventEmitter {
 
 
     /**
+     * Retrieve a Powered UP Hub by primary MAC address.
+     * @method PoweredUP#getConnectedHubByPrimaryMACAddress
+     * @param {string} address
+     * @returns {Hub}
+     */
+    public getConnectedHubByPrimaryMACAddress (address: string) {
+        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]).filter((hub) => hub.primaryMACAddress === address)[0];
+    }
+
+
+    /**
      * Retrieve a list of Powered UP Hub by name.
      * @method PoweredUP#getConnectedHubsByName
      * @param {string} name
