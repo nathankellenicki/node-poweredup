@@ -21,14 +21,7 @@ export class LPF2Hub extends Hub {
     }
 
     private static decodeMacAddress(v: Uint8Array) {
-        return [
-            ("00" + v[0].toString(16)).slice(-2),
-            ("00" + v[1].toString(16)).slice(-2),
-            ("00" + v[2].toString(16)).slice(-2),
-            ("00" + v[3].toString(16)).slice(-2),
-            ("00" + v[4].toString(16)).slice(-2),
-            ("00" + v[5].toString(16)).slice(-2),
-        ].join(":");
+        return Array.from(v).map((n) => ("00" + n.toString(16)).slice(-2)).join(":");
     }
 
     protected _ledPort: number = 0x32;
