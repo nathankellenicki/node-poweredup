@@ -96,6 +96,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const hub_1 = require("./hub");
 const port_1 = require("./port");
 const Consts = __importStar(require("./consts"));
+const utils_1 = require("./utils");
 const Debug = require("debug");
 const debug = Debug("lpf2hub");
 const modeInfoDebug = Debug("lpf2hubmodeinfo");
@@ -107,6 +108,10 @@ class LPF2Hub extends hub_1.Hub {
     constructor() {
         super(...arguments);
         this._ledPort = 0x32;
+        this._voltageMaxV = 9.6;
+        this._voltageMaxRaw = 3893;
+        this._currentMaxMA = 2444;
+        this._currentMaxRaw = 4095;
         this._lastTiltX = 0;
         this._lastTiltY = 0;
         this._lastTiltZ = 0;
@@ -116,24 +121,32 @@ class LPF2Hub extends hub_1.Hub {
         const t = v.toString(16).padStart(8, "0");
         return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
     }
+    static decodeMACAddress(v) {
+        return Array.from(v).map((n) => utils_1.toHex(n, 2)).join(":");
+    }
     connect() {
         return new Promise(async (resolve, reject) => {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3c, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x3b, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+            if (this._voltagePort !== undefined) {
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, this._voltagePort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate voltage reports
+            }
+            if (this._currentPort !== undefined) {
+                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, this._currentPort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01])); // Activate current reports
+            }
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
                 this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]));
             }
+            await this.sleep(100);
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request hardware version
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x05, 0x02])); // Activate RSSI updates
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x0d, 0x05])); // Request primary MAC address
             this.emit("connect");
             resolve();
-            setTimeout(() => {
-                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version again
-            }, 200);
         });
     }
     /**
@@ -304,6 +317,22 @@ class LPF2Hub extends hub_1.Hub {
         else if (data[3] === 0x03) {
             this._firmwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
             this._checkFirmware(this._firmwareVersion);
+            // Hardware version
+        }
+        else if (data[3] === 0x04) {
+            this._hardwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
+            // RSSI update
+        }
+        else if (data[3] === 0x05) {
+            const rssi = data.readInt8(5);
+            if (rssi !== 0) {
+                this._rssi = rssi;
+                this.emit("rssiChange", this._rssi);
+            }
+            // primary MAC Address
+        }
+        else if (data[3] === 0x0d) {
+            this._primaryMACAddress = LPF2Hub.decodeMACAddress(data.slice(4, 10));
             // Battery level reports
         }
         else if (data[3] === 0x06) {
@@ -312,7 +341,13 @@ class LPF2Hub extends hub_1.Hub {
     }
     _parsePortMessage(data) {
         let port = this._getPortForPortNumber(data[3]);
-        if (data[4] === 0x01) {
+        const type = data[4] ? data.readUInt16LE(5) : 0;
+        if (data[4] === 0x01 &amp;&amp; modeInfoDebug.enabled) {
+            const typeName = Consts.DeviceTypeNames[data[5]] || "unknown";
+            modeInfoDebug(`Port ${utils_1.toHex(data[3])}, type ${utils_1.toHex(type, 4)} (${typeName})`);
+            const hwVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
+            const swVersion = LPF2Hub.decodeVersion(data.readInt32LE(11));
+            modeInfoDebug(`Port ${utils_1.toHex(data[3])}, hardware version ${hwVersion}, software version ${swVersion}`);
             this._sendPortInformationRequest(data[3]);
         }
         if (!port) {
@@ -324,7 +359,7 @@ class LPF2Hub extends hub_1.Hub {
                     port = this._getPortForPortNumber(data[3]);
                     if (port) {
                         port.connected = true;
-                        this._registerDeviceAttachment(port, data[5]);
+                        this._registerDeviceAttachment(port, type);
                     }
                     else {
                         return;
@@ -340,31 +375,41 @@ class LPF2Hub extends hub_1.Hub {
         }
         else {
             port.connected = (data[4] === 0x01 || data[4] === 0x02) ? true : false;
-            this._registerDeviceAttachment(port, data[5]);
+            this._registerDeviceAttachment(port, type);
         }
     }
     _sendPortInformationRequest(port) {
         this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x21, port, 0x01]));
+        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x21, port, 0x02])); // Mode combinations
     }
     _parsePortInformationResponse(data) {
         const port = data[3];
+        if (data[4] === 2) {
+            const modeCombinationMasks = [];
+            for (let i = 5; i &lt; data.length; i += 2) {
+                modeCombinationMasks.push(data.readUInt16LE(i));
+            }
+            modeInfoDebug(`Port ${utils_1.toHex(port)}, mode combinations [${modeCombinationMasks.map((c) => utils_1.toBin(c, 0)).join(", ")}]`);
+            return;
+        }
         const count = data[6];
-        const input = data.readUInt16LE(7);
-        const output = data.readUInt16LE(9);
-        modeInfoDebug(`Port ${port}, total modes ${count}, input modes ${input.toString(2)}, output modes ${output.toString(2)}`);
+        const input = utils_1.toBin(data.readUInt16LE(7), count);
+        const output = utils_1.toBin(data.readUInt16LE(9), count);
+        modeInfoDebug(`Port ${utils_1.toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
         for (let i = 0; i &lt; count; i++) {
             this._sendModeInformationRequest(port, i, 0x00); // Mode Name
             this._sendModeInformationRequest(port, i, 0x01); // RAW Range
             this._sendModeInformationRequest(port, i, 0x02); // PCT Range
             this._sendModeInformationRequest(port, i, 0x03); // SI Range
             this._sendModeInformationRequest(port, i, 0x04); // SI Symbol
+            this._sendModeInformationRequest(port, i, 0x80); // Value Format
         }
     }
     _sendModeInformationRequest(port, mode, type) {
         this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x22, port, mode, type]));
     }
     _parseModeInformationResponse(data) {
-        const port = data[3];
+        const port = utils_1.toHex(data[3]);
         const mode = data[4];
         const type = data[5];
         switch (type) {
@@ -383,6 +428,12 @@ class LPF2Hub extends hub_1.Hub {
             case 0x04: // SI Symbol
                 modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${data.slice(6, data.length).toString()}`);
                 break;
+            case 0x80: // Value Format
+                const numValues = data[6];
+                const dataType = ["8bit", "16bit", "32bit", "float"][data[7]];
+                const totalFigures = data[8];
+                const decimals = data[9];
+                modeInfoDebug(`Port ${port}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
         }
     }
     _parsePortAction(data) {
@@ -398,69 +449,15 @@ class LPF2Hub extends hub_1.Hub {
             }
         }
     }
-    _padMessage(data, len) {
-        if (data.length &lt; len) {
-            data = Buffer.concat([data, Buffer.alloc(len - data.length)]);
-        }
-        return data;
-    }
     _parseSensorMessage(data) {
-        if ((data[3] === 0x3b &amp;&amp; this.type === Consts.HubType.POWERED_UP_REMOTE)) { // Voltage (PUP Remote)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 6400.0 * voltage / 3200.0 / 1000.0;
+        if (data[3] === this._voltagePort) {
+            const voltageRaw = data.readUInt16LE(4);
+            this._voltage = voltageRaw * this._voltageMaxV / this._voltageMaxRaw;
             return;
         }
-        else if ((data[3] === 0x3c &amp;&amp; this.type === Consts.HubType.POWERED_UP_HUB)) { // Voltage (PUP Hub)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 9620.0 * voltage / 3893.0 / 1000.0;
-            return;
-        }
-        else if ((data[3] === 0x3c &amp;&amp; this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Voltage (Control+ Hub)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 9615.0 * voltage / 4095.0 / 1000.0;
-            return;
-        }
-        else if (data[3] === 0x3c) { // Voltage (Others)
-            data = this._padMessage(data, 6);
-            const voltage = data.readUInt16LE(4);
-            this._voltage = 9600.0 * voltage / 3893.0 / 1000.0;
-            return;
-        }
-        else if (data[3] === 0x3c &amp;&amp; this.type === Consts.HubType.POWERED_UP_REMOTE) { // RSSI (PUP Remote)
-            return;
-        }
-        else if (data[3] === 0x3b) { // Current (Others)
-            data = this._padMessage(data, 6);
-            const current = data.readUInt16LE(4);
-            this._current = 2444 * current / 4095.0;
-            return;
-        }
-        if ((data[3] === 0x62 &amp;&amp; this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ Accelerometer
-            const accelX = Math.round((data.readInt16LE(4) / 28571) * 2000);
-            const accelY = Math.round((data.readInt16LE(6) / 28571) * 2000);
-            const accelZ = Math.round((data.readInt16LE(8) / 28571) * 2000);
-            /**
-             * Emits when accelerometer detects movement. Measured in DPS - degrees per second.
-             * @event LPF2Hub#accel
-             * @param {string} port
-             * @param {number} x
-             * @param {number} y
-             * @param {number} z
-             */
-            this.emit("accel", "ACCEL", accelX, accelY, accelZ);
-            return;
-        }
-        if ((data[3] === 0x63 &amp;&amp; this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ Accelerometer
-            const tiltZ = data.readInt16LE(4);
-            const tiltY = data.readInt16LE(6);
-            const tiltX = data.readInt16LE(8);
-            this._lastTiltX = tiltX;
-            this._lastTiltY = tiltY;
-            this._lastTiltZ = tiltZ;
-            this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
+        else if (data[3] === this._currentPort) {
+            const currentRaw = data.readUInt16LE(4);
+            this._current = this._currentMaxMA * currentRaw / this._currentMaxRaw;
             return;
         }
         if ((data[3] === 0x3d &amp;&amp; this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ CPU Temperature
@@ -564,6 +561,31 @@ class LPF2Hub extends hub_1.Hub {
                     this.emit("rotate", port.id, rotation);
                     break;
                 }
+                case Consts.DeviceType.CONTROL_PLUS_TILT: {
+                    const tiltZ = data.readInt16LE(4);
+                    const tiltY = data.readInt16LE(6);
+                    const tiltX = data.readInt16LE(8);
+                    this._lastTiltX = tiltX;
+                    this._lastTiltY = tiltY;
+                    this._lastTiltZ = tiltZ;
+                    this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
+                    break;
+                }
+                case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER: {
+                    const accelX = Math.round((data.readInt16LE(4) / 28571) * 2000);
+                    const accelY = Math.round((data.readInt16LE(6) / 28571) * 2000);
+                    const accelZ = Math.round((data.readInt16LE(8) / 28571) * 2000);
+                    /**
+                     * Emits when accelerometer detects movement. Measured in DPS - degrees per second.
+                     * @event LPF2Hub#accel
+                     * @param {string} port
+                     * @param {number} x
+                     * @param {number} y
+                     * @param {number} z
+                     */
+                    this.emit("accel", "ACCEL", accelX, accelY, accelZ);
+                    break;
+                }
                 case Consts.DeviceType.BOOST_TILT: {
                     const tiltX = data.readInt8(4);
                     const tiltY = data.readInt8(5);
@@ -660,7 +682,7 @@ exports.LPF2Hub = LPF2Hub;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on Sun Nov 10th 2019
+		on Wed Nov 13th 2019
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
