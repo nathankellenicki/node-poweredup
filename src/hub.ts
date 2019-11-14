@@ -30,6 +30,7 @@ export class Hub extends EventEmitter {
     protected _batteryLevel: number = 100;
     protected _voltage: number = 0;
     protected _current: number = 0;
+    protected _rssi: number = -60;
 
     protected _bleDevice: IBLEDevice;
 
@@ -97,6 +98,15 @@ export class Hub extends EventEmitter {
      */
     public get batteryLevel () {
         return this._batteryLevel;
+    }
+
+
+    /**
+     * @readonly
+     * @property {number} rssi Signal strength of the hub
+     */
+    public get rssi () {
+        return this._rssi;
     }
 
 

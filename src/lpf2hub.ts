@@ -58,6 +58,7 @@ export class LPF2Hub extends Hub {
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x02, 0x02])); // Activate button reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x03, 0x05])); // Request firmware version
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x04, 0x05])); // Request hardware version
+            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x05, 0x02])); // Activate RSSI updates
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x06, 0x02])); // Activate battery level reports
             this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, Buffer.from([0x01, 0x0d, 0x05])); // Request primary MAC address
             this.emit("connect");
@@ -268,6 +269,14 @@ export class LPF2Hub extends Hub {
         // Hardware version
         } else if (data[3] === 0x04) {
             this._hardwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
+
+        // RSSI update
+        } else if (data[3] === 0x05) {
+            const rssi = data.readInt8(5);
+            if (rssi !== 0) {
+                this._rssi = rssi;
+                this.emit("rssiChange", this._rssi);
+            }
 
         // primary MAC Address
         } else if (data[3] === 0x0d) {

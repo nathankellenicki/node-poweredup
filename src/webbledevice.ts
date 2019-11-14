@@ -27,7 +27,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEDevice {
         this._uuid = device.device.id;
         this._name = device.device.name;
         device.device.addEventListener("gattserverdisconnected", () => {
-            this._connected = false;
+            this._connecting = false;
             this._connected = false;
             this.emit("disconnect");
         });

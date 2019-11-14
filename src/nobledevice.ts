@@ -28,7 +28,7 @@ export class NobleDevice extends EventEmitter implements IBLEDevice {
         this._noblePeripheral = device;
         this._uuid = device.uuid;
         device.on("disconnect", () => {
-            this._connected = false;
+            this._connecting = false;
             this._connected = false;
             this.emit("disconnect");
         });
