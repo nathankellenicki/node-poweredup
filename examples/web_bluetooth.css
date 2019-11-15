@@ -1,0 +1,64 @@
+body {
+    font-family: Verdana;
+    font-size: 12px;
+}
+
+div {
+    margin-bottom: 10px;
+}
+
+div#current_color {
+    position: absolute;
+    top: 61px;
+    left: 120px;
+}
+
+div#color {
+    border: 1px solid #666666;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: -4px;
+    left: 92px;
+}
+
+table td {
+    width: 150px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+table td.disconnect_btn {
+    width: 60px;
+}
+
+table td.disconnect_btn a {
+    color: #000000;
+}
+
+table thead.headings td {
+    background-color: #666666;
+    color: #ffffff;
+}
+
+table tr td {
+    background-color: #cccccc;
+}
+
+a.button {
+    padding: 5px;
+    border-radius: 3px;
+    background-color: #666666;
+    color: #ffffff;
+}
+
+div#console {
+    padding: 5px;
+    border-radius: 3px;
+    background-color: #333333;
+    color: #ffffff;
+    width: 700px;
+    height: 500px;
+    overflow: scroll;
+    font-family: "Courier New", Courier;
+}

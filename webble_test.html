@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>node-poweredup Web Bluetooth Test</title>
+<script>
+
+const scan = async function () {
+
+    const WEDO2_SMART_HUB = "00001523-1212-efde-1523-785feabcd123";
+    const LPF2_HUB = "00001623-1212-efde-1623-785feabcd123";
+
+    const LPF2_ALL = "00001624-1212-efde-1623-785feabcd123"
+
+    const device = await navigator.bluetooth.requestDevice({
+        filters: [
+            {
+                services: [
+                    WEDO2_SMART_HUB
+                ]
+            },
+            {
+                services: [
+                    LPF2_HUB            
+                ]
+            }
+        ]
+    });
+    const server = await device.gatt.connect();
+    console.log(server);
+
+    let connectComplete = false;
+    let hubType = 0;
+    let isLPF2Hub = false;
+    let service;
+    try {
+        service = await server.getPrimaryService(WEDO2_SMART_HUB);
+        hubType = 1;
+    } catch (error) {}
+    try {
+        service = await server.getPrimaryService(LPF2_HUB);
+        isLPF2Hub = true;
+    } catch (error) {}
+
+    const characteristics = await service.getCharacteristics();
+    const charMap = {};
+    for (const characteristic of characteristics) {
+      charMap[characteristic.uuid] = characteristic;
+    }
+
+    charMap[LPF2_ALL].addEventListener("characteristicvaluechanged", (event) => {
+        console.log(event.target.value.buffer);
+    });
+
+    charMap[LPF2_ALL].startNotifications();
+
+    if (isLPF2Hub) {
+        const hubTypeCmd = new Uint8Array([0x05, 0x00, 0x01, 0x0b, 0x05]);
+        charMap[LPF2_ALL].writeValue(hubTypeCmd);
+    }    
+
+}
+
+</script>
+</head>
+
+<body>
+<div>
+<button onclick="scan()">Scan</button>
+</div>
+</body>
+
+</html>

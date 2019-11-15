@@ -5,7 +5,7 @@ const poweredUP = new PoweredUP.PoweredUP()
 const trains = [
     {
         name: "Maersk Intermodal",
-        color: PoweredUP.Consts.Colors.LIGHT_BLUE,
+        color: PoweredUP.Consts.Color.LIGHT_BLUE,
         hubs: [
             {
                 name: "NK_Maersk",
@@ -15,7 +15,7 @@ const trains = [
     },
     {
         name: "Horizon Express",
-        color: PoweredUP.Consts.Colors.ORANGE,
+        color: PoweredUP.Consts.Color.ORANGE,
         hubs: [
             {
                 name: "NK_Horizon_1",
@@ -32,7 +32,7 @@ const trains = [
     },
     {
         name: "Emerald Night",
-        color: PoweredUP.Consts.Colors.GREEN,
+        color: PoweredUP.Consts.Color.GREEN,
         hubs: [
             {
                 name: "NK_Emerald",
@@ -44,7 +44,7 @@ const trains = [
     },
     {
         name: "Metroliner",
-        color: PoweredUP.Consts.Colors.WHITE,
+        color: PoweredUP.Consts.Color.WHITE,
         hubs: [
             {
                 name: "NK_Metroliner",
@@ -60,32 +60,37 @@ const trains = [
 poweredUP.on("discover", async (hub) => {
 
     if (hub instanceof PoweredUP.PUPRemote) {
-        await hub.connect();
-        hub._currentTrain = 2;
         hub.on("button", (button, state) => {
 
             if (button === "GREEN") {
-                if (state === PoweredUP.Consts.ButtonStates.PRESSED) {
+                if (state === PoweredUP.Consts.ButtonState.PRESSED) {
                     hub._currentTrain++;
                     if (hub._currentTrain >= trains.length) {
                         hub._currentTrain = 0;
                     }
                     hub.setLEDColor(trains[hub._currentTrain].color);
-                    console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name}`);
+                    const batteryLevels = [];
+                    const train = trains[hub._currentTrain];
+                    for (let trainHub of train.hubs) {
+                        if (trainHub._hub) {
+                            batteryLevels.push(`${trainHub.name}: ${trainHub._hub.batteryLevel}%`);
+                        }
+                    }
+                    console.log(`Switched active train on remote ${hub.name} to ${trains[hub._currentTrain].name} (${batteryLevels.join(", ")})`);
                 }
-            } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonStates.RELEASED) {
+            } else if ((button === "LEFT" || button === "RIGHT") && state !== PoweredUP.Consts.ButtonState.RELEASED) {
                 trains[hub._currentTrain]._speed = trains[hub._currentTrain]._speed || 0;
-                if (state === PoweredUP.Consts.ButtonStates.UP) {
+                if (state === PoweredUP.Consts.ButtonState.UP) {
                     trains[hub._currentTrain]._speed += 10;
                     if (trains[hub._currentTrain]._speed > 100) {
                         trains[hub._currentTrain]._speed = 100;
                     }
-                } else if (state === PoweredUP.Consts.ButtonStates.DOWN) {
+                } else if (state === PoweredUP.Consts.ButtonState.DOWN) {
                     trains[hub._currentTrain]._speed -= 10;
                     if (trains[hub._currentTrain]._speed < -100) {
                         trains[hub._currentTrain]._speed = -100;
                     }
-                } else if (state === PoweredUP.Consts.ButtonStates.STOP) {
+                } else if (state === PoweredUP.Consts.ButtonState.STOP) {
                     trains[hub._currentTrain]._speed = 0;
                 }
                 for (let trainHub in trains[hub._currentTrain].hubs) {
@@ -102,6 +107,8 @@ poweredUP.on("discover", async (hub) => {
             }
 
         });
+        await hub.connect();
+        hub._currentTrain = 2;
         hub.setLEDColor(trains[hub._currentTrain].color);
         console.log(`Connected to Powered UP remote (${hub.name})`);
         return;
@@ -112,12 +119,8 @@ poweredUP.on("discover", async (hub) => {
         for (let trainHub in train.hubs) {
             trainHub = train.hubs[trainHub];
             if (hub.name === trainHub.name) {
-                await hub.connect();
-                trainHub._hub = hub;
-                hub.setLEDColor(train.color);
-                console.log(`Connected to ${train.name} (${hub.name})`);
                 hub.on("attach", (port, type) => {
-                    if (type === PoweredUP.Consts.Devices.LED_LIGHTS && trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
+                    if (trainHub.lights && trainHub.lights.indexOf(port) >= 0) {
                         hub.setLightBrightness(port, 100);
                     }
                 });
@@ -125,6 +128,10 @@ poweredUP.on("discover", async (hub) => {
                     console.log(`Disconnected from ${train.name} (${hub.name})`);
                     delete trainHub._hub;
                 })
+                await hub.connect();
+                trainHub._hub = hub;
+                hub.setLEDColor(train.color);
+                console.log(`Connected to ${train.name} (${hub.name})`);
             }
         }
     }

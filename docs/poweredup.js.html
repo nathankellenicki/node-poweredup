@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>DocStrap Source: poweredup.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">DocStrap</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="Hub.html">Hub</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="BoostMoveHub.html#event:attach">BoostMoveHub#event:attach</a></li><li><a href="BoostMoveHub.html#event:button">BoostMoveHub#event:button</a></li><li><a href="BoostMoveHub.html#event:color">BoostMoveHub#event:color</a></li><li><a href="BoostMoveHub.html#event:colorAndDistance">BoostMoveHub#event:colorAndDistance</a></li><li><a href="BoostMoveHub.html#event:detach">BoostMoveHub#event:detach</a></li><li><a href="BoostMoveHub.html#event:distance">BoostMoveHub#event:distance</a></li><li><a href="BoostMoveHub.html#event:rotate">BoostMoveHub#event:rotate</a></li><li><a href="BoostMoveHub.html#event:tilt">BoostMoveHub#event:tilt</a></li><li><a href="DuploTrainBase.html#event:color">DuploTrainBase#event:color</a></li><li><a href="DuploTrainBase.html#event:speed">DuploTrainBase#event:speed</a></li><li><a href="Hub.html#event:attach">Hub#event:attach</a></li><li><a href="Hub.html#event:detach">Hub#event:detach</a></li><li><a href="LPF2Hub.html#event:attach">LPF2Hub#event:attach</a></li><li><a href="LPF2Hub.html#event:button">LPF2Hub#event:button</a></li><li><a href="LPF2Hub.html#event:color">LPF2Hub#event:color</a></li><li><a href="LPF2Hub.html#event:colorAndDistance">LPF2Hub#event:colorAndDistance</a></li><li><a href="LPF2Hub.html#event:detach">LPF2Hub#event:detach</a></li><li><a href="LPF2Hub.html#event:distance">LPF2Hub#event:distance</a></li><li><a href="LPF2Hub.html#event:rotate">LPF2Hub#event:rotate</a></li><li><a href="LPF2Hub.html#event:speed">LPF2Hub#event:speed</a></li><li><a href="LPF2Hub.html#event:tilt">LPF2Hub#event:tilt</a></li><li><a href="PoweredUP.html#event:discover">PoweredUP#event:discover</a></li><li><a href="PUPHub.html#event:attach">PUPHub#event:attach</a></li><li><a href="PUPHub.html#event:button">PUPHub#event:button</a></li><li><a href="PUPHub.html#event:color">PUPHub#event:color</a></li><li><a href="PUPHub.html#event:colorAndDistance">PUPHub#event:colorAndDistance</a></li><li><a href="PUPHub.html#event:detach">PUPHub#event:detach</a></li><li><a href="PUPHub.html#event:distance">PUPHub#event:distance</a></li><li><a href="PUPHub.html#event:tilt">PUPHub#event:tilt</a></li><li><a href="PUPRemote.html#event:button">PUPRemote#event:button</a></li><li><a href="PUPRemote.html#event:colorAndDistance">PUPRemote#event:colorAndDistance</a></li><li><a href="WeDo2SmartHub.html#event:attach">WeDo2SmartHub#event:attach</a></li><li><a href="WeDo2SmartHub.html#event:button">WeDo2SmartHub#event:button</a></li><li><a href="WeDo2SmartHub.html#event:color">WeDo2SmartHub#event:color</a></li><li><a href="WeDo2SmartHub.html#event:detach">WeDo2SmartHub#event:detach</a></li><li><a href="WeDo2SmartHub.html#event:distance">WeDo2SmartHub#event:distance</a></li><li><a href="WeDo2SmartHub.html#event:rotate">WeDo2SmartHub#event:rotate</a></li><li><a href="WeDo2SmartHub.html#event:tilt">WeDo2SmartHub#event:tilt</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="global.html">Global</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: poweredup.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">"use strict";
+var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
+    if (mod &amp;&amp; mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const bledevice_1 = require("./bledevice");
+const boostmovehub_1 = require("./boostmovehub");
+const duplotrainbase_1 = require("./duplotrainbase");
+const puphub_1 = require("./puphub");
+const pupremote_1 = require("./pupremote");
+const wedo2smarthub_1 = require("./wedo2smarthub");
+const utils_1 = require("./utils");
+const Consts = __importStar(require("./consts"));
+const events_1 = require("events");
+const Debug = require("debug");
+const debug = Debug("poweredup");
+const noble = require("noble-mac");
+let ready = false;
+let wantScan = false;
+let discoveryEventAttached = false;
+const startScanning = () => {
+    if (utils_1.isBrowserContext) {
+        noble.startScanning([Consts.BLEService.WEDO2_SMART_HUB, Consts.BLEService.LPF2_HUB]);
+    }
+    else {
+        noble.startScanning();
+    }
+};
+noble.on("stateChange", (state) => {
+    ready = (state === "poweredOn");
+    if (ready) {
+        if (wantScan) {
+            debug("Scanning started");
+            startScanning();
+        }
+    }
+    else {
+        noble.stopScanning();
+    }
+});
+/**
+ * @class PoweredUP
+ * @extends EventEmitter
+ */
+class PoweredUP extends events_1.EventEmitter {
+    constructor() {
+        super();
+        this.autoSubscribe = true;
+        this._connectedHubs = {};
+        this._discoveryEventHandler = this._discoveryEventHandler.bind(this);
+    }
+    /**
+     * Begin scanning for Powered UP Hub devices.
+     * @method PoweredUP#scan
+     */
+    scan() {
+        wantScan = true;
+        if (!discoveryEventAttached) {
+            noble.on("discover", this._discoveryEventHandler);
+            discoveryEventAttached = true;
+        }
+        if (ready) {
+            debug("Scanning started");
+            startScanning();
+        }
+    }
+    /**
+     * Stop scanning for Powered UP Hub devices.
+     * @method PoweredUP#stop
+     */
+    stop() {
+        wantScan = false;
+        if (discoveryEventAttached) {
+            noble.removeListener("discover", this._discoveryEventHandler);
+            discoveryEventAttached = false;
+        }
+        noble.stopScanning();
+    }
+    /**
+     * Retrieve a list of Powered UP Hubs.
+     * @method PoweredUP#getConnectedHubs
+     * @returns {Hub[]}
+     */
+    getConnectedHubs() {
+        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]);
+    }
+    /**
+     * Retrieve a Powered UP Hub by UUID.
+     * @method PoweredUP#getConnectedHubByUUID
+     * @param {string} uuid
+     * @returns {Hub | null}
+     */
+    getConnectedHubByUUID(uuid) {
+        return this._connectedHubs[uuid];
+    }
+    /**
+     * Retrieve a list of Powered UP Hub by name.
+     * @method PoweredUP#getConnectedHubsByName
+     * @param {string} name
+     * @returns {Hub[]}
+     */
+    getConnectedHubsByName(name) {
+        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]).filter((hub) => hub.name === name);
+    }
+    async _discoveryEventHandler(peripheral) {
+        const device = new bledevice_1.BLEDevice(peripheral);
+        let hub;
+        if (await wedo2smarthub_1.WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
+            hub = new wedo2smarthub_1.WeDo2SmartHub(device, this.autoSubscribe);
+        }
+        else if (await boostmovehub_1.BoostMoveHub.IsBoostMoveHub(peripheral)) {
+            hub = new boostmovehub_1.BoostMoveHub(device, this.autoSubscribe);
+        }
+        else if (await puphub_1.PUPHub.IsPUPHub(peripheral)) {
+            hub = new puphub_1.PUPHub(device, this.autoSubscribe);
+        }
+        else if (await pupremote_1.PUPRemote.IsPUPRemote(peripheral)) {
+            hub = new pupremote_1.PUPRemote(device, this.autoSubscribe);
+        }
+        else if (await duplotrainbase_1.DuploTrainBase.IsDuploTrainBase(peripheral)) {
+            hub = new duplotrainbase_1.DuploTrainBase(device, this.autoSubscribe);
+        }
+        else {
+            return;
+        }
+        peripheral.removeAllListeners();
+        // noble.stopScanning();
+        // if (!isBrowserContext) {
+        //     startScanning();
+        // }
+        device.on("discoverComplete", () => {
+            hub.on("connect", () => {
+                debug(`Hub ${hub.uuid} connected`);
+                this._connectedHubs[hub.uuid] = hub;
+            });
+            hub.on("disconnect", () => {
+                debug(`Hub ${hub.uuid} disconnected`);
+                delete this._connectedHubs[hub.uuid];
+                if (wantScan) {
+                    startScanning();
+                }
+            });
+            debug(`Hub ${hub.uuid} discovered`);
+            /**
+             * Emits when a Powered UP Hub device is found.
+             * @event PoweredUP#discover
+             * @param {WeDo2SmartHub | BoostMoveHub | PUPHub | PUPRemote | DuploTrainBase} hub
+             */
+            this.emit("discover", hub);
+        });
+    }
+}
+exports.PoweredUP = PoweredUP;
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	node-poweredup by Nathan Kellenicki licensed under the MIT license.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+		on Wed Feb 13th 2019
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
