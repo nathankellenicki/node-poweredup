@@ -46,7 +46,6 @@ export class Hub extends EventEmitter {
         });
     }
 
-
     /**
      * @readonly
      * @property {string} name Name of the hub

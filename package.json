@@ -32,5 +32,8 @@
     "typescript": "^3.7.2",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
+  },
+  "bin": {
+    "lpf2-hubinfo": "./bin/hubinfo"
   }
 }
