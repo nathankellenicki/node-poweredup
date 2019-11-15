@@ -73,7 +73,7 @@ export function main(argv: string[]) {
         });
         await hub.sleep(2000);
         const typeName = Consts.HubTypeNames[hub.type] || `unknown (${toHex(hub.type)})`;
-        console.log(`${hub.uuid} ${hub.primaryMACAddress} firmware v${hub.firmwareVersion} hardware v${hub.hardwareVersion} ${typeName} (${hubName})`);
+        console.log(`${hub.uuid} firmware v${hub.firmwareVersion} hardware v${hub.hardwareVersion} ${typeName} (${hubName})`);
         if (hub instanceof LPF2Hub && !portInfo) {
             await hub.shutdown();
         }
