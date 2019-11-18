@@ -41,6 +41,10 @@ export class Hub extends EventEmitter {
         this.autoSubscribe = !!autoSubscribe;
         this._bleDevice = device;
         device.on("disconnect", () => {
+            /**
+             * Emits when the hub is disconnected.
+             * @event Hub#disconnect
+             */
             this.emit("disconnect");
         });
     }
