@@ -4,7 +4,7 @@ import { Hub } from "./hub";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
-import { toBin, toHex } from "./utils";
+import { toBin, toDistance, toHex } from "./utils";
 
 import Debug = require("debug");
 const debug = Debug("lpf2hub");
@@ -456,90 +456,14 @@ export class LPF2Hub extends Hub {
                     break;
                 }
                 case Consts.DeviceType.BOOST_DISTANCE: {
-
-                    /**
-                     * Emits when a color sensor is activated.
-                     * @event LPF2Hub#color
-                     * @param {string} port
-                     * @param {Color} color
-                     */
-                    if (data[4] <= 10) {
-                        this.emit("color", port.id, data[4]);
-                    }
-
-                    let distance = data[5];
-                    const partial = data[7];
-
-                    if (partial > 0) {
-                        distance += 1.0 / partial;
-                    }
-
-                    distance = Math.floor(distance * 25.4) - 20;
-
-                    this.emit("distance", port.id, distance);
-
-                    /**
-                     * A combined color and distance event, emits when the sensor is activated.
-                     * @event LPF2Hub#colorAndDistance
-                     * @param {string} port
-                     * @param {Color} color
-                     * @param {number} distance Distance, in millimeters.
-                     */
-                    if (data[4] <= 10) {
-                        this.emit("colorAndDistance", port.id, data[4], distance);
-                    }
+                    this._parseBoostColorAndDistance(port, data);
                     break;
                 }
-                case Consts.DeviceType.WEDO2_TILT: {
-                    const tiltX = data.readInt8(4);
-                    const tiltY = data.readInt8(5);
-                    this._lastTiltX = tiltX;
-                    this._lastTiltY = tiltY;
-                    /**
-                     * Emits when a tilt sensor is activated.
-                     * @event LPF2Hub#tilt
-                     * @param {string} port If the event is fired from the Move Hub or Control+ Hub's in-built tilt sensor, the special port "TILT" is used.
-                     * @param {number} x
-                     * @param {number} y
-                     * @param {number} z (Only available when using a Control+ Hub)
-                     */
-                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-                    break;
-                }
-                case Consts.DeviceType.BOOST_TACHO_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    /**
-                     * Emits when a rotation sensor is activated.
-                     * @event LPF2Hub#rotate
-                     * @param {string} port
-                     * @param {number} rotation
-                     */
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
+                case Consts.DeviceType.BOOST_TACHO_MOTOR:
+                case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
+                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
                 case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_TILT: {
-                    const tiltZ = data.readInt16LE(4);
-                    const tiltY = data.readInt16LE(6);
-                    const tiltX = data.readInt16LE(8);
-                    this._lastTiltX = tiltX;
-                    this._lastTiltY = tiltY;
-                    this._lastTiltZ = tiltZ;
-                    this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
+                    this._parseMotor(port, data);
                     break;
                 }
                 case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER: {
@@ -557,12 +481,19 @@ export class LPF2Hub extends Hub {
                     this.emit("accel", "ACCEL", accelX, accelY, accelZ);
                     break;
                 }
-                case Consts.DeviceType.BOOST_TILT: {
-                    const tiltX = data.readInt8(4);
-                    const tiltY = data.readInt8(5);
+                case Consts.DeviceType.CONTROL_PLUS_TILT: {
+                    const tiltZ = data.readInt16LE(4);
+                    const tiltY = data.readInt16LE(6);
+                    const tiltX = data.readInt16LE(8);
                     this._lastTiltX = tiltX;
                     this._lastTiltY = tiltY;
-                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
+                    this._lastTiltZ = tiltZ;
+                    this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
+                    break;
+                }
+                case Consts.DeviceType.WEDO2_TILT:
+                case Consts.DeviceType.BOOST_TILT: {
+                    this._parseBoostTilt(port, data);
                     break;
                 }
                 case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON: {
@@ -608,5 +539,187 @@ export class LPF2Hub extends Hub {
 
     }
 
+    private _parseBoostColorAndDistance(port: Port, data: Buffer) {
+        // store common data  buffer indices
+        const commons: { [dataType: string]: number } = {};
 
+        switch (port.mode) {
+            case Consts.ColorAndDistanceInputModes.COLOR: {
+                commons.color = 4;
+                break;
+            }
+
+            case Consts.ColorAndDistanceInputModes.PROX: {
+                commons.distance = 4;
+                break;
+            }
+
+            case Consts.ColorAndDistanceInputModes.SPEC_1: {
+                commons.color = 4;
+                commons.distance = 5;
+                commons.partial = 7;
+                break;
+            }
+        }
+
+        const color = commons.color ? data[commons.color] : undefined;
+        const partial = commons.partial ? data[commons.partial] : undefined;
+        const distance = commons.distance ? toDistance(data[commons.distance], partial) : undefined;
+
+        if (color !== undefined) {
+            /**
+             * Emits when a color sensor is activated.
+             * @event LPF2Hub#color
+             * @param {string} port
+             * @param {Color} color
+             */
+            this.emit("color", port.id, color);
+        }
+
+        if (distance !== undefined) {
+            /**
+             * Emits when a distance sensor is activated.
+             * @event LPF2Hub#distance
+             * @param {string} port
+             * @param {number} distance Distance, in millimeters.
+             */
+            this.emit("distance", port.id, distance);
+        }
+
+        if (color !== undefined && distance !== undefined) {
+            /**
+             * A combined color and distance event, emits when the sensor is activated.
+             * @event LPF2Hub#colorAndDistance
+             * @param {string} port
+             * @param {Color} color
+             * @param {number} distance Distance, in millimeters.
+             */
+            this.emit("colorAndDistance", port.id, color, distance);
+        }
+
+        if (port.mode === Consts.ColorAndDistanceInputModes.COUNT) {
+            /**
+             * Emits when a count mode distance sensor is activated.
+             * @event LPF2Hub#count
+             * @param {string} port
+             * @param {number} count
+             */
+            this.emit("count", port.id, data[4]);
+        }
+
+        if (port.mode === Consts.ColorAndDistanceInputModes.REFLT) {
+            /**
+             * Emits when a reflect mode color sensor is activated.
+             * @event LPF2Hub#reflectivity
+             * @param {string} port
+             * @param {number} reflectivity
+             */
+            this.emit("reflectivity", port.id, data[4]);
+        }
+
+        if (port.mode === Consts.ColorAndDistanceInputModes.AMBI) {
+            /**
+             * Emits when a ambiant mode color sensor is activated.
+             * @event LPF2Hub#luminosity
+             * @param {string} port
+             * @param {number} luminosity
+             */
+            this.emit("luminosity", port.id, data[4]);
+        }
+
+        if (port.mode === Consts.ColorAndDistanceInputModes.RGB_I) {
+            /**
+             * Emits when a RGB mode color sensor is activated.
+             * @event LPF2Hub#rgb
+             * @param {string} port
+             * @param {number} r
+             * @param {number} g
+             * @param {number} b
+             */
+            this.emit("rgb", port.id, data[4], data[6], data[8]);
+        }
+    }
+
+    private _parseBoostTilt(port: Port, data: Buffer) {
+        const values: number[] = [];
+        let event = '';
+
+        switch (port.mode) {
+            case Consts.BoostTiltModes.ANGLE: {
+                values.push(data.readInt8(4));
+                values.push(data.readInt8(5));
+                event = 'angle';
+                break;
+            }
+
+            case Consts.BoostTiltModes.TILT: {
+                values.push(data[4]);
+                event = 'tilt';
+                break;
+            }
+
+            case Consts.BoostTiltModes.ORINT: {
+                values.push(data[4]);
+                event = 'orientation';
+                break;
+            }
+
+            case Consts.BoostTiltModes.IMPCT: {
+                values.push(data.readUInt32BE(4));
+                event = 'impact';
+                break;
+            }
+
+            case Consts.BoostTiltModes.ACCEL: {
+                /**
+                 * Emits when a tilt sensor is activated.
+                 * @event LPF2Hub#tilt
+                 * @param {string} port If the event is fired from the Move Hub or Control+ Hub's in-built tilt sensor, the special port "TILT" is used.
+                 * @param {number} x
+                 * @param {number} y
+                 * @param {number} z
+                 */
+                values.push(data.readInt8(4));
+                values.push(data.readInt8(5));
+                values.push(data.readInt8(6));
+                event = 'accel';
+                break;
+            }
+        }
+
+        this.emit(event, port.id, ...values);
+    }
+
+    private _parseMotor(port: Port, data: Buffer) {
+        const values: number[] = [];
+        let event = '';
+
+        switch (port.mode) {
+            case Consts.MotorModes.POWER: {
+                values.push(data.readInt8(4));
+                event = 'power';
+                break;
+            }
+
+            case Consts.MotorModes.SPEED: {
+                values.push(data.readInt8(4));
+                event = 'speed';
+                break;
+            }
+
+            case Consts.MotorModes.POS: {
+                values.push(data.readInt32BE(4));
+                event = 'rotate';
+                break;
+            }
+
+            case Consts.MotorModes.APOS: {
+                values.push(data.readInt16BE(4));
+                event = 'absoluteRotate';
+                break;
+            }
+        }
+
+        this.emit(event, port.id, ...values);
+    }
 }

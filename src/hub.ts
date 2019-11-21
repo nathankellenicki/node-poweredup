@@ -157,11 +157,15 @@ export class Hub extends EventEmitter {
      */
     public subscribe (port: string, mode?: number) {
         return new Promise((resolve, reject) => {
-            let newMode = this._getModeForDeviceType(this._portLookup(port).type);
+            const { type, value } = this._portLookup(port);
+
+            let newMode = this._getModeForDeviceType(type);
             if (mode !== undefined) {
                 newMode = mode;
             }
-            this._activatePortDevice(this._portLookup(port).value, this._portLookup(port).type, newMode, 0x00, () => {
+
+            this._ports[port].mode = newMode;
+            this._activatePortDevice(value, type, newMode, 0x00, () => {
                 return resolve();
             });
         });
@@ -175,8 +179,8 @@ export class Hub extends EventEmitter {
      */
     public unsubscribe (port: string) {
         return new Promise((resolve, reject) => {
-            const mode = this._getModeForDeviceType(this._portLookup(port).type);
-            this._deactivatePortDevice(this._portLookup(port).value, this._portLookup(port).type, mode, 0x00, () => {
+            const { type, value, mode } = this._portLookup(port);
+            this._deactivatePortDevice(value, type, mode || this._getModeForDeviceType(type), 0x00, () => {
                 return resolve();
             });
         });

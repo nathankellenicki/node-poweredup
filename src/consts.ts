@@ -186,3 +186,31 @@ export enum BLECharacteristic {
     WEDO2_NAME_ID = "00001524-1212-efde-1523-785feabcd123", // "1524"
     LPF2_ALL = "00001624-1212-efde-1623-785feabcd123"
 }
+
+export enum ColorAndDistanceInputModes {
+    COLOR = 0,
+    PROX = 1,
+    COUNT = 2,
+    REFLT = 3,
+    AMBI = 4,
+    RGB_I = 6,
+    SPEC_1 = 8
+}
+
+export enum BoostTiltModes {
+    ANGLE = 0,
+    TILT = 1,
+    ORINT = 2,
+    IMPCT = 3,
+    ACCEL = 4,
+    OR_CF = 5,
+    IM_CF = 6,
+    CALIB = 7
+}
+
+export enum MotorModes {
+    POWER = 0,
+    SPEED = 1,
+    POS = 2,
+    APOS = 3
+}
