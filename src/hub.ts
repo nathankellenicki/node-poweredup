@@ -283,6 +283,7 @@ export class Hub extends EventEmitter {
             }
         } else {
             port.type = Consts.DeviceType.UNKNOWN;
+            port.mode = null;
             debug(`Port ${port.id} disconnected`);
             /**
              * Emits when an attached motor or sensor is detached from the Hub.
