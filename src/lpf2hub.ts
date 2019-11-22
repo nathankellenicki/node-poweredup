@@ -636,7 +636,7 @@ export class LPF2Hub extends Hub {
              * @param {number} g
              * @param {number} b
              */
-            this.emit("rgb", port.id, data[4], data[6], data[8]);
+            this.emit("rgb", port.id, data.readInt16LE(4), data.readInt16LE(6), data.readInt16LE(8));
         }
     }
 
