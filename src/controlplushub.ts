@@ -31,8 +31,10 @@ export class ControlPlusHub extends LPF2Hub {
     }
 
     protected _currentPort = 0x3b;
+    protected _currentMaxMA = 4175;
     protected _voltagePort = 0x3c;
     protected _voltageMaxRaw = 4095;
+    protected _voltageMaxV = 9.615;
 
     constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
@@ -42,7 +44,8 @@ export class ControlPlusHub extends LPF2Hub {
             "B": new Port("B", 1),
             "C": new Port("C", 2),
             "D": new Port("D", 3),
-            "ACCEL": new Port("ACCEL", 98),
+            "ACCEL": new Port("ACCEL", 97),
+            "GYRO": new Port("GYRO", 98),
             "TILT": new Port("TILT", 99)
         };
         this.on("attach", (port, type) => {
