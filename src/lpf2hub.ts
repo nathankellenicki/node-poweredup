@@ -1,7 +1,7 @@
 import { Peripheral } from "@abandonware/noble";
 
 import { Hub } from "./hub";
-import { Port } from "./port";
+import { IPortMode, Port } from "./port";
 
 import * as Consts from "./consts";
 import { toBin, toHex } from "./utils";
@@ -294,8 +294,8 @@ export class LPF2Hub extends Hub {
             const hwVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
             const swVersion = LPF2Hub.decodeVersion(data.readInt32LE(11));
             modeInfoDebug(`Port ${toHex(data[3])}, hardware version ${hwVersion}, software version ${swVersion}`);
-            this._sendPortInformationRequest(data[3]);
         }
+        this._sendPortInformationRequest(data[3]);
 
         if (!port) {
             if (data[4] === 0x02) {
@@ -362,31 +362,45 @@ export class LPF2Hub extends Hub {
 
 
     private _parseModeInformationResponse (data: Buffer) {
-        const port = toHex(data[3]);
+        const portHex = toHex(data[3]);
         const mode = data[4];
         const type = data[5];
+        const port = this._getPortForPortNumber(data[3]) as Port;
+
+        if (!port) {
+            return false;
+        }
+
+        port.modes[mode] = port.modes[mode] || {};
+
         switch (type) {
             case 0x00: // Mode Name
-                modeInfoDebug(`Port ${port}, mode ${mode}, name ${data.slice(6, data.length).toString()}`);
+                const name = data.slice(6, data.length).toString();
+                port.modes[mode].name = name;
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, name ${name}`);
                 break;
             case 0x01: // RAW Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, RAW min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, RAW min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
                 break;
             case 0x02: // PCT Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, PCT min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, PCT min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
                 break;
             case 0x03: // SI Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, SI min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
                 break;
             case 0x04: // SI Symbol
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${data.slice(6, data.length).toString()}`);
+                const unit = data.slice(6, data.length).toString();
+                port.modes[mode].unit = unit;
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, SI symbol ${unit}`);
                 break;
             case 0x80: // Value Format
                 const numValues = data[6];
-                const dataType = ["8bit", "16bit", "32bit", "float"][data[7]];
+                const dataType = [Consts.ValueType.Int8, Consts.ValueType.Int16, Consts.ValueType.Int32, Consts.ValueType.Float][data[7]];
                 const totalFigures = data[8];
                 const decimals = data[9];
-                modeInfoDebug(`Port ${port}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
+
+                port.modes[mode].valueType = dataType;
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
         }
     }
 
@@ -439,174 +453,117 @@ export class LPF2Hub extends Hub {
             return;
         }
 
-        if (port && port.connected) {
-            switch (port.type) {
-                case Consts.DeviceType.WEDO2_DISTANCE: {
-                    let distance = data[4];
-                    if (data[5] === 1) {
-                        distance = data[4] + 255;
-                    }
-                    /**
-                     * Emits when a distance sensor is activated.
-                     * @event LPF2Hub#distance
-                     * @param {string} port
-                     * @param {number} distance Distance, in millimeters.
-                     */
-                    this.emit("distance", port.id, distance * 10);
-                    break;
-                }
-                case Consts.DeviceType.BOOST_DISTANCE: {
+        if (port && port.connected && port.mode && port.modes[port.mode]) {
+            const mode = port.modes[port.mode];
+            const values = [];
 
-                    /**
-                     * Emits when a color sensor is activated.
-                     * @event LPF2Hub#color
-                     * @param {string} port
-                     * @param {Color} color
-                     */
-                    if (data[4] <= 10) {
-                        this.emit("color", port.id, data[4]);
-                    }
-
-                    let distance = data[5];
-                    const partial = data[7];
-
-                    if (partial > 0) {
-                        distance += 1.0 / partial;
-                    }
-
-                    distance = Math.floor(distance * 25.4) - 20;
-
-                    this.emit("distance", port.id, distance);
-
-                    /**
-                     * A combined color and distance event, emits when the sensor is activated.
-                     * @event LPF2Hub#colorAndDistance
-                     * @param {string} port
-                     * @param {Color} color
-                     * @param {number} distance Distance, in millimeters.
-                     */
-                    if (data[4] <= 10) {
-                        this.emit("colorAndDistance", port.id, data[4], distance);
-                    }
-                    break;
-                }
-                case Consts.DeviceType.WEDO2_TILT: {
-                    const tiltX = data.readInt8(4);
-                    const tiltY = data.readInt8(5);
-                    this._lastTiltX = tiltX;
-                    this._lastTiltY = tiltY;
-                    /**
-                     * Emits when a tilt sensor is activated.
-                     * @event LPF2Hub#tilt
-                     * @param {string} port If the event is fired from the Move Hub or Control+ Hub's in-built tilt sensor, the special port "TILT" is used.
-                     * @param {number} x
-                     * @param {number} y
-                     * @param {number} z (Only available when using a Control+ Hub)
-                     */
-                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-                    break;
-                }
-                case Consts.DeviceType.BOOST_TACHO_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    /**
-                     * Emits when a rotation sensor is activated.
-                     * @event LPF2Hub#rotate
-                     * @param {string} port
-                     * @param {number} rotation
-                     */
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
-                    const rotation = data.readInt32LE(4);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_TILT: {
-                    const tiltZ = data.readInt16LE(4);
-                    const tiltY = data.readInt16LE(6);
-                    const tiltX = data.readInt16LE(8);
-                    this._lastTiltX = tiltX;
-                    this._lastTiltY = tiltY;
-                    this._lastTiltZ = tiltZ;
-                    this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER: {
-                    const accelX = Math.round((data.readInt16LE(4) / 28571) * 2000);
-                    const accelY = Math.round((data.readInt16LE(6) / 28571) * 2000);
-                    const accelZ = Math.round((data.readInt16LE(8) / 28571) * 2000);
-                    /**
-                     * Emits when accelerometer detects movement. Measured in DPS - degrees per second.
-                     * @event LPF2Hub#accel
-                     * @param {string} port
-                     * @param {number} x
-                     * @param {number} y
-                     * @param {number} z
-                     */
-                    this.emit("accel", "ACCEL", accelX, accelY, accelZ);
-                    break;
-                }
-                case Consts.DeviceType.BOOST_TILT: {
-                    const tiltX = data.readInt8(4);
-                    const tiltY = data.readInt8(5);
-                    this._lastTiltX = tiltX;
-                    this._lastTiltY = tiltY;
-                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-                    break;
-                }
-                case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON: {
-                    switch (data[4]) {
-                        case 0x01: {
-                            this.emit("button", port.id, Consts.ButtonState.UP);
-                            break;
-                        }
-                        case 0xff: {
-                            this.emit("button", port.id, Consts.ButtonState.DOWN);
-                            break;
-                        }
-                        case 0x7f: {
-                            this.emit("button", port.id, Consts.ButtonState.STOP);
-                            break;
-                        }
-                        case 0x00: {
-                            this.emit("button", port.id, Consts.ButtonState.RELEASED);
-                            break;
-                        }
-                    }
-                    break;
-                }
-                case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
-                    if (data[4] <= 10) {
-                        this.emit("color", port.id, data[4]);
-                    }
-                    break;
-                }
-                case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER: {
-                    /**
-                     * Emits on a speed change.
-                     * @event LPF2Hub#speed
-                     * @param {string} port
-                     * @param {number} speed
-                     */
-                    const speed = data.readInt16LE(4);
-                    this.emit("speed", port.id, speed);
-                    break;
+            for (let index = 4; index < data.length; index += Consts.VALUE_SIZE[mode.valueType]) {
+                switch (mode.valueType) {
+                    case Consts.ValueType.Int8:
+                        values.push(data.readInt8(index));
+                        break;
+                    case Consts.ValueType.Int16:
+                        values.push(data.readInt16LE(index));
+                        break;
+                    case Consts.ValueType.Int32:
+                        values.push(data.readInt32LE(index));
+                        break;
+                    case Consts.ValueType.Float:
+                        values.push(data.readFloatLE(index));
+                        break;
                 }
             }
+            this.emit("sensor", port.id, mode, values);
+
+            this._emitSensorEvent(port, mode, values);
         }
 
     }
 
-
+    private _emitSensorEvent(port: Port, mode: IPortMode, values: number[]) {
+        switch (mode.name) {
+            case "COLOR": {
+                this.emit("color", port.id, values[0]);
+                break;
+            }
+            case "PROX":
+            case "LPF2-DETECT": {
+                this.emit("distance", port.id, values[0]);
+                break;
+            }
+            case "COUNT":
+            case "LPF2-COUNT": {
+                this.emit("count", port.id, values[0]);
+                break;
+            }
+            case "REFLT": {
+                this.emit("reflect", port.id, values[0]);
+                break;
+            }
+            case "AMBI": {
+                this.emit("luminosity", port.id, values[0]);
+                break;
+            }
+            case "RGB_I": {
+                this.emit("luminosity", port.id, values[0], values[1], values[2]);
+                break;
+            }
+            case "SPEC_1": {
+                this.emit("color", port.id, values[0]);
+                this.emit("distance", port.id, values[1]);
+                this.emit("reflect", port.id, values[3]);
+                this.emit("colorAndDistance", port.id, values[3], values[1]);
+                break;
+            }
+            case "POWER": {
+                this.emit("power", port.id, values[0]);
+                break;
+            }
+            case "SPEED": {
+                this.emit("speed", port.id, values[0]);
+                break;
+            }
+            case "POS": {
+                if (port.type === Consts.DeviceType.CONTROL_PLUS_TILT) {
+                    this.emit("angle", port.id, values[0], values[1], values[2]);
+                } else {
+                    this.emit("rotate", port.id, values[0]);
+                }
+                break;
+            }
+            case "APOS": {
+                this.emit("absolutePosition", port.id, values[0]);
+                break;
+            }
+            case "LOAD": {
+                this.emit("load", port.id, values[0]);
+                break;
+            }
+            case "ANGLE":
+            case "LPF2-ANGLE": {
+                this.emit("angle", port.id, values[0], values[1], values[2] || 0);
+                break;
+            }
+            case "TILT":
+            case "LPF2-TILT": {
+                this.emit("tilt", port.id, values[0]);
+                break;
+            }
+            case "ORINT": {
+                this.emit("orientation", port.id, values[0]);
+                break;
+            }
+            case "IMPCT":
+            case "LPF2-CRASH":
+            case "IMP": {
+                this.emit("impact", port.id, values[0]);
+                break;
+            }
+            case "ACCEL":
+            case "ROT": {
+                this.emit("angle", port.id, values[0], values[1], values[2]);
+                break;
+            }
+        }
+    }
 }

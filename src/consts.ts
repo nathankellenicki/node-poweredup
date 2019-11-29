@@ -186,3 +186,18 @@ export enum BLECharacteristic {
     WEDO2_NAME_ID = "00001524-1212-efde-1523-785feabcd123", // "1524"
     LPF2_ALL = "00001624-1212-efde-1623-785feabcd123"
 }
+
+
+export enum ValueType {
+    Int8,
+    Int16,
+    Int32,
+    Float
+}
+
+export const VALUE_SIZE = {
+    [ValueType.Int8]: 1,
+    [ValueType.Int16]: 2,
+    [ValueType.Int32]: 4,
+    [ValueType.Float]: 4
+};

@@ -1,15 +1,20 @@
 import * as Consts from "./consts";
 
+export interface IPortMode {
+    name: string;
+    unit: string;
+    valueType: Consts.ValueType;
+}
 
 export class Port {
-
-
     public id: string;
     public value: number;
     public type: Consts.DeviceType;
     public connected: boolean = false;
     public busy: boolean = false;
     public finished: (() => void) | null = null;
+    public mode: number | null = null;
+    public modes: IPortMode[] = [];
 
     private _eventTimer: NodeJS.Timer | null = null;
 

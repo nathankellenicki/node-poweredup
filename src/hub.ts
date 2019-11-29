@@ -161,9 +161,27 @@ export class Hub extends EventEmitter {
             if (mode !== undefined) {
                 newMode = mode;
             }
+            this._ports[port].mode = newMode;
             this._activatePortDevice(this._portLookup(port).value, this._portLookup(port).type, newMode, 0x00, () => {
                 return resolve();
             });
+        });
+    }
+
+    public subscribeByModeName (port: string, mode: string = "") {
+        const { value, type, modes } = this._portLookup(port);
+
+        return new Promise((resolve, reject) => {
+            this._activatePortDevice(
+                value,
+                type,
+                modes.reduce(
+                    (newMode, definition, index) => definition.name === mode ? index : newMode,
+                    this._getModeForDeviceType(type)
+                ),
+                0x00,
+                () => resolve()
+            );
         });
     }
 
@@ -176,6 +194,7 @@ export class Hub extends EventEmitter {
     public unsubscribe (port: string) {
         return new Promise((resolve, reject) => {
             const mode = this._getModeForDeviceType(this._portLookup(port).type);
+            this._ports[port].mode = null;
             this._deactivatePortDevice(this._portLookup(port).value, this._portLookup(port).type, mode, 0x00, () => {
                 return resolve();
             });
@@ -268,7 +287,7 @@ export class Hub extends EventEmitter {
         if (port.connected) {
             port.type = type;
             if (this.autoSubscribe) {
-                this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
+                this.subscribe(port.id, this._getModeForDeviceType(type));
                 /**
                  * Emits when a motor or sensor is attached to the Hub.
                  * @event Hub#attach
