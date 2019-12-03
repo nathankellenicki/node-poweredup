@@ -280,7 +280,7 @@ export class LPF2Hub extends Hub {
 
         // primary MAC Address
         } else if (data[3] === 0x0d) {
-            this._primaryMACAddress = LPF2Hub.decodeMACAddress(data.slice(4, 10));
+            this._primaryMACAddress = LPF2Hub.decodeMACAddress(data.slice(5));
 
         // Battery level reports
         } else if (data[3] === 0x06) {
