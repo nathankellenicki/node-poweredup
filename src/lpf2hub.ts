@@ -548,12 +548,27 @@ export class LPF2Hub extends Hub {
                     this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
                     break;
                 }
-                case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER: {
-                    const accelX = Math.round((data.readInt16LE(4) / 28571) * 2000);
-                    const accelY = Math.round((data.readInt16LE(6) / 28571) * 2000);
-                    const accelZ = Math.round((data.readInt16LE(8) / 28571) * 2000);
+                case Consts.DeviceType.CONTROL_PLUS_GYRO: {
+                    const gyroX = Math.round(data.readInt16LE(4) * 7 / 400);
+                    const gyroY = Math.round(data.readInt16LE(6) * 7 / 400);
+                    const gyroZ = Math.round(data.readInt16LE(8) * 7 / 400);
                     /**
-                     * Emits when accelerometer detects movement. Measured in DPS - degrees per second.
+                     * Emits when gyroscope detects movement. Measured in DPS - degrees per second.
+                     * @event LPF2Hub#gyro
+                     * @param {string} port
+                     * @param {number} x
+                     * @param {number} y
+                     * @param {number} z
+                     */
+                    this.emit("gyro", "GYRO", gyroX, gyroY, gyroZ);
+                    break;
+                }
+                case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER: {
+                    const accelX = Math.round(data.readInt16LE(4) / 4.096);
+                    const accelY = Math.round(data.readInt16LE(6) / 4.096);
+                    const accelZ = Math.round(data.readInt16LE(8) / 4.096);
+                    /**
+                     * Emits when accelerometer detects movement. Measured in mG.
                      * @event LPF2Hub#accel
                      * @param {string} port
                      * @param {number} x
