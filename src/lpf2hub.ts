@@ -481,89 +481,154 @@ export class LPF2Hub extends Hub {
     }
 
     private _emitSensorEvent(port: Port, mode: IPortMode, values: number[]) {
-        switch (mode.name) {
-            case "COLOR": {
-                this.emit("color", port.id, values[0]);
-                break;
-            }
-            case "PROX":
-            case "LPF2-DETECT": {
-                this.emit("distance", port.id, values[0]);
-                break;
-            }
-            case "COUNT":
-            case "LPF2-COUNT": {
-                this.emit("count", port.id, values[0]);
-                break;
-            }
-            case "REFLT": {
-                this.emit("reflect", port.id, values[0]);
-                break;
-            }
-            case "AMBI": {
-                this.emit("luminosity", port.id, values[0]);
-                break;
-            }
-            case "RGB_I": {
-                this.emit("luminosity", port.id, values[0], values[1], values[2]);
-                break;
-            }
-            case "SPEC_1": {
-                this.emit("color", port.id, values[0]);
-                this.emit("distance", port.id, values[1]);
-                this.emit("reflect", port.id, values[3]);
-                this.emit("colorAndDistance", port.id, values[3], values[1]);
-                break;
-            }
-            case "POWER": {
-                this.emit("power", port.id, values[0]);
-                break;
-            }
-            case "SPEED": {
-                this.emit("speed", port.id, values[0]);
-                break;
-            }
-            case "POS": {
-                if (port.type === Consts.DeviceType.CONTROL_PLUS_TILT) {
-                    this.emit("angle", port.id, values[0], values[1], values[2]);
-                } else {
-                    this.emit("rotate", port.id, values[0]);
-                }
-                break;
-            }
-            case "APOS": {
-                this.emit("absolutePosition", port.id, values[0]);
-                break;
-            }
-            case "LOAD": {
-                this.emit("load", port.id, values[0]);
-                break;
-            }
-            case "ANGLE":
-            case "LPF2-ANGLE": {
-                this.emit("angle", port.id, values[0], values[1], values[2] || 0);
-                break;
-            }
-            case "TILT":
-            case "LPF2-TILT": {
-                this.emit("tilt", port.id, values[0]);
-                break;
-            }
-            case "ORINT": {
-                this.emit("orientation", port.id, values[0]);
-                break;
-            }
-            case "IMPCT":
-            case "LPF2-CRASH":
-            case "IMP": {
-                this.emit("impact", port.id, values[0]);
-                break;
-            }
-            case "ACCEL":
-            case "ROT": {
-                this.emit("angle", port.id, values[0], values[1], values[2]);
-                break;
-            }
+        const modeToEvent: { [key: string]: string } = {
+            /**
+             * Emits when a color sensor is activated.
+             * @event LPF2Hub#color
+             * @param {string} port
+             * @param {Color} color Uses LWP3 color codes (0 to 10, -1 is no color).
+             */
+            COLOR: "color",
+            /**
+             * Emits when a distance sensor is activated.
+             * @event LPF2Hub#distance
+             * @param {string} port
+             * @param {number} distance Distance indicator, from 10 to 0.
+             */
+            PROX: "distance",
+            "LPF2-DETECT": "distance",
+            /**
+             * Emits when a count sensor is activated.
+             * @event LPF2Hub#count
+             * @param {string} port
+             * @param {number} count Times a obstacle got detected.
+             */
+            COUNT: "count",
+            "LPF2-COUNT": "count",
+            /**
+             * Emits when a reflectivity sensor is activated.
+             * @event LPF2Hub#reflectivity
+             * @param {string} port
+             * @param {number} reflectivity Percentage of reflexion of the obstacle.
+             */
+            REFLT: "reflectivity",
+            /**
+             * Emits when a luminosity sensor is activated.
+             * @event LPF2Hub#luminosity
+             * @param {string} port
+             * @param {number} luminosity Percentage of ambiant luminosity.
+             */
+            AMBI: "luminosity",
+            /**
+             * Emits when an RGB color sensor is activated.
+             * @event LPF2Hub#colorRGB
+             * @param {string} port
+             * @param {number} red
+             * @param {number} green
+             * @param {number} blue
+             *
+             */
+            RGB_I: "colorRGB",
+            // SPEC_1: "", // it emits multiple events
+            /**
+             * Emits when a motor power change.
+             * @event LPF2Hub#power
+             * @param {string} port
+             * @param {number} power Percentage of power used to rotate the motor.
+             */
+            POWER: "power",
+            /**
+             * Emits when a motor speed changes.
+             * @event LPF2Hub#speed
+             * @param {string} port
+             * @param {number} speed Percentage of speed set to rotate the motor.
+             */
+            SPEED: "speed",
+            /**
+             * Emits when a motor rotates.
+             * @event LPF2Hub#rotate
+             * @param {string} port
+             * @param {number} angle angle the motor rotated by.
+             */
+            POS: "rotate", // POS for CONTROL+ GYRO is an angle event
+            /**
+             * Emits when a motor rotates.
+             * @event LPF2Hub#position
+             * @param {string} port
+             * @param {number} angle the position of the motor related to its absolute zero.
+             */
+            APOS: "position",
+            /**
+             * Emits when a motor starts to rotate.
+             * @event LPF2Hub#load
+             * @param {string} port
+             * @param {number} load Percentage of load of the motor.
+             */
+            LOAD: "load",
+            /**
+             * Emits when an angle (tilt, gyro) sensor is activated.
+             * @event LPF2Hub#angle
+             * @param {string} port
+             * @param {number} x
+             * @param {number} y
+             * @param {number} z (Unavailable from WeDo2 tilt sensor)
+             */
+            ANGLE: "angle",
+            "LPF2-ANGLE": "angle",
+            /**
+             * Emits when a tilt sensor is activated.
+             * @event LPF2Hub#tilt
+             * @param {string} port
+             * @param {number} direction
+             */
+            TILT: "tilt",
+            "LPF2-TILT": "tilt",
+            /**
+             * Emits when a orientation sensor is activated.
+             * @event LPF2Hub#orientation
+             * @param {string} port
+             * @param {number} orientation
+             */
+            ORINT: "orientation",
+            /**
+             * Emits when a tilt sensor is activated.
+             * @event LPF2Hub#impact
+             * @param {string} port
+             * @param {number} direction
+             */
+            IMPCT: "impact",
+            "LPF2-CRASH": "impact",
+            IMP: "impact",
+            /**
+             * Emits when an accelerometer sensor is activated.
+             * @event LPF2Hub#angle
+             * @param {string} port
+             * @param {number} x
+             * @param {number} y
+             * @param {number} z
+             */
+            ACCEL: "acceleration",
+            ROT: "acceleration"
+        };
+
+        if (mode.name === "SPEC_1") {
+            this.emit("color", port.id, values[0]);
+            this.emit("distance", port.id, values[1]);
+            this.emit("reflect", port.id, values[3]);
+            /**
+             * A combined color and distance event, emits when the sensor is activated.
+             * @event LPF2Hub#colorAndDistance
+             * @param {string} port
+             * @param {Color} color Uses LWP3 color codes (0 to 10, -1 is no color).
+             * @param {number} distance Distance indicator, from 10 to 0.
+             */
+            this.emit("colorAndDistance", port.id, values[0], values[1]);
+        } else if (mode.name === "POS" && port.type === Consts.DeviceType.CONTROL_PLUS_TILT) {
+            this.emit("angle", port.id, ...values);
+        } else if (modeToEvent[mode.name]) {
+            this.emit(modeToEvent[mode.name], port.id, ...values);
+        } else {
+            debug("Unhandle mode event", mode.name);
         }
     }
 }
