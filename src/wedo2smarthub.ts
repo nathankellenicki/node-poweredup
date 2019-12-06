@@ -1,12 +1,16 @@
 import { Peripheral } from "@abandonware/noble";
 
+import { Device } from "./device";
 import { Hub } from "./hub";
 import { Port } from "./port";
+
+import { ColorDistanceSensor } from "./colordistancesensor";
+import { ControlPlusLargeMotor } from "./controlpluslargemotor";
 
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 import { isWebBluetooth } from "./utils";
 const debug = Debug("wedo2smarthub");
 
@@ -32,7 +36,7 @@ export class WeDo2SmartHub extends Hub {
     private _lastTiltY: number = 0;
 
 
-    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
         this.type = Consts.HubType.WEDO2_SMART_HUB;
         this._ports = {
@@ -111,8 +115,8 @@ export class WeDo2SmartHub extends Hub {
         return new Promise((resolve, reject) => {
             const data = Buffer.from(name, "ascii");
             // Send this twice, as sometimes the first time doesn't take
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_NAME_ID, data);
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_NAME_ID, data);
+            this.send(Consts.BLECharacteristic.WEDO2_NAME_ID, data);
+            this.send(Consts.BLECharacteristic.WEDO2_NAME_ID, data);
             this._name = name;
             return resolve();
         });
@@ -128,12 +132,12 @@ export class WeDo2SmartHub extends Hub {
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
+            this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
             if (typeof color === "boolean") {
                 color = 0;
             }
             data = Buffer.from([0x06, 0x04, 0x01, color]);
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
             return resolve();
         });
     }
@@ -146,7 +150,7 @@ export class WeDo2SmartHub extends Hub {
      */
     public shutdown () {
         return new Promise((resolve, reject) => {
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_DISCONNECT, Buffer.from([0x00]), () => {
+            this.send(Consts.BLECharacteristic.WEDO2_DISCONNECT, Buffer.from([0x00]), () => {
                 return resolve();
             });
         });
@@ -164,9 +168,9 @@ export class WeDo2SmartHub extends Hub {
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x02]);
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
+            this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
             data = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
             return resolve();
         });
     }
@@ -193,10 +197,10 @@ export class WeDo2SmartHub extends Hub {
             portObj.cancelEventTimer();
         }
         return new Promise((resolve, reject) => {
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(speed)]));
+            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(speed)]));
             if (time && typeof time === "number") {
                 const timeout = global.setTimeout(() => {
-                    this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, 0x00]));
+                    this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, 0x00]));
                     return resolve();
                 }, time);
                 portObj.setEventTimer(timeout);
@@ -252,7 +256,7 @@ export class WeDo2SmartHub extends Hub {
             const data = Buffer.from([0x05, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00]);
             data.writeUInt16LE(frequency, 3);
             data.writeUInt16LE(time, 5);
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
             global.setTimeout(resolve, time);
         });
     }
@@ -271,11 +275,11 @@ export class WeDo2SmartHub extends Hub {
         portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             const data = Buffer.from([portObj.value, 0x01, 0x02, brightness]);
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
             if (time) {
                 const timeout = global.setTimeout(() => {
                     const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
-                    this._writeMessage(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+                    this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
                     return resolve();
                 }, time);
                 portObj.setEventTimer(timeout);
@@ -286,30 +290,21 @@ export class WeDo2SmartHub extends Hub {
     }
 
 
-    public sendRaw (message: Buffer, characteristic: string = Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE) {
-        return new Promise((resolve, reject) => {
-            this._writeMessage(characteristic, message, () => {
-                return resolve();
-            });
-        });
-    }
-
-
-    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-            this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
-    }
-
-
-    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        this._writeMessage(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), callback);
-    }
-
-
-    private _writeMessage (uuid: string, message: Buffer, callback?: () => void) {
+    public send (uuid: string, message: Buffer, callback?: () => void) {
         if (debug.enabled) {
             debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
         }
         this._bleDevice.writeToCharacteristic(uuid, message, callback);
+    }
+
+
+    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
+            this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
+    }
+
+
+    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
+        this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), callback);
     }
 
 
@@ -346,14 +341,38 @@ export class WeDo2SmartHub extends Hub {
 
         debug("Received Message (WEDO2_PORT_TYPE)", data);
 
-        const port = this._getPortForPortNumber(data[0]);
+        const portId = data[0];
+        const event = data[1];
+        const deviceType = event ? data[3] : 0;
 
-        if (!port) {
-            return;
+        if (event === 0x01) {
+
+            let device;
+
+            switch (deviceType) {
+                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
+                    device = new ControlPlusLargeMotor(this, portId);
+                    break;
+                case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
+                    device = new ColorDistanceSensor(this, portId);
+                    break;
+                default:
+                    device = new Device(this, portId);
+                    break;
+            }
+
+            this._registerDeviceAttachment(device);
+
         }
 
-        port.connected = data[1] === 1 ? true : false;
-        this._registerDeviceAttachment(port, data[3]);
+        // const port = this._getPortForPortNumber(data[0]);
+
+        // if (!port) {
+        //     return;
+        // }
+
+        // port.connected = data[1] === 1 ? true : false;
+        // this._registerDeviceAttachment(port, data[3]);
 
     }
 
@@ -408,7 +427,7 @@ export class WeDo2SmartHub extends Hub {
                     this.emit("distance", port.id, distance * 10);
                     break;
                 }
-                case Consts.DeviceType.BOOST_DISTANCE: {
+                case Consts.DeviceType.COLOR_DISTANCE_SENSOR: {
                     const distance = data[2];
                     /**
                      * Emits when a color sensor is activated.

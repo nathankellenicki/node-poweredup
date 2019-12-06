@@ -1,10 +1,10 @@
 import Debug = require("debug");
 import { EventEmitter } from "events";
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("bledevice");
 
 
-export class WebBLEDevice extends EventEmitter implements IBLEDevice {
+export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
 
     private _webBLEServer: any;
 

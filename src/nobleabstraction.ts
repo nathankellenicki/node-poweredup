@@ -2,11 +2,11 @@ import { Characteristic, Peripheral, Service } from "@abandonware/noble";
 
 import Debug = require("debug");
 import { EventEmitter } from "events";
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("bledevice");
 
 
-export class NobleDevice extends EventEmitter implements IBLEDevice {
+export class NobleDevice extends EventEmitter implements IBLEAbstraction {
 
     private _noblePeripheral: Peripheral;
 

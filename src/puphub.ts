@@ -7,7 +7,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("puphub");
 
 
@@ -34,7 +34,7 @@ export class PUPHub extends LPF2Hub {
     protected _currentPort = 0x3b;
     protected _voltagePort = 0x3c;
 
-    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
         this.type = Consts.HubType.POWERED_UP_HUB;
         this._ports = {
@@ -99,17 +99,17 @@ export class PUPHub extends LPF2Hub {
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     }
                     data.writeUInt16LE(time > 65535 ? 65535 : time, 4);
-                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                    this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                     portObj.finished = () => {
                         return resolve();
                     };
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                    this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                     const timeout = global.setTimeout(() => {
                         const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                        this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                        this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                         return resolve();
                     // @ts-ignore: The type of time is properly checked at the start
                     }, time);
@@ -127,14 +127,14 @@ export class PUPHub extends LPF2Hub {
                         // @ts-ignore: The type of speed is properly checked at the start
                         data = Buffer.from([0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                     }
-                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                    this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                     portObj.finished = () => {
                         return resolve();
                     };
                 } else {
                     // @ts-ignore: The type of speed is properly checked at the start
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                    this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                 }
 
             }
@@ -196,7 +196,7 @@ export class PUPHub extends LPF2Hub {
                 data = Buffer.from([0x81, portObj.value, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
             }
             data.writeUInt32LE(angle, 4);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this.send(Consts.BLECharacteristic.LPF2_ALL, data);
             portObj.finished = () => {
                 return resolve();
             };
@@ -233,7 +233,7 @@ export class PUPHub extends LPF2Hub {
                 data = Buffer.from([0x81, portObj.value, 0x11, 0x0d, 0x00, 0x00, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
                 data.writeInt32LE(pos, 4);
             }
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this.send(Consts.BLECharacteristic.LPF2_ALL, data);
             portObj.finished = () => {
                 return resolve();
             };
@@ -257,20 +257,9 @@ export class PUPHub extends LPF2Hub {
         }
         return new Promise((resolve) => {
             const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this.send(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
-    }
-
-
-    /**
-     * Fully (hard) stop the motor on a given port.
-     * @method PUPHub#brakeMotor
-     * @param {string} port
-     * @returns {Promise} Resolved upon successful completion of command.
-     */
-    public brakeMotor (port: string) {
-        return this.setMotorSpeed(port, 127);
     }
 
 
@@ -287,11 +276,11 @@ export class PUPHub extends LPF2Hub {
         portObj.cancelEventTimer();
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, brightness]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this.send(Consts.BLECharacteristic.LPF2_ALL, data);
             if (time) {
                 const timeout = global.setTimeout(() => {
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                    this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                     return resolve();
                 }, time);
                 portObj.setEventTimer(timeout);

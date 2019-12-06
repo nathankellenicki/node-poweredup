@@ -52,7 +52,7 @@ export const HubTypeNames = HubType;
  */
 export enum DeviceType {
     UNKNOWN = 0,
-    BASIC_MOTOR = 1,
+    SIMPLE_MEDIUM_LINEAR_MOTOR = 1,
     TRAIN_MOTOR = 2,
     LED_LIGHTS = 8,
     VOLTAGE = 20,
@@ -61,7 +61,7 @@ export enum DeviceType {
     RGB_LIGHT = 23,
     WEDO2_TILT = 34,
     WEDO2_DISTANCE = 35,
-    BOOST_DISTANCE = 37,
+    COLOR_DISTANCE_SENSOR = 37,
     BOOST_TACHO_MOTOR = 38,
     BOOST_MOVE_HUB_MOTOR = 39,
     BOOST_TILT = 40,

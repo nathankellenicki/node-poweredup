@@ -4,7 +4,7 @@ import { BoostMoveHub } from "./boostmovehub";
 import { ControlPlusHub } from "./controlplushub";
 import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
-import { NobleDevice } from "./nobledevice";
+import { NobleDevice } from "./nobleabstraction";
 import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
 import { WeDo2SmartHub } from "./wedo2smarthub";

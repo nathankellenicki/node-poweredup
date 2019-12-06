@@ -6,7 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("duplotrainbase");
 
 
@@ -36,7 +36,7 @@ export class DuploTrainBase extends LPF2Hub {
     protected _voltageMaxV = 6.4;
     protected _voltageMaxRaw = 3047;
 
-    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
         this.type = Consts.HubType.DUPLO_TRAIN_HUB;
         this._ports = {
@@ -80,16 +80,16 @@ export class DuploTrainBase extends LPF2Hub {
         return new Promise((resolve, reject) => {
             if (time && typeof time === "number") {
                 const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                 const timeout = global.setTimeout(() => {
                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-                    this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                    this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                     return resolve();
                 }, time);
                 portObj.setEventTimer(timeout);
             } else {
                 const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-                this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+                this.send(Consts.BLECharacteristic.LPF2_ALL, data);
                 return resolve();
             }
         });
@@ -138,7 +138,7 @@ export class DuploTrainBase extends LPF2Hub {
     public playSound (sound: number) {
         return new Promise((resolve, reject) => {
             const data = Buffer.from([0x81, 0x01, 0x11, 0x51, 0x01, sound]);
-            this._writeMessage(Consts.BLECharacteristic.LPF2_ALL, data);
+            this.send(Consts.BLECharacteristic.LPF2_ALL, data);
             return resolve();
         });
     }

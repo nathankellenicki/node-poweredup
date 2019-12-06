@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-export interface IBLEDevice extends EventEmitter {
+export interface IBLEAbstraction extends EventEmitter {
     uuid: string;
     name: string;
     connecting: boolean;

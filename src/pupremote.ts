@@ -6,7 +6,7 @@ import { Port } from "./port";
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("pupremote");
 
 
@@ -37,7 +37,7 @@ export class PUPRemote extends LPF2Hub {
     protected _voltageMaxRaw = 3200;
 
 
-    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
         this.type = Consts.HubType.POWERED_UP_REMOTE;
         this._ports = {

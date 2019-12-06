@@ -1,11 +1,12 @@
 import { EventEmitter } from "events";
 
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
 
 import Debug = require("debug");
+import { Device } from "./device";
 const debug = Debug("hub");
 
 
@@ -20,6 +21,8 @@ export class Hub extends EventEmitter {
     public useSpeedMap: boolean = true;
     public type: Consts.HubType = Consts.HubType.UNKNOWN;
 
+    protected _attachedDevices: Device[] = [];
+
     protected _ports: {[port: string]: Port} = {};
     protected _virtualPorts: {[port: string]: Port} = {};
 
@@ -32,12 +35,12 @@ export class Hub extends EventEmitter {
     protected _current: number = 0;
     protected _rssi: number = -60;
 
-    protected _bleDevice: IBLEDevice;
+    protected _bleDevice: IBLEAbstraction;
 
     private _isConnecting = false;
     private _isConnected = false;
 
-    constructor (device: IBLEDevice, autoSubscribe: boolean = true) {
+    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
         super();
         this.autoSubscribe = !!autoSubscribe;
         this._bleDevice = device;
@@ -246,6 +249,13 @@ export class Hub extends EventEmitter {
     }
 
 
+    public send (uuid: string, message: Buffer, callback?: () => void) {
+        if (callback) {
+            callback();
+        }
+    }
+
+
     // protected _getCharacteristic (uuid: string) {
     //     return this._characteristics[uuid.replace(/-/g, "")];
     // }
@@ -277,33 +287,48 @@ export class Hub extends EventEmitter {
     }
 
 
-    protected _registerDeviceAttachment (port: Port, type: number) {
+    protected _registerDeviceAttachment (device: Device) {
 
-        if (port.connected) {
-            port.type = type;
-            if (this.autoSubscribe) {
-                this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
-            }
-            /**
-             * Emits when a motor or sensor is attached to the Hub.
-             * @event Hub#attach
-             * @param {string} port
-             * @param {DeviceType} type
-             */
-            this.emit("attach", port.id, type);
+        const exists = this._attachedDevices.find((attachedDevice) => attachedDevice.portId === device.portId);
+
+        if (exists) {
+            // TODO NK: Remove existing zombie device
         } else {
-            port.type = Consts.DeviceType.UNKNOWN;
-            debug(`Port ${port.id} disconnected`);
-            /**
-             * Emits when an attached motor or sensor is detached from the Hub.
-             * @event Hub#detach
-             * @param {string} port
-             */
-            if (this._virtualPorts[port.id]) {
-                delete this._virtualPorts[port.id];
-            }
-            this.emit("detach", port.id);
+            this._attachedDevices.push(device);
         }
+
+        /**
+         * Emits when a device is attached to the Hub.
+         * @event Hub#attach
+         * @param {Device} device
+         */
+        this.emit("attach", device);
+
+        // if (port.connected) {
+        //     port.type = type;
+        //     if (this.autoSubscribe) {
+        //         this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
+        //     }
+        //     /**
+        //      * Emits when a motor or sensor is attached to the Hub.
+        //      * @event Hub#attach
+        //      * @param {string} port
+        //      * @param {DeviceType} type
+        //      */
+        //     this.emit("attach", port.id, type);
+        // } else {
+        //     port.type = Consts.DeviceType.UNKNOWN;
+        //     debug(`Port ${port.id} disconnected`);
+        //     /**
+        //      * Emits when an attached motor or sensor is detached from the Hub.
+        //      * @event Hub#detach
+        //      * @param {string} port
+        //      */
+        //     if (this._virtualPorts[port.id]) {
+        //         delete this._virtualPorts[port.id];
+        //     }
+        //     this.emit("detach", port.id);
+        // }
 
     }
 
@@ -388,7 +413,7 @@ export class Hub extends EventEmitter {
 
     private _getModeForDeviceType (type: Consts.DeviceType) {
         switch (type) {
-            case Consts.DeviceType.BASIC_MOTOR:
+            case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
                 return 0x02;
             case Consts.DeviceType.TRAIN_MOTOR:
                 return 0x02;
@@ -404,7 +429,7 @@ export class Hub extends EventEmitter {
                 return 0x00;
             case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER:
                 return 0x00;
-            case Consts.DeviceType.BOOST_DISTANCE:
+            case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
                 return (this.type === Consts.HubType.WEDO2_SMART_HUB ? 0x00 : 0x08);
             case Consts.DeviceType.BOOST_TILT:
                 return 0x04;

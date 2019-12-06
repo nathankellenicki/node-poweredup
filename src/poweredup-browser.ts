@@ -4,7 +4,7 @@ import { DuploTrainBase } from "./duplotrainbase";
 import { Hub } from "./hub";
 import { PUPHub } from "./puphub";
 import { PUPRemote } from "./pupremote";
-import { WebBLEDevice } from "./webbledevice";
+import { WebBLEDevice } from "./webbleabstraction";
 import { WeDo2SmartHub } from "./wedo2smarthub";
 
 import * as Consts from "./consts";
@@ -12,7 +12,7 @@ import * as Consts from "./consts";
 import { EventEmitter } from "events";
 
 import Debug = require("debug");
-import { IBLEDevice } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("poweredup");
 
 
@@ -118,7 +118,7 @@ export class PoweredUP extends EventEmitter {
     }
 
 
-    private _determineLPF2HubType (device: IBLEDevice): Promise<Consts.HubType> {
+    private _determineLPF2HubType (device: IBLEAbstraction): Promise<Consts.HubType> {
         return new Promise((resolve, reject) => {
             let buf: Buffer = Buffer.alloc(0);
             device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
