@@ -3,6 +3,8 @@ import { Hub } from "./hub";
 
 import * as Consts from "./consts";
 
+import { mapSpeed } from "./utils";
+
 export class BasicMotor extends Device {
 
 
@@ -19,7 +21,7 @@ export class BasicMotor extends Device {
      */
     public setSpeed (speed: number) {
         return new Promise((resolve) => {
-            const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, speed]);
+            const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, mapSpeed(speed)]);
             this.send(data);
             return resolve();
         });

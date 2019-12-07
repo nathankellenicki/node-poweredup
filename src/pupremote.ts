@@ -39,10 +39,10 @@ export class PUPRemote extends LPF2Hub {
 
     constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
-        this.type = Consts.HubType.POWERED_UP_REMOTE;
-        this._ports = {
-            "LEFT": new Port("LEFT", 0),
-            "RIGHT": new Port("RIGHT", 1)
+        this._type = Consts.HubType.POWERED_UP_REMOTE;
+        this._portNames = {
+            "LEFT": 0,
+            "RIGHT": 1
         };
         debug("Discovered Powered UP Remote");
     }

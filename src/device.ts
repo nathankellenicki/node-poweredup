@@ -9,13 +9,20 @@ export class Device extends EventEmitter {
     private _portId: number;
     private _connected: boolean = true;
     private _type: number;
+    private _busy: boolean = false;
+    private _finished: (() => void) | null = null;
 
     constructor (hub: Hub, portId: number, type: number = Consts.DeviceType.UNKNOWN) {
         super();
         this._hub = hub;
         this._portId = portId;
         this._type = type;
-        console.log(`New device on ${this._portId} - ${this._type}`);
+        this.hub.on("detach", (device) => {
+            if (device.portId === this.portId) {
+                this._connected = false;
+                this.emit("detach");
+            }
+        });
     }
 
     public get connected () {
@@ -31,7 +38,7 @@ export class Device extends EventEmitter {
     }
 
     public get port () {
-        return "A"; // TODO NK: Look up the port name from the relevant hub
+        return this.hub.getPortNameForPortId(this.portId);
     }
 
     public get type () {
@@ -39,7 +46,11 @@ export class Device extends EventEmitter {
     }
 
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
-        this.hub.send(characteristic, data, callback);
+        this.hub.send(data, characteristic, callback);
+    }
+
+    public subscribe (mode: number) {
+        this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]));
     }
 
 }

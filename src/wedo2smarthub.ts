@@ -38,10 +38,10 @@ export class WeDo2SmartHub extends Hub {
 
     constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
         super(device, autoSubscribe);
-        this.type = Consts.HubType.WEDO2_SMART_HUB;
-        this._ports = {
-            "A": new Port("A", 1),
-            "B": new Port("B", 2)
+        this._type = Consts.HubType.WEDO2_SMART_HUB;
+        this._portNames = {
+            "A": 1,
+            "B": 2
         };
         debug("Discovered WeDo 2.0 Smart Hub");
     }
@@ -115,8 +115,8 @@ export class WeDo2SmartHub extends Hub {
         return new Promise((resolve, reject) => {
             const data = Buffer.from(name, "ascii");
             // Send this twice, as sometimes the first time doesn't take
-            this.send(Consts.BLECharacteristic.WEDO2_NAME_ID, data);
-            this.send(Consts.BLECharacteristic.WEDO2_NAME_ID, data);
+            this.send(data, Consts.BLECharacteristic.WEDO2_NAME_ID);
+            this.send(data, Consts.BLECharacteristic.WEDO2_NAME_ID);
             this._name = name;
             return resolve();
         });
@@ -132,12 +132,12 @@ export class WeDo2SmartHub extends Hub {
     public setLEDColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
-            this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
+            this.send(data, Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
             if (typeof color === "boolean") {
                 color = 0;
             }
             data = Buffer.from([0x06, 0x04, 0x01, color]);
-            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+            this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             return resolve();
         });
     }
@@ -150,7 +150,7 @@ export class WeDo2SmartHub extends Hub {
      */
     public shutdown () {
         return new Promise((resolve, reject) => {
-            this.send(Consts.BLECharacteristic.WEDO2_DISCONNECT, Buffer.from([0x00]), () => {
+            this.send(Buffer.from([0x00]), Consts.BLECharacteristic.WEDO2_DISCONNECT, () => {
                 return resolve();
             });
         });
@@ -168,80 +168,80 @@ export class WeDo2SmartHub extends Hub {
     public setLEDRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x06, 0x17, 0x01, 0x02]);
-            this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, data);
+            this.send(data, Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
             data = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
-            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+            this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             return resolve();
         });
     }
 
 
-    /**
-     * Set the motor speed on a given port.
-     * @method WeDo2SmartHub#setMotorSpeed
-     * @param {string} port
-     * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
-     * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
-     */
-    public setMotorSpeed (port: string, speed: number, time?: number | boolean) {
-        const portObj = this._portLookup(port);
-        let cancelEventTimer = true;
-        if (typeof time === "boolean") {
-            if (time === true) {
-                cancelEventTimer = false;
-            }
-            time = undefined;
-        }
-        if (cancelEventTimer) {
-            portObj.cancelEventTimer();
-        }
-        return new Promise((resolve, reject) => {
-            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(speed)]));
-            if (time && typeof time === "number") {
-                const timeout = global.setTimeout(() => {
-                    this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, Buffer.from([portObj.value, 0x01, 0x02, 0x00]));
-                    return resolve();
-                }, time);
-                portObj.setEventTimer(timeout);
-            } else {
-                return resolve();
-            }
-        });
-    }
+    // /**
+    //  * Set the motor speed on a given port.
+    //  * @method WeDo2SmartHub#setMotorSpeed
+    //  * @param {string} port
+    //  * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+    //  * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
+    //  * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
+    //  */
+    // public setMotorSpeed (port: string, speed: number, time?: number | boolean) {
+    //     const portObj = this._portLookup(port);
+    //     let cancelEventTimer = true;
+    //     if (typeof time === "boolean") {
+    //         if (time === true) {
+    //             cancelEventTimer = false;
+    //         }
+    //         time = undefined;
+    //     }
+    //     if (cancelEventTimer) {
+    //         portObj.cancelEventTimer();
+    //     }
+    //     return new Promise((resolve, reject) => {
+    //         this.send(Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(speed)]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+    //         if (time && typeof time === "number") {
+    //             const timeout = global.setTimeout(() => {
+    //                 this.send(Buffer.from([portObj.value, 0x01, 0x02, 0x00]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+    //                 return resolve();
+    //             }, time);
+    //             portObj.setEventTimer(timeout);
+    //         } else {
+    //             return resolve();
+    //         }
+    //     });
+    // }
 
 
-    /**
-     * Ramp the motor speed on a given port.
-     * @method WeDo2SmartHub#rampMotorSpeed
-     * @param {string} port
-     * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @param {number} time How long the ramp should last (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command.
-     */
-    public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
-        const portObj = this._portLookup(port);
-        portObj.cancelEventTimer();
-        return new Promise((resolve, reject) => {
-            this._calculateRamp(fromSpeed, toSpeed, time, portObj)
-            .on("changeSpeed", (speed) => {
-                this.setMotorSpeed(port, speed, true);
-            })
-            .on("finished", resolve);
-        });
-    }
+    // /**
+    //  * Ramp the motor speed on a given port.
+    //  * @method WeDo2SmartHub#rampMotorSpeed
+    //  * @param {string} port
+    //  * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+    //  * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+    //  * @param {number} time How long the ramp should last (in milliseconds).
+    //  * @returns {Promise} Resolved upon successful completion of command.
+    //  */
+    // public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
+    //     const portObj = this._portLookup(port);
+    //     portObj.cancelEventTimer();
+    //     return new Promise((resolve, reject) => {
+    //         this._calculateRamp(fromSpeed, toSpeed, time, portObj)
+    //         .on("changeSpeed", (speed) => {
+    //             this.setMotorSpeed(port, speed, true);
+    //         })
+    //         .on("finished", resolve);
+    //     });
+    // }
 
 
-    /**
-     * Fully (hard) stop the motor on a given port.
-     * @method WeDo2SmartHub#brakeMotor
-     * @param {string} port
-     * @returns {Promise} Resolved upon successful completion of command.
-     */
-    public brakeMotor (port: string) {
-        return this.setMotorSpeed(port, 127);
-    }
+    // /**
+    //  * Fully (hard) stop the motor on a given port.
+    //  * @method WeDo2SmartHub#brakeMotor
+    //  * @param {string} port
+    //  * @returns {Promise} Resolved upon successful completion of command.
+    //  */
+    // public brakeMotor (port: string) {
+    //     return this.setMotorSpeed(port, 127);
+    // }
 
 
     /**
@@ -256,41 +256,41 @@ export class WeDo2SmartHub extends Hub {
             const data = Buffer.from([0x05, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00]);
             data.writeUInt16LE(frequency, 3);
             data.writeUInt16LE(time, 5);
-            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
+            this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             global.setTimeout(resolve, time);
         });
     }
 
 
-    /**
-     * Set the light brightness on a given port.
-     * @method WeDo2SmartHub#setLightBrightness
-     * @param {string} port
-     * @param {number} brightness Brightness value between 0-100 (0 is off)
-     * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
-     * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the light is turned off.
-     */
-    public setLightBrightness (port: string, brightness: number, time?: number) {
-        const portObj = this._portLookup(port);
-        portObj.cancelEventTimer();
-        return new Promise((resolve, reject) => {
-            const data = Buffer.from([portObj.value, 0x01, 0x02, brightness]);
-            this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
-            if (time) {
-                const timeout = global.setTimeout(() => {
-                    const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
-                    this.send(Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, data);
-                    return resolve();
-                }, time);
-                portObj.setEventTimer(timeout);
-            } else {
-                return resolve();
-            }
-        });
-    }
+    // /**
+    //  * Set the light brightness on a given port.
+    //  * @method WeDo2SmartHub#setLightBrightness
+    //  * @param {string} port
+    //  * @param {number} brightness Brightness value between 0-100 (0 is off)
+    //  * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
+    //  * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the light is turned off.
+    //  */
+    // public setLightBrightness (port: string, brightness: number, time?: number) {
+    //     const portObj = this._portLookup(port);
+    //     portObj.cancelEventTimer();
+    //     return new Promise((resolve, reject) => {
+    //         const data = Buffer.from([portObj.value, 0x01, 0x02, brightness]);
+    //         this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+    //         if (time) {
+    //             const timeout = global.setTimeout(() => {
+    //                 const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
+    //                 this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+    //                 return resolve();
+    //             }, time);
+    //             portObj.setEventTimer(timeout);
+    //         } else {
+    //             return resolve();
+    //         }
+    //     });
+    // }
 
 
-    public send (uuid: string, message: Buffer, callback?: () => void) {
+    public send (message: Buffer, uuid: string, callback?: () => void) {
         if (debug.enabled) {
             debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
         }
@@ -299,12 +299,12 @@ export class WeDo2SmartHub extends Hub {
 
 
     protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-            this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), callback);
+            this.send(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, callback);
     }
 
 
     protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        this.send(Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), callback);
+        this.send(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, callback);
     }
 
 
@@ -361,7 +361,7 @@ export class WeDo2SmartHub extends Hub {
                     break;
             }
 
-            this._registerDeviceAttachment(device);
+            this._attachDevice(device);
 
         }
 
@@ -379,101 +379,101 @@ export class WeDo2SmartHub extends Hub {
 
     private _parseSensorMessage (data: Buffer) {
 
-        debug("Received Message (WEDO2_SENSOR_VALUE)", data);
+        // debug("Received Message (WEDO2_SENSOR_VALUE)", data);
 
-        if (data[0] === 0x01) {
-            /**
-             * Emits when a button is pressed.
-             * @event WeDo2SmartHub#button
-             * @param {string} button
-             * @param {ButtonState} state
-             */
-            this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
-            return;
-        } else if (data[0] === 0x00) {
-            this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
-            return;
-        }
+        // if (data[0] === 0x01) {
+        //     /**
+        //      * Emits when a button is pressed.
+        //      * @event WeDo2SmartHub#button
+        //      * @param {string} button
+        //      * @param {ButtonState} state
+        //      */
+        //     this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
+        //     return;
+        // } else if (data[0] === 0x00) {
+        //     this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
+        //     return;
+        // }
 
-        // Voltage
-        if (data[1] === 0x03) {
-            const voltage = data.readInt16LE(2);
-            this._voltage = voltage / 40;
-        // Current
-        } else if (data[1] === 0x04) {
-            const current = data.readInt16LE(2);
-            this._current = current / 1000;
-        }
+        // // Voltage
+        // if (data[1] === 0x03) {
+        //     const voltage = data.readInt16LE(2);
+        //     this._voltage = voltage / 40;
+        // // Current
+        // } else if (data[1] === 0x04) {
+        //     const current = data.readInt16LE(2);
+        //     this._current = current / 1000;
+        // }
 
-        const port = this._getPortForPortNumber(data[1]);
+        // const port = this._getPortForPortNumber(data[1]);
 
-        if (!port) {
-            return;
-        }
+        // if (!port) {
+        //     return;
+        // }
 
-        if (port && port.connected) {
-            switch (port.type) {
-                case Consts.DeviceType.WEDO2_DISTANCE: {
-                    let distance = data[2];
-                    if (data[3] === 1) {
-                        distance = data[2] + 255;
-                    }
-                    /**
-                     * Emits when a distance sensor is activated.
-                     * @event WeDo2SmartHub#distance
-                     * @param {string} port
-                     * @param {number} distance Distance, in millimeters.
-                     */
-                    this.emit("distance", port.id, distance * 10);
-                    break;
-                }
-                case Consts.DeviceType.COLOR_DISTANCE_SENSOR: {
-                    const distance = data[2];
-                    /**
-                     * Emits when a color sensor is activated.
-                     * @event WeDo2SmartHub#color
-                     * @param {string} port
-                     * @param {Color} color
-                     */
-                    this.emit("color", port.id, distance);
-                    break;
-                }
-                case Consts.DeviceType.WEDO2_TILT: {
-                    this._lastTiltX = data.readInt8(2);
-                    this._lastTiltY = data.readInt8(3);
-                    /**
-                     * Emits when a tilt sensor is activated.
-                     * @event WeDo2SmartHub#tilt
-                     * @param {string} port
-                     * @param {number} x
-                     * @param {number} y
-                     */
-                    this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
-                    break;
-                }
-                case Consts.DeviceType.BOOST_TACHO_MOTOR: {
-                    const rotation = data.readInt32LE(2);
-                    /**
-                     * Emits when a rotation sensor is activated.
-                     * @event WeDo2SmartHub#rotate
-                     * @param {string} port
-                     * @param {number} rotation
-                     */
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
-                    const rotation = data.readInt32LE(2);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-                case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
-                    const rotation = data.readInt32LE(2);
-                    this.emit("rotate", port.id, rotation);
-                    break;
-                }
-            }
-        }
+        // if (port && port.connected) {
+        //     switch (port.type) {
+        //         case Consts.DeviceType.WEDO2_DISTANCE: {
+        //             let distance = data[2];
+        //             if (data[3] === 1) {
+        //                 distance = data[2] + 255;
+        //             }
+        //             /**
+        //              * Emits when a distance sensor is activated.
+        //              * @event WeDo2SmartHub#distance
+        //              * @param {string} port
+        //              * @param {number} distance Distance, in millimeters.
+        //              */
+        //             this.emit("distance", port.id, distance * 10);
+        //             break;
+        //         }
+        //         case Consts.DeviceType.COLOR_DISTANCE_SENSOR: {
+        //             const distance = data[2];
+        //             /**
+        //              * Emits when a color sensor is activated.
+        //              * @event WeDo2SmartHub#color
+        //              * @param {string} port
+        //              * @param {Color} color
+        //              */
+        //             this.emit("color", port.id, distance);
+        //             break;
+        //         }
+        //         case Consts.DeviceType.WEDO2_TILT: {
+        //             this._lastTiltX = data.readInt8(2);
+        //             this._lastTiltY = data.readInt8(3);
+        //             /**
+        //              * Emits when a tilt sensor is activated.
+        //              * @event WeDo2SmartHub#tilt
+        //              * @param {string} port
+        //              * @param {number} x
+        //              * @param {number} y
+        //              */
+        //             this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
+        //             break;
+        //         }
+        //         case Consts.DeviceType.BOOST_TACHO_MOTOR: {
+        //             const rotation = data.readInt32LE(2);
+        //             /**
+        //              * Emits when a rotation sensor is activated.
+        //              * @event WeDo2SmartHub#rotate
+        //              * @param {string} port
+        //              * @param {number} rotation
+        //              */
+        //             this.emit("rotate", port.id, rotation);
+        //             break;
+        //         }
+        //         case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
+        //             const rotation = data.readInt32LE(2);
+        //             this.emit("rotate", port.id, rotation);
+        //             break;
+        //         }
+        //         case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
+        //             const rotation = data.readInt32LE(2);
+        //             this.emit("rotate", port.id, rotation);
+        //             break;
+        //         }
+        //     }
+        // }
 
     }
 

@@ -19,12 +19,12 @@ export class Hub extends EventEmitter {
 
     public autoSubscribe: boolean = true;
     public useSpeedMap: boolean = true;
-    public type: Consts.HubType = Consts.HubType.UNKNOWN;
+    protected _type: Consts.HubType = Consts.HubType.UNKNOWN;
 
     protected _attachedDevices: Device[] = [];
 
-    protected _ports: {[port: string]: Port} = {};
-    protected _virtualPorts: {[port: string]: Port} = {};
+    protected _portNames: {[port: string]: number} = {};
+    // protected _virtualPorts: {[port: string]: Port} = {};
 
     protected _name: string = "";
     protected _firmwareVersion: string = "0.0.00.0000";
@@ -60,6 +60,15 @@ export class Hub extends EventEmitter {
      */
     public get name () {
         return this._bleDevice.name;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} type Hub type
+     */
+    public get type () {
+        return this._type;
     }
 
 
@@ -160,44 +169,55 @@ export class Hub extends EventEmitter {
      * @method Hub#disconnect
      * @returns {Promise} Resolved upon successful disconnect.
      */
-    public async disconnect () {
-        this._bleDevice.disconnect();
+    public disconnect () {
+        return this._bleDevice.disconnect();
     }
 
 
-    /**
-     * Subscribe to sensor notifications on a given port.
-     * @method Hub#subscribe
-     * @param {string} port
-     * @param {number} [mode] The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public subscribe (port: string, mode?: number) {
-        return new Promise((resolve, reject) => {
-            let newMode = this._getModeForDeviceType(this._portLookup(port).type);
-            if (mode !== undefined) {
-                newMode = mode;
+    public getPortNameForPortId (portId: number) {
+        for (const port of Object.keys(this._portNames)) {
+            console.log(port);
+            if (this._portNames[port] === portId) {
+                return port;
             }
-            this._activatePortDevice(this._portLookup(port).value, this._portLookup(port).type, newMode, 0x00, () => {
-                return resolve();
-            });
-        });
+        }
+        return;
     }
 
-    /**
-     * Unsubscribe to sensor notifications on a given port.
-     * @method Hub#unsubscribe
-     * @param {string} port
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public unsubscribe (port: string) {
-        return new Promise((resolve, reject) => {
-            const mode = this._getModeForDeviceType(this._portLookup(port).type);
-            this._deactivatePortDevice(this._portLookup(port).value, this._portLookup(port).type, mode, 0x00, () => {
-                return resolve();
-            });
-        });
-    }
+
+    // /**
+    //  * Subscribe to sensor notifications on a given port.
+    //  * @method Hub#subscribe
+    //  * @param {string} port
+    //  * @param {number} [mode] The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
+    //  * @returns {Promise} Resolved upon successful issuance of command.
+    //  */
+    // public subscribe (port: string, mode?: number) {
+    //     return new Promise((resolve, reject) => {
+    //         let newMode = this._getModeForDeviceType(this._portLookup(port).type);
+    //         if (mode !== undefined) {
+    //             newMode = mode;
+    //         }
+    //         this._activatePortDevice(this._portLookup(port).value, this._portLookup(port).type, newMode, 0x00, () => {
+    //             return resolve();
+    //         });
+    //     });
+    // }
+
+    // /**
+    //  * Unsubscribe to sensor notifications on a given port.
+    //  * @method Hub#unsubscribe
+    //  * @param {string} port
+    //  * @returns {Promise} Resolved upon successful issuance of command.
+    //  */
+    // public unsubscribe (port: string) {
+    //     return new Promise((resolve, reject) => {
+    //         const mode = this._getModeForDeviceType(this._portLookup(port).type);
+    //         this._deactivatePortDevice(this._portLookup(port).value, this._portLookup(port).type, mode, 0x00, () => {
+    //             return resolve();
+    //         });
+    //     });
+    // }
 
 
     /**
@@ -228,28 +248,18 @@ export class Hub extends EventEmitter {
     }
 
 
-    /**
-     * Get the hub type.
-     * @method Hub#getHubType
-     * @returns {HubType}
-     */
-    public getHubType () {
-        return this.type;
-    }
+    // /**
+    //  * Get the device type for a given port.
+    //  * @method Hub#getPortDeviceType
+    //  * @param {string} port
+    //  * @returns {DeviceType}
+    //  */
+    // public getPortDeviceType (port: string) {
+    //     return this._portLookup(port).type;
+    // }
 
 
-    /**
-     * Get the device type for a given port.
-     * @method Hub#getPortDeviceType
-     * @param {string} port
-     * @returns {DeviceType}
-     */
-    public getPortDeviceType (port: string) {
-        return this._portLookup(port).type;
-    }
-
-
-    public send (uuid: string, message: Buffer, callback?: () => void) {
+    public send (message: Buffer, uuid: string, callback?: () => void) {
         if (callback) {
             callback();
         }
@@ -273,26 +283,12 @@ export class Hub extends EventEmitter {
     // }
 
 
-    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        if (callback) {
-            callback();
-        }
-    }
+    protected _attachDevice (device: Device) {
 
-
-    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        if (callback) {
-            callback();
-        }
-    }
-
-
-    protected _registerDeviceAttachment (device: Device) {
-
-        const exists = this._attachedDevices.find((attachedDevice) => attachedDevice.portId === device.portId);
+        const exists = this._getDeviceByPortId(device.portId);
 
         if (exists) {
-            // TODO NK: Remove existing zombie device
+            this._attachedDevices.splice(this._attachedDevices.findIndex((attachedDevice) => attachedDevice.portId === device.portId), 1);
         } else {
             this._attachedDevices.push(device);
         }
@@ -333,110 +329,126 @@ export class Hub extends EventEmitter {
     }
 
 
-    protected _getPortForPortNumber (num: number) {
-
-        for (const key of Object.keys(this._ports)) {
-            if (this._ports[key].value === num) {
-                return this._ports[key];
-            }
-        }
-
-        for (const key of Object.keys(this._virtualPorts)) {
-            if (this._virtualPorts[key].value === num) {
-                return this._virtualPorts[key];
-            }
-        }
-
-        return false;
-
+    protected _detachDevice (device: Device) {
+        this._attachedDevices.splice(this._attachedDevices.findIndex((attachedDevice) => attachedDevice.portId === device.portId), 1);
+        /**
+         * Emits when a device is detached from the Hub.
+         * @event Hub#attach
+         * @param {Device} device
+         */
+        this.emit("detach", device);
     }
 
 
-    protected _mapSpeed (speed: number) { // Speed range of -100 to 100 is supported unless speed mapping is turned off, in which case, you're on your own!
-        if (!this.useSpeedMap) {
-            return speed;
-        }
-
-        if (speed === 127) {
-            return 127; // Hard stop
-        }
-
-        if (speed > 100) {
-            speed = 100;
-        } else if (speed < -100) {
-            speed = -100;
-        }
-
-        return speed;
+    protected _getDeviceByPortId (portId: number) {
+        return this._attachedDevices.find((attachedDevice) => attachedDevice.portId === portId);
     }
 
 
-    protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number, port: Port) {
-        const emitter = new EventEmitter();
-        const steps = Math.abs(toSpeed - fromSpeed);
-        let delay = time / steps;
-        let increment = 1;
-        if (delay < 50 && steps > 0) {
-            increment = 50 / delay;
-            delay = 50;
-        }
-        if (fromSpeed > toSpeed) {
-            increment = -increment;
-        }
-        let i = 0;
-        const interval = setInterval(() => {
-            let speed = Math.round(fromSpeed + (++i * increment));
-            if (toSpeed > fromSpeed && speed > toSpeed) {
-                speed = toSpeed;
-            } else if (fromSpeed > toSpeed && speed < toSpeed) {
-                speed = toSpeed;
-            }
-            emitter.emit("changeSpeed", speed);
-            if (speed === toSpeed) {
-                clearInterval(interval);
-                emitter.emit("finished");
-            }
-        }, delay);
-        port.setEventTimer(interval);
-        return emitter;
-    }
+    // protected _getPortForPortNumber (num: number) {
+
+    //     for (const key of Object.keys(this._ports)) {
+    //         if (this._ports[key].value === num) {
+    //             return this._ports[key];
+    //         }
+    //     }
+
+    //     for (const key of Object.keys(this._virtualPorts)) {
+    //         if (this._virtualPorts[key].value === num) {
+    //             return this._virtualPorts[key];
+    //         }
+    //     }
+
+    //     return false;
+
+    // }
 
 
-    protected _portLookup (portName: string) {
-        const portNameUpper = portName.toUpperCase();
-        const port = this._ports[portNameUpper] || this._virtualPorts[portNameUpper];
-        if (!port) {
-            throw new Error(`Port ${portNameUpper} does not exist on this Hub type`);
-        }
-        return port;
-    }
+    // protected _mapSpeed (speed: number) { // Speed range of -100 to 100 is supported unless speed mapping is turned off, in which case, you're on your own!
+    //     if (!this.useSpeedMap) {
+    //         return speed;
+    //     }
 
-    private _getModeForDeviceType (type: Consts.DeviceType) {
-        switch (type) {
-            case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
-                return 0x02;
-            case Consts.DeviceType.TRAIN_MOTOR:
-                return 0x02;
-            case Consts.DeviceType.BOOST_TACHO_MOTOR:
-                return 0x02;
-            case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
-                return 0x02;
-            case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
-                return 0x02;
-            case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
-                return 0x02;
-            case Consts.DeviceType.CONTROL_PLUS_TILT:
-                return 0x00;
-            case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER:
-                return 0x00;
-            case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
-                return (this.type === Consts.HubType.WEDO2_SMART_HUB ? 0x00 : 0x08);
-            case Consts.DeviceType.BOOST_TILT:
-                return 0x04;
-            default:
-                return 0x00;
-        }
-    }
+    //     if (speed === 127) {
+    //         return 127; // Hard stop
+    //     }
+
+    //     if (speed > 100) {
+    //         speed = 100;
+    //     } else if (speed < -100) {
+    //         speed = -100;
+    //     }
+
+    //     return speed;
+    // }
+
+
+    // protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number, port: Port) {
+    //     const emitter = new EventEmitter();
+    //     const steps = Math.abs(toSpeed - fromSpeed);
+    //     let delay = time / steps;
+    //     let increment = 1;
+    //     if (delay < 50 && steps > 0) {
+    //         increment = 50 / delay;
+    //         delay = 50;
+    //     }
+    //     if (fromSpeed > toSpeed) {
+    //         increment = -increment;
+    //     }
+    //     let i = 0;
+    //     const interval = setInterval(() => {
+    //         let speed = Math.round(fromSpeed + (++i * increment));
+    //         if (toSpeed > fromSpeed && speed > toSpeed) {
+    //             speed = toSpeed;
+    //         } else if (fromSpeed > toSpeed && speed < toSpeed) {
+    //             speed = toSpeed;
+    //         }
+    //         emitter.emit("changeSpeed", speed);
+    //         if (speed === toSpeed) {
+    //             clearInterval(interval);
+    //             emitter.emit("finished");
+    //         }
+    //     }, delay);
+    //     port.setEventTimer(interval);
+    //     return emitter;
+    // }
+
+
+    // protected _portLookup (portName: string) {
+    //     const portNameUpper = portName.toUpperCase();
+    //     const port = this._ports[portNameUpper] || this._virtualPorts[portNameUpper];
+    //     if (!port) {
+    //         throw new Error(`Port ${portNameUpper} does not exist on this Hub type`);
+    //     }
+    //     return port;
+    // }
+
+    // private _getModeForDeviceType (type: Consts.DeviceType) {
+    //     switch (type) {
+    //         case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
+    //             return 0x02;
+    //         case Consts.DeviceType.TRAIN_MOTOR:
+    //             return 0x02;
+    //         case Consts.DeviceType.BOOST_TACHO_MOTOR:
+    //             return 0x02;
+    //         case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
+    //             return 0x02;
+    //         case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
+    //             return 0x02;
+    //         case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
+    //             return 0x02;
+    //         case Consts.DeviceType.CONTROL_PLUS_TILT:
+    //             return 0x00;
+    //         case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER:
+    //             return 0x00;
+    //         case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
+    //             return (this.type === Consts.HubType.WEDO2_SMART_HUB ? 0x00 : 0x08);
+    //         case Consts.DeviceType.BOOST_TILT:
+    //             return 0x04;
+    //         default:
+    //             return 0x00;
+    //     }
+    // }
 
 
 }
