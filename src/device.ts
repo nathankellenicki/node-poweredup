@@ -5,6 +5,8 @@ import * as Consts from "./consts";
 
 export class Device extends EventEmitter {
 
+    public autoSubscribe: boolean = true;
+
     private _hub: Hub;
     private _portId: number;
     private _connected: boolean = true;
@@ -18,7 +20,7 @@ export class Device extends EventEmitter {
         this._portId = portId;
         this._type = type;
         this.hub.on("detach", (device) => {
-            if (device.portId === this.portId) {
+            if (device === this) {
                 this._connected = false;
                 this.emit("detach");
             }
@@ -46,6 +48,9 @@ export class Device extends EventEmitter {
     }
 
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
+        if (!this.connected) {
+            throw new Error("Device is not connected");
+        }
         this.hub.send(data, characteristic, callback);
     }
 

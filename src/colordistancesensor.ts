@@ -9,15 +9,16 @@ export class ColorDistanceSensor extends Device {
         super(hub, portId, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
 
         this.on("newListener", (event) => {
-            switch (event) {
-                case "color":
-                    this.subscribe(0x00);
-                    break;
-                case "distance":
-                    this.subscribe(0x01);
-                    break;
+            if (this.autoSubscribe) {
+                switch (event) {
+                    case "color":
+                        this.subscribe(0x00);
+                        break;
+                    case "distance":
+                        this.subscribe(0x01);
+                        break;
+                }
             }
-
         });
 
     }

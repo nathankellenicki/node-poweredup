@@ -21,7 +21,7 @@ export class Hub extends EventEmitter {
     public useSpeedMap: boolean = true;
     protected _type: Consts.HubType = Consts.HubType.UNKNOWN;
 
-    protected _attachedDevices: Device[] = [];
+    protected _attachedDevices: {[portId: number]: Device} = {};
 
     protected _portNames: {[port: string]: number} = {};
     // protected _virtualPorts: {[port: string]: Port} = {};
@@ -176,7 +176,6 @@ export class Hub extends EventEmitter {
 
     public getPortNameForPortId (portId: number) {
         for (const port of Object.keys(this._portNames)) {
-            console.log(port);
             if (this._portNames[port] === portId) {
                 return port;
             }
@@ -285,13 +284,7 @@ export class Hub extends EventEmitter {
 
     protected _attachDevice (device: Device) {
 
-        const exists = this._getDeviceByPortId(device.portId);
-
-        if (exists) {
-            this._attachedDevices.splice(this._attachedDevices.findIndex((attachedDevice) => attachedDevice.portId === device.portId), 1);
-        } else {
-            this._attachedDevices.push(device);
-        }
+        this._attachedDevices[device.portId] = device;
 
         /**
          * Emits when a device is attached to the Hub.
@@ -330,7 +323,7 @@ export class Hub extends EventEmitter {
 
 
     protected _detachDevice (device: Device) {
-        this._attachedDevices.splice(this._attachedDevices.findIndex((attachedDevice) => attachedDevice.portId === device.portId), 1);
+        delete this._attachedDevices[device.portId];
         /**
          * Emits when a device is detached from the Hub.
          * @event Hub#attach
@@ -341,7 +334,7 @@ export class Hub extends EventEmitter {
 
 
     protected _getDeviceByPortId (portId: number) {
-        return this._attachedDevices.find((attachedDevice) => attachedDevice.portId === portId);
+        return this._attachedDevices[portId];
     }
 
 
