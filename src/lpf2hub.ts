@@ -380,6 +380,7 @@ export class LPF2Hub extends Hub {
                 modeInfoDebug(`Port ${portHex}, mode ${mode}, name ${name}`);
                 break;
             case 0x01: // RAW Range
+                port.modes[mode].rawMin = data.readFloatLE(6);
                 modeInfoDebug(`Port ${portHex}, mode ${mode}, RAW min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
                 break;
             case 0x02: // PCT Range
@@ -456,17 +457,18 @@ export class LPF2Hub extends Hub {
         if (port && port.connected && port.mode && port.modes[port.mode]) {
             const mode = port.modes[port.mode];
             const values = [];
+            const signed = mode.rawMin < 0;
 
             for (let index = 4; index < data.length; index += Consts.VALUE_SIZE[mode.valueType]) {
                 switch (mode.valueType) {
                     case Consts.ValueType.Int8:
-                        values.push(data.readInt8(index));
+                        values.push(signed ? data.readInt8(index) : data.readUInt8(index));
                         break;
                     case Consts.ValueType.Int16:
-                        values.push(data.readInt16LE(index));
+                        values.push(signed ? data.readInt16LE(index) : data.readUInt16LE(index));
                         break;
                     case Consts.ValueType.Int32:
-                        values.push(data.readInt32LE(index));
+                        values.push(signed ? data.readInt32LE(index) : data.readUInt32LE(index));
                         break;
                     case Consts.ValueType.Float:
                         values.push(data.readFloatLE(index));

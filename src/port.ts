@@ -3,6 +3,7 @@ import * as Consts from "./consts";
 export interface IPortMode {
     name: string;
     unit: string;
+    rawMin: number;
     valueType: Consts.ValueType;
 }
 
