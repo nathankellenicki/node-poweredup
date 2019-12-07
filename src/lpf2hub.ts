@@ -454,7 +454,7 @@ export class LPF2Hub extends Hub {
             return;
         }
 
-        if (port && port.connected && port.mode && port.modes[port.mode]) {
+        if (port.connected && port.mode !== null && port.modes[port.mode]) {
             const mode = port.modes[port.mode];
             const values = [];
             const signed = mode.rawMin < 0;
