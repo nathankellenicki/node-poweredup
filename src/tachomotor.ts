@@ -6,7 +6,7 @@ import { mapSpeed } from "./utils";
 
 export class TachoMotor extends BasicMotor {
 
-    constructor (hub: Hub, portId: number, type: number = Consts.DeviceType.UNKNOWN) {
+    constructor (hub: Hub, portId: number, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super(hub, portId, type);
 
         this.on("newListener", (event) => {

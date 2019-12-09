@@ -34,9 +34,8 @@ export class BoostMoveHub extends LPF2Hub {
     protected _currentPort = 0x3b;
     protected _voltagePort = 0x3c;
 
-    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
-        super(device, autoSubscribe);
-        this._type = Consts.HubType.BOOST_MOVE_HUB;
+    constructor (device: IBLEAbstraction) {
+        super(device, Consts.HubType.BOOST_MOVE_HUB);
         this._portNames = {
             "A": 0,
             "B": 1,

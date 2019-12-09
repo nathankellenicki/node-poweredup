@@ -35,9 +35,8 @@ export class DuploTrainBase extends LPF2Hub {
     protected _voltageMaxV = 6.4;
     protected _voltageMaxRaw = 3047;
 
-    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
-        super(device, autoSubscribe);
-        this._type = Consts.HubType.DUPLO_TRAIN_HUB;
+    constructor (device: IBLEAbstraction) {
+        super(device, Consts.HubType.DUPLO_TRAIN_HUB);
         this._portNames = {
             "MOTOR": 0,
             "COLOR": 18,

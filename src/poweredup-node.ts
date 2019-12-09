@@ -44,9 +44,6 @@ noble.on("stateChange", (state: string) => {
 export class PoweredUP extends EventEmitter {
 
 
-    public autoSubscribe: boolean = true;
-
-
     private _connectedHubs: {[uuid: string]: Hub} = {};
 
 
@@ -144,17 +141,17 @@ export class PoweredUP extends EventEmitter {
         let hub: Hub;
 
         if (await WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
-            hub = new WeDo2SmartHub(device, this.autoSubscribe);
+            hub = new WeDo2SmartHub(device);
         } else if (await BoostMoveHub.IsBoostMoveHub(peripheral)) {
-            hub = new BoostMoveHub(device, this.autoSubscribe);
+            hub = new BoostMoveHub(device);
         } else if (await PUPHub.IsPUPHub(peripheral)) {
-            hub = new PUPHub(device, this.autoSubscribe);
+            hub = new PUPHub(device);
         } else if (await PUPRemote.IsPUPRemote(peripheral)) {
-            hub = new PUPRemote(device, this.autoSubscribe);
+            hub = new PUPRemote(device);
         } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
-            hub = new DuploTrainBase(device, this.autoSubscribe);
+            hub = new DuploTrainBase(device);
         } else if (await ControlPlusHub.IsControlPlusHub(peripheral)) {
-            hub = new ControlPlusHub(device, this.autoSubscribe);
+            hub = new ControlPlusHub(device);
         } else {
             return;
         }

@@ -14,9 +14,9 @@ export class Device extends EventEmitter {
     private _hub: Hub;
     private _portId: number;
     private _connected: boolean = true;
-    private _type: number;
+    private _type: Consts.DeviceType;
 
-    constructor (hub: Hub, portId: number, type: number = Consts.DeviceType.UNKNOWN) {
+    constructor (hub: Hub, portId: number, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
         this._hub = hub;
         this._portId = portId;
@@ -61,7 +61,7 @@ export class Device extends EventEmitter {
     public subscribe (mode: number) {
         if (mode !== this._mode) {
             this._mode = mode;
-            this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]));
+            this.hub.subscribe(this.portId, mode);
         }
     }
 

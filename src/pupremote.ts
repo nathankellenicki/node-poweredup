@@ -37,9 +37,8 @@ export class PUPRemote extends LPF2Hub {
     protected _voltageMaxRaw = 3200;
 
 
-    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
-        super(device, autoSubscribe);
-        this._type = Consts.HubType.POWERED_UP_REMOTE;
+    constructor (device: IBLEAbstraction) {
+        super(device, Consts.HubType.POWERED_UP_REMOTE);
         this._portNames = {
             "LEFT": 0,
             "RIGHT": 1

@@ -23,9 +23,6 @@ const debug = Debug("poweredup");
 export class PoweredUP extends EventEmitter {
 
 
-    public autoSubscribe: boolean = true;
-
-
     private _connectedHubs: {[uuid: string]: Hub} = {};
 
 
@@ -184,22 +181,22 @@ export class PoweredUP extends EventEmitter {
 
         switch (hubType) {
             case Consts.HubType.WEDO2_SMART_HUB:
-                hub = new WeDo2SmartHub(device, this.autoSubscribe);
+                hub = new WeDo2SmartHub(device);
                 break;
             case Consts.HubType.BOOST_MOVE_HUB:
-                hub = new BoostMoveHub(device, this.autoSubscribe);
+                hub = new BoostMoveHub(device);
                 break;
             case Consts.HubType.POWERED_UP_HUB:
-                hub = new PUPHub(device, this.autoSubscribe);
+                hub = new PUPHub(device);
                 break;
             case Consts.HubType.POWERED_UP_REMOTE:
-                hub = new PUPRemote(device, this.autoSubscribe);
+                hub = new PUPRemote(device);
                 break;
             case Consts.HubType.DUPLO_TRAIN_HUB:
-                hub = new DuploTrainBase(device, this.autoSubscribe);
+                hub = new DuploTrainBase(device);
                 break;
             case Consts.HubType.CONTROL_PLUS_HUB:
-                hub = new ControlPlusHub(device, this.autoSubscribe);
+                hub = new ControlPlusHub(device);
                 break;
             default:
                 return;

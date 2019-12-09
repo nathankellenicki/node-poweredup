@@ -38,9 +38,8 @@ export class WeDo2SmartHub extends Hub {
     private _lastTiltY: number = 0;
 
 
-    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
-        super(device, autoSubscribe);
-        this._type = Consts.HubType.WEDO2_SMART_HUB;
+    constructor (device: IBLEAbstraction) {
+        super(device, Consts.HubType.WEDO2_SMART_HUB);
         this._portNames = {
             "A": 1,
             "B": 2

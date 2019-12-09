@@ -15,10 +15,7 @@ const debug = Debug("hub");
  */
 export class Hub extends EventEmitter {
 
-
-    public autoSubscribe: boolean = true;
     public useSpeedMap: boolean = true;
-    protected _type: Consts.HubType = Consts.HubType.UNKNOWN;
 
     protected _attachedDevices: {[portId: number]: Device} = {};
 
@@ -39,9 +36,11 @@ export class Hub extends EventEmitter {
     private _isConnecting = false;
     private _isConnected = false;
 
-    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
+    private _type: Consts.HubType;
+
+    constructor (device: IBLEAbstraction, type: Consts.HubType = Consts.HubType.UNKNOWN) {
         super();
-        this.autoSubscribe = !!autoSubscribe;
+        this._type = type;
         this._bleDevice = device;
         device.on("disconnect", () => {
             /**
@@ -183,41 +182,6 @@ export class Hub extends EventEmitter {
     }
 
 
-    // /**
-    //  * Subscribe to sensor notifications on a given port.
-    //  * @method Hub#subscribe
-    //  * @param {string} port
-    //  * @param {number} [mode] The sensor mode to activate. If no mode is provided, the default for that sensor will be chosen.
-    //  * @returns {Promise} Resolved upon successful issuance of command.
-    //  */
-    // public subscribe (port: string, mode?: number) {
-    //     return new Promise((resolve, reject) => {
-    //         let newMode = this._getModeForDeviceType(this._portLookup(port).type);
-    //         if (mode !== undefined) {
-    //             newMode = mode;
-    //         }
-    //         this._activatePortDevice(this._portLookup(port).value, this._portLookup(port).type, newMode, 0x00, () => {
-    //             return resolve();
-    //         });
-    //     });
-    // }
-
-    // /**
-    //  * Unsubscribe to sensor notifications on a given port.
-    //  * @method Hub#unsubscribe
-    //  * @param {string} port
-    //  * @returns {Promise} Resolved upon successful issuance of command.
-    //  */
-    // public unsubscribe (port: string) {
-    //     return new Promise((resolve, reject) => {
-    //         const mode = this._getModeForDeviceType(this._portLookup(port).type);
-    //         this._deactivatePortDevice(this._portLookup(port).value, this._portLookup(port).type, mode, 0x00, () => {
-    //             return resolve();
-    //         });
-    //     });
-    // }
-
-
     /**
      * Sleep a given amount of time.
      *
@@ -246,17 +210,6 @@ export class Hub extends EventEmitter {
     }
 
 
-    // /**
-    //  * Get the device type for a given port.
-    //  * @method Hub#getPortDeviceType
-    //  * @param {string} port
-    //  * @returns {DeviceType}
-    //  */
-    // public getPortDeviceType (port: string) {
-    //     return this._portLookup(port).type;
-    // }
-
-
     public send (message: Buffer, uuid: string, callback?: () => void) {
         if (callback) {
             callback();
@@ -264,60 +217,19 @@ export class Hub extends EventEmitter {
     }
 
 
-    // protected _getCharacteristic (uuid: string) {
-    //     return this._characteristics[uuid.replace(/-/g, "")];
-    // }
-
-
-    // protected _subscribeToCharacteristic (characteristic: Characteristic, callback: (data: Buffer) => void) {
-    //     characteristic.on("data", (data: Buffer) => {
-    //         return callback(data);
-    //     });
-    //     characteristic.subscribe((err) => {
-    //         if (err) {
-    //             this.emit("error", err);
-    //         }
-    //     });
-    // }
+    public subscribe (portId: number, mode: number) {
+        // NK Do nothing here
+    }
 
 
     protected _attachDevice (device: Device) {
-
         this._attachedDevices[device.portId] = device;
-
         /**
          * Emits when a device is attached to the Hub.
          * @event Hub#attach
          * @param {Device} device
          */
         this.emit("attach", device);
-
-        // if (port.connected) {
-        //     port.type = type;
-        //     if (this.autoSubscribe) {
-        //         this._activatePortDevice(port.value, type, this._getModeForDeviceType(type), 0x00);
-        //     }
-        //     /**
-        //      * Emits when a motor or sensor is attached to the Hub.
-        //      * @event Hub#attach
-        //      * @param {string} port
-        //      * @param {DeviceType} type
-        //      */
-        //     this.emit("attach", port.id, type);
-        // } else {
-        //     port.type = Consts.DeviceType.UNKNOWN;
-        //     debug(`Port ${port.id} disconnected`);
-        //     /**
-        //      * Emits when an attached motor or sensor is detached from the Hub.
-        //      * @event Hub#detach
-        //      * @param {string} port
-        //      */
-        //     if (this._virtualPorts[port.id]) {
-        //         delete this._virtualPorts[port.id];
-        //     }
-        //     this.emit("detach", port.id);
-        // }
-
     }
 
 
@@ -335,44 +247,6 @@ export class Hub extends EventEmitter {
     protected _getDeviceByPortId (portId: number) {
         return this._attachedDevices[portId];
     }
-
-
-    // protected _getPortForPortNumber (num: number) {
-
-    //     for (const key of Object.keys(this._ports)) {
-    //         if (this._ports[key].value === num) {
-    //             return this._ports[key];
-    //         }
-    //     }
-
-    //     for (const key of Object.keys(this._virtualPorts)) {
-    //         if (this._virtualPorts[key].value === num) {
-    //             return this._virtualPorts[key];
-    //         }
-    //     }
-
-    //     return false;
-
-    // }
-
-
-    // protected _mapSpeed (speed: number) { // Speed range of -100 to 100 is supported unless speed mapping is turned off, in which case, you're on your own!
-    //     if (!this.useSpeedMap) {
-    //         return speed;
-    //     }
-
-    //     if (speed === 127) {
-    //         return 127; // Hard stop
-    //     }
-
-    //     if (speed > 100) {
-    //         speed = 100;
-    //     } else if (speed < -100) {
-    //         speed = -100;
-    //     }
-
-    //     return speed;
-    // }
 
 
     // protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number, port: Port) {
@@ -405,15 +279,6 @@ export class Hub extends EventEmitter {
     //     return emitter;
     // }
 
-
-    // protected _portLookup (portName: string) {
-    //     const portNameUpper = portName.toUpperCase();
-    //     const port = this._ports[portNameUpper] || this._virtualPorts[portNameUpper];
-    //     if (!port) {
-    //         throw new Error(`Port ${portNameUpper} does not exist on this Hub type`);
-    //     }
-    //     return port;
-    // }
 
     // private _getModeForDeviceType (type: Consts.DeviceType) {
     //     switch (type) {

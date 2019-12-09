@@ -36,9 +36,8 @@ export class ControlPlusHub extends LPF2Hub {
     protected _voltageMaxRaw = 4095;
     protected _voltageMaxV = 9.615;
 
-    constructor (device: IBLEAbstraction, autoSubscribe: boolean = true) {
-        super(device, autoSubscribe);
-        this._type = Consts.HubType.CONTROL_PLUS_HUB;
+    constructor (device: IBLEAbstraction) {
+        super(device, Consts.HubType.CONTROL_PLUS_HUB);
         this._portNames = {
             "A": 0,
             "B": 1,

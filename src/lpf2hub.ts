@@ -46,7 +46,7 @@ export class LPF2Hub extends Hub {
             if (this._currentPort !== undefined) {
                 this.send(Buffer.from([0x41, this._currentPort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL); // Activate current reports
             }
-            if (this._type === Consts.HubType.DUPLO_TRAIN_HUB) {
+            if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
                 this.send(Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
             }
             await this.sleep(100);
@@ -137,15 +137,6 @@ export class LPF2Hub extends Hub {
     }
 
 
-    public sendRaw (message: Buffer) {
-        return new Promise((resolve, reject) => {
-            this.send(message, Consts.BLECharacteristic.LPF2_ALL, () => {
-                return resolve();
-            });
-        });
-    }
-
-
     public send (message: Buffer, uuid: string, callback?: () => void) {
         message = Buffer.concat([Buffer.alloc(2), message]);
         message[0] = message.length;
@@ -154,14 +145,14 @@ export class LPF2Hub extends Hub {
     }
 
 
-    // protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-    //     this.send(Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL, callback);
-    // }
+    public subscribe (portId: number, mode: number) {
+        this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
+    }
 
 
-    // protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-    //     this.send(Buffer.from([0x41, port, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.LPF2_ALL, callback);
-    // }
+    public unsubscribe (portId: number, mode: number) {
+        this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.LPF2_ALL);
+    }
 
 
     // protected _combinePorts (port: string, type: number) {
@@ -238,11 +229,11 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _parseDeviceInfo (data: Buffer) {
+    private _parseDeviceInfo (message: Buffer) {
 
         // Button press reports
-        if (data[3] === 0x02) {
-            if (data[5] === 1) {
+        if (message[3] === 0x02) {
+            if (message[5] === 1) {
                 /**
                  * Emits when a button is pressed.
                  * @event LPF2Hub#button
@@ -251,35 +242,35 @@ export class LPF2Hub extends Hub {
                  */
                 this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
                 return;
-            } else if (data[5] === 0) {
+            } else if (message[5] === 0) {
                 this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
                 return;
             }
 
         // Firmware version
-        } else if (data[3] === 0x03) {
-            this._firmwareVersion = decodeVersion(data.readInt32LE(5));
+        } else if (message[3] === 0x03) {
+            this._firmwareVersion = decodeVersion(message.readInt32LE(5));
             this._checkFirmware(this._firmwareVersion);
 
         // Hardware version
-        } else if (data[3] === 0x04) {
-            this._hardwareVersion = decodeVersion(data.readInt32LE(5));
+        } else if (message[3] === 0x04) {
+            this._hardwareVersion = decodeVersion(message.readInt32LE(5));
 
         // RSSI update
-        } else if (data[3] === 0x05) {
-            const rssi = data.readInt8(5);
+        } else if (message[3] === 0x05) {
+            const rssi = message.readInt8(5);
             if (rssi !== 0) {
                 this._rssi = rssi;
                 this.emit("rssiChange", this._rssi);
             }
 
         // primary MAC Address
-        } else if (data[3] === 0x0d) {
-            this._primaryMACAddress = decodeMACAddress(data.slice(5));
+        } else if (message[3] === 0x0d) {
+            this._primaryMACAddress = decodeMACAddress(message.slice(5));
 
         // Battery level reports
-        } else if (data[3] === 0x06) {
-            this._batteryLevel = data[5];
+        } else if (message[3] === 0x06) {
+            this._batteryLevel = message[5];
         }
 
     }
@@ -361,19 +352,19 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _parsePortInformationResponse (data: Buffer) {
-        const port = data[3];
-        if (data[4] === 2) {
+    private _parsePortInformationResponse (message: Buffer) {
+        const port = message[3];
+        if (message[4] === 2) {
             const modeCombinationMasks: number[] = [];
-            for (let i = 5; i < data.length; i += 2) {
-                modeCombinationMasks.push(data.readUInt16LE(i));
+            for (let i = 5; i < message.length; i += 2) {
+                modeCombinationMasks.push(message.readUInt16LE(i));
             }
             modeInfoDebug(`Port ${toHex(port)}, mode combinations [${modeCombinationMasks.map((c) => toBin(c, 0)).join(", ")}]`);
             return;
         }
-        const count = data[6];
-        const input = toBin(data.readUInt16LE(7), count);
-        const output = toBin(data.readUInt16LE(9), count);
+        const count = message[6];
+        const input = toBin(message.readUInt16LE(7), count);
+        const output = toBin(message.readUInt16LE(9), count);
         modeInfoDebug(`Port ${toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
 
         for (let i = 0; i < count; i++) {
@@ -392,31 +383,31 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _parseModeInformationResponse (data: Buffer) {
-        const port = toHex(data[3]);
-        const mode = data[4];
-        const type = data[5];
+    private _parseModeInformationResponse (message: Buffer) {
+        const port = toHex(message[3]);
+        const mode = message[4];
+        const type = message[5];
         switch (type) {
             case 0x00: // Mode Name
-                modeInfoDebug(`Port ${port}, mode ${mode}, name ${data.slice(6, data.length).toString()}`);
+                modeInfoDebug(`Port ${port}, mode ${mode}, name ${message.slice(6, message.length).toString()}`);
                 break;
             case 0x01: // RAW Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, RAW min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${port}, mode ${mode}, RAW min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
                 break;
             case 0x02: // PCT Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, PCT min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${port}, mode ${mode}, PCT min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
                 break;
             case 0x03: // SI Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${port}, mode ${mode}, SI min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
                 break;
             case 0x04: // SI Symbol
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${data.slice(6, data.length).toString()}`);
+                modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${message.slice(6, message.length).toString()}`);
                 break;
             case 0x80: // Value Format
-                const numValues = data[6];
-                const dataType = ["8bit", "16bit", "32bit", "float"][data[7]];
-                const totalFigures = data[8];
-                const decimals = data[9];
+                const numValues = message[6];
+                const dataType = ["8bit", "16bit", "32bit", "float"][message[7]];
+                const totalFigures = message[8];
+                const decimals = message[9];
                 modeInfoDebug(`Port ${port}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
         }
     }
