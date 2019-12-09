@@ -7,6 +7,8 @@ export class Device extends EventEmitter {
 
     public autoSubscribe: boolean = true;
 
+    protected _mode: number = 0x00;
+
     private _hub: Hub;
     private _portId: number;
     private _connected: boolean = true;
@@ -57,7 +59,10 @@ export class Device extends EventEmitter {
     }
 
     public subscribe (mode: number) {
-        this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]));
+        if (mode !== this._mode) {
+            this._mode = mode;
+            this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]));
+        }
     }
 
     public receive (message: Buffer) {
