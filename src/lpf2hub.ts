@@ -41,13 +41,13 @@ export class LPF2Hub extends Hub {
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
             if (this._voltagePort !== undefined) {
-                this.send(Buffer.from([0x41, this._voltagePort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL); // Activate voltage reports
+                this.subscribe(this._voltagePort, 0x00); // Activate voltage reports
             }
             if (this._currentPort !== undefined) {
-                this.send(Buffer.from([0x41, this._currentPort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL); // Activate current reports
+                this.subscribe(this._currentPort, 0x00); // Activate currrent reports
             }
             if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
-                this.send(Buffer.from([0x41, 0x01, 0x01, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
+                this.subscribe(0x01, 0x01);
             }
             await this.sleep(100);
             this.send(Buffer.from([0x01, 0x02, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate button reports

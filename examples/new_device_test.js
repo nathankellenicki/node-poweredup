@@ -20,6 +20,10 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 
         console.log(`Attached device ${device.type} to ${device.port}`)
 
+        device.on("detach", () => {
+            console.log(`Detached device ${device.type} from ${device.port}`);
+        });
+
         if (device instanceof PoweredUP.ControlPlusLargeMotor) {
             const motor = device;
 
@@ -43,10 +47,6 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
                 console.log(`Color ${color}`);
             });
         }
-
-        device.on("detach", () => {
-            console.log(`Detached device ${device.type} from ${device.port}`)
-        })
 
     });
 

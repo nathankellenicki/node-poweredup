@@ -104,6 +104,20 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
+     * Shutdown the Hub.
+     * @method WeDo2SmartHub#shutdown
+     * @returns {Promise} Resolved upon successful disconnect.
+     */
+    public shutdown () {
+        return new Promise((resolve, reject) => {
+            this.send(Buffer.from([0x00]), Consts.BLECharacteristic.WEDO2_DISCONNECT, () => {
+                return resolve();
+            });
+        });
+    }
+
+
+    /**
      * Set the name of the Hub.
      * @method WeDo2SmartHub#setName
      * @param {string} name New name of the hub (14 characters or less, ASCII only).
@@ -145,20 +159,6 @@ export class WeDo2SmartHub extends Hub {
 
 
     /**
-     * Shutdown the Hub.
-     * @method WeDo2SmartHub#shutdown
-     * @returns {Promise} Resolved upon successful disconnect.
-     */
-    public shutdown () {
-        return new Promise((resolve, reject) => {
-            this.send(Buffer.from([0x00]), Consts.BLECharacteristic.WEDO2_DISCONNECT, () => {
-                return resolve();
-            });
-        });
-    }
-
-
-    /**
      * Set the color of the LED on the Hub via RGB values.
      * @method WeDo2SmartHub#setLEDRGB
      * @param {number} red
@@ -175,41 +175,6 @@ export class WeDo2SmartHub extends Hub {
             return resolve();
         });
     }
-
-
-    // /**
-    //  * Set the motor speed on a given port.
-    //  * @method WeDo2SmartHub#setMotorSpeed
-    //  * @param {string} port
-    //  * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-    //  * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
-    //  * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
-    //  */
-    // public setMotorSpeed (port: string, speed: number, time?: number | boolean) {
-    //     const portObj = this._portLookup(port);
-    //     let cancelEventTimer = true;
-    //     if (typeof time === "boolean") {
-    //         if (time === true) {
-    //             cancelEventTimer = false;
-    //         }
-    //         time = undefined;
-    //     }
-    //     if (cancelEventTimer) {
-    //         portObj.cancelEventTimer();
-    //     }
-    //     return new Promise((resolve, reject) => {
-    //         this.send(Buffer.from([portObj.value, 0x01, 0x02, this._mapSpeed(speed)]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-    //         if (time && typeof time === "number") {
-    //             const timeout = global.setTimeout(() => {
-    //                 this.send(Buffer.from([portObj.value, 0x01, 0x02, 0x00]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-    //                 return resolve();
-    //             }, time);
-    //             portObj.setEventTimer(timeout);
-    //         } else {
-    //             return resolve();
-    //         }
-    //     });
-    // }
 
 
     // /**
@@ -234,17 +199,6 @@ export class WeDo2SmartHub extends Hub {
     // }
 
 
-    // /**
-    //  * Fully (hard) stop the motor on a given port.
-    //  * @method WeDo2SmartHub#brakeMotor
-    //  * @param {string} port
-    //  * @returns {Promise} Resolved upon successful completion of command.
-    //  */
-    // public brakeMotor (port: string) {
-    //     return this.setMotorSpeed(port, 127);
-    // }
-
-
     /**
      * Play a tone on the Hub's in-built buzzer
      * @method WeDo2SmartHub#playTone
@@ -261,34 +215,6 @@ export class WeDo2SmartHub extends Hub {
             global.setTimeout(resolve, time);
         });
     }
-
-
-    // /**
-    //  * Set the light brightness on a given port.
-    //  * @method WeDo2SmartHub#setLightBrightness
-    //  * @param {string} port
-    //  * @param {number} brightness Brightness value between 0-100 (0 is off)
-    //  * @param {number} [time] How long to turn the light on (in milliseconds). Leave empty to turn the light on indefinitely.
-    //  * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the light is turned off.
-    //  */
-    // public setLightBrightness (port: string, brightness: number, time?: number) {
-    //     const portObj = this._portLookup(port);
-    //     portObj.cancelEventTimer();
-    //     return new Promise((resolve, reject) => {
-    //         const data = Buffer.from([portObj.value, 0x01, 0x02, brightness]);
-    //         this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-    //         if (time) {
-    //             const timeout = global.setTimeout(() => {
-    //                 const data = Buffer.from([portObj.value, 0x01, 0x02, 0x00]);
-    //                 this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-    //                 return resolve();
-    //             }, time);
-    //             portObj.setEventTimer(timeout);
-    //         } else {
-    //             return resolve();
-    //         }
-    //     });
-    // }
 
 
     public send (message: Buffer, uuid: string, callback?: () => void) {
@@ -339,7 +265,6 @@ export class WeDo2SmartHub extends Hub {
 
 
     private _parsePortMessage (data: Buffer) {
-
         debug("Received Message (WEDO2_PORT_TYPE)", data);
 
         const portId = data[0];
@@ -368,20 +293,17 @@ export class WeDo2SmartHub extends Hub {
             this._attachDevice(device);
 
         }
-
-        // const port = this._getPortForPortNumber(data[0]);
-
-        // if (!port) {
-        //     return;
-        // }
-
-        // port.connected = data[1] === 1 ? true : false;
-        // this._registerDeviceAttachment(port, data[3]);
-
     }
 
 
-    private _parseSensorMessage (data: Buffer) {
+    private _parseSensorMessage (message: Buffer) {
+
+        const portId = message[1];
+        const device = this._getDeviceByPortId(portId);
+
+        if (device) {
+            device.receive(message);
+        }
 
         // debug("Received Message (WEDO2_SENSOR_VALUE)", data);
 

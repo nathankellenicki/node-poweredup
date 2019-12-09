@@ -52,13 +52,12 @@ export class Device extends EventEmitter {
     }
 
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
-        if (!this.connected) {
-            throw new Error("Device is not connected");
-        }
+        this._ensureConnected();
         this.hub.send(data, characteristic, callback);
     }
 
     public subscribe (mode: number) {
+        this._ensureConnected();
         if (mode !== this._mode) {
             this._mode = mode;
             this.hub.subscribe(this.portId, mode);
@@ -74,6 +73,12 @@ export class Device extends EventEmitter {
         if (this._finished) {
             this._finished();
             this._finished = undefined;
+        }
+    }
+
+    private _ensureConnected () {
+        if (!this.connected) {
+            throw new Error("Device is not connected");
         }
     }
 

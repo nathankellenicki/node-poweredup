@@ -33,9 +33,6 @@ export class Hub extends EventEmitter {
 
     protected _bleDevice: IBLEAbstraction;
 
-    private _isConnecting = false;
-    private _isConnected = false;
-
     private _type: Consts.HubType;
 
     constructor (device: IBLEAbstraction, type: Consts.HubType = Consts.HubType.UNKNOWN) {
@@ -154,7 +151,6 @@ export class Hub extends EventEmitter {
             } else if (this._bleDevice.connected) {
                 return connectReject("Already connected");
             }
-            this._isConnecting = true;
             await this._bleDevice.connect();
             return connectResolve();
         });
