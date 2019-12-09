@@ -1,7 +1,6 @@
 import { EventEmitter } from "events";
 
 import { IBLEAbstraction } from "./interfaces";
-import { Port } from "./port";
 
 import * as Consts from "./consts";
 

@@ -1,7 +1,6 @@
 import { Peripheral } from "@abandonware/noble";
 
 import { LPF2Hub } from "./lpf2hub";
-import { Port } from "./port";
 
 import * as Consts from "./consts";
 
