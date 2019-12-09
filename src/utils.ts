@@ -20,3 +20,12 @@ export const mapSpeed = (speed: number) => {
     }
     return speed;
 };
+
+export const decodeVersion = (version: number) => {
+    const parts = version.toString(16).padStart(8, "0");
+    return [parts[0], parts[1], parts.substring(2, 4), parts.substring(4)].join(".");
+};
+
+export const decodeMACAddress = (address: Uint8Array) => {
+    return Array.from(address).map((part) => toHex(part, 2)).join(":");
+};

@@ -1,17 +1,19 @@
 import { Peripheral } from "@abandonware/noble";
 
+import { IBLEAbstraction } from "./interfaces";
+
 import { Device } from "./device";
 import { Hub } from "./hub";
-import { Port } from "./port";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
 import { ControlPlusLargeMotor } from "./controlpluslargemotor";
+import { Lights } from "./lights";
 
 import * as Consts from "./consts";
 
-import Debug = require("debug");
-import { IBLEAbstraction } from "./interfaces";
 import { isWebBluetooth } from "./utils";
+
+import Debug = require("debug");
 const debug = Debug("wedo2smarthub");
 
 
@@ -350,6 +352,9 @@ export class WeDo2SmartHub extends Hub {
             let device;
 
             switch (deviceType) {
+                case Consts.DeviceType.LED_LIGHTS:
+                    device = new Lights(this, portId);
+                    break;
                 case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
                     device = new ControlPlusLargeMotor(this, portId);
                     break;
@@ -357,9 +362,9 @@ export class WeDo2SmartHub extends Hub {
                     device = new ColorDistanceSensor(this, portId);
                     break;
                 default:
-                    device = new Device(this, portId);
+                    device = new Device(this, portId, deviceType);
                     break;
-            }
+                }
 
             this._attachDevice(device);
 

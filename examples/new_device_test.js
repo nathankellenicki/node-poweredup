@@ -16,22 +16,36 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
     await hub.connect(); // Connect to hub
     console.log(`Connected to ${hub.name}!`);
 
-    hub.on("attach", (device) => {
+    hub.on("attach", async (device) => {
+
+        console.log(`Attached device ${device.type} to ${device.port}`)
 
         if (device instanceof PoweredUP.ControlPlusLargeMotor) {
             const motor = device;
-            motor.setSpeed(30);
+
+            motor.on("rotate", (angle) => {
+                console.log(`Rotate ${angle}`);
+            });
+
+            await motor.rotateByAngle(9000, 50);
+            await motor.rotateByAngle(9000, -50);
+            await motor.rotateByAngle(9000, 50);
+            await motor.rotateByAngle(9000, -50);
+            motor.power(100);
         }
 
         if (device instanceof PoweredUP.ColorDistanceSensor) {
             const sensor = device;
             sensor.on("distance", (distance) => { // Adding an event handler for distance automatically subscribes to distance notifications
                 console.log(`Distance ${distance}`);
-            })
+            });
+            sensor.on("color", (color) => {
+                console.log(`Color ${color}`);
+            });
         }
 
         device.on("detach", () => {
-            console.log(device.connected);
+            console.log(`Detached device ${device.type} from ${device.port}`)
         })
 
     });

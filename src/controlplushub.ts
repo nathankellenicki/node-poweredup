@@ -1,12 +1,12 @@
 import { Peripheral } from "@abandonware/noble";
 
+import { IBLEAbstraction } from "./interfaces";
+
 import { LPF2Hub } from "./lpf2hub";
-import { Port } from "./port";
 
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("ControlPlusHub");
 
 

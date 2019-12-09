@@ -40,15 +40,18 @@ export class TachoMotor extends BasicMotor {
      * Rotate a motor by a given angle.
      * @method TachoMotor#setMotorAngle
      * @param {number} angle How much the motor should be rotated (in degrees).
-     * @param {number} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100.
+     * @param {number} [power=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100.
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
-    public rotateByAngle (port: string, angle: number, speed: number = 100) {
+    public rotateByAngle (angle: number, power: number = 100) {
         return new Promise((resolve) => {
-            const message = Buffer.from([0x81, this.portId, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), 0x64, 0x7f, 0x03]);
+            this._busy = true;
+            const message = Buffer.from([0x81, this.portId, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, mapSpeed(power), 0x64, 0x7f, 0x03]);
             message.writeUInt32LE(angle, 4);
             this.send(message);
-            return resolve();
+            this._finished = () => {
+                return resolve();
+            };
         });
     }
 

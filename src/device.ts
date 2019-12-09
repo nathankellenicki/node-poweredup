@@ -8,13 +8,13 @@ export class Device extends EventEmitter {
     public autoSubscribe: boolean = true;
 
     protected _mode: number = 0x00;
+    protected _busy: boolean = false;
+    protected _finished: (() => void) | undefined;
 
     private _hub: Hub;
     private _portId: number;
     private _connected: boolean = true;
     private _type: number;
-    private _busy: boolean = false;
-    private _finished: (() => void) | null = null;
 
     constructor (hub: Hub, portId: number, type: number = Consts.DeviceType.UNKNOWN) {
         super();
@@ -67,6 +67,14 @@ export class Device extends EventEmitter {
 
     public receive (message: Buffer) {
         this.emit("receive", message);
+    }
+
+    public finish () {
+        this._busy = false;
+        if (this._finished) {
+            this._finished();
+            this._finished = undefined;
+        }
     }
 
 }

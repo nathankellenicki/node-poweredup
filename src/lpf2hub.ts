@@ -1,12 +1,13 @@
 import { Device } from "./device";
 import { Hub } from "./hub";
-import { Port } from "./port";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
 import { ControlPlusLargeMotor } from "./controlpluslargemotor";
+import { Lights } from "./lights";
 
 import * as Consts from "./consts";
-import { toBin, toHex } from "./utils";
+
+import { decodeMACAddress, decodeVersion, toBin, toHex } from "./utils";
 
 import Debug = require("debug");
 const debug = Debug("lpf2hub");
@@ -18,14 +19,6 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
  * @extends Hub
  */
 export class LPF2Hub extends Hub {
-    private static decodeVersion(v: number) {
-        const t = v.toString(16).padStart(8, "0");
-        return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
-    }
-
-    private static decodeMACAddress(v: Uint8Array) {
-        return Array.from(v).map((n) => toHex(n, 2)).join(":");
-    }
 
     protected _ledPort: number = 0x32;
     protected _voltagePort: number | undefined;
@@ -265,12 +258,12 @@ export class LPF2Hub extends Hub {
 
         // Firmware version
         } else if (data[3] === 0x03) {
-            this._firmwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
+            this._firmwareVersion = decodeVersion(data.readInt32LE(5));
             this._checkFirmware(this._firmwareVersion);
 
         // Hardware version
         } else if (data[3] === 0x04) {
-            this._hardwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(5));
+            this._hardwareVersion = decodeVersion(data.readInt32LE(5));
 
         // RSSI update
         } else if (data[3] === 0x05) {
@@ -282,7 +275,7 @@ export class LPF2Hub extends Hub {
 
         // primary MAC Address
         } else if (data[3] === 0x0d) {
-            this._primaryMACAddress = LPF2Hub.decodeMACAddress(data.slice(5));
+            this._primaryMACAddress = decodeMACAddress(data.slice(5));
 
         // Battery level reports
         } else if (data[3] === 0x06) {
@@ -291,11 +284,11 @@ export class LPF2Hub extends Hub {
 
     }
 
-    private _parsePortMessage (data: Buffer) {
+    private _parsePortMessage (message: Buffer) {
 
-        const portId = data[3];
-        const event = data[4];
-        const deviceType = event ? data.readUInt16LE(5) : 0;
+        const portId = message[3];
+        const event = message[4];
+        const deviceType = event ? message.readUInt16LE(5) : 0;
 
         // Handle device attachments
         if (event === 0x01) {
@@ -303,6 +296,9 @@ export class LPF2Hub extends Hub {
             let device;
 
             switch (deviceType) {
+                case Consts.DeviceType.LED_LIGHTS:
+                    device = new Lights(this, portId);
+                    break;
                 case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
                     device = new ControlPlusLargeMotor(this, portId);
                     break;
@@ -312,6 +308,15 @@ export class LPF2Hub extends Hub {
                 default:
                     device = new Device(this, portId, deviceType);
                     break;
+            }
+
+            if (modeInfoDebug.enabled) {
+                const deviceTypeName = Consts.DeviceTypeNames[message[5]] || "Unknown";
+                modeInfoDebug(`Port ${toHex(portId)}, type ${toHex(deviceType, 4)} (${deviceTypeName})`);
+                const hwVersion = decodeVersion(message.readInt32LE(7));
+                const swVersion = decodeVersion(message.readInt32LE(11));
+                modeInfoDebug(`Port ${toHex(portId)}, hardware version ${hwVersion}, software version ${swVersion}`);
+                this._sendPortInformationRequest(portId);
             }
 
             this._attachDevice(device);
@@ -324,18 +329,7 @@ export class LPF2Hub extends Hub {
             }
         }
 
-
-
         // let port = this._getPortForPortNumber(data[3]);
-
-        // if (data[4] === 0x01 && modeInfoDebug.enabled) {
-        //     const typeName = Consts.DeviceTypeNames[data[5]] || "unknown";
-        //     modeInfoDebug(`Port ${toHex(data[3])}, type ${toHex(deviceType, 4)} (${typeName})`);
-        //     const hwVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
-        //     const swVersion = LPF2Hub.decodeVersion(data.readInt32LE(11));
-        //     modeInfoDebug(`Port ${toHex(data[3])}, hardware version ${hwVersion}, software version ${swVersion}`);
-        //     this._sendPortInformationRequest(data[3]);
-        // }
 
         // if (!port) {
         //     if (data[4] === 0x02) {
@@ -356,9 +350,6 @@ export class LPF2Hub extends Hub {
         //     } else {
         //         return;
         //     }
-        // } else {
-        //     port.connected = (data[4] === 0x01 || data[4] === 0x02) ? true : false;
-        //     this._registerDeviceAttachment(port, deviceType);
         // }
 
     }
@@ -431,7 +422,17 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _parsePortAction (data: Buffer) {
+    private _parsePortAction (message: Buffer) {
+
+        const portId = message[3];
+        const device = this._getDeviceByPortId(portId);
+
+        if (device) {
+            const finished = (message[4] === 0x0a);
+            if (finished) {
+                device.finish();
+            }
+        }
 
         // const port = this._getPortForPortNumber(data[3]);
 
