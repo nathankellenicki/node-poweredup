@@ -450,7 +450,14 @@ export class LPF2Hub extends Hub {
     }
 
 
-    private _parseSensorMessage (data: Buffer) {
+    private _parseSensorMessage (message: Buffer) {
+
+        const portId = message[3];
+        const device = this._getDeviceByPortId(portId);
+
+        if (device) {
+            device.receive(message);
+        }
 
     //     if (data[3] === this._voltagePort) {
     //         const voltageRaw = data.readUInt16LE(4);

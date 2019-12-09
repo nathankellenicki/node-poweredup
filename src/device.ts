@@ -19,12 +19,14 @@ export class Device extends EventEmitter {
         this._hub = hub;
         this._portId = portId;
         this._type = type;
-        this.hub.on("detach", (device) => {
-            if (device === this) {
+        const detachListener = (device: Device) => {
+            if (device.portId === this.portId) {
                 this._connected = false;
+                this.hub.removeListener("detach", detachListener);
                 this.emit("detach");
             }
-        });
+        };
+        this.hub.on("detach", detachListener);
     }
 
     public get connected () {
@@ -56,6 +58,10 @@ export class Device extends EventEmitter {
 
     public subscribe (mode: number) {
         this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]));
+    }
+
+    public receive (message: Buffer) {
+        this.emit("receive", message);
     }
 
 }

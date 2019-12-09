@@ -23,4 +23,8 @@ export class ColorDistanceSensor extends Device {
 
     }
 
+    public receive (message: Buffer) {
+        // NK TODO
+    }
+
 }
