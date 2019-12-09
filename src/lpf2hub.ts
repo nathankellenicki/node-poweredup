@@ -46,9 +46,6 @@ export class LPF2Hub extends Hub {
             if (this._currentPort !== undefined) {
                 this.subscribe(this._currentPort, 0x00); // Activate currrent reports
             }
-            if (this.type === Consts.HubType.DUPLO_TRAIN_HUB) {
-                this.subscribe(0x01, 0x01);
-            }
             await this.sleep(100);
             this.send(Buffer.from([0x01, 0x02, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate button reports
             this.send(Buffer.from([0x01, 0x03, 0x05]), Consts.BLECharacteristic.LPF2_ALL); // Request firmware version
