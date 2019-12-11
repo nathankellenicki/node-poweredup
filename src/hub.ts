@@ -168,6 +168,26 @@ export class Hub extends EventEmitter {
     }
 
 
+    public getDeviceAtPort (portName: string) {
+        const portId = this._portNames[portName];
+        if (portId) {
+            return this._attachedDevices[portId];
+        } else {
+            throw new Error(`Port ${portName} does not exist on this hub type`);
+        }
+    }
+
+
+    public getDevices () {
+        return Object.values(this._attachedDevices);
+    }
+
+
+    public getDevicesByType (deviceType: number) {
+        return this.getDevices().filter((device) => device.type === deviceType);
+    }
+
+
     public getPortNameForPortId (portId: number) {
         for (const port of Object.keys(this._portNames)) {
             if (this._portNames[port] === portId) {

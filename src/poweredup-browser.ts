@@ -74,44 +74,55 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a list of Powered UP Hubs.
-     * @method PoweredUP#getConnectedHubs
+     * @method PoweredUP#getHubs
      * @returns {Hub[]}
      */
-    public getConnectedHubs () {
-        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]);
+    public getHubs () {
+        return Object.values(this._connectedHubs);
     }
 
 
     /**
      * Retrieve a Powered UP Hub by UUID.
-     * @method PoweredUP#getConnectedHubByUUID
+     * @method PoweredUP#getHubByUUID
      * @param {string} uuid
      * @returns {Hub | null}
      */
-    public getConnectedHubByUUID (uuid: string) {
+    public getHubByUUID (uuid: string) {
         return this._connectedHubs[uuid];
     }
 
 
     /**
      * Retrieve a Powered UP Hub by primary MAC address.
-     * @method PoweredUP#getConnectedHubByPrimaryMACAddress
+     * @method PoweredUP#getHubByPrimaryMACAddress
      * @param {string} address
      * @returns {Hub}
      */
-    public getConnectedHubByPrimaryMACAddress (address: string) {
-        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]).filter((hub) => hub.primaryMACAddress === address)[0];
+    public getHubByPrimaryMACAddress (address: string) {
+        return Object.values(this._connectedHubs).filter((hub) => hub.primaryMACAddress === address)[0];
     }
 
 
     /**
      * Retrieve a list of Powered UP Hub by name.
-     * @method PoweredUP#getConnectedHubsByName
+     * @method PoweredUP#getHubsByName
      * @param {string} name
      * @returns {Hub[]}
      */
-    public getConnectedHubsByName (name: string) {
-        return Object.keys(this._connectedHubs).map((uuid) => this._connectedHubs[uuid]).filter((hub) => hub.name === name);
+    public getHubsByName (name: string) {
+        return Object.values(this._connectedHubs).filter((hub) => hub.name === name);
+    }
+
+
+    /**
+     * Retrieve a list of Powered UP Hub by type.
+     * @method PoweredUP#getHubsByType
+     * @param {string} name
+     * @returns {Hub[]}
+     */
+    public getHubsByType (hubType: number) {
+        return Object.values(this._connectedHubs).filter((hub) => hub.type === hubType);
     }
 
 
