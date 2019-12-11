@@ -107,6 +107,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEDevice {
         };
         this._characteristics[uuid].addEventListener("characteristicvaluechanged", this._listeners[uuid]);
         for (const data of this._mailbox) {
+            debug("Replayed from mailbox (LPF2_ALL)", data);
             callback(data);
         }
         this._mailbox = [];

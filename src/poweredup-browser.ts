@@ -146,8 +146,10 @@ export class PoweredUP extends EventEmitter {
                                     resolve(Consts.HubType.CONTROL_PLUS_HUB);
                                     break;
                             }
+                            debug("Hub type determined");
                         });
                     } else {
+                        debug("Stashed in mailbox (LPF2_ALL)", message);
                         device.addToCharacteristicMailbox(Consts.BLECharacteristic.LPF2_ALL, message);
                     }
                 }
