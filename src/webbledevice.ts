@@ -103,6 +103,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEDevice {
             for (let i = 0; i < buf.length; i++) {
                 buf[i] = view[i];
             }
+            debug("Incoming data", buf);
             return callback(buf);
         };
         this._characteristics[uuid].addEventListener("characteristicvaluechanged", this._listeners[uuid]);

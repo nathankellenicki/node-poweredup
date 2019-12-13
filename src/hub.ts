@@ -133,6 +133,15 @@ export class Hub extends EventEmitter {
 
 
     /**
+     * @readonly
+     * @property {string[]} current Current usage of the hub (Milliamps)
+     */
+    public get ports () {
+        return Object.keys(this._ports);
+    }
+
+
+    /**
      * Connect to the Hub.
      * @method Hub#connect
      * @returns {Promise} Resolved upon successful connect.
