@@ -85,6 +85,18 @@ export class WebBLEDevice extends EventEmitter implements IBLEDevice {
             const characteristics = await service.getCharacteristics();
             for (const characteristic of characteristics) {
                 this._characteristics[characteristic.uuid] = characteristic;
+                // @ts-ignore
+                characteristic.addEventListener("characteristicvaluechanged", (event) => {
+                    if (this._listeners[characteristic.uuid] && typeof this._listeners[characteristic.uuid] === "function") {
+                        const buf = Buffer.alloc(event.target.value.buffer.byteLength);
+                        const view = new Uint8Array(event.target.value.buffer);
+                        for (let i = 0; i < buf.length; i++) {
+                            buf[i] = view[i];
+                        }
+                        debug("Incoming data", buf);
+                        return this._listeners[characteristic.uuid](buf);
+                    }
+                });
             }
             debug("Service/characteristic discovery finished");
             return discoverResolve();
@@ -93,20 +105,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEDevice {
 
 
     public subscribeToCharacteristic (uuid: string, callback: (data: Buffer) => void) {
-        if (this._listeners[uuid]) {
-            this._characteristics[uuid].removeEventListener("characteristicvaluechanged", this._listeners[uuid]);
-        }
-        // @ts-ignore
-        this._listeners[uuid] = (event) => {
-            const buf = Buffer.alloc(event.target.value.buffer.byteLength);
-            const view = new Uint8Array(event.target.value.buffer);
-            for (let i = 0; i < buf.length; i++) {
-                buf[i] = view[i];
-            }
-            debug("Incoming data", buf);
-            return callback(buf);
-        };
-        this._characteristics[uuid].addEventListener("characteristicvaluechanged", this._listeners[uuid]);
+        this._listeners[uuid] = callback;
         for (const data of this._mailbox) {
             debug("Replayed from mailbox (LPF2_ALL)", data);
             callback(data);
