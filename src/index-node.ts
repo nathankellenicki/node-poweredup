@@ -12,7 +12,13 @@ import { WeDo2SmartHub } from "./wedo2smarthub";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
 import { ControlPlusLargeMotor } from "./controlpluslargemotor";
+import { ControlPlusXLargeMotor } from "./controlplusxlargemotor";
 import { Device } from "./device";
+import { Lights } from "./lights";
+import { MediumLinearMotor } from "./mediumlinearmotor";
+import { MoveHubMediumLinearMotor } from "./MoveHubMediumLinearMotor";
+import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
+import { TrainMotor } from "./trainmotor";
 
 import { isWebBluetooth } from "./utils";
 
@@ -27,8 +33,14 @@ export {
     PUPRemote,
     DuploTrainBase,
     Consts,
-    Device,
     ColorDistanceSensor,
     ControlPlusLargeMotor,
+    ControlPlusXLargeMotor,
+    Device,
+    Lights,
+    MediumLinearMotor,
+    MoveHubMediumLinearMotor,
+    SimpleMediumLinearMotor,
+    TrainMotor,
     isWebBluetooth
 };

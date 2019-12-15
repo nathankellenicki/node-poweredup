@@ -38,7 +38,7 @@ export class TachoMotor extends BasicMotor {
 
     /**
      * Rotate a motor by a given angle.
-     * @method TachoMotor#setMotorAngle
+     * @method TachoMotor#rotateByAngle
      * @param {number} angle How much the motor should be rotated (in degrees).
      * @param {number} [power=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100.
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).

@@ -3,7 +3,12 @@ import { Hub } from "./hub";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
 import { ControlPlusLargeMotor } from "./controlpluslargemotor";
+import { ControlPlusXLargeMotor } from "./controlplusxlargemotor";
 import { Lights } from "./lights";
+import { MediumLinearMotor } from "./mediumlinearmotor";
+import { MoveHubMediumLinearMotor } from "./MoveHubMediumLinearMotor";
+import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
+import { TrainMotor } from "./trainmotor";
 
 import * as Consts from "./consts";
 
@@ -287,8 +292,23 @@ export class LPF2Hub extends Hub {
                 case Consts.DeviceType.LED_LIGHTS:
                     device = new Lights(this, portId);
                     break;
+                case Consts.DeviceType.TRAIN_MOTOR:
+                    device = new TrainMotor(this, portId);
+                    break;
+                case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
+                    device = new SimpleMediumLinearMotor(this, portId);
+                    break;
+                case Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR:
+                    device = new MoveHubMediumLinearMotor(this, portId);
+                    break;
+                case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
+                    device = new MediumLinearMotor(this, portId);
+                    break;
                 case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
                     device = new ControlPlusLargeMotor(this, portId);
+                    break;
+                case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
+                    device = new ControlPlusXLargeMotor(this, portId);
                     break;
                 case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
                     device = new ColorDistanceSensor(this, portId);
