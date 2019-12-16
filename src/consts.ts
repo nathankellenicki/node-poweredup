@@ -26,7 +26,7 @@ export const HubTypeNames = HubType;
 /**
  * @typedef DeviceType
  * @property {number} UNKNOWN 0
- * @property {number} BASIC_MOTOR 1
+ * @property {number} SIMPLE_MEDIUM_LINEAR_MOTOR 1
  * @property {number} TRAIN_MOTOR 2
  * @property {number} LED_LIGHTS 8
  * @property {number} VOLTAGE 20
@@ -35,9 +35,9 @@ export const HubTypeNames = HubType;
  * @property {number} RGB_LIGHT 23
  * @property {number} WEDO2_TILT 34
  * @property {number} WEDO2_DISTANCE 35
- * @property {number} BOOST_DISTANCE 37
- * @property {number} BOOST_TACHO_MOTOR 38
- * @property {number} BOOST_MOVE_HUB_MOTOR 39
+ * @property {number} COLOR_DISTANCE_SENSOR 37
+ * @property {number} MEDIUM_LINEAR_MOTOR 38
+ * @property {number} MOVE_HUB_MEDIUM_LINEAR_MOTOR 39
  * @property {number} BOOST_TILT 40
  * @property {number} DUPLO_TRAIN_BASE_MOTOR 41
  * @property {number} DUPLO_TRAIN_BASE_SPEAKER 42
@@ -54,7 +54,7 @@ export enum DeviceType {
     UNKNOWN = 0,
     SIMPLE_MEDIUM_LINEAR_MOTOR = 1,
     TRAIN_MOTOR = 2,
-    LED_LIGHTS = 8,
+    LIGHT = 8,
     VOLTAGE = 20,
     CURRENT = 21,
     PIEZO_TONE = 22,
@@ -62,15 +62,15 @@ export enum DeviceType {
     WEDO2_TILT = 34,
     WEDO2_DISTANCE = 35,
     COLOR_DISTANCE_SENSOR = 37,
-    BOOST_TACHO_MOTOR = 38,
-    BOOST_MOVE_HUB_MOTOR = 39,
+    MEDIUM_LINEAR_MOTOR = 38,
+    MOVE_HUB_MEDIUM_LINEAR_MOTOR = 39,
     BOOST_TILT = 40,
     DUPLO_TRAIN_BASE_MOTOR = 41,
     DUPLO_TRAIN_BASE_SPEAKER = 42,
     DUPLO_TRAIN_BASE_COLOR = 43,
     DUPLO_TRAIN_BASE_SPEEDOMETER = 44,
-    CONTROL_PLUS_LARGE_MOTOR = 46,
-    CONTROL_PLUS_XLARGE_MOTOR = 47,
+    TECHNIC_LARGE_LINEAR_MOTOR = 46,
+    TECHNIC_XLARGE_LINEAR_MOTOR = 47,
     CONTROL_PLUS_GEST = 54,
     POWERED_UP_REMOTE_BUTTON = 55,
     RSSI = 56,

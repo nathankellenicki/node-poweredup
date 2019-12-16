@@ -6,8 +6,13 @@ import { Device } from "./device";
 import { Hub } from "./hub";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
-import { ControlPlusLargeMotor } from "./controlpluslargemotor";
-import { Lights } from "./lights";
+import { Light } from "./light";
+import { MediumLinearMotor } from "./mediumlinearmotor";
+import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
+import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
+import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
+import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
+import { TrainMotor } from "./trainmotor";
 
 import * as Consts from "./consts";
 
@@ -276,19 +281,25 @@ export class WeDo2SmartHub extends Hub {
             let device;
 
             switch (deviceType) {
-                case Consts.DeviceType.LED_LIGHTS:
-                    device = new Lights(this, portId);
+                case Consts.DeviceType.LIGHT:
+                    device = new Light(this, portId);
                     break;
-                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
-                    device = new ControlPlusLargeMotor(this, portId);
-                    break;
+                // case Consts.DeviceType.BOOST_TACHO_MOTOR:
+                //     device = new BoostTachoMotor(this, portId);
+                //     break;
+                // case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
+                //     device = new ControlPlusLargeMotor(this, portId);
+                //     break;
+                // case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
+                //     device = new ControlPlusXLargeMotor(this, portId);
+                //     break;
                 case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
                     device = new ColorDistanceSensor(this, portId);
                     break;
                 default:
                     device = new Device(this, portId, deviceType);
                     break;
-                }
+            }
 
             this._attachDevice(device);
 

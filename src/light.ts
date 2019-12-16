@@ -4,11 +4,11 @@ import { WeDo2SmartHub } from "./wedo2smarthub";
 
 import * as Consts from "./consts";
 
-export class Lights extends Device {
+export class Light extends Device {
 
 
     constructor (hub: Hub, portId: number) {
-        super(hub, portId, Consts.DeviceType.LED_LIGHTS);
+        super(hub, portId, Consts.DeviceType.LIGHT);
     }
 
 
