@@ -47,9 +47,6 @@ export class ControlPlusHub extends LPF2Hub {
             "GYRO": 98,
             "TILT": 99
         };
-        // // this.on("attach", (port, type) => {
-        // //     this._combinePorts(port, type);
-        // // });
         debug("Discovered Control+ Hub");
     }
 
@@ -63,112 +60,6 @@ export class ControlPlusHub extends LPF2Hub {
             return resolve();
         });
     }
-
-
-    // /**
-    //  * Set the motor speed on a given port.
-    //  * @method ControlPlusHub#setMotorSpeed
-    //  * @param {string} port
-    //  * @param {number | Array.<number>} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0. If you are specifying port AB to control both motors, you can optionally supply a tuple of speeds.
-    //  * @param {number} [time] How long to activate the motor for (in milliseconds). Leave empty to turn the motor on indefinitely.
-    //  * @returns {Promise} Resolved upon successful completion of command. If time is specified, this is once the motor is finished.
-    //  */
-    // public setMotorSpeed (port: string, speed: number | [number, number], time?: number | boolean) {
-    //     const portObj = this._portLookup(port);
-    //     if (!this._virtualPorts[portObj.id] && speed instanceof Array) {
-    //         throw new Error(`Port ${portObj.id} can only accept a single speed`);
-    //     }
-    //     let cancelEventTimer = true;
-    //     if (typeof time === "boolean") {
-    //         if (time === true) {
-    //             cancelEventTimer = false;
-    //         }
-    //         time = undefined;
-    //     }
-    //     if (cancelEventTimer) {
-    //         portObj.cancelEventTimer();
-    //     }
-    //     return new Promise((resolve, reject) => {
-    //         if (time && typeof time === "number") {
-
-    //             if (
-    //                 portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR ||
-    //                 portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR ||
-    //                 portObj.type === Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR ||
-    //                 portObj.type === Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR
-    //             ) {
-    //                 portObj.busy = true;
-    //                 let data = null;
-    //                 if (this._virtualPorts[portObj.id]) {
-    //                     data = Buffer.from([0x81, portObj.value, 0x11, 0x0a, 0x00, 0x00, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
-    //                 } else {
-    //                     // @ts-ignore: The type of speed is properly checked at the start
-    //                     data = Buffer.from([0x81, portObj.value, 0x11, 0x09, 0x00, 0x00, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-    //                 }
-    //                 data.writeUInt16LE(time > 65535 ? 65535 : time, 4);
-    //                 this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-    //                 portObj.finished = () => {
-    //                     return resolve();
-    //                 };
-    //             } else {
-    //                 // @ts-ignore: The type of speed is properly checked at the start
-    //                 const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-    //                 this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-    //                 const timeout = global.setTimeout(() => {
-    //                     const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, 0x00]);
-    //                     this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-    //                     return resolve();
-    //                 // @ts-ignore: The type of time is properly checked at the start
-    //                 }, time);
-    //                 portObj.setEventTimer(timeout);
-    //             }
-
-    //         } else {
-
-    //             if (portObj.type === Consts.DeviceType.BOOST_TACHO_MOTOR || portObj.type === Consts.DeviceType.BOOST_MOVE_HUB_MOTOR) {
-    //                 portObj.busy = true;
-    //                 let data = null;
-    //                 if (this._virtualPorts[portObj.id]) {
-    //                     data = Buffer.from([0x81, portObj.value, 0x11, 0x02, this._mapSpeed(speed instanceof Array ? speed[0] : speed), this._mapSpeed(speed instanceof Array ? speed[1] : speed), 0x64, 0x7f, 0x03]);
-    //                 } else {
-    //                     // @ts-ignore: The type of speed is properly checked at the start
-    //                     data = Buffer.from([0x81, portObj.value, 0x11, 0x01, this._mapSpeed(speed), 0x64, 0x7f, 0x03]);
-    //                 }
-    //                 this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-    //                 portObj.finished = () => {
-    //                     return resolve();
-    //                 };
-    //             } else {
-    //                 // @ts-ignore: The type of speed is properly checked at the start
-    //                 const data = Buffer.from([0x81, portObj.value, 0x11, 0x51, 0x00, this._mapSpeed(speed)]);
-    //                 this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-    //             }
-
-    //         }
-    //     });
-    // }
-
-
-    // /**
-    //  * Ramp the motor speed on a given port.
-    //  * @method ControlPlusHub#rampMotorSpeed
-    //  * @param {string} port
-    //  * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-    //  * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-    //  * @param {number} time How long the ramp should last (in milliseconds).
-    //  * @returns {Promise} Resolved upon successful completion of command.
-    //  */
-    // public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
-    //     const portObj = this._portLookup(port);
-    //     portObj.cancelEventTimer();
-    //     return new Promise((resolve, reject) => {
-    //         this._calculateRamp(fromSpeed, toSpeed, time, portObj)
-    //         .on("changeSpeed", (speed) => {
-    //             this.setMotorSpeed(port, speed, true);
-    //         })
-    //         .on("finished", resolve);
-    //     });
-    // }
 
 
     // /**
