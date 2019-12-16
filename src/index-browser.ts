@@ -14,10 +14,12 @@ import { ColorDistanceSensor } from "./colordistancesensor";
 import { Device } from "./device";
 import { Light } from "./light";
 import { MediumLinearMotor } from "./mediumlinearmotor";
+import { MotionSensor } from "./motionsensor";
 import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
 import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
 import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
+import { TiltSensor } from "./tiltsensor";
 import { TrainMotor } from "./trainmotor";
 
 import { isWebBluetooth } from "./utils";
@@ -37,10 +39,12 @@ window.PoweredUP = {
     Device,
     Light,
     MediumLinearMotor,
+    MotionSensor,
     MoveHubMediumLinearMotor,
     SimpleMediumLinearMotor,
     TechnicLargeLinearMotor,
     TechnicXLargeLinearMotor,
+    TiltSensor,
     TrainMotor,
     isWebBluetooth
 };

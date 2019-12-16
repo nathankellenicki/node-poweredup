@@ -65,7 +65,7 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
         }
 
         if (
-            device instanceof PoweredUP.Lights
+            device instanceof PoweredUP.Light
         ) {
             const lights = device;
 
@@ -82,11 +82,25 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 
         if (device instanceof PoweredUP.ColorDistanceSensor) {
             const sensor = device;
-            sensor.on("distance", (distance) => { // Adding an event handler for distance automatically subscribes to distance notifications
+            sensor.on("distance", (distance) => {
                 console.log(`Distance ${distance}`);
             });
             sensor.on("color", (color) => {
                 console.log(`Color ${color}`);
+            });
+        }
+
+        if (device instanceof PoweredUP.MotionSensor) {
+            const sensor = device;
+            sensor.on("distance", (distance) => {
+                console.log(`Distance ${distance}`);
+            });
+        }
+
+        if (device instanceof PoweredUP.TiltSensor) {
+            const sensor = device;
+            sensor.on("tilt", (x, y) => {
+                console.log(`Tilt ${x} ${y}`);
             });
         }
 

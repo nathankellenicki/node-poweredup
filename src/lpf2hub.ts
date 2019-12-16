@@ -4,10 +4,12 @@ import { Hub } from "./hub";
 import { ColorDistanceSensor } from "./colordistancesensor";
 import { Light } from "./light";
 import { MediumLinearMotor } from "./mediumlinearmotor";
+import { MotionSensor } from "./motionsensor";
 import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
 import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
 import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
+import { TiltSensor } from "./tiltsensor";
 import { TrainMotor } from "./trainmotor";
 
 import * as Consts from "./consts";
@@ -300,6 +302,12 @@ export class LPF2Hub extends Hub {
                     break;
                 case Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR:
                     device = new MoveHubMediumLinearMotor(this, portId);
+                    break;
+                case Consts.DeviceType.MOTION_SENSOR:
+                    device = new MotionSensor(this, portId);
+                    break;
+                case Consts.DeviceType.TILT_SENSOR:
+                    device = new TiltSensor(this, portId);
                     break;
                 case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
                     device = new MediumLinearMotor(this, portId);

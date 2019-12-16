@@ -7,7 +7,7 @@ export class Device extends EventEmitter {
 
     public autoSubscribe: boolean = true;
 
-    protected _mode: number = 0x00;
+    protected _mode: number | undefined;
     protected _busy: boolean = false;
     protected _finished: (() => void) | undefined;
 
