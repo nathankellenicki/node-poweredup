@@ -2,12 +2,12 @@ import { Device } from "./device";
 import { Hub } from "./hub";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
-import { ControlPlusLargeMotor } from "./controlpluslargemotor";
-import { ControlPlusXLargeMotor } from "./controlplusxlargemotor";
-import { Lights } from "./lights";
+import { Light } from "./light";
 import { MediumLinearMotor } from "./mediumlinearmotor";
-import { MoveHubMediumLinearMotor } from "./MoveHubMediumLinearMotor";
+import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
 import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
+import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
+import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
 import { TrainMotor } from "./trainmotor";
 
 import * as Consts from "./consts";
@@ -289,8 +289,8 @@ export class LPF2Hub extends Hub {
             let device;
 
             switch (deviceType) {
-                case Consts.DeviceType.LED_LIGHTS:
-                    device = new Lights(this, portId);
+                case Consts.DeviceType.LIGHT:
+                    device = new Light(this, portId);
                     break;
                 case Consts.DeviceType.TRAIN_MOTOR:
                     device = new TrainMotor(this, portId);
@@ -304,11 +304,11 @@ export class LPF2Hub extends Hub {
                 case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
                     device = new MediumLinearMotor(this, portId);
                     break;
-                case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
-                    device = new ControlPlusLargeMotor(this, portId);
+                case Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR:
+                    device = new TechnicLargeLinearMotor(this, portId);
                     break;
-                case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
-                    device = new ControlPlusXLargeMotor(this, portId);
+                case Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR:
+                    device = new TechnicXLargeLinearMotor(this, portId);
                     break;
                 case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
                     device = new ColorDistanceSensor(this, portId);

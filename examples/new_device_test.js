@@ -27,8 +27,8 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
         if (
             // device instanceof PoweredUP.MoveHubMediumLinearMotor ||
             device instanceof PoweredUP.MediumLinearMotor ||
-            device instanceof PoweredUP.ControlPlusLargeMotor ||
-            device instanceof PoweredUP.ControlPlusXLargeMotor
+            device instanceof PoweredUP.TechnicLargeLinearMotor ||
+            device instanceof PoweredUP.TechnicXLargeLinearMotor
         ) {
             const motor = device;
 

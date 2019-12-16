@@ -6,12 +6,12 @@ import { Device } from "./device";
 import { Hub } from "./hub";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
-import { ControlPlusLargeMotor } from "./controlpluslargemotor";
-import { ControlPlusXLargeMotor } from "./controlplusxlargemotor";
-import { Lights } from "./lights";
+import { Light } from "./light";
 import { MediumLinearMotor } from "./mediumlinearmotor";
-import { MoveHubMediumLinearMotor } from "./MoveHubMediumLinearMotor";
+import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
 import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
+import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
+import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
 import { TrainMotor } from "./trainmotor";
 
 import * as Consts from "./consts";
@@ -281,8 +281,8 @@ export class WeDo2SmartHub extends Hub {
             let device;
 
             switch (deviceType) {
-                case Consts.DeviceType.LED_LIGHTS:
-                    device = new Lights(this, portId);
+                case Consts.DeviceType.LIGHT:
+                    device = new Light(this, portId);
                     break;
                 // case Consts.DeviceType.BOOST_TACHO_MOTOR:
                 //     device = new BoostTachoMotor(this, portId);

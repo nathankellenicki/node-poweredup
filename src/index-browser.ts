@@ -11,13 +11,13 @@ import { PUPRemote } from "./pupremote";
 import { WeDo2SmartHub } from "./wedo2smarthub";
 
 import { ColorDistanceSensor } from "./colordistancesensor";
-import { ControlPlusLargeMotor } from "./controlpluslargemotor";
-import { ControlPlusXLargeMotor } from "./controlplusxlargemotor";
 import { Device } from "./device";
-import { Lights } from "./lights";
+import { Light } from "./light";
 import { MediumLinearMotor } from "./mediumlinearmotor";
-import { MoveHubMediumLinearMotor } from "./MoveHubMediumLinearMotor";
+import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
 import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
+import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
+import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
 import { TrainMotor } from "./trainmotor";
 
 import { isWebBluetooth } from "./utils";
@@ -34,13 +34,13 @@ window.PoweredUP = {
     DuploTrainBase,
     Consts,
     ColorDistanceSensor,
-    ControlPlusLargeMotor,
-    ControlPlusXLargeMotor,
     Device,
-    Lights,
+    Light,
     MediumLinearMotor,
     MoveHubMediumLinearMotor,
     SimpleMediumLinearMotor,
+    TechnicLargeLinearMotor,
+    TechnicXLargeLinearMotor,
     TrainMotor,
     isWebBluetooth
 };
