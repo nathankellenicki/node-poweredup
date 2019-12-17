@@ -4,11 +4,10 @@ import { Hub } from "./hub";
 import { Port } from "./port";
 
 import * as Consts from "./consts";
-import { toBin, toHex } from "./utils";
+import { toHex } from "./utils";
 
 import Debug = require("debug");
 const debug = Debug("lpf2hub");
-const modeInfoDebug = Debug("lpf2hubmodeinfo");
 
 
 /**
@@ -16,6 +15,8 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
  * @extends Hub
  */
 export class LPF2Hub extends Hub {
+    public static requestPortModeInfo = false;
+
     private static decodeVersion(v: number) {
         const t = v.toString(16).padStart(8, "0");
         return [t[0], t[1], t.substring(2, 4), t.substring(4)].join(".");
@@ -294,12 +295,10 @@ export class LPF2Hub extends Hub {
         let port = this._getPortForPortNumber(data[3]);
         const type = data[4] ? data.readUInt16LE(5) : 0;
 
-        if (data[4] === 0x01 && modeInfoDebug.enabled) {
-            const typeName = Consts.DeviceTypeNames[data[5]] || "unknown";
-            modeInfoDebug(`Port ${toHex(data[3])}, type ${toHex(type, 4)} (${typeName})`);
-            const hwVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
-            const swVersion = LPF2Hub.decodeVersion(data.readInt32LE(11));
-            modeInfoDebug(`Port ${toHex(data[3])}, hardware version ${hwVersion}, software version ${swVersion}`);
+        if (data[4] === 0x01 && LPF2Hub.requestPortModeInfo) {
+            const hardwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(7));
+            const softwareVersion = LPF2Hub.decodeVersion(data.readInt32LE(11));
+            this.emit("portInfo", { port: data[3], type, hardwareVersion, softwareVersion });
             this._sendPortInformationRequest(data[3]);
         }
 
@@ -343,13 +342,13 @@ export class LPF2Hub extends Hub {
             for (let i = 5; i < data.length; i += 2) {
                 modeCombinationMasks.push(data.readUInt16LE(i));
             }
-            modeInfoDebug(`Port ${toHex(port)}, mode combinations [${modeCombinationMasks.map((c) => toBin(c, 0)).join(", ")}]`);
+            this.emit("portModeCombinations", { port, modeCombinationMasks });
             return;
         }
         const count = data[6];
-        const input = toBin(data.readUInt16LE(7), count);
-        const output = toBin(data.readUInt16LE(9), count);
-        modeInfoDebug(`Port ${toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
+        const input = data.readUInt16LE(7);
+        const output = data.readUInt16LE(9);
+        this.emit("portModes", { port, count, input, output });
 
         for (let i = 0; i < count; i++) {
             this._sendModeInformationRequest(port, i, 0x00); // Mode Name
@@ -368,31 +367,26 @@ export class LPF2Hub extends Hub {
 
 
     private _parseModeInformationResponse (data: Buffer) {
-        const port = toHex(data[3]);
+        const port = data[3];
         const mode = data[4];
         const type = data[5];
         switch (type) {
             case 0x00: // Mode Name
-                modeInfoDebug(`Port ${port}, mode ${mode}, name ${data.slice(6, data.length).toString()}`);
+            case 0x04: // SI Symbol
+                this.emit("portModeInfo", { port, mode, type, name: data.slice(6, data.length).toString() });
                 break;
             case 0x01: // RAW Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, RAW min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
-                break;
             case 0x02: // PCT Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, PCT min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
-                break;
             case 0x03: // SI Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI min ${data.readFloatLE(6)}, max ${data.readFloatLE(10)}`);
-                break;
-            case 0x04: // SI Symbol
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${data.slice(6, data.length).toString()}`);
+                this.emit("portModeInfo", { port, mode, type, min: data.readFloatLE(6), max: data.readFloatLE(10) });
                 break;
             case 0x80: // Value Format
                 const numValues = data[6];
                 const dataType = ["8bit", "16bit", "32bit", "float"][data[7]];
                 const totalFigures = data[8];
                 const decimals = data[9];
-                modeInfoDebug(`Port ${port}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
+                this.emit("portModeInfo", { port, mode, type, numValues, dataType, decimalFormat: `${totalFigures}.${decimals}`});
+                break;
         }
     }
 
