@@ -1,5 +1,7 @@
 import { EventEmitter } from "events";
 
+import * as Consts from "./consts";
+
 export interface IBLEAbstraction extends EventEmitter {
     uuid: string;
     name: string;
@@ -12,4 +14,11 @@ export interface IBLEAbstraction extends EventEmitter {
     addToCharacteristicMailbox: (uuid: string, data: Buffer) => void;
     readFromCharacteristic: (uuid: string, callback: (err: string | null, data: Buffer | null) => void) => void;
     writeToCharacteristic: (uuid: string, data: Buffer, callback?: () => void) => void;
+}
+
+export interface IDeviceInterface extends EventEmitter {
+    type: Consts.HubType;
+    getPortNameForPortId: (portId: number) => string | undefined;
+    send: (message: Buffer, uuid: string, callback?: () => void) => void;
+    subscribe: (portId: number, deviceType: number, mode: number) => void;
 }

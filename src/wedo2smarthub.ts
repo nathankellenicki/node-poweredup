@@ -2,17 +2,7 @@ import { Peripheral } from "@abandonware/noble";
 
 import { IBLEAbstraction } from "./interfaces";
 
-import { Device } from "./device";
 import { Hub } from "./hub";
-
-import { ColorDistanceSensor } from "./colordistancesensor";
-import { Light } from "./light";
-import { MediumLinearMotor } from "./mediumlinearmotor";
-import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
-import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
-import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
-import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
-import { TrainMotor } from "./trainmotor";
 
 import * as Consts from "./consts";
 
@@ -67,8 +57,8 @@ export class WeDo2SmartHub extends Hub {
                 await this._bleDevice.discoverCharacteristicsForService("battery_service");
                 await this._bleDevice.discoverCharacteristicsForService("device_information");
             }
-            this._activatePortDevice(0x03, 0x15, 0x00, 0x00); // Activate voltage reports
-            this._activatePortDevice(0x04, 0x14, 0x00, 0x00); // Activate current reports
+            this.subscribe(0x03, 0x15, 0x00); // Activate voltage reports
+            this.subscribe(0x04, 0x14, 0x00); // Activate current reports
             debug("Connect completed");
             this.emit("connect");
             resolve();
@@ -230,8 +220,8 @@ export class WeDo2SmartHub extends Hub {
     }
 
 
-    protected _activatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-            this.send(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, callback);
+    public subscribe (portId: number, deviceType: number, mode: number) {
+        this.send(Buffer.from([0x01, 0x02, portId, deviceType, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
     }
 
 
@@ -277,46 +267,42 @@ export class WeDo2SmartHub extends Hub {
         const deviceType = event ? data[3] : 0;
 
         if (event === 0x01) {
-
-            let device;
-
-            switch (deviceType) {
-                case Consts.DeviceType.LIGHT:
-                    device = new Light(this, portId);
-                    break;
-                // case Consts.DeviceType.BOOST_TACHO_MOTOR:
-                //     device = new BoostTachoMotor(this, portId);
-                //     break;
-                // case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
-                //     device = new ControlPlusLargeMotor(this, portId);
-                //     break;
-                // case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
-                //     device = new ControlPlusXLargeMotor(this, portId);
-                //     break;
-                case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
-                    device = new ColorDistanceSensor(this, portId);
-                    break;
-                default:
-                    device = new Device(this, portId, deviceType);
-                    break;
-            }
-
+            const device = this._createDevice(deviceType, portId);
             this._attachDevice(device);
-
+        } else if (event === 0x00) {
+            const device = this._getDeviceByPortId(portId);
+            if (device) {
+                this._detachDevice(device);
+            }
         }
     }
 
 
     private _parseSensorMessage (message: Buffer) {
 
+        debug("Received Message (WEDO2_SENSOR_VALUE)", message);
+
+        if (message[0] === 0x01) {
+            /**
+             * Emits when a button is pressed.
+             * @event WeDo2SmartHub#button
+             * @param {string} button
+             * @param {ButtonState} state
+             */
+            this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
+            return;
+        } else if (message[0] === 0x00) {
+            this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
+            return;
+        }
+
         const portId = message[1];
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
+            console.log(portId, device.type);
             device.receive(message);
         }
-
-        // debug("Received Message (WEDO2_SENSOR_VALUE)", data);
 
         // if (data[0] === 0x01) {
         //     /**
@@ -350,20 +336,6 @@ export class WeDo2SmartHub extends Hub {
 
         // if (port && port.connected) {
         //     switch (port.type) {
-        //         case Consts.DeviceType.WEDO2_DISTANCE: {
-        //             let distance = data[2];
-        //             if (data[3] === 1) {
-        //                 distance = data[2] + 255;
-        //             }
-        //             /**
-        //              * Emits when a distance sensor is activated.
-        //              * @event WeDo2SmartHub#distance
-        //              * @param {string} port
-        //              * @param {number} distance Distance, in millimeters.
-        //              */
-        //             this.emit("distance", port.id, distance * 10);
-        //             break;
-        //         }
         //         case Consts.DeviceType.COLOR_DISTANCE_SENSOR: {
         //             const distance = data[2];
         //             /**
@@ -373,40 +345,6 @@ export class WeDo2SmartHub extends Hub {
         //              * @param {Color} color
         //              */
         //             this.emit("color", port.id, distance);
-        //             break;
-        //         }
-        //         case Consts.DeviceType.WEDO2_TILT: {
-        //             this._lastTiltX = data.readInt8(2);
-        //             this._lastTiltY = data.readInt8(3);
-        //             /**
-        //              * Emits when a tilt sensor is activated.
-        //              * @event WeDo2SmartHub#tilt
-        //              * @param {string} port
-        //              * @param {number} x
-        //              * @param {number} y
-        //              */
-        //             this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY);
-        //             break;
-        //         }
-        //         case Consts.DeviceType.BOOST_TACHO_MOTOR: {
-        //             const rotation = data.readInt32LE(2);
-        //             /**
-        //              * Emits when a rotation sensor is activated.
-        //              * @event WeDo2SmartHub#rotate
-        //              * @param {string} port
-        //              * @param {number} rotation
-        //              */
-        //             this.emit("rotate", port.id, rotation);
-        //             break;
-        //         }
-        //         case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR: {
-        //             const rotation = data.readInt32LE(2);
-        //             this.emit("rotate", port.id, rotation);
-        //             break;
-        //         }
-        //         case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR: {
-        //             const rotation = data.readInt32LE(2);
-        //             this.emit("rotate", port.id, rotation);
         //             break;
         //         }
         //     }

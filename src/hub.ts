@@ -2,10 +2,21 @@ import { EventEmitter } from "events";
 
 import { IBLEAbstraction } from "./interfaces";
 
+import { ColorDistanceSensor } from "./colordistancesensor";
+import { Device } from "./device";
+import { Light } from "./light";
+import { MediumLinearMotor } from "./mediumlinearmotor";
+import { MotionSensor } from "./motionsensor";
+import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
+import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
+import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
+import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
+import { TiltSensor } from "./tiltsensor";
+import { TrainMotor } from "./trainmotor";
+
 import * as Consts from "./consts";
 
 import Debug = require("debug");
-import { Device } from "./device";
 const debug = Debug("hub");
 
 
@@ -233,7 +244,7 @@ export class Hub extends EventEmitter {
     }
 
 
-    public subscribe (portId: number, mode: number) {
+    public subscribe (portId: number, deviceType: number, mode: number) {
         // NK Do nothing here
     }
 
@@ -260,68 +271,52 @@ export class Hub extends EventEmitter {
     }
 
 
-    protected _getDeviceByPortId (portId: number) {
-        return this._attachedDevices[portId];
+    protected _createDevice (deviceType: number, portId: number) {
+        let device;
+
+        switch (deviceType) {
+            case Consts.DeviceType.LIGHT:
+                device = new Light(this, portId);
+                break;
+            case Consts.DeviceType.TRAIN_MOTOR:
+                device = new TrainMotor(this, portId);
+                break;
+            case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
+                device = new SimpleMediumLinearMotor(this, portId);
+                break;
+            case Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR:
+                device = new MoveHubMediumLinearMotor(this, portId);
+                break;
+            case Consts.DeviceType.MOTION_SENSOR:
+                device = new MotionSensor(this, portId);
+                break;
+            case Consts.DeviceType.TILT_SENSOR:
+                device = new TiltSensor(this, portId);
+                break;
+            case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
+                device = new MediumLinearMotor(this, portId);
+                break;
+            case Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR:
+                device = new TechnicLargeLinearMotor(this, portId);
+                break;
+            case Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR:
+                device = new TechnicXLargeLinearMotor(this, portId);
+                break;
+            case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
+                device = new ColorDistanceSensor(this, portId);
+                break;
+            default:
+                device = new Device(this, portId, deviceType);
+                break;
+        }
+
+        return device;
     }
 
 
-    // protected _calculateRamp (fromSpeed: number, toSpeed: number, time: number, port: Port) {
-    //     const emitter = new EventEmitter();
-    //     const steps = Math.abs(toSpeed - fromSpeed);
-    //     let delay = time / steps;
-    //     let increment = 1;
-    //     if (delay < 50 && steps > 0) {
-    //         increment = 50 / delay;
-    //         delay = 50;
-    //     }
-    //     if (fromSpeed > toSpeed) {
-    //         increment = -increment;
-    //     }
-    //     let i = 0;
-    //     const interval = setInterval(() => {
-    //         let speed = Math.round(fromSpeed + (++i * increment));
-    //         if (toSpeed > fromSpeed && speed > toSpeed) {
-    //             speed = toSpeed;
-    //         } else if (fromSpeed > toSpeed && speed < toSpeed) {
-    //             speed = toSpeed;
-    //         }
-    //         emitter.emit("changeSpeed", speed);
-    //         if (speed === toSpeed) {
-    //             clearInterval(interval);
-    //             emitter.emit("finished");
-    //         }
-    //     }, delay);
-    //     port.setEventTimer(interval);
-    //     return emitter;
-    // }
-
-
-    // private _getModeForDeviceType (type: Consts.DeviceType) {
-    //     switch (type) {
-    //         case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
-    //             return 0x02;
-    //         case Consts.DeviceType.TRAIN_MOTOR:
-    //             return 0x02;
-    //         case Consts.DeviceType.BOOST_TACHO_MOTOR:
-    //             return 0x02;
-    //         case Consts.DeviceType.BOOST_MOVE_HUB_MOTOR:
-    //             return 0x02;
-    //         case Consts.DeviceType.CONTROL_PLUS_LARGE_MOTOR:
-    //             return 0x02;
-    //         case Consts.DeviceType.CONTROL_PLUS_XLARGE_MOTOR:
-    //             return 0x02;
-    //         case Consts.DeviceType.CONTROL_PLUS_TILT:
-    //             return 0x00;
-    //         case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER:
-    //             return 0x00;
-    //         case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
-    //             return (this.type === Consts.HubType.WEDO2_SMART_HUB ? 0x00 : 0x08);
-    //         case Consts.DeviceType.BOOST_TILT:
-    //             return 0x04;
-    //         default:
-    //             return 0x00;
-    //     }
-    // }
+    protected _getDeviceByPortId (portId: number) {
+        return this._attachedDevices[portId];
+    }
 
 
 }

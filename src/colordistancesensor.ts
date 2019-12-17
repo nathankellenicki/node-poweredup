@@ -1,18 +1,26 @@
 import { Device } from "./device";
-import { Hub } from "./hub";
+
+import { IDeviceInterface } from "./interfaces";
 
 import * as Consts from "./consts";
 
 export class ColorDistanceSensor extends Device {
 
-    constructor (hub: Hub, portId: number) {
+    private _isWeDo2: boolean;
+
+    constructor (hub: IDeviceInterface, portId: number) {
         super(hub, portId, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+        this._isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
         this.on("newListener", (event) => {
             if (this.autoSubscribe) {
                 switch (event) {
                     case "color":
-                        this.subscribe(0x08);
+                        if (this._isWeDo2) {
+                            this.subscribe(0x00);
+                        } else {
+                            this.subscribe(0x08);
+                        }
                         break;
                     case "distance":
                         this.subscribe(0x08);
@@ -28,7 +36,15 @@ export class ColorDistanceSensor extends Device {
     public receive (message: Buffer) {
         const mode = this._mode;
 
+        console.log(message);
+
         switch (mode) {
+            case 0x00:
+                if (this._isWeDo2 && message[2] <= 10) {
+                    const color = message[2];
+                    this.emit("color", color);
+                }
+                break;
             case 0x08:
                 /**
                  * Emits when a color sensor is activated.

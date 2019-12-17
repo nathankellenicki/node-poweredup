@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
-import { Hub } from "./hub";
+
+import { IDeviceInterface } from "./interfaces";
 
 import * as Consts from "./consts";
 
@@ -11,12 +12,12 @@ export class Device extends EventEmitter {
     protected _busy: boolean = false;
     protected _finished: (() => void) | undefined;
 
-    private _hub: Hub;
+    private _hub: IDeviceInterface;
     private _portId: number;
     private _connected: boolean = true;
     private _type: Consts.DeviceType;
 
-    constructor (hub: Hub, portId: number, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+    constructor (hub: IDeviceInterface, portId: number, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
         this._hub = hub;
         this._portId = portId;
@@ -60,7 +61,7 @@ export class Device extends EventEmitter {
         this._ensureConnected();
         if (mode !== this._mode) {
             this._mode = mode;
-            this.hub.subscribe(this.portId, mode);
+            this.hub.subscribe(this.portId, this.type, mode);
         }
     }
 

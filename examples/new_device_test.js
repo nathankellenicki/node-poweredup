@@ -24,12 +24,37 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
             console.log(`Detached device ${device.type} from ${device.port}`);
         });
 
-        if (
+        if ((
+            device instanceof PoweredUP.SimpleMediumLinearMotor ||
+            device instanceof PoweredUP.TrainMotor ||
+            device instanceof PoweredUP.MediumLinearMotor ||
+            device instanceof PoweredUP.TechnicLargeLinearMotor ||
+            device instanceof PoweredUP.TechnicXLargeLinearMotor
+        ) && hub.type === PoweredUP.Consts.HubType.WEDO2_SMART_HUB) {
+            const motor = device;
+
+            motor.on("rotate", (angle) => {
+                console.log(`Rotate ${angle}`);
+            });
+
+            motor.setPower(40);
+            await hub.sleep(2000);
+            motor.setPower(0);
+            await hub.sleep(2000);
+            motor.setPower(-40);
+            await hub.sleep(2000);
+            motor.setPower(0);
+            await hub.sleep(2000);
+            motor.setPower(20);
+
+        }
+
+        if ((
             // device instanceof PoweredUP.MoveHubMediumLinearMotor ||
             device instanceof PoweredUP.MediumLinearMotor ||
             device instanceof PoweredUP.TechnicLargeLinearMotor ||
             device instanceof PoweredUP.TechnicXLargeLinearMotor
-        ) {
+        ) && hub.type !== PoweredUP.Consts.HubType.WEDO2_SMART_HUB) {
             const motor = device;
 
             motor.on("rotate", (angle) => {
@@ -85,9 +110,9 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
             sensor.on("distance", (distance) => {
                 console.log(`Distance ${distance}`);
             });
-            sensor.on("color", (color) => {
-                console.log(`Color ${color}`);
-            });
+            // sensor.on("color", (color) => {
+            //     console.log(`Color ${color}`);
+            // });
         }
 
         if (device instanceof PoweredUP.MotionSensor) {

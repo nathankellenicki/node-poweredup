@@ -1,16 +1,4 @@
-import { Device } from "./device";
 import { Hub } from "./hub";
-
-import { ColorDistanceSensor } from "./colordistancesensor";
-import { Light } from "./light";
-import { MediumLinearMotor } from "./mediumlinearmotor";
-import { MotionSensor } from "./motionsensor";
-import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
-import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
-import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
-import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
-import { TiltSensor } from "./tiltsensor";
-import { TrainMotor } from "./trainmotor";
 
 import * as Consts from "./consts";
 
@@ -48,10 +36,10 @@ export class LPF2Hub extends Hub {
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
             if (this._voltagePort !== undefined) {
-                this.subscribe(this._voltagePort, 0x00); // Activate voltage reports
+                this.subscribe(this._voltagePort, Consts.DeviceType.VOLTAGE, 0x00); // Activate voltage reports
             }
             if (this._currentPort !== undefined) {
-                this.subscribe(this._currentPort, 0x00); // Activate currrent reports
+                this.subscribe(this._currentPort, Consts.DeviceType.CURRENT, 0x00); // Activate currrent reports
             }
             await this.sleep(100);
             this.send(Buffer.from([0x01, 0x02, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate button reports
@@ -149,7 +137,7 @@ export class LPF2Hub extends Hub {
     }
 
 
-    public subscribe (portId: number, mode: number) {
+    public subscribe (portId: number, deviceType: number, mode: number) {
         this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
     }
 
@@ -288,44 +276,6 @@ export class LPF2Hub extends Hub {
         // Handle device attachments
         if (event === 0x01) {
 
-            let device;
-
-            switch (deviceType) {
-                case Consts.DeviceType.LIGHT:
-                    device = new Light(this, portId);
-                    break;
-                case Consts.DeviceType.TRAIN_MOTOR:
-                    device = new TrainMotor(this, portId);
-                    break;
-                case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
-                    device = new SimpleMediumLinearMotor(this, portId);
-                    break;
-                case Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR:
-                    device = new MoveHubMediumLinearMotor(this, portId);
-                    break;
-                case Consts.DeviceType.MOTION_SENSOR:
-                    device = new MotionSensor(this, portId);
-                    break;
-                case Consts.DeviceType.TILT_SENSOR:
-                    device = new TiltSensor(this, portId);
-                    break;
-                case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
-                    device = new MediumLinearMotor(this, portId);
-                    break;
-                case Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR:
-                    device = new TechnicLargeLinearMotor(this, portId);
-                    break;
-                case Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR:
-                    device = new TechnicXLargeLinearMotor(this, portId);
-                    break;
-                case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
-                    device = new ColorDistanceSensor(this, portId);
-                    break;
-                default:
-                    device = new Device(this, portId, deviceType);
-                    break;
-            }
-
             if (modeInfoDebug.enabled) {
                 const deviceTypeName = Consts.DeviceTypeNames[message[5]] || "Unknown";
                 modeInfoDebug(`Port ${toHex(portId)}, type ${toHex(deviceType, 4)} (${deviceTypeName})`);
@@ -335,6 +285,7 @@ export class LPF2Hub extends Hub {
                 this._sendPortInformationRequest(portId);
             }
 
+            const device = this._createDevice(deviceType, portId);
             this._attachDevice(device);
 
         // Handle device detachments

@@ -50,7 +50,7 @@ export class DuploTrainBase extends LPF2Hub {
         return new Promise(async (resolve, reject) => {
             debug("Connecting to Duplo Train Base");
             await super.connect();
-            this.subscribe(0x01, 0x01);
+            // this.subscribe(0x01, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER, 0x01);
             debug("Connect completed");
             return resolve();
         });

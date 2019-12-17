@@ -1,11 +1,12 @@
-import { Hub } from "./hub";
+import { TachoMotor } from "./tachomotor";
+
+import { IDeviceInterface } from "./interfaces";
 
 import * as Consts from "./consts";
-import { TachoMotor } from "./tachomotor";
 
 export class TechnicXLargeLinearMotor extends TachoMotor {
 
-    constructor (hub: Hub, portId: number) {
+    constructor (hub: IDeviceInterface, portId: number) {
         super(hub, portId, Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR);
     }
 

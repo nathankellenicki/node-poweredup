@@ -1,11 +1,12 @@
 import { Device } from "./device";
-import { Hub } from "./hub";
+
+import { IDeviceInterface } from "./interfaces";
 
 import * as Consts from "./consts";
 
 export class MotionSensor extends Device {
 
-    constructor (hub: Hub, portId: number) {
+    constructor (hub: IDeviceInterface, portId: number) {
         super(hub, portId, Consts.DeviceType.MOTION_SENSOR);
 
         this.on("newListener", (event) => {
@@ -21,12 +22,13 @@ export class MotionSensor extends Device {
 
     public receive (message: Buffer) {
         const mode = this._mode;
+        const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
         switch (mode) {
             case 0x00:
-                let distance = message[4];
-                if (message[5] === 1) {
-                    distance = message[4] + 255;
+                let distance = message[isWeDo2 ? 2 : 4];
+                if (message[isWeDo2 ? 3 : 5] === 1) {
+                    distance = distance + 255;
                 }
                 /**
                  * Emits when a distance sensor is activated.
