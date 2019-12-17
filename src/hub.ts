@@ -7,7 +7,7 @@ import { Device } from "./device";
 import { Light } from "./light";
 import { MediumLinearMotor } from "./mediumlinearmotor";
 import { MotionSensor } from "./motionsensor";
-import { MoveHubMediumLinearMotor } from "./MoveHubMediumLinearMotor2";
+import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
 import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
 import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
