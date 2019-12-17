@@ -35,11 +35,7 @@ export class PUPHub extends LPF2Hub {
     protected _voltagePort = 0x3c;
 
     constructor (device: IBLEAbstraction) {
-        super(device, Consts.HubType.POWERED_UP_HUB);
-        this._portNames = {
-            "A": 0,
-            "B": 1
-        };
+        super(device, PUPHub.PortMap, Consts.HubType.POWERED_UP_HUB);
         debug("Discovered Powered UP Hub");
     }
 
@@ -60,5 +56,14 @@ export class PUPHub extends LPF2Hub {
         }
     }
 
+
+}
+
+export namespace PUPHub {
+
+    export const PortMap: {[port: string]: number} = {
+        "A": 0,
+        "B": 1
+    }
 
 }

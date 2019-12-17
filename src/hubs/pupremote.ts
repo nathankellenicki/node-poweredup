@@ -38,11 +38,7 @@ export class PUPRemote extends LPF2Hub {
 
 
     constructor (device: IBLEAbstraction) {
-        super(device, Consts.HubType.POWERED_UP_REMOTE);
-        this._portNames = {
-            "LEFT": 0,
-            "RIGHT": 1
-        };
+        super(device, PUPRemote.PortMap, Consts.HubType.POWERED_UP_REMOTE);
         debug("Discovered Powered UP Remote");
     }
 
@@ -56,5 +52,14 @@ export class PUPRemote extends LPF2Hub {
         });
     }
 
+
+}
+
+export namespace PUPRemote {
+
+    export const PortMap: {[port: string]: number} = {
+        "LEFT": 0,
+        "RIGHT": 1
+    }
 
 }

@@ -34,11 +34,7 @@ export class WeDo2SmartHub extends Hub {
 
 
     constructor (device: IBLEAbstraction) {
-        super(device, Consts.HubType.WEDO2_SMART_HUB);
-        this._portNames = {
-            "A": 1,
-            "B": 2
-        };
+        super(device, WeDo2SmartHub.PortMap, Consts.HubType.WEDO2_SMART_HUB);
         debug("Discovered WeDo 2.0 Smart Hub");
     }
 
@@ -351,5 +347,14 @@ export class WeDo2SmartHub extends Hub {
 
     }
 
+
+}
+
+export namespace WeDo2SmartHub {
+
+    export const PortMap: {[port: string]: number} = {
+        "A": 1,
+        "B": 2
+    }
 
 }

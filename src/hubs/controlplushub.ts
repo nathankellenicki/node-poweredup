@@ -37,16 +37,7 @@ export class ControlPlusHub extends LPF2Hub {
     protected _voltageMaxV = 9.615;
 
     constructor (device: IBLEAbstraction) {
-        super(device, Consts.HubType.CONTROL_PLUS_HUB);
-        this._portNames = {
-            "A": 0,
-            "B": 1,
-            "C": 2,
-            "D": 3,
-            "ACCEL": 97,
-            "GYRO": 98,
-            "TILT": 99
-        };
+        super(device, ControlPlusHub.PortMap, Consts.HubType.CONTROL_PLUS_HUB);
         debug("Discovered Control+ Hub");
     }
 
@@ -120,5 +111,19 @@ export class ControlPlusHub extends LPF2Hub {
     //     });
     // }
 
+
+}
+
+export namespace ControlPlusHub {
+
+    export const PortMap: {[port: string]: number} = {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+        "D": 3,
+        "ACCEL": 97,
+        "GYRO": 98,
+        "TILT": 99
+    }
 
 }

@@ -35,14 +35,7 @@ export class BoostMoveHub extends LPF2Hub {
     protected _voltagePort = 0x3c;
 
     constructor (device: IBLEAbstraction) {
-        super(device, Consts.HubType.BOOST_MOVE_HUB);
-        this._portNames = {
-            "A": 0,
-            "B": 1,
-            "C": 2,
-            "D": 3,
-            "TILT": 58
-        };
+        super(device, BoostMoveHub.PortMap, Consts.HubType.BOOST_MOVE_HUB);
         debug("Discovered Boost Move Hub");
     }
 
@@ -63,5 +56,17 @@ export class BoostMoveHub extends LPF2Hub {
         }
     }
 
+
+}
+
+export namespace BoostMoveHub {
+
+    export const PortMap: {[port: string]: number} = {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+        "D": 3,
+        "TILT": 58
+    }
 
 }

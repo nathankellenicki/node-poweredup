@@ -36,12 +36,7 @@ export class DuploTrainBase extends LPF2Hub {
     protected _voltageMaxRaw = 3047;
 
     constructor (device: IBLEAbstraction) {
-        super(device, Consts.HubType.DUPLO_TRAIN_HUB);
-        this._portNames = {
-            "MOTOR": 0,
-            "COLOR": 18,
-            "SPEEDOMETER": 19
-        };
+        super(device, DuploTrainBase.PortMap, Consts.HubType.DUPLO_TRAIN_HUB);
         debug("Discovered Duplo Train Base");
     }
 
@@ -71,5 +66,15 @@ export class DuploTrainBase extends LPF2Hub {
         });
     }
 
+
+}
+
+export namespace DuploTrainBase {
+
+    export const PortMap: {[port: string]: number} = {
+        "MOTOR": 0,
+        "COLOR": 18,
+        "SPEEDOMETER": 19
+    }
 
 }

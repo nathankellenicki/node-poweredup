@@ -27,8 +27,6 @@ const debug = Debug("hub");
 export class Hub extends EventEmitter {
 
     protected _attachedDevices: {[portId: number]: Device} = {};
-
-    protected _portNames: {[port: string]: number} = {};
     // protected _virtualPorts: {[port: string]: Port} = {};
 
     protected _name: string = "";
@@ -43,11 +41,13 @@ export class Hub extends EventEmitter {
     protected _bleDevice: IBLEAbstraction;
 
     private _type: Consts.HubType;
+    private _portMap: {[port: string]: number} = {};
 
-    constructor (device: IBLEAbstraction, type: Consts.HubType = Consts.HubType.UNKNOWN) {
+    constructor (device: IBLEAbstraction, portMap: {[port: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
         super();
         this._type = type;
         this._bleDevice = device;
+        this._portMap = portMap;
         device.on("disconnect", () => {
             /**
              * Emits when the hub is disconnected.
@@ -73,6 +73,15 @@ export class Hub extends EventEmitter {
      */
     public get type () {
         return this._type;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string[]} ports Array of port names
+     */
+    public get ports () {
+        return Object.keys(this._portMap);
     }
 
 
@@ -178,7 +187,7 @@ export class Hub extends EventEmitter {
 
 
     public getDeviceAtPort (portName: string) {
-        const portId = this._portNames[portName];
+        const portId = this._portMap[portName];
         if (portId) {
             return this._attachedDevices[portId];
         } else {
@@ -198,8 +207,8 @@ export class Hub extends EventEmitter {
 
 
     public getPortNameForPortId (portId: number) {
-        for (const port of Object.keys(this._portNames)) {
-            if (this._portNames[port] === portId) {
+        for (const port of Object.keys(this._portMap)) {
+            if (this._portMap[port] === portId) {
                 return port;
             }
         }
