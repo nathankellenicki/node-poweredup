@@ -7,11 +7,7 @@ import * as Consts from "../consts";
 export class ColorDistanceSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {
-            "color": ColorDistanceSensor.Mode.COLOR,
-            "distance": ColorDistanceSensor.Mode.DISTANCE,
-            "colorAndDistance": ColorDistanceSensor.Mode.COLOR_AND_DISTANCE
-        }, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+        super(hub, portId, ColorDistanceSensor.ModeMap, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
     }
 
     public receive (message: Buffer) {
@@ -82,9 +78,17 @@ export class ColorDistanceSensor extends Device {
 }
 
 export namespace ColorDistanceSensor {
+
     export enum Mode {
         COLOR = 0x00,
         DISTANCE = 0x01,
         COLOR_AND_DISTANCE = 0x08
     }
+
+    export const ModeMap: {[event: string]: number} = {
+        "color": ColorDistanceSensor.Mode.COLOR,
+        "distance": ColorDistanceSensor.Mode.DISTANCE,
+        "colorAndDistance": ColorDistanceSensor.Mode.COLOR_AND_DISTANCE
+    }
+
 }

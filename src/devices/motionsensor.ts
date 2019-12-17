@@ -7,9 +7,7 @@ import * as Consts from "../consts";
 export class MotionSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {
-            "distance": MotionSensor.Mode.DISTANCE
-        }, Consts.DeviceType.MOTION_SENSOR);
+        super(hub, portId, MotionSensor.ModeMap, Consts.DeviceType.MOTION_SENSOR);
     }
 
     public receive (message: Buffer) {
@@ -34,7 +32,13 @@ export class MotionSensor extends Device {
 }
 
 export namespace MotionSensor {
+
     export enum Mode {
         DISTANCE = 0x00
     }
+
+    export const ModeMap: {[event: string]: number} = {
+        "distance": MotionSensor.Mode.DISTANCE
+    }
+
 }

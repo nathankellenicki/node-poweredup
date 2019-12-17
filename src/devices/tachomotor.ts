@@ -8,9 +8,7 @@ import { mapSpeed } from "../utils";
 export class TachoMotor extends BasicMotor {
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, Object.assign({}, modeMap, {
-            "rotate": TachoMotor.Mode.ROTATION
-        }), type);
+        super(hub, portId, Object.assign({}, modeMap, TachoMotor.ModeMap), type);
     }
 
     public receive (message: Buffer) {
@@ -54,7 +52,13 @@ export class TachoMotor extends BasicMotor {
 }
 
 export namespace TachoMotor {
+
     export enum Mode {
         ROTATION = 0x02
     }
+
+    export const ModeMap: {[event: string]: number} = {
+        "rotate": TachoMotor.Mode.ROTATION
+    }
+
 }

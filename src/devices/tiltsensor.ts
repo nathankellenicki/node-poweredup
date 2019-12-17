@@ -7,9 +7,7 @@ import * as Consts from "../consts";
 export class TiltSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {
-            "tilt": TiltSensor.Mode.TILT
-        }, Consts.DeviceType.TILT_SENSOR);
+        super(hub, portId, TiltSensor.ModeMap, Consts.DeviceType.TILT_SENSOR);
     }
 
     public receive (message: Buffer) {
@@ -33,7 +31,13 @@ export class TiltSensor extends Device {
 }
 
 export namespace TiltSensor {
+
     export enum Mode {
         TILT = 0x00
     }
+
+    export const ModeMap: {[event: string]: number} = {
+        "tilt": TiltSensor.Mode.TILT
+    }
+    
 }
