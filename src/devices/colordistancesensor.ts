@@ -36,12 +36,17 @@ export class ColorDistanceSensor extends Device {
 
         switch (mode) {
             case ColorDistanceSensor.Mode.COLOR:
-                if (this._isWeDo2 && message[2] <= 10) {
-                    const color = message[2];
+                if (message[this._isWeDo2 ? 2 : 4] <= 10) {
+                    const color = message[this._isWeDo2 ? 2 : 4];
                     this.emit("color", color);
                 }
                 break;
+
             case ColorDistanceSensor.Mode.COLOR_AND_DISTANCE:
+                if (this._isWeDo2) {
+                    break;
+                }
+
                 /**
                  * Emits when a color sensor is activated.
                  * @event ColorDistanceSensor#color
@@ -82,6 +87,7 @@ export class ColorDistanceSensor extends Device {
                     this.emit("colorAndDistance", color, distance);
                 }
                 break;
+
         }
     }
 
