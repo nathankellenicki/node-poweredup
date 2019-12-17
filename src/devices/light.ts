@@ -1,8 +1,8 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "./interfaces";
+import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "./consts";
+import * as Consts from "../consts";
 
 export class Light extends Device {
 

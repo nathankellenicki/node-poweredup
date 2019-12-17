@@ -1,12 +1,12 @@
 import { Peripheral } from "@abandonware/noble";
 
-import { IBLEAbstraction } from "./interfaces";
+import { IBLEAbstraction } from "../interfaces";
 
 import { Hub } from "./hub";
 
-import * as Consts from "./consts";
+import * as Consts from "../consts";
 
-import { isWebBluetooth } from "./utils";
+import { isWebBluetooth } from "../utils";
 
 import Debug = require("debug");
 const debug = Debug("wedo2smarthub");

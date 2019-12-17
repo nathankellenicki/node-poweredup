@@ -6,8 +6,8 @@
   "main": "dist/node/index-node.js",
   "types": "dist/node/index-node.d.ts",
   "scripts": {
-    "build:node": "tslint -c tslint.json \"./src/*.ts\" && tsc",
-    "build:browser": "tslint -c tslint.json \"./src/*.ts\" && webpack --mode=production",
+    "build:node": "tslint -c tslint.json \"./src/**/*.ts\" && tsc",
+    "build:browser": "tslint -c tslint.json \"./src/**/*.ts\" && webpack --mode=production",
     "build:all": "tslint -c tslint.json \"./src/*.ts\" && tsc && webpack --mode=production",
     "docs": "jsdoc -d docs -c jsdoc.conf.json -t ./node_modules/ink-docstrap/template -R README.md dist/node/consts.js dist/node/poweredup-node.js dist/node/lpf2hub.js dist/node/wedo2smarthub.js dist/node/boostmovehub.js dist/node/puphub.js dist/node/pupremote.js dist/node/duplotrainbase.js dist/node/controlplushub.js dist/node/hub.js dist/node/consts.js",
     "all": "npm run build:all && npm run docs",

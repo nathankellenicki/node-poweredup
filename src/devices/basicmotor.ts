@@ -1,10 +1,10 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "./interfaces";
+import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "./consts";
+import * as Consts from "../consts";
 
-import { mapSpeed } from "./utils";
+import { mapSpeed } from "../utils";
 
 export class BasicMotor extends Device {
 

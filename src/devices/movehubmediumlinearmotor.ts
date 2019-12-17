@@ -1,8 +1,8 @@
 import { TachoMotor } from "./tachomotor";
 
-import { IDeviceInterface } from "./interfaces";
+import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "./consts";
+import * as Consts from "../consts";
 
 export class MoveHubMediumLinearMotor extends TachoMotor {
 

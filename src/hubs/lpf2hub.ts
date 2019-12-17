@@ -1,8 +1,8 @@
 import { Hub } from "./hub";
 
-import * as Consts from "./consts";
+import * as Consts from "../consts";
 
-import { decodeMACAddress, decodeVersion, toBin, toHex } from "./utils";
+import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils";
 
 import Debug = require("debug");
 const debug = Debug("lpf2hub");

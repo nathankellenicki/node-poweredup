@@ -2,25 +2,25 @@ import * as Consts from "./consts";
 
 import { PoweredUP } from "./poweredup-browser";
 
-import { BoostMoveHub } from "./boostmovehub";
-import { ControlPlusHub } from "./controlplushub";
-import { DuploTrainBase } from "./duplotrainbase";
-import { Hub } from "./hub";
-import { PUPHub } from "./puphub";
-import { PUPRemote } from "./pupremote";
-import { WeDo2SmartHub } from "./wedo2smarthub";
+import { BoostMoveHub } from "./hubs/boostmovehub";
+import { ControlPlusHub } from "./hubs/controlplushub";
+import { DuploTrainBase } from "./hubs/duplotrainbase";
+import { Hub } from "./hubs/hub";
+import { PUPHub } from "./hubs/puphub";
+import { PUPRemote } from "./hubs/pupremote";
+import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
 
-import { ColorDistanceSensor } from "./colordistancesensor";
-import { Device } from "./device";
-import { Light } from "./light";
-import { MediumLinearMotor } from "./mediumlinearmotor";
-import { MotionSensor } from "./motionsensor";
-import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
-import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
-import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
-import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
-import { TiltSensor } from "./tiltsensor";
-import { TrainMotor } from "./trainmotor";
+import { ColorDistanceSensor } from "./devices/colordistancesensor";
+import { Device } from "./devices/device";
+import { Light } from "./devices/light";
+import { MediumLinearMotor } from "./devices/mediumlinearmotor";
+import { MotionSensor } from "./devices/motionsensor";
+import { MoveHubMediumLinearMotor } from "./devices/movehubmediumlinearmotor";
+import { SimpleMediumLinearMotor } from "./devices/simplemediumlinearmotor";
+import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
+import { TechnicXLargeLinearMotor } from "./devices/technicxlargelinearmotor";
+import { TiltSensor } from "./devices/tiltsensor";
+import { TrainMotor } from "./devices/trainmotor";
 
 import { isWebBluetooth } from "./utils";
 

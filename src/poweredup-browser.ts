@@ -1,11 +1,12 @@
-import { BoostMoveHub } from "./boostmovehub";
-import { ControlPlusHub } from "./controlplushub";
-import { DuploTrainBase } from "./duplotrainbase";
-import { Hub } from "./hub";
-import { PUPHub } from "./puphub";
-import { PUPRemote } from "./pupremote";
 import { WebBLEDevice } from "./webbleabstraction";
-import { WeDo2SmartHub } from "./wedo2smarthub";
+
+import { BoostMoveHub } from "./hubs/boostmovehub";
+import { ControlPlusHub } from "./hubs/controlplushub";
+import { DuploTrainBase } from "./hubs/duplotrainbase";
+import { Hub } from "./hubs/hub";
+import { PUPHub } from "./hubs/puphub";
+import { PUPRemote } from "./hubs/pupremote";
+import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
 
 import * as Consts from "./consts";
 

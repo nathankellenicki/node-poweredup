@@ -1,9 +1,9 @@
 import { BasicMotor } from "./basicmotor";
 
-import { IDeviceInterface } from "./interfaces";
+import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "./consts";
-import { mapSpeed } from "./utils";
+import * as Consts from "../consts";
+import { mapSpeed } from "../utils";
 
 export class TachoMotor extends BasicMotor {
 

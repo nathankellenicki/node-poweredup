@@ -2,10 +2,10 @@ import { Peripheral } from "@abandonware/noble";
 
 import { LPF2Hub } from "./lpf2hub";
 
-import * as Consts from "./consts";
+import * as Consts from "../consts";
 
 import Debug = require("debug");
-import { IBLEAbstraction } from "./interfaces";
+import { IBLEAbstraction } from "../interfaces";
 const debug = Debug("duplotrainbase");
 
 

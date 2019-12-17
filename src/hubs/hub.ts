@@ -1,20 +1,20 @@
 import { EventEmitter } from "events";
 
-import { IBLEAbstraction } from "./interfaces";
+import { IBLEAbstraction } from "../interfaces";
 
-import { ColorDistanceSensor } from "./colordistancesensor";
-import { Device } from "./device";
-import { Light } from "./light";
-import { MediumLinearMotor } from "./mediumlinearmotor";
-import { MotionSensor } from "./motionsensor";
-import { MoveHubMediumLinearMotor } from "./movehubmediumlinearmotor";
-import { SimpleMediumLinearMotor } from "./simplemediumlinearmotor";
-import { TechnicLargeLinearMotor } from "./techniclargelinearmotor";
-import { TechnicXLargeLinearMotor } from "./technicxlargelinearmotor";
-import { TiltSensor } from "./tiltsensor";
-import { TrainMotor } from "./trainmotor";
+import { ColorDistanceSensor } from "../devices/colordistancesensor";
+import { Device } from "../devices/device";
+import { Light } from "../devices/light";
+import { MediumLinearMotor } from "../devices/mediumlinearmotor";
+import { MotionSensor } from "../devices/motionsensor";
+import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
+import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
+import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
+import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor";
+import { TiltSensor } from "../devices/tiltsensor";
+import { TrainMotor } from "../devices/trainmotor";
 
-import * as Consts from "./consts";
+import * as Consts from "../consts";
 
 import Debug = require("debug");
 const debug = Debug("hub");
@@ -25,8 +25,6 @@ const debug = Debug("hub");
  * @extends EventEmitter
  */
 export class Hub extends EventEmitter {
-
-    public useSpeedMap: boolean = true;
 
     protected _attachedDevices: {[portId: number]: Device} = {};
 
