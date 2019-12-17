@@ -7,27 +7,18 @@ import { mapSpeed } from "../utils";
 
 export class TachoMotor extends BasicMotor {
 
-    constructor (hub: IDeviceInterface, portId: number, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, type);
-
-        this.on("newListener", (event) => {
-            if (this.autoSubscribe) {
-                switch (event) {
-                    case "rotate":
-                        this.subscribe(TachoMotor.Mode.ROTATION);
-                        break;
-                }
-            }
-        });
+    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+        super(hub, portId, Object.assign({}, modeMap, {
+            "rotate": TachoMotor.Mode.ROTATION
+        }), type);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
-        const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
         switch (mode) {
             case TachoMotor.Mode.ROTATION:
-                const rotation = message.readInt32LE(isWeDo2 ? 2 : 4);
+                const rotation = message.readInt32LE(this.isWeDo2SmartHub ? 2 : 4);
                 /**
                  * Emits when a rotation sensor is activated.
                  * @event TachoMotor#rotate
@@ -46,8 +37,7 @@ export class TachoMotor extends BasicMotor {
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
     public rotateByAngle (angle: number, power: number = 100) {
-        const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
-        if (isWeDo2) {
+        if (this.isWeDo2SmartHub) {
             throw new Error("Angle rotation is not available on the WeDo 2.0 Smart Hub");
         }
         return new Promise((resolve) => {

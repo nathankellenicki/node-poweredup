@@ -8,7 +8,7 @@ export class Light extends Device {
 
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, Consts.DeviceType.LIGHT);
+        super(hub, portId, {}, Consts.DeviceType.LIGHT);
     }
 
 
@@ -20,8 +20,7 @@ export class Light extends Device {
      */
     public setBrightness (brightness: number) {
         return new Promise((resolve) => {
-            const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
-            if (isWeDo2) {
+            if (this.isWeDo2SmartHub) {
                 const data = Buffer.from([this.portId, 0x01, 0x02, brightness]);
                 this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {

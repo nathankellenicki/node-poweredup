@@ -300,7 +300,6 @@ export class WeDo2SmartHub extends Hub {
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
-            console.log(portId, device.type);
             device.receive(message);
         }
 

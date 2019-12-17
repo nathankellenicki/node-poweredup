@@ -6,56 +6,52 @@ import * as Consts from "../consts";
 
 export class ColorDistanceSensor extends Device {
 
-    private _isWeDo2: boolean;
-
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
-        this._isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
-
-        this.on("newListener", (event) => {
-            if (this.autoSubscribe) {
-                switch (event) {
-                    case "color":
-                        this.subscribe(ColorDistanceSensor.Mode.COLOR);
-                        break;
-                    case "distance":
-                        this.subscribe(ColorDistanceSensor.Mode.DISTANCE);
-                        break;
-                    case "colorAndDistance":
-                        this.subscribe(ColorDistanceSensor.Mode.COLOR_AND_DISTANCE);
-                        break;
-                }
-            }
-        });
+        super(hub, portId, {
+            "color": ColorDistanceSensor.Mode.COLOR,
+            "distance": ColorDistanceSensor.Mode.DISTANCE,
+            "colorAndDistance": ColorDistanceSensor.Mode.COLOR_AND_DISTANCE
+        }, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
-        console.log(message);
-
         switch (mode) {
             case ColorDistanceSensor.Mode.COLOR:
-                if (message[this._isWeDo2 ? 2 : 4] <= 10) {
-                    const color = message[this._isWeDo2 ? 2 : 4];
+                if (message[this.isWeDo2SmartHub ? 2 : 4] <= 10) {
+                    const color = message[this.isWeDo2SmartHub ? 2 : 4];
+
+                    /**
+                     * Emits when a color sensor is activated.
+                     * @event ColorDistanceSensor#color
+                     * @param {string} port
+                     * @param {Color} color
+                     */
                     this.emit("color", color);
                 }
                 break;
 
-            case ColorDistanceSensor.Mode.COLOR_AND_DISTANCE:
-                if (this._isWeDo2) {
+            case ColorDistanceSensor.Mode.DISTANCE:
+                if (this.isWeDo2SmartHub) {
                     break;
                 }
-
-                /**
-                 * Emits when a color sensor is activated.
-                 * @event ColorDistanceSensor#color
-                 * @param {string} port
-                 * @param {Color} color
-                 */
                 if (message[4] <= 10) {
-                    const color = message[4];
-                    this.emit("color", color);
+                    const distance = Math.floor(message[4] * 25.4) - 20;
+
+                    /**
+                     * Emits when a distance sensor is activated.
+                     * @event ColorDistanceSensor#distance
+                     * @param {string} port
+                     * @param {number} distance Distance, in millimeters.
+                     */
+                    this.emit("distance", distance);
+                }
+                break;
+
+            case ColorDistanceSensor.Mode.COLOR_AND_DISTANCE:
+                if (this.isWeDo2SmartHub) {
+                    break;
                 }
 
                 let distance = message[5];
@@ -66,14 +62,6 @@ export class ColorDistanceSensor extends Device {
                 }
 
                 distance = Math.floor(distance * 25.4) - 20;
-
-                /**
-                 * Emits when a distance sensor is activated.
-                 * @event ColorDistanceSensor#distance
-                 * @param {string} port
-                 * @param {number} distance Distance, in millimeters.
-                 */
-                this.emit("distance", distance);
 
                 /**
                  * A combined color and distance event, emits when the sensor is activated.

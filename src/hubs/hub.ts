@@ -304,7 +304,7 @@ export class Hub extends EventEmitter {
                 device = new ColorDistanceSensor(this, portId);
                 break;
             default:
-                device = new Device(this, portId, deviceType);
+                device = new Device(this, portId, undefined, deviceType);
                 break;
         }
 

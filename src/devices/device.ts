@@ -16,12 +16,18 @@ export class Device extends EventEmitter {
     private _portId: number;
     private _connected: boolean = true;
     private _type: Consts.DeviceType;
+    private _modeMap: {[event: string]: number} = {};
 
-    constructor (hub: IDeviceInterface, portId: number, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+    private _isWeDo2SmartHub: boolean;
+
+    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
         this._hub = hub;
         this._portId = portId;
         this._type = type;
+        this._modeMap = modeMap;
+        this._isWeDo2SmartHub = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
+
         const detachListener = (device: Device) => {
             if (device.portId === this.portId) {
                 this._connected = false;
@@ -30,6 +36,17 @@ export class Device extends EventEmitter {
             }
         };
         this.hub.on("detach", detachListener);
+
+        this.on("newListener", (event) => {
+            if (event === "detach") {
+                return;
+            }
+            if (this.autoSubscribe) {
+                if (this._modeMap[event] !== undefined) {
+                    this.subscribe(this._modeMap[event]);
+                }
+            }
+        });
     }
 
     public get connected () {
@@ -50,6 +67,10 @@ export class Device extends EventEmitter {
 
     public get type () {
         return this._type;
+    }
+
+    protected get isWeDo2SmartHub () {
+        return this._isWeDo2SmartHub;
     }
 
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {

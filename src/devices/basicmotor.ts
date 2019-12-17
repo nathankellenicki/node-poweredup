@@ -9,8 +9,8 @@ import { mapSpeed } from "../utils";
 export class BasicMotor extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, type);
+    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+        super(hub, portId, modeMap, type);
     }
 
 
@@ -22,8 +22,7 @@ export class BasicMotor extends Device {
      */
     public setPower (power: number) {
         return new Promise((resolve) => {
-            const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
-            if (isWeDo2) {
+            if (this.isWeDo2SmartHub) {
                 const data = Buffer.from([this.portId, 0x01, 0x02, mapSpeed(power)]);
                 this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
