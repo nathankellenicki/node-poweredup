@@ -13,7 +13,7 @@ export class TiltSensor extends Device {
             if (this.autoSubscribe) {
                 switch (event) {
                     case "tilt":
-                        this.subscribe(0x00);
+                        this.subscribe(TiltSensor.Mode.TILT);
                         break;
                 }
             }
@@ -25,7 +25,7 @@ export class TiltSensor extends Device {
         const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
         switch (mode) {
-            case 0x00:
+            case TiltSensor.Mode.TILT:
                 const tiltX = message.readInt8(isWeDo2 ? 2 : 4);
                 const tiltY = message.readInt8(isWeDo2 ? 3 : 5);
                 /**
@@ -39,4 +39,10 @@ export class TiltSensor extends Device {
         }
     }
 
+}
+
+export namespace TiltSensor {
+    export enum Mode {
+        TILT = 0x00
+    }
 }

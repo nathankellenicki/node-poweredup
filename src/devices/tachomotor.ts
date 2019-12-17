@@ -14,7 +14,7 @@ export class TachoMotor extends BasicMotor {
             if (this.autoSubscribe) {
                 switch (event) {
                     case "rotate":
-                        this.subscribe(0x02);
+                        this.subscribe(TachoMotor.Mode.ROTATION);
                         break;
                 }
             }
@@ -26,7 +26,7 @@ export class TachoMotor extends BasicMotor {
         const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
         switch (mode) {
-            case 0x02:
+            case TachoMotor.Mode.ROTATION:
                 const rotation = message.readInt32LE(isWeDo2 ? 2 : 4);
                 /**
                  * Emits when a rotation sensor is activated.
@@ -48,7 +48,7 @@ export class TachoMotor extends BasicMotor {
     public rotateByAngle (angle: number, power: number = 100) {
         const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
         if (isWeDo2) {
-            throw new Error("Rotating by angle is not available on the WeDo 2.0 Smart Hub");
+            throw new Error("Angle rotation is not available on the WeDo 2.0 Smart Hub");
         }
         return new Promise((resolve) => {
             this._busy = true;
@@ -61,4 +61,10 @@ export class TachoMotor extends BasicMotor {
         });
     }
 
+}
+
+export namespace TachoMotor {
+    export enum Mode {
+        ROTATION = 0x02
+    }
 }

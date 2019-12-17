@@ -13,7 +13,7 @@ export class MotionSensor extends Device {
             if (this.autoSubscribe) {
                 switch (event) {
                     case "distance":
-                        this.subscribe(0x00);
+                        this.subscribe(MotionSensor.Mode.DISTANCE);
                         break;
                 }
             }
@@ -25,7 +25,7 @@ export class MotionSensor extends Device {
         const isWeDo2 = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
         switch (mode) {
-            case 0x00:
+            case MotionSensor.Mode.DISTANCE:
                 let distance = message[isWeDo2 ? 2 : 4];
                 if (message[isWeDo2 ? 3 : 5] === 1) {
                     distance = distance + 255;
@@ -40,4 +40,10 @@ export class MotionSensor extends Device {
         }
     }
 
+}
+
+export namespace MotionSensor {
+    export enum Mode {
+        DISTANCE = 0x00
+    }
 }

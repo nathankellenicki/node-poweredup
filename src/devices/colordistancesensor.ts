@@ -16,17 +16,13 @@ export class ColorDistanceSensor extends Device {
             if (this.autoSubscribe) {
                 switch (event) {
                     case "color":
-                        if (this._isWeDo2) {
-                            this.subscribe(0x00);
-                        } else {
-                            this.subscribe(0x08);
-                        }
+                        this.subscribe(ColorDistanceSensor.Mode.COLOR);
                         break;
                     case "distance":
-                        this.subscribe(0x08);
+                        this.subscribe(ColorDistanceSensor.Mode.DISTANCE);
                         break;
                     case "colorAndDistance":
-                        this.subscribe(0x08);
+                        this.subscribe(ColorDistanceSensor.Mode.COLOR_AND_DISTANCE);
                         break;
                 }
             }
@@ -39,13 +35,13 @@ export class ColorDistanceSensor extends Device {
         console.log(message);
 
         switch (mode) {
-            case 0x00:
+            case ColorDistanceSensor.Mode.COLOR:
                 if (this._isWeDo2 && message[2] <= 10) {
                     const color = message[2];
                     this.emit("color", color);
                 }
                 break;
-            case 0x08:
+            case ColorDistanceSensor.Mode.COLOR_AND_DISTANCE:
                 /**
                  * Emits when a color sensor is activated.
                  * @event ColorDistanceSensor#color
@@ -89,4 +85,12 @@ export class ColorDistanceSensor extends Device {
         }
     }
 
+}
+
+export namespace ColorDistanceSensor {
+    export enum Mode {
+        COLOR = 0x00,
+        DISTANCE = 0x01,
+        COLOR_AND_DISTANCE = 0x08
+    }
 }
