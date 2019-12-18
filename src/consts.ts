@@ -220,5 +220,5 @@ export interface IDeviceMode {
         min?: number,
         max?: number
     };
-    num: { [HubType in Consts.HubType]?: number };
+    num: { [type in HubType]?: number };
 }
