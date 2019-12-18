@@ -9,6 +9,7 @@ import { Light } from "../devices/light";
 import { MediumLinearMotor } from "../devices/mediumlinearmotor";
 import { MotionSensor } from "../devices/motionsensor";
 import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
+import { PUPRemoteButton } from "../devices/pupremotebutton";
 import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
 import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor";
@@ -333,6 +334,9 @@ export class Hub extends EventEmitter {
                 break;
             case Consts.DeviceType.CURRENT_SENSOR:
                 device = new CurrentSensor(this, portId);
+                break;
+            case Consts.DeviceType.PUP_REMOTE_BUTTON:
+                device = new PUPRemoteButton(this, portId);
                 break;
             default:
                 device = new Device(this, portId, undefined, deviceType);

@@ -17,6 +17,7 @@ import { Light } from "./devices/light";
 import { MediumLinearMotor } from "./devices/mediumlinearmotor";
 import { MotionSensor } from "./devices/motionsensor";
 import { MoveHubMediumLinearMotor } from "./devices/movehubmediumlinearmotor";
+import { PUPRemoteButton } from "./devices/pupremotebutton";
 import { SimpleMediumLinearMotor } from "./devices/simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
 import { TechnicXLargeLinearMotor } from "./devices/technicxlargelinearmotor";
@@ -43,6 +44,7 @@ window.PoweredUP = {
     MediumLinearMotor,
     MotionSensor,
     MoveHubMediumLinearMotor,
+    PUPRemoteButton,
     SimpleMediumLinearMotor,
     TechnicLargeLinearMotor,
     TechnicXLargeLinearMotor,
