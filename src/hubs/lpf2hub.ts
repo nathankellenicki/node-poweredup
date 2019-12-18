@@ -401,20 +401,6 @@ export class LPF2Hub extends Hub {
             }
         }
 
-        // const port = this._getPortForPortNumber(data[3]);
-
-        // if (!port) {
-        //     return;
-        // }
-
-        // if (data[4] === 0x0a) {
-        //     port.busy = false;
-        //     if (port.finished) {
-        //         port.finished();
-        //         port.finished = null;
-        //     }
-        // }
-
     }
 
 
