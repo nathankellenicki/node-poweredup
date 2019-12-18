@@ -189,3 +189,36 @@ export enum BLECharacteristic {
     WEDO2_NAME_ID = "00001524-1212-efde-1523-785feabcd123", // "1524"
     LPF2_ALL = "00001624-1212-efde-1623-785feabcd123"
 }
+
+export enum ValueType {
+    UInt8 = "UInt8",
+    Int8 = "Int8",
+    UInt16 = "UInt16",
+    Int16 = "Int16",
+    UInt32 = "UInt32",
+    Int32 = "Int32",
+    Float = "Float"
+}
+
+// tslint:disable-next-line
+export const ValueBits = {
+    [ValueType.UInt8]: 1,
+    [ValueType.Int8]: 1,
+    [ValueType.UInt16]: 2,
+    [ValueType.Int16]: 2,
+    [ValueType.UInt32]: 3,
+    [ValueType.Int32]: 3,
+    [ValueType.Float]: 3
+};
+
+export interface IDeviceMode {
+    input: boolean;
+    event?: string;
+    values?: {
+        type: ValueType,
+        count: number,
+        min?: number,
+        max?: number
+    };
+    num: { [HubType in Consts.HubType]?: number };
+}

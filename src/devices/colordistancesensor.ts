@@ -2,93 +2,111 @@ import { Device } from "./device";
 
 import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "../consts";
+import { DeviceType, HubType, IDeviceMode, ValueType } from "../consts";
 
 export class ColorDistanceSensor extends Device {
 
+    private static modes: { [name: string]: IDeviceMode } = {
+        COLOR: {
+            /**
+             * Emits when a color sensor is activated.
+             * @event ColorDistanceSensor#color
+             * @param {string} port
+             * @param {Color} color
+             */
+            input: true,
+            event: "color",
+            values: { type: ValueType.UInt8, count: 1, min: 0, max: 255 },
+            num: {
+                [HubType.BOOST_MOVE_HUB]: 0x00,
+                [HubType.CONTROL_PLUS_HUB]: 0x00,
+                [HubType.POWERED_UP_HUB]: 0x00,
+                [HubType.WEDO2_SMART_HUB]: 0x00
+            }
+        },
+        PROX: {
+            input: true,
+            event: "distance",
+            values: { type: ValueType.UInt8, count: 1, min: 0, max: 10 },
+            num: {
+                [HubType.BOOST_MOVE_HUB]: 0x01,
+                [HubType.CONTROL_PLUS_HUB]: 0x01,
+                [HubType.POWERED_UP_HUB]: 0x01
+            }
+        },
+        COUNT: {
+            input: true,
+            event: "count",
+            values: { type: ValueType.UInt8, count: 1, min: 0 },
+            num: {
+                [HubType.BOOST_MOVE_HUB]: 0x02,
+                [HubType.CONTROL_PLUS_HUB]: 0x02,
+                [HubType.POWERED_UP_HUB]: 0x02
+            }
+        },
+        REFLT: {
+            input: true,
+            event: "reflectivity",
+            values: { type: ValueType.UInt8, count: 1, min: 0, max: 100 },
+            num: {
+                [HubType.BOOST_MOVE_HUB]: 0x03,
+                [HubType.CONTROL_PLUS_HUB]: 0x03,
+                [HubType.POWERED_UP_HUB]: 0x03
+            }
+        },
+        AMBI: {
+            input: true,
+            event: "luminosity",
+            values: { type: ValueType.UInt8, count: 1, min: 0, max: 100 },
+            num: {
+                [HubType.BOOST_MOVE_HUB]: 0x04,
+                [HubType.CONTROL_PLUS_HUB]: 0x04,
+                [HubType.POWERED_UP_HUB]: 0x04
+            }
+        },
+        SOME_OUTPUT_MODE: {
+            input: false,
+            num: {}
+        },
+        RGB_I: {
+            input: true,
+            event: "rgb",
+            values: { type: ValueType.UInt8, count: 3, min: 0, max: 255 },
+            num: {
+                [HubType.BOOST_MOVE_HUB]: 0x06,
+                [HubType.CONTROL_PLUS_HUB]: 0x06,
+                [HubType.POWERED_UP_HUB]: 0x06
+            }
+        },
+        OTHER_OUTPUT_MODE: {
+            input: false,
+            num: {}
+        },
+        SPEC_1: {
+            input: true,
+            event: "colorAndDistance",
+            values: { type: ValueType.UInt8, count: 4, min: 0, max: 255 },
+            num: {
+                [HubType.BOOST_MOVE_HUB]: 0x08,
+                [HubType.CONTROL_PLUS_HUB]: 0x08,
+                [HubType.POWERED_UP_HUB]: 0x08
+            }
+        }
+    };
+
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ColorDistanceSensor.ModeMap, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+        super(hub, portId, ColorDistanceSensor.modes, DeviceType.COLOR_DISTANCE_SENSOR);
     }
 
     public receive (message: Buffer) {
-        const mode = this._mode;
+        const data = super.receive(message) || [];
 
-        switch (mode) {
-            case ColorDistanceSensor.Mode.COLOR:
-                if (message[this.isWeDo2SmartHub ? 2 : 4] <= 10) {
-                    const color = message[this.isWeDo2SmartHub ? 2 : 4];
-
-                    /**
-                     * Emits when a color sensor is activated.
-                     * @event ColorDistanceSensor#color
-                     * @param {string} port
-                     * @param {Color} color
-                     */
-                    this.emit("color", color);
-                }
-                break;
-
-            case ColorDistanceSensor.Mode.DISTANCE:
-                if (this.isWeDo2SmartHub) {
-                    break;
-                }
-                if (message[4] <= 10) {
-                    const distance = Math.floor(message[4] * 25.4) - 20;
-
-                    /**
-                     * Emits when a distance sensor is activated.
-                     * @event ColorDistanceSensor#distance
-                     * @param {string} port
-                     * @param {number} distance Distance, in millimeters.
-                     */
-                    this.emit("distance", distance);
-                }
-                break;
-
-            case ColorDistanceSensor.Mode.COLOR_AND_DISTANCE:
-                if (this.isWeDo2SmartHub) {
-                    break;
-                }
-
-                let distance = message[5];
-                const partial = message[7];
-
-                if (partial > 0) {
-                    distance += 1.0 / partial;
-                }
-
-                distance = Math.floor(distance * 25.4) - 20;
-
-                /**
-                 * A combined color and distance event, emits when the sensor is activated.
-                 * @event ColorDistanceSensor#colorAndDistance
-                 * @param {string} port
-                 * @param {Color} color
-                 * @param {number} distance Distance, in millimeters.
-                 */
-                if (message[4] <= 10) {
-                    const color = message[4];
-                    this.emit("colorAndDistance", color, distance);
-                }
-                break;
-
+        if (this._mode === "SPEC_1") {
+            this.emit("color", this.portId, data[0]);
+            this.emit("distance", this.portId, data[1]);
+            this.emit("reflectivity", this.portId, data[3]);
         }
+
+        return data;
     }
-
-}
-
-export namespace ColorDistanceSensor {
-
-    export enum Mode {
-        COLOR = 0x00,
-        DISTANCE = 0x01,
-        COLOR_AND_DISTANCE = 0x08
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "color": ColorDistanceSensor.Mode.COLOR,
-        "distance": ColorDistanceSensor.Mode.DISTANCE,
-        "colorAndDistance": ColorDistanceSensor.Mode.COLOR_AND_DISTANCE
-    }
-
 }

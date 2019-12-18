@@ -410,7 +410,8 @@ export class LPF2Hub extends Hub {
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
-            device.receive(message);
+            // Forward message to device (without size, hub and port)
+            device.receive(message.slice(3));
         }
 
     //     if (data[3] === this._voltagePort) {

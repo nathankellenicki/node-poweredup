@@ -8,7 +8,7 @@ export class Device extends EventEmitter {
 
     public autoSubscribe: boolean = true;
 
-    protected _mode: number | undefined;
+    protected _mode: string | undefined;
     protected _busy: boolean = false;
     protected _finished: (() => void) | undefined;
 
@@ -16,17 +16,29 @@ export class Device extends EventEmitter {
     private _portId: number;
     private _connected: boolean = true;
     private _type: Consts.DeviceType;
-    private _modeMap: {[event: string]: number} = {};
+    private _modes: {[name: string]: Consts.IDeviceMode} = {};
+    private _eventMap: {[event: string]: string};
 
     private _isWeDo2SmartHub: boolean;
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: Consts.IDeviceMode} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
         this._hub = hub;
         this._portId = portId;
         this._type = type;
-        this._modeMap = modeMap;
+        this._modes = modes;
         this._isWeDo2SmartHub = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
+
+        this._eventMap = Object.keys(modes).reduce(
+            (map: {[event: string]: string}, name) => {
+                const mode = modes[name];
+                if (mode.num[hub.type] !== undefined && mode.event) {
+                    map[mode.event] = name;
+                }
+                return map;
+            },
+            {}
+        );
 
         const detachListener = (device: Device) => {
             if (device.portId === this.portId) {
@@ -42,9 +54,12 @@ export class Device extends EventEmitter {
                 return;
             }
             if (this.autoSubscribe) {
-                if (this._modeMap[event] !== undefined) {
-                    this.subscribe(this._modeMap[event]);
+                if (!this._eventMap[event]) {
+                    // TODO : error handling -> no mode for event
+                    return;
                 }
+
+                this.subscribe(this._eventMap[event]);
             }
         });
     }
@@ -78,16 +93,73 @@ export class Device extends EventEmitter {
         this.hub.send(data, characteristic, callback);
     }
 
-    public subscribe (mode: number) {
+    public subscribe (modeName: string) {
         this._ensureConnected();
-        if (mode !== this._mode) {
-            this._mode = mode;
-            this.hub.subscribe(this.portId, this.type, mode);
+        if (modeName !== this._mode) {
+            this._mode = modeName;
+
+            const modeNum = this._modes[modeName].num[this.hub.type];
+            if (modeNum === undefined) {
+                // TODO : error handling -> unsupported mode
+                return;
+            }
+            this.hub.subscribe(this.portId, this.type, modeNum);
         }
     }
 
     public receive (message: Buffer) {
-        this.emit("receive", message);
+        if (this._mode === undefined) {
+            // TODO : error handling -> no mode defined
+            return;
+        }
+
+        const mode = this._modes[this._mode];
+
+        if (!mode.values) {
+            // TODO : error handling -> no parsing informations
+            return;
+        }
+
+        const data = [];
+
+        for (let index = 0; index <= message.length; index += Consts.ValueBits[mode.values.type]) {
+            switch (mode.values.type) {
+                case Consts.ValueType.UInt8: {
+                    data.push(message.readUInt8(index));
+                    break;
+                }
+                case Consts.ValueType.Int8: {
+                    data.push(message.readInt8(index));
+                    break;
+                }
+                case Consts.ValueType.UInt16: {
+                    data.push(message.readUInt16LE(index));
+                    break;
+                }
+                case Consts.ValueType.Int16: {
+                    data.push(message.readInt16LE(index));
+                    break;
+                }
+                case Consts.ValueType.UInt32: {
+                    data.push(message.readUInt32LE(index));
+                    break;
+                }
+                case Consts.ValueType.Int32: {
+                    data.push(message.readInt32LE(index));
+                    break;
+                }
+                case Consts.ValueType.Float: {
+                    data.push(message.readFloatLE(index));
+                    break;
+                }
+            }
+        }
+
+        if (mode.event) {
+            this.emit(mode.event, this.portId, ...data);
+        }
+
+        return data;
     }
 
     public finish () {
