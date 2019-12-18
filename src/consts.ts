@@ -206,9 +206,9 @@ export const ValueBits = {
     [ValueType.Int8]: 1,
     [ValueType.UInt16]: 2,
     [ValueType.Int16]: 2,
-    [ValueType.UInt32]: 3,
-    [ValueType.Int32]: 3,
-    [ValueType.Float]: 3
+    [ValueType.UInt32]: 4,
+    [ValueType.Int32]: 4,
+    [ValueType.Float]: 4
 };
 
 export interface IDeviceMode {
