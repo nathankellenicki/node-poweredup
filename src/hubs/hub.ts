@@ -5,10 +5,12 @@ import { IBLEAbstraction } from "../interfaces";
 import { ColorDistanceSensor } from "../devices/colordistancesensor";
 import { CurrentSensor } from "../devices/currentsensor";
 import { Device } from "../devices/device";
+import { HubLED } from "../devices/hubled";
 import { Light } from "../devices/light";
 import { MediumLinearMotor } from "../devices/mediumlinearmotor";
 import { MotionSensor } from "../devices/motionsensor";
 import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
+import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
 import { PUPRemoteButton } from "../devices/pupremotebutton";
 import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
@@ -317,6 +319,9 @@ export class Hub extends EventEmitter {
             case Consts.DeviceType.TILT_SENSOR:
                 device = new TiltSensor(this, portId);
                 break;
+            case Consts.DeviceType.MOVE_HUB_TILT_SENSOR:
+                device = new MoveHubTiltSensor(this, portId);
+                break;
             case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
                 device = new MediumLinearMotor(this, portId);
                 break;
@@ -337,6 +342,9 @@ export class Hub extends EventEmitter {
                 break;
             case Consts.DeviceType.PUP_REMOTE_BUTTON:
                 device = new PUPRemoteButton(this, portId);
+                break;
+            case Consts.DeviceType.HUB_LED:
+                device = new HubLED(this, portId);
                 break;
             default:
                 device = new Device(this, portId, undefined, deviceType);

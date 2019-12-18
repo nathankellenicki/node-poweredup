@@ -25,9 +25,10 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 let color = 1;
 setInterval(() => {
 
-    const hubs = poweredUP.getConnectedHubs(); // Get an array of all connected hubs
-    hubs.forEach((hub) => {
-        hub.setLEDColor(color); // Set the color
+    const hubs = poweredUP.getHubs(); // Get an array of all connected hubs
+    hubs.forEach(async (hub) => {
+        const led = await hub.waitForDeviceByType(PoweredUP.Consts.DeviceType.HUB_LED);
+        led.setColor(color); // Set the color
     })
     color++;
     if (color > 10) {

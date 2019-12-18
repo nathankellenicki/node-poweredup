@@ -78,45 +78,6 @@ export class LPF2Hub extends Hub {
     }
 
 
-    /**
-     * Set the color of the LED on the Hub via a color value.
-     * @method LPF2Hub#setLEDColor
-     * @param {Color} color
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDColor (color: number | boolean) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, this._ledPort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            if (typeof color === "boolean") {
-                color = 0;
-            }
-            data = Buffer.from([0x81, this._ledPort, 0x11, 0x51, 0x00, color]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            return resolve();
-        });
-    }
-
-
-    /**
-     * Set the color of the LED on the Hub via RGB values.
-     * @method LPF2Hub#setLEDRGB
-     * @param {number} red
-     * @param {number} green
-     * @param {number} blue
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDRGB (red: number, green: number, blue: number) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, this._ledPort, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            data = Buffer.from([0x81, this._ledPort, 0x11, 0x51, 0x01, red, green, blue]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            return resolve();
-        });
-    }
-
-
     public send (message: Buffer, uuid: string, callback?: () => void) {
         message = Buffer.concat([Buffer.alloc(2), message]);
         message[0] = message.length;
@@ -458,35 +419,6 @@ export class LPF2Hub extends Hub {
     //                  * @param {number} z
     //                  */
     //                 this.emit("accel", "ACCEL", accelX, accelY, accelZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.BOOST_TILT: {
-    //                 const tiltX = data.readInt8(4);
-    //                 const tiltY = data.readInt8(5);
-    //                 this._lastTiltX = tiltX;
-    //                 this._lastTiltY = tiltY;
-    //                 this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON: {
-    //                 switch (data[4]) {
-    //                     case 0x01: {
-    //                         this.emit("button", port.id, Consts.ButtonState.UP);
-    //                         break;
-    //                     }
-    //                     case 0xff: {
-    //                         this.emit("button", port.id, Consts.ButtonState.DOWN);
-    //                         break;
-    //                     }
-    //                     case 0x7f: {
-    //                         this.emit("button", port.id, Consts.ButtonState.STOP);
-    //                         break;
-    //                     }
-    //                     case 0x00: {
-    //                         this.emit("button", port.id, Consts.ButtonState.RELEASED);
-    //                         break;
-    //                     }
-    //                 }
     //                 break;
     //             }
     //             case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
