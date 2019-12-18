@@ -11,6 +11,7 @@ import { PUPRemote } from "./hubs/pupremote";
 import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
 
 import { ColorDistanceSensor } from "./devices/colordistancesensor";
+import { CurrentSensor } from "./devices/currentsensor";
 import { Device } from "./devices/device";
 import { Light } from "./devices/light";
 import { MediumLinearMotor } from "./devices/mediumlinearmotor";
@@ -48,6 +49,7 @@ window.PoweredUP = {
     TiltSensor,
     TrainMotor,
     VoltageSensor,
+    CurrentSensor,
     isWebBluetooth
 };
 

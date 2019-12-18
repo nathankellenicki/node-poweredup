@@ -31,8 +31,6 @@ export class BoostMoveHub extends LPF2Hub {
         );
     }
 
-    protected _currentPort = 0x3b;
-
     constructor (device: IBLEAbstraction) {
         super(device, BoostMoveHub.PortMap, Consts.HubType.BOOST_MOVE_HUB);
         debug("Discovered Boost Move Hub");

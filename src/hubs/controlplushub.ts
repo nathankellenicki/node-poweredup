@@ -30,9 +30,6 @@ export class ControlPlusHub extends LPF2Hub {
         );
     }
 
-    protected _currentPort = 0x3b;
-    protected _currentMaxMA = 4175;
-
     constructor (device: IBLEAbstraction) {
         super(device, ControlPlusHub.PortMap, Consts.HubType.CONTROL_PLUS_HUB);
         debug("Discovered Control+ Hub");

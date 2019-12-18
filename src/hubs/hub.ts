@@ -3,6 +3,7 @@ import { EventEmitter } from "events";
 import { IBLEAbstraction } from "../interfaces";
 
 import { ColorDistanceSensor } from "../devices/colordistancesensor";
+import { CurrentSensor } from "../devices/currentsensor";
 import { Device } from "../devices/device";
 import { Light } from "../devices/light";
 import { MediumLinearMotor } from "../devices/mediumlinearmotor";
@@ -35,7 +36,6 @@ export class Hub extends EventEmitter {
     protected _hardwareVersion: string = "0.0.00.0000";
     protected _primaryMACAddress: string = "00:00:00:00:00:00";
     protected _batteryLevel: number = 100;
-    protected _current: number = 0;
     protected _rssi: number = -60;
 
     protected _bleDevice: IBLEAbstraction;
@@ -137,15 +137,6 @@ export class Hub extends EventEmitter {
      */
     public get rssi () {
         return this._rssi;
-    }
-
-
-    /**
-     * @readonly
-     * @property {number} current Current usage of the hub (Milliamps)
-     */
-    public get current () {
-        return this._current;
     }
 
 
@@ -339,6 +330,9 @@ export class Hub extends EventEmitter {
                 break;
             case Consts.DeviceType.VOLTAGE_SENSOR:
                 device = new VoltageSensor(this, portId);
+                break;
+            case Consts.DeviceType.CURRENT_SENSOR:
+                device = new CurrentSensor(this, portId);
                 break;
             default:
                 device = new Device(this, portId, undefined, deviceType);
