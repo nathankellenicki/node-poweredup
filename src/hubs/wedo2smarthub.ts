@@ -352,7 +352,7 @@ export class WeDo2SmartHub extends Hub {
 
 export namespace WeDo2SmartHub {
 
-    export const PortMap: {[port: string]: number} = {
+    export const PortMap: {[portName: string]: number} = {
         "A": 1,
         "B": 2
     }

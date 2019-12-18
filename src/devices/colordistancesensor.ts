@@ -21,7 +21,6 @@ export class ColorDistanceSensor extends Device {
                     /**
                      * Emits when a color sensor is activated.
                      * @event ColorDistanceSensor#color
-                     * @param {string} port
                      * @param {Color} color
                      */
                     this.emit("color", color);
@@ -38,7 +37,6 @@ export class ColorDistanceSensor extends Device {
                     /**
                      * Emits when a distance sensor is activated.
                      * @event ColorDistanceSensor#distance
-                     * @param {string} port
                      * @param {number} distance Distance, in millimeters.
                      */
                     this.emit("distance", distance);
@@ -62,7 +60,6 @@ export class ColorDistanceSensor extends Device {
                 /**
                  * A combined color and distance event, emits when the sensor is activated.
                  * @event ColorDistanceSensor#colorAndDistance
-                 * @param {string} port
                  * @param {Color} color
                  * @param {number} distance Distance, in millimeters.
                  */

@@ -61,7 +61,7 @@ export class PUPHub extends LPF2Hub {
 
 export namespace PUPHub {
 
-    export const PortMap: {[port: string]: number} = {
+    export const PortMap: {[portName: string]: number} = {
         "A": 0,
         "B": 1
     }

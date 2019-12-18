@@ -27,7 +27,7 @@ const debug = Debug("hub");
 export class Hub extends EventEmitter {
 
     protected _attachedDevices: {[portId: number]: Device} = {};
-    // protected _virtualPorts: {[port: string]: Port} = {};
+    // protected _virtualPorts: {[portName: string]: Port} = {};
 
     protected _name: string = "";
     protected _firmwareVersion: string = "0.0.00.0000";
@@ -41,9 +41,10 @@ export class Hub extends EventEmitter {
     protected _bleDevice: IBLEAbstraction;
 
     private _type: Consts.HubType;
-    private _portMap: {[port: string]: number} = {};
+    private _portMap: {[portName: string]: number} = {};
+    private _attachCallbacks: ((device: Device) => void)[] = [];
 
-    constructor (device: IBLEAbstraction, portMap: {[port: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
+    constructor (device: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
         super();
         this._type = type;
         this._bleDevice = device;
@@ -196,6 +197,21 @@ export class Hub extends EventEmitter {
     }
 
 
+    public waitForDeviceAtPort (portName: string) {
+        return new Promise((resolve) => {
+            const existingDevice = this.getDeviceAtPort(portName);
+            if (existingDevice) {
+                return resolve(existingDevice);
+            }
+            this._attachCallbacks.push((device) => {
+                if (device.portName === portName) {
+                    return resolve(device);
+                }
+            });
+        });
+    }
+
+
     public getDevices () {
         return Object.values(this._attachedDevices);
     }
@@ -203,6 +219,21 @@ export class Hub extends EventEmitter {
 
     public getDevicesByType (deviceType: number) {
         return this.getDevices().filter((device) => device.type === deviceType);
+    }
+
+
+    public waitForDeviceByType (deviceType: number) {
+        return new Promise((resolve) => {
+            const existingDevices = this.getDevicesByType(deviceType);
+            if (existingDevices.length >= 1) {
+                return resolve(existingDevices[0]);
+            }
+            this._attachCallbacks.push((device) => {
+                if (device.type === deviceType) {
+                    return resolve(device);
+                }
+            })
+        });
     }
 
 
@@ -264,6 +295,9 @@ export class Hub extends EventEmitter {
          * @param {Device} device
          */
         this.emit("attach", device);
+        this._attachCallbacks.forEach((callback) => {
+            callback(device);
+        });
     }
 
 

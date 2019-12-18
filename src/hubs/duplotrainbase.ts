@@ -71,7 +71,7 @@ export class DuploTrainBase extends LPF2Hub {
 
 export namespace DuploTrainBase {
 
-    export const PortMap: {[port: string]: number} = {
+    export const PortMap: {[portName: string]: number} = {
         "MOTOR": 0,
         "COLOR": 18,
         "SPEEDOMETER": 19

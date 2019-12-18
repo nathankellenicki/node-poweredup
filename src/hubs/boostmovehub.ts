@@ -61,7 +61,7 @@ export class BoostMoveHub extends LPF2Hub {
 
 export namespace BoostMoveHub {
 
-    export const PortMap: {[port: string]: number} = {
+    export const PortMap: {[portName: string]: number} = {
         "A": 0,
         "B": 1,
         "C": 2,
