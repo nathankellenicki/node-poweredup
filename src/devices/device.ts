@@ -76,7 +76,7 @@ export class Device extends EventEmitter {
         return this._portId;
     }
 
-    public get port () {
+    public get portName () {
         return this.hub.getPortNameForPortId(this.portId);
     }
 
@@ -156,7 +156,7 @@ export class Device extends EventEmitter {
         }
 
         if (mode.event) {
-            this.emit(mode.event, this.portId, ...data);
+            this.emit(mode.event, ...data);
         }
 
         return data;

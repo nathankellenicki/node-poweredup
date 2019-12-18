@@ -57,7 +57,7 @@ export class PUPRemote extends LPF2Hub {
 
 export namespace PUPRemote {
 
-    export const PortMap: {[port: string]: number} = {
+    export const PortMap: {[portName: string]: number} = {
         "LEFT": 0,
         "RIGHT": 1
     }

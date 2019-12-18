@@ -102,9 +102,9 @@ export class ColorDistanceSensor extends Device {
         const data = super.receive(message) || [];
 
         if (this._mode === "SPEC_1") {
-            this.emit("color", this.portId, data[0]);
-            this.emit("distance", this.portId, data[1]);
-            this.emit("reflectivity", this.portId, data[3]);
+            this.emit("color", data[0]);
+            this.emit("distance", data[1]);
+            this.emit("reflectivity", data[3]);
         }
 
         return data;
