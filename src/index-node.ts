@@ -21,6 +21,7 @@ import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
 import { TechnicXLargeLinearMotor } from "./devices/technicxlargelinearmotor";
 import { TiltSensor } from "./devices/tiltsensor";
 import { TrainMotor } from "./devices/trainmotor";
+import { VoltageSensor } from "./devices/voltagesensor";
 
 import { isWebBluetooth } from "./utils";
 
@@ -46,5 +47,6 @@ export {
     TechnicXLargeLinearMotor,
     TiltSensor,
     TrainMotor,
+    VoltageSensor,
     isWebBluetooth
 };

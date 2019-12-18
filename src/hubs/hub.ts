@@ -13,6 +13,7 @@ import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
 import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor";
 import { TiltSensor } from "../devices/tiltsensor";
 import { TrainMotor } from "../devices/trainmotor";
+import { VoltageSensor } from "../devices/voltagesensor";
 
 import * as Consts from "../consts";
 
@@ -34,7 +35,6 @@ export class Hub extends EventEmitter {
     protected _hardwareVersion: string = "0.0.00.0000";
     protected _primaryMACAddress: string = "00:00:00:00:00:00";
     protected _batteryLevel: number = 100;
-    protected _voltage: number = 0;
     protected _current: number = 0;
     protected _rssi: number = -60;
 
@@ -137,15 +137,6 @@ export class Hub extends EventEmitter {
      */
     public get rssi () {
         return this._rssi;
-    }
-
-
-    /**
-     * @readonly
-     * @property {number} voltage Voltage of the hub (Volts)
-     */
-    public get voltage () {
-        return this._voltage;
     }
 
 
@@ -345,6 +336,9 @@ export class Hub extends EventEmitter {
                 break;
             case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
                 device = new ColorDistanceSensor(this, portId);
+                break;
+            case Consts.DeviceType.VOLTAGE_SENSOR:
+                device = new VoltageSensor(this, portId);
                 break;
             default:
                 device = new Device(this, portId, undefined, deviceType);

@@ -16,9 +16,6 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
 export class LPF2Hub extends Hub {
 
     protected _ledPort: number = 0x32;
-    protected _voltagePort: number | undefined;
-    protected _voltageMaxV: number = 9.6;
-    protected _voltageMaxRaw: number = 3893;
     protected _currentPort: number | undefined;
     protected _currentMaxMA: number = 2444;
     protected _currentMaxRaw: number = 4095;
@@ -35,11 +32,8 @@ export class LPF2Hub extends Hub {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-            if (this._voltagePort !== undefined) {
-                this.subscribe(this._voltagePort, Consts.DeviceType.VOLTAGE, 0x00); // Activate voltage reports
-            }
             if (this._currentPort !== undefined) {
-                this.subscribe(this._currentPort, Consts.DeviceType.CURRENT, 0x00); // Activate currrent reports
+                this.subscribe(this._currentPort, Consts.DeviceType.CURRENT_SENSOR, 0x00); // Activate currrent reports
             }
             await this.sleep(100);
             this.send(Buffer.from([0x01, 0x02, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate button reports
@@ -413,11 +407,7 @@ export class LPF2Hub extends Hub {
             device.receive(message);
         }
 
-    //     if (data[3] === this._voltagePort) {
-    //         const voltageRaw = data.readUInt16LE(4);
-    //         this._voltage = voltageRaw * this._voltageMaxV / this._voltageMaxRaw;
-    //         return;
-    //     } else if (data[3] === this._currentPort) {
+    //     if (data[3] === this._currentPort) {
     //         const currentRaw = data.readUInt16LE(4);
     //         this._current = this._currentMaxMA * currentRaw / this._currentMaxRaw;
     //         return;

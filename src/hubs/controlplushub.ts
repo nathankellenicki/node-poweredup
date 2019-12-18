@@ -32,9 +32,6 @@ export class ControlPlusHub extends LPF2Hub {
 
     protected _currentPort = 0x3b;
     protected _currentMaxMA = 4175;
-    protected _voltagePort = 0x3c;
-    protected _voltageMaxRaw = 4095;
-    protected _voltageMaxV = 9.615;
 
     constructor (device: IBLEAbstraction) {
         super(device, ControlPlusHub.PortMap, Consts.HubType.CONTROL_PLUS_HUB);

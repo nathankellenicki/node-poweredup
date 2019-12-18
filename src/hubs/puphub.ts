@@ -32,7 +32,6 @@ export class PUPHub extends LPF2Hub {
     }
 
     protected _currentPort = 0x3b;
-    protected _voltagePort = 0x3c;
 
     constructor (device: IBLEAbstraction) {
         super(device, PUPHub.PortMap, Consts.HubType.POWERED_UP_HUB);
