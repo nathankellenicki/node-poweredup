@@ -20,12 +20,10 @@ export class HubLED extends Device {
      */
     public setColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
-            if (this.mode !== HubLED.Mode.COLOR) {
-                this.subscribe(HubLED.Mode.COLOR);
-            }
             if (typeof color === "boolean") {
                 color = 0;
             }
+            this.subscribe(HubLED.Mode.COLOR);
             this.writeDirect(0x00, Buffer.from([color]));
             return resolve();
         });
@@ -42,9 +40,7 @@ export class HubLED extends Device {
      */
     public setRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
-            if (this.mode !== HubLED.Mode.RGB) {
-                this.subscribe(HubLED.Mode.RGB);
-            }
+            this.subscribe(HubLED.Mode.RGB);
             this.writeDirect(0x00, Buffer.from([red, green, blue]));
             return resolve();
         });

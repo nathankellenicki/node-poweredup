@@ -5,6 +5,12 @@ import { IBLEAbstraction } from "../interfaces";
 import { ColorDistanceSensor } from "../devices/colordistancesensor";
 import { CurrentSensor } from "../devices/currentsensor";
 import { Device } from "../devices/device";
+
+import { DuploTrainBaseColorSensor } from "../devices/duplotrainbasecolorsensor";
+import { DuploTrainBaseMotor } from "../devices/duplotrainbasemotor";
+import { DuploTrainBaseSpeaker } from "../devices/duplotrainbasespeaker";
+import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer";
+
 import { HubLED } from "../devices/hubled";
 import { Light } from "../devices/light";
 import { MediumLinearMotor } from "../devices/mediumlinearmotor";
@@ -352,11 +358,23 @@ export class BaseHub extends EventEmitter {
             case Consts.DeviceType.CURRENT_SENSOR:
                 device = new CurrentSensor(this, portId);
                 break;
-            case Consts.DeviceType.PUP_REMOTE_BUTTON:
+            case Consts.DeviceType.REMOTE_CONTROL_BUTTON:
                 device = new RemoteControlButton(this, portId);
                 break;
             case Consts.DeviceType.HUB_LED:
                 device = new HubLED(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR:
+                device = new DuploTrainBaseColorSensor(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR:
+                device = new DuploTrainBaseMotor(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER:
+                device = new DuploTrainBaseSpeaker(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER:
+                device = new DuploTrainBaseSpeedometer(this, portId);
                 break;
             default:
                 device = new Device(this, portId, undefined, deviceType);

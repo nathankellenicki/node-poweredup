@@ -13,6 +13,10 @@ import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
 import { ColorDistanceSensor } from "./devices/colordistancesensor";
 import { CurrentSensor } from "./devices/currentsensor";
 import { Device } from "./devices/device";
+import { DuploTrainBaseColorSensor } from "./devices/duplotrainbasecolorsensor";
+import { DuploTrainBaseMotor } from "./devices/duplotrainbasemotor";
+import { DuploTrainBaseSpeaker } from "./devices/duplotrainbasespeaker";
+import { DuploTrainBaseSpeedometer } from "./devices/duplotrainbasespeedometer";
 import { HubLED } from "./devices/hubled";
 import { Light } from "./devices/light";
 import { MediumLinearMotor } from "./devices/mediumlinearmotor";
@@ -44,6 +48,10 @@ export {
     Consts,
     ColorDistanceSensor,
     Device,
+    DuploTrainBaseColorSensor,
+    DuploTrainBaseMotor,
+    DuploTrainBaseSpeaker,
+    DuploTrainBaseSpeedometer,
     HubLED,
     Light,
     MediumLinearMotor,
