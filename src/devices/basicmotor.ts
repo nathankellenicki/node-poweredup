@@ -22,13 +22,7 @@ export class BasicMotor extends Device {
      */
     public setPower (power: number) {
         return new Promise((resolve) => {
-            if (this.isWeDo2SmartHub) {
-                const data = Buffer.from([this.portId, 0x01, 0x02, mapSpeed(power)]);
-                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            } else {
-                const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, mapSpeed(power)]);
-                this.send(data);
-            }
+            this.writeDirect(0x00, Buffer.from([mapSpeed(power)]));
             return resolve();
         });
     }

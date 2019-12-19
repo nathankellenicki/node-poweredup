@@ -26,7 +26,7 @@ export class HubLED extends Device {
             if (typeof color === "boolean") {
                 color = 0;
             }
-            this.send(Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, color]));
+            this.writeDirect(0x00, Buffer.from([color]));
             return resolve();
         });
     }
@@ -45,28 +45,7 @@ export class HubLED extends Device {
             if (this.mode !== HubLED.Mode.RGB) {
                 this.subscribe(HubLED.Mode.RGB);
             }
-            this.send(Buffer.from([0x81, this.portId, 0x11, 0x51, 0x01, red, green, blue]));
-            return resolve();
-        });
-    }
-
-
-
-    /**
-     * Set the light brightness.
-     * @method Light#brightness
-     * @param {number} brightness Brightness value between 0-100 (0 is off)
-     * @returns {Promise} Resolved upon successful completion of command.
-     */
-    public setBrightness (brightness: number) {
-        return new Promise((resolve) => {
-            if (this.isWeDo2SmartHub) {
-                const data = Buffer.from([this.portId, 0x01, 0x02, brightness]);
-                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            } else {
-                const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, brightness]);
-                this.send(data);
-            }
+            this.writeDirect(0x00, Buffer.from([red, green, blue]));
             return resolve();
         });
     }

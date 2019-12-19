@@ -77,6 +77,14 @@ export class Device extends EventEmitter {
         return this._isWeDo2SmartHub;
     }
 
+    public writeDirect (mode: number, data: Buffer, callback?: () => void) {
+        if (this.isWeDo2SmartHub) {
+            this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+        } else {
+            this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL, callback);
+        }
+    }
+
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
         this._ensureConnected();
         this.hub.send(data, characteristic, callback);

@@ -2,8 +2,8 @@ import { WebBLEDevice } from "./webbleabstraction";
 
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
-import { MoveHub } from "./hubs/movehub";
 import { Hub } from "./hubs/hub";
+import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
 import { WeDo2SmartHub } from "./hubs/wedo2smarthub";

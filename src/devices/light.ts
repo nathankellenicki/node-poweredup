@@ -20,13 +20,7 @@ export class Light extends Device {
      */
     public setBrightness (brightness: number) {
         return new Promise((resolve) => {
-            if (this.isWeDo2SmartHub) {
-                const data = Buffer.from([this.portId, 0x01, 0x02, brightness]);
-                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            } else {
-                const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, brightness]);
-                this.send(data);
-            }
+            this.writeDirect(0x00, Buffer.from([brightness]));
             return resolve();
         });
     }
