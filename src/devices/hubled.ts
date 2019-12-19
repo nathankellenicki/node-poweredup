@@ -41,7 +41,7 @@ export class HubLED extends Device {
     public setRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
             this.subscribe(HubLED.Mode.RGB);
-            this.writeDirect(0x00, Buffer.from([red, green, blue]));
+            this.writeDirect(0x01, Buffer.from([red, green, blue]));
             return resolve();
         });
     }

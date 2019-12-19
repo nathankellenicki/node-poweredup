@@ -17,20 +17,24 @@ export class LPF2Hub extends BaseHub {
 
     private _messageBuffer: Buffer = Buffer.alloc(0);
 
+    private _propertyRequestCallbacks: {[property: number]: ((data: Buffer) => void)} = {};
+
 
     public connect () {
         return new Promise(async (resolve, reject) => {
+            debug("LPF2Hub connecting");
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-            await this.sleep(100);
-            this.send(Buffer.from([0x01, 0x02, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate button reports
-            this.send(Buffer.from([0x01, 0x03, 0x05]), Consts.BLECharacteristic.LPF2_ALL); // Request firmware version
-            this.send(Buffer.from([0x01, 0x04, 0x05]), Consts.BLECharacteristic.LPF2_ALL); // Request hardware version
-            this.send(Buffer.from([0x01, 0x05, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate RSSI updates
-            this.send(Buffer.from([0x01, 0x06, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate battery level reports
-            this.send(Buffer.from([0x01, 0x0d, 0x05]), Consts.BLECharacteristic.LPF2_ALL); // Request primary MAC address
+            await this.sleep(500);
+            this._requestHubPropertyReports(0x02); // Activate button reports
+            await this._requestHubPropertyValue(0x03); // Request firmware version
+            await this._requestHubPropertyValue(0x04); // Request hardware version
+            this._requestHubPropertyReports(0x05); // Activate RSSI updates
+            this._requestHubPropertyReports(0x06); // Activate battery level reports
+            await this._requestHubPropertyValue(0x0d); // Request primary MAC address
             this.emit("connect");
+            debug("LPF2Hub connected");
             resolve();
         });
     }
@@ -131,7 +135,12 @@ export class LPF2Hub extends BaseHub {
 
             switch (message[2]) {
                 case 0x01: {
-                    this._parseDeviceInfo(message);
+                    const property = message[3];
+                    const callback = this._propertyRequestCallbacks[property];
+                    if (callback) {
+                        callback(message);
+                    }
+                    delete this._propertyRequestCallbacks[property];
                     break;
                 }
                 case 0x04: {
@@ -164,7 +173,23 @@ export class LPF2Hub extends BaseHub {
     }
 
 
-    private _parseDeviceInfo (message: Buffer) {
+    private _requestHubPropertyValue (property: number) {
+        return new Promise((resolve) => {
+            this._propertyRequestCallbacks[property] = (message) => {
+                this._parseHubPropertyResponse(message);
+                return resolve();
+            };
+            this.send(Buffer.from([0x01, property, 0x05]), Consts.BLECharacteristic.LPF2_ALL);
+        });
+    }
+
+
+    private _requestHubPropertyReports (property: number) {
+        this.send(Buffer.from([0x01, property, 0x02]), Consts.BLECharacteristic.LPF2_ALL);
+    }
+
+
+    private _parseHubPropertyResponse (message: Buffer) {
 
         // Button press reports
         if (message[3] === 0x02) {
@@ -355,45 +380,6 @@ export class LPF2Hub extends BaseHub {
         if (device) {
             device.receive(message);
         }
-
-    //     if ((data[3] === 0x3d && this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ CPU Temperature
-    //         /**
-    //          * Emits when a change is detected on a temperature sensor. Measured in degrees centigrade.
-    //          * @event LPF2Hub#temp
-    //          * @param {string} port For Control+ Hubs, port will be "CPU" as the sensor reports CPU temperature.
-    //          * @param {number} temp
-    //          */
-    //         this.emit("temp", "CPU", ((data.readInt16LE(4) / 900) * 90).toFixed(2));
-    //         return;
-    //     }
-
-    //     const port = this._getPortForPortNumber(data[3]);
-
-    //     if (!port) {
-    //         return;
-    //     }
-
-    //     if (port && port.connected) {
-    //         switch (port.type) {
-    //             case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
-    //                 if (data[4] <= 10) {
-    //                     this.emit("color", port.id, data[4]);
-    //                 }
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER: {
-    //                 /**
-    //                  * Emits on a speed change.
-    //                  * @event LPF2Hub#speed
-    //                  * @param {string} port
-    //                  * @param {number} speed
-    //                  */
-    //                 const speed = data.readInt16LE(4);
-    //                 this.emit("speed", port.id, speed);
-    //                 break;
-    //             }
-    //         }
-    //     }
 
     }
 
