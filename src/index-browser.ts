@@ -22,6 +22,9 @@ import { MoveHubTiltSensor } from "./devices/movehubtiltsensor";
 import { PUPRemoteButton } from "./devices/pupremotebutton";
 import { SimpleMediumLinearMotor } from "./devices/simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
+import { TechnicMediumHubAccelerometerSensor } from "./devices/technicmediumhubaccelerometersensor";
+import { TechnicMediumHubGyroSensor } from "./devices/technicmediumhubgyrosensor";
+import { TechnicMediumHubTiltSensor } from "./devices/technicmediumhubtiltsensor";
 import { TechnicXLargeLinearMotor } from "./devices/technicxlargelinearmotor";
 import { TiltSensor } from "./devices/tiltsensor";
 import { TrainMotor } from "./devices/trainmotor";
@@ -50,6 +53,9 @@ window.PoweredUP = {
     MoveHubTiltSensor,
     PUPRemoteButton,
     SimpleMediumLinearMotor,
+    TechnicMediumHubAccelerometerSensor,
+    TechnicMediumHubGyroSensor,
+    TechnicMediumHubTiltSensor,
     TechnicLargeLinearMotor,
     TechnicXLargeLinearMotor,
     TiltSensor,

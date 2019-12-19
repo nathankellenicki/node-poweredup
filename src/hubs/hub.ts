@@ -14,6 +14,9 @@ import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
 import { PUPRemoteButton } from "../devices/pupremotebutton";
 import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
+import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
+import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
+import { TechnicMediumHubTiltSensor } from "../devices/technicmediumhubtiltsensor";
 import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor";
 import { TiltSensor } from "../devices/tiltsensor";
 import { TrainMotor } from "../devices/trainmotor";
@@ -321,6 +324,15 @@ export class Hub extends EventEmitter {
                 break;
             case Consts.DeviceType.MOVE_HUB_TILT_SENSOR:
                 device = new MoveHubTiltSensor(this, portId);
+                break;
+            case Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR:
+                device = new TechnicMediumHubTiltSensor(this, portId);
+                break;
+            case Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR:
+                device = new TechnicMediumHubGyroSensor(this, portId);
+                break;
+            case Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER:
+                device = new TechnicMediumHubAccelerometerSensor(this, portId);
                 break;
             case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
                 device = new MediumLinearMotor(this, portId);
