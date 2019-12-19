@@ -210,15 +210,3 @@ export const ValueBits = {
     [ValueType.Int32]: 4,
     [ValueType.Float]: 4
 };
-
-export interface IDeviceMode {
-    input: boolean;
-    event?: string;
-    values?: {
-        type: ValueType,
-        count: number,
-        min?: number,
-        max?: number
-    };
-    num: { [type in HubType]?: number };
-}

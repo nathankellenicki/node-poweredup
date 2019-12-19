@@ -1,8 +1,8 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import { DeviceType, HubType, IDeviceMode, ValueType } from "../consts";
+import { DeviceType, HubType, ValueType } from "../consts";
 
 export class ColorDistanceSensor extends Device {
     constructor (hub: IDeviceInterface, portId: number) {
@@ -81,9 +81,13 @@ export namespace ColorDistanceSensor {
                 [HubType.HUB]: 0x04
             }
         },
-        SOME_OUTPUT_MODE: {
+        COL_O: {
             input: false,
-            num: {}
+            num: {
+                [HubType.MOVE_HUB]: 0x05,
+                [HubType.TECHNIC_MEDIUM_HUB]: 0x05,
+                [HubType.HUB]: 0x05
+            }
         },
         RGB_I: {
             input: true,
@@ -95,9 +99,13 @@ export namespace ColorDistanceSensor {
                 [HubType.HUB]: 0x06
             }
         },
-        OTHER_OUTPUT_MODE: {
+        IR_Tx: {
             input: false,
-            num: {}
+            num: {
+                [HubType.MOVE_HUB]: 0x07,
+                [HubType.TECHNIC_MEDIUM_HUB]: 0x07,
+                [HubType.HUB]: 0x07
+            }
         },
         SPEC_1: {
             input: true,

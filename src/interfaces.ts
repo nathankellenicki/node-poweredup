@@ -22,3 +22,16 @@ export interface IDeviceInterface extends EventEmitter {
     send: (message: Buffer, uuid: string, callback?: () => void) => void;
     subscribe: (portId: number, deviceType: number, mode: number) => void;
 }
+
+export interface IDeviceMode {
+    input: boolean;
+    event?: string;
+    values?: {
+        type: Consts.ValueType,
+        count: number,
+        min?: number,
+        max?: number
+    };
+    num: { [type in Consts.HubType]?: number };
+    transform?: (hubType: Consts.HubType, data: number[]) => number[];
+}

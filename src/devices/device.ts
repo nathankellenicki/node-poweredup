@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -16,12 +16,12 @@ export class Device extends EventEmitter {
     private _portId: number;
     private _connected: boolean = true;
     private _type: Consts.DeviceType;
-    private _modes: {[name: string]: Consts.IDeviceMode} = {};
+    private _modes: {[name: string]: IDeviceMode} = {};
     private _eventMap: {[event: string]: string};
 
     private _isWeDo2SmartHub: boolean;
 
-    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: Consts.IDeviceMode} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: IDeviceMode} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
         this._hub = hub;
         this._portId = portId;
@@ -160,7 +160,10 @@ export class Device extends EventEmitter {
         }
 
         if (mode.event) {
-            this.emit(mode.event, ...data);
+            this.emit(
+                mode.event,
+                ...(mode.transform ? mode.transform(this.hub.type, data) : data)
+            );
         }
 
         return data;
@@ -179,5 +182,4 @@ export class Device extends EventEmitter {
             throw new Error("Device is not connected");
         }
     }
-
 }
