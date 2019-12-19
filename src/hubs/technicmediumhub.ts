@@ -7,31 +7,31 @@ import { LPF2Hub } from "./lpf2hub";
 import * as Consts from "../consts";
 
 import Debug = require("debug");
-const debug = Debug("ControlPlusHub");
+const debug = Debug("technicmediumhub");
 
 
 /**
- * The ControlPlusHub is emitted if the discovered device is a Control+ Hub.
- * @class ControlPlusHub
+ * The TechnicMediumHub is emitted if the discovered device is a Technic Medium Hub.
+ * @class TechnicMediumHub
  * @extends LPF2Hub
- * @extends Hub
+ * @extends BaseHub
  */
-export class ControlPlusHub extends LPF2Hub {
+export class TechnicMediumHub extends LPF2Hub {
 
 
-    public static IsControlPlusHub (peripheral: Peripheral) {
+    public static IsTechnicMediumHub (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&
             peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &&
             peripheral.advertisement.manufacturerData &&
             peripheral.advertisement.manufacturerData.length > 3 &&
-            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.CONTROL_PLUS_LARGE_HUB
+            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB
         );
     }
 
     constructor (device: IBLEAbstraction) {
-        super(device, ControlPlusHub.PortMap, Consts.HubType.CONTROL_PLUS_HUB);
+        super(device, TechnicMediumHub.PortMap, Consts.HubType.TECHNIC_MEDIUM_HUB);
         debug("Discovered Control+ Hub");
     }
 
@@ -108,7 +108,7 @@ export class ControlPlusHub extends LPF2Hub {
 
 }
 
-export namespace ControlPlusHub {
+export namespace TechnicMediumHub {
 
     export const PortMap: {[portName: string]: number} = {
         "A": 0,

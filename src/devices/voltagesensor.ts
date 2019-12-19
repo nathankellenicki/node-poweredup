@@ -48,15 +48,15 @@ export namespace VoltageSensor {
 
     export const MaxVoltageValue: {[hubType: number]: number} = {
         [Consts.HubType.UNKNOWN]: 9.615,
-        [Consts.HubType.DUPLO_TRAIN_HUB]: 6.4,
-        [Consts.HubType.POWERED_UP_REMOTE]: 6.4,
+        [Consts.HubType.DUPLO_TRAIN_BASE]: 6.4,
+        [Consts.HubType.REMOTE_CONTROL]: 6.4,
     }
 
     export const MaxVoltageRaw: {[hubType: number]: number} = {
         [Consts.HubType.UNKNOWN]: 3893,
-        [Consts.HubType.DUPLO_TRAIN_HUB]: 3047,
-        [Consts.HubType.POWERED_UP_REMOTE]: 3200,
-        [Consts.HubType.CONTROL_PLUS_HUB]: 4095,
+        [Consts.HubType.DUPLO_TRAIN_BASE]: 3047,
+        [Consts.HubType.REMOTE_CONTROL]: 3200,
+        [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4095,
     }
     
 }

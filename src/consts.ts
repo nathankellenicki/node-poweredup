@@ -2,7 +2,7 @@
  * @typedef HubType
  * @property {number} UNKNOWN 0
  * @property {number} WEDO2_SMART_HUB 1
- * @property {number} BOOST_MOVE_HUB 2
+ * @property {number} MOVE_HUB 2
  * @property {number} POWERED_UP_HUB 3
  * @property {number} POWERED_UP_REMOTE 4
  * @property {number} DUPLO_TRAIN_HUB 5
@@ -11,11 +11,11 @@
 export enum HubType {
     UNKNOWN = 0,
     WEDO2_SMART_HUB = 1,
-    BOOST_MOVE_HUB = 2,
-    POWERED_UP_HUB = 3,
-    POWERED_UP_REMOTE = 4,
-    DUPLO_TRAIN_HUB = 5,
-    CONTROL_PLUS_HUB = 6
+    MOVE_HUB = 2,
+    HUB = 3,
+    REMOTE_CONTROL = 4,
+    DUPLO_TRAIN_BASE = 5,
+    TECHNIC_MEDIUM_HUB = 6
 }
 
 
@@ -155,11 +155,11 @@ export enum DuploTrainBaseSound {
 
 
 export enum BLEManufacturerData {
-    DUPLO_TRAIN_HUB_ID = 32,
-    BOOST_MOVE_HUB_ID = 64,
-    POWERED_UP_HUB_ID = 65,
-    POWERED_UP_REMOTE_ID = 66,
-    CONTROL_PLUS_LARGE_HUB = 128
+    DUPLO_TRAIN_BASE_ID = 32,
+    MOVE_HUB_ID = 64,
+    HUB_ID = 65,
+    REMOTE_CONTROL_ID = 66,
+    TECHNIC_MEDIUM_HUB = 128
 }
 
 

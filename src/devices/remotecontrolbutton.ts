@@ -4,20 +4,20 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
-export class PUPRemoteButton extends Device {
+export class RemoteControlButton extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, PUPRemoteButton.ModeMap, Consts.DeviceType.PUP_REMOTE_BUTTON);
+        super(hub, portId, RemoteControlButton.ModeMap, Consts.DeviceType.PUP_REMOTE_BUTTON);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case PUPRemoteButton.Mode.BUTTON_EVENTS:
+            case RemoteControlButton.Mode.BUTTON_EVENTS:
                 /**
                  * Emits when a button on the remote is pressed or released.
-                 * @event PUPRemoteButton#button
+                 * @event RemoteControlButton#button
                  * @param {number} event
                  */
                 const event = message[4];
@@ -28,14 +28,14 @@ export class PUPRemoteButton extends Device {
 
 }
 
-export namespace PUPRemoteButton {
+export namespace RemoteControlButton {
 
     export enum Mode {
         BUTTON_EVENTS = 0x00
     }
 
     export const ModeMap: {[event: string]: number} = {
-        "button": PUPRemoteButton.Mode.BUTTON_EVENTS
+        "button": RemoteControlButton.Mode.BUTTON_EVENTS
     }
 
     export const ButtonState: {[state: string]: number} = {

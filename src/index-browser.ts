@@ -2,12 +2,12 @@ import * as Consts from "./consts";
 
 import { PoweredUP } from "./poweredup-browser";
 
-import { BoostMoveHub } from "./hubs/boostmovehub";
-import { ControlPlusHub } from "./hubs/controlplushub";
+import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
+import { MoveHub } from "./hubs/movehub";
 import { Hub } from "./hubs/hub";
-import { PUPHub } from "./hubs/puphub";
-import { PUPRemote } from "./hubs/pupremote";
+import { RemoteControl } from "./hubs/remotecontrol";
+import { TechnicMediumHub } from "./hubs/technicmediumhub";
 import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
 
 import { ColorDistanceSensor } from "./devices/colordistancesensor";
@@ -19,7 +19,7 @@ import { MediumLinearMotor } from "./devices/mediumlinearmotor";
 import { MotionSensor } from "./devices/motionsensor";
 import { MoveHubMediumLinearMotor } from "./devices/movehubmediumlinearmotor";
 import { MoveHubTiltSensor } from "./devices/movehubtiltsensor";
-import { PUPRemoteButton } from "./devices/pupremotebutton";
+import { RemoteControlButton } from "./devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "./devices/simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
 import { TechnicMediumHubAccelerometerSensor } from "./devices/technicmediumhubaccelerometersensor";
@@ -35,12 +35,11 @@ import { isWebBluetooth } from "./utils";
 // @ts-ignore
 window.PoweredUP = {
     PoweredUP,
-    Hub,
+    BaseHub,
     WeDo2SmartHub,
-    BoostMoveHub,
-    ControlPlusHub,
-    PUPHub,
-    PUPRemote,
+    TechnicMediumHub,
+    Hub,
+    RemoteControl,
     DuploTrainBase,
     Consts,
     ColorDistanceSensor,
@@ -49,9 +48,10 @@ window.PoweredUP = {
     Light,
     MediumLinearMotor,
     MotionSensor,
+    MoveHub,
     MoveHubMediumLinearMotor,
     MoveHubTiltSensor,
-    PUPRemoteButton,
+    RemoteControlButton,
     SimpleMediumLinearMotor,
     TechnicMediumHubAccelerometerSensor,
     TechnicMediumHubGyroSensor,

@@ -1,4 +1,4 @@
-import { Hub } from "./hub";
+import { BaseHub } from "./basehub";
 
 import * as Consts from "../consts";
 
@@ -11,15 +11,9 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
 
 /**
  * @class LPF2Hub
- * @extends Hub
+ * @extends BaseHub
  */
-export class LPF2Hub extends Hub {
-
-    protected _ledPort: number = 0x32;
-
-    private _lastTiltX: number = 0;
-    private _lastTiltY: number = 0;
-    private _lastTiltZ: number = 0;
+export class LPF2Hub extends BaseHub {
 
     private _messageBuffer: Buffer = Buffer.alloc(0);
 
@@ -381,46 +375,6 @@ export class LPF2Hub extends Hub {
 
     //     if (port && port.connected) {
     //         switch (port.type) {
-    //             case Consts.DeviceType.CONTROL_PLUS_TILT: {
-    //                 const tiltZ = data.readInt16LE(4);
-    //                 const tiltY = data.readInt16LE(6);
-    //                 const tiltX = data.readInt16LE(8);
-    //                 this._lastTiltX = tiltX;
-    //                 this._lastTiltY = tiltY;
-    //                 this._lastTiltZ = tiltZ;
-    //                 this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.CONTROL_PLUS_GYRO: {
-    //                 const gyroX = Math.round(data.readInt16LE(4) * 7 / 400);
-    //                 const gyroY = Math.round(data.readInt16LE(6) * 7 / 400);
-    //                 const gyroZ = Math.round(data.readInt16LE(8) * 7 / 400);
-    //                 /**
-    //                  * Emits when gyroscope detects movement. Measured in DPS - degrees per second.
-    //                  * @event LPF2Hub#gyro
-    //                  * @param {string} port
-    //                  * @param {number} x
-    //                  * @param {number} y
-    //                  * @param {number} z
-    //                  */
-    //                 this.emit("gyro", "GYRO", gyroX, gyroY, gyroZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER: {
-    //                 const accelX = Math.round(data.readInt16LE(4) / 4.096);
-    //                 const accelY = Math.round(data.readInt16LE(6) / 4.096);
-    //                 const accelZ = Math.round(data.readInt16LE(8) / 4.096);
-    //                 /**
-    //                  * Emits when accelerometer detects movement. Measured in mG.
-    //                  * @event LPF2Hub#accel
-    //                  * @param {string} port
-    //                  * @param {number} x
-    //                  * @param {number} y
-    //                  * @param {number} z
-    //                  */
-    //                 this.emit("accel", "ACCEL", accelX, accelY, accelZ);
-    //                 break;
-    //             }
     //             case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
     //                 if (data[4] <= 10) {
     //                     this.emit("color", port.id, data[4]);

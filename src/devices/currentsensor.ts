@@ -48,7 +48,7 @@ export namespace CurrentSensor {
 
     export const MaxCurrentValue: {[hubType: number]: number} = {
         [Consts.HubType.UNKNOWN]: 2444,
-        [Consts.HubType.CONTROL_PLUS_HUB]: 4175,
+        [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4175,
     }
 
     export const MaxCurrentRaw: {[hubType: number]: number} = {

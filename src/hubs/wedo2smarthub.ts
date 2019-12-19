@@ -2,7 +2,7 @@ import { Peripheral } from "@abandonware/noble";
 
 import { IBLEAbstraction } from "../interfaces";
 
-import { Hub } from "./hub";
+import { BaseHub } from "./basehub";
 
 import * as Consts from "../consts";
 
@@ -15,9 +15,9 @@ const debug = Debug("wedo2smarthub");
 /**
  * The WeDo2SmartHub is emitted if the discovered device is a WeDo 2.0 Smart Hub.
  * @class WeDo2SmartHub
- * @extends Hub
+ * @extends BaseHub
  */
-export class WeDo2SmartHub extends Hub {
+export class WeDo2SmartHub extends BaseHub {
 
 
     public static IsWeDo2SmartHub (peripheral: Peripheral) {

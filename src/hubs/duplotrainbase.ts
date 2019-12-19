@@ -13,7 +13,7 @@ const debug = Debug("duplotrainbase");
  * The DuploTrainBase is emitted if the discovered device is a Duplo Train Base.
  * @class DuploTrainBase
  * @extends LPF2Hub
- * @extends Hub
+ * @extends BaseHub
  */
 export class DuploTrainBase extends LPF2Hub {
 
@@ -25,15 +25,13 @@ export class DuploTrainBase extends LPF2Hub {
             peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &&
             peripheral.advertisement.manufacturerData &&
             peripheral.advertisement.manufacturerData.length > 3 &&
-            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID
+            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID
         );
     }
-
-
-    protected _ledPort = 0x11;
+    
 
     constructor (device: IBLEAbstraction) {
-        super(device, DuploTrainBase.PortMap, Consts.HubType.DUPLO_TRAIN_HUB);
+        super(device, DuploTrainBase.PortMap, Consts.HubType.DUPLO_TRAIN_BASE);
         debug("Discovered Duplo Train Base");
     }
 
