@@ -1,14 +1,14 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import * as Consts from "../consts";
+import { BLECharacteristic, DeviceType, HubType, ValueType } from "../consts";
 
 export class HubLED extends Device {
 
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.HUB_LED);
+        super(hub, portId, {}, DeviceType.HUB_LED);
     }
 
 
@@ -20,13 +20,10 @@ export class HubLED extends Device {
      */
     public setColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
-            if (this.mode !== HubLED.Mode.COLOR) {
-                this.subscribe(HubLED.Mode.COLOR);
-            }
             if (typeof color === "boolean") {
                 color = 0;
             }
-            this.send(Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, color]));
+            this.sendWithMode("COLOR", Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, color]));
             return resolve();
         });
     }
@@ -42,10 +39,7 @@ export class HubLED extends Device {
      */
     public setRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
-            if (this.mode !== HubLED.Mode.RGB) {
-                this.subscribe(HubLED.Mode.RGB);
-            }
-            this.send(Buffer.from([0x81, this.portId, 0x11, 0x51, 0x01, red, green, blue]));
+            this.sendWithMode("RGB", Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, red, green, blue]));
             return resolve();
         });
     }
@@ -62,7 +56,7 @@ export class HubLED extends Device {
         return new Promise((resolve) => {
             if (this.isWeDo2SmartHub) {
                 const data = Buffer.from([this.portId, 0x01, 0x02, brightness]);
-                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+                this.send(data, BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
                 const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, brightness]);
                 this.send(data);
@@ -75,10 +69,24 @@ export class HubLED extends Device {
 }
 
 export namespace HubLED {
-
-    export enum Mode {
-        COLOR = 0x00,
-        RGB = 0x01
-    }
-
+    export const modes: { [name: string]: IDeviceMode } = {
+        COLOR: {
+            input: false,
+            num: {
+                [HubType.MOVE_HUB]: 0x00,
+                [HubType.TECHNIC_MEDIUM_HUB]: 0x00,
+                [HubType.HUB]: 0x00,
+                [HubType.WEDO2_SMART_HUB]: 0x00
+            }
+        },
+        RGB: {
+            input: false,
+            num: {
+                [HubType.MOVE_HUB]: 0x01,
+                [HubType.TECHNIC_MEDIUM_HUB]: 0x01,
+                [HubType.HUB]: 0x01,
+                [HubType.WEDO2_SMART_HUB]: 0x01
+            }
+        }
+    };
 }

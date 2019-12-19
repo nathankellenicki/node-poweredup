@@ -97,6 +97,19 @@ export class Device extends EventEmitter {
         this.hub.send(data, characteristic, callback);
     }
 
+    public sendWithMode(modeName: string, data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
+        const previousMode = this.mode;
+        this.subscribe(modeName);
+        this.send(data, characteristic, () => {
+            if (previousMode) {
+                this.subscribe(previousMode);
+                if (callback) {
+                    callback();
+                }
+            }
+        });
+    }
+
     public subscribe (modeName: string) {
         this._ensureConnected();
         if (modeName !== this._mode) {
