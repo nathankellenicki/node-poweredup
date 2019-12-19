@@ -97,7 +97,7 @@ export class Device extends EventEmitter {
         this.hub.send(data, characteristic, callback);
     }
 
-    public sendWithMode(modeName: string, data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
+    protected sendWithMode (modeName: string, data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
         const previousMode = this.mode;
         this.subscribe(modeName);
         this.send(data, characteristic, () => {
@@ -107,6 +107,19 @@ export class Device extends EventEmitter {
                     callback();
                 }
             }
+        });
+    }
+
+    protected sendLinearPowerCommand (value: number) {
+        return new Promise((resolve) => {
+            if (this.isWeDo2SmartHub) {
+                const data = Buffer.from([this.portId, 0x01, 0x02, value]);
+                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+            } else {
+                const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, value]);
+                this.send(data);
+            }
+            return resolve();
         });
     }
 

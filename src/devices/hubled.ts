@@ -1,14 +1,14 @@
-import { Device } from "./device";
+import { Light } from "./light";
 
 import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import { BLECharacteristic, DeviceType, HubType, ValueType } from "../consts";
+import { DeviceType, HubType } from "../consts";
 
-export class HubLED extends Device {
+export class HubLED extends Light {
 
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, DeviceType.HUB_LED);
+        super(hub, portId, HubLED.modes, DeviceType.HUB_LED);
     }
 
 
@@ -43,29 +43,6 @@ export class HubLED extends Device {
             return resolve();
         });
     }
-
-
-
-    /**
-     * Set the light brightness.
-     * @method Light#brightness
-     * @param {number} brightness Brightness value between 0-100 (0 is off)
-     * @returns {Promise} Resolved upon successful completion of command.
-     */
-    public setBrightness (brightness: number) {
-        return new Promise((resolve) => {
-            if (this.isWeDo2SmartHub) {
-                const data = Buffer.from([this.portId, 0x01, 0x02, brightness]);
-                this.send(data, BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            } else {
-                const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, brightness]);
-                this.send(data);
-            }
-            return resolve();
-        });
-    }
-
-
 }
 
 export namespace HubLED {

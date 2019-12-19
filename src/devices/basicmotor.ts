@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -9,8 +9,8 @@ import { mapSpeed } from "../utils";
 export class BasicMotor extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, modeMap, type);
+    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: IDeviceMode}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+        super(hub, portId, modes, type);
     }
 
 
@@ -21,16 +21,7 @@ export class BasicMotor extends Device {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public setPower (power: number) {
-        return new Promise((resolve) => {
-            if (this.isWeDo2SmartHub) {
-                const data = Buffer.from([this.portId, 0x01, 0x02, mapSpeed(power)]);
-                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            } else {
-                const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, mapSpeed(power)]);
-                this.send(data);
-            }
-            return resolve();
-        });
+        return this.sendLinearPowerCommand(mapSpeed(power));
     }
 
 

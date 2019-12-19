@@ -1,14 +1,14 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import * as Consts from "../consts";
+import { DeviceType, HubType } from "../consts";
 
 export class Light extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.LIGHT);
+    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: IDeviceMode} = {}, type: DeviceType = DeviceType.LIGHT) {
+        super(hub, portId, modes, type);
     }
 
 
@@ -19,17 +19,6 @@ export class Light extends Device {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public setBrightness (brightness: number) {
-        return new Promise((resolve) => {
-            if (this.isWeDo2SmartHub) {
-                const data = Buffer.from([this.portId, 0x01, 0x02, brightness]);
-                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            } else {
-                const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, brightness]);
-                this.send(data);
-            }
-            return resolve();
-        });
+        return this.sendLinearPowerCommand(brightness);
     }
-
-
 }
