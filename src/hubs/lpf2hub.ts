@@ -1,4 +1,4 @@
-import { Hub } from "./hub";
+import { BaseHub } from "./basehub";
 
 import * as Consts from "../consts";
 
@@ -11,21 +11,9 @@ const modeInfoDebug = Debug("lpf2hubmodeinfo");
 
 /**
  * @class LPF2Hub
- * @extends Hub
+ * @extends BaseHub
  */
-export class LPF2Hub extends Hub {
-
-    protected _ledPort: number = 0x32;
-    protected _voltagePort: number | undefined;
-    protected _voltageMaxV: number = 9.6;
-    protected _voltageMaxRaw: number = 3893;
-    protected _currentPort: number | undefined;
-    protected _currentMaxMA: number = 2444;
-    protected _currentMaxRaw: number = 4095;
-
-    private _lastTiltX: number = 0;
-    private _lastTiltY: number = 0;
-    private _lastTiltZ: number = 0;
+export class LPF2Hub extends BaseHub {
 
     private _messageBuffer: Buffer = Buffer.alloc(0);
 
@@ -35,12 +23,6 @@ export class LPF2Hub extends Hub {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-            if (this._voltagePort !== undefined) {
-                this.subscribe(this._voltagePort, Consts.DeviceType.VOLTAGE, 0x00); // Activate voltage reports
-            }
-            if (this._currentPort !== undefined) {
-                this.subscribe(this._currentPort, Consts.DeviceType.CURRENT, 0x00); // Activate currrent reports
-            }
             await this.sleep(100);
             this.send(Buffer.from([0x01, 0x02, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Activate button reports
             this.send(Buffer.from([0x01, 0x03, 0x05]), Consts.BLECharacteristic.LPF2_ALL); // Request firmware version
@@ -85,45 +67,6 @@ export class LPF2Hub extends Hub {
             this.send(data, Consts.BLECharacteristic.LPF2_ALL);
             this.send(data, Consts.BLECharacteristic.LPF2_ALL);
             this._name = name;
-            return resolve();
-        });
-    }
-
-
-    /**
-     * Set the color of the LED on the Hub via a color value.
-     * @method LPF2Hub#setLEDColor
-     * @param {Color} color
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDColor (color: number | boolean) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, this._ledPort, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            if (typeof color === "boolean") {
-                color = 0;
-            }
-            data = Buffer.from([0x81, this._ledPort, 0x11, 0x51, 0x00, color]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            return resolve();
-        });
-    }
-
-
-    /**
-     * Set the color of the LED on the Hub via RGB values.
-     * @method LPF2Hub#setLEDRGB
-     * @param {number} red
-     * @param {number} green
-     * @param {number} blue
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDRGB (red: number, green: number, blue: number) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x41, this._ledPort, 0x01, 0x01, 0x00, 0x00, 0x00, 0x00]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            data = Buffer.from([0x81, this._ledPort, 0x11, 0x51, 0x01, red, green, blue]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
             return resolve();
         });
     }
@@ -414,16 +357,6 @@ export class LPF2Hub extends Hub {
             device.receive(message.slice(3));
         }
 
-    //     if (data[3] === this._voltagePort) {
-    //         const voltageRaw = data.readUInt16LE(4);
-    //         this._voltage = voltageRaw * this._voltageMaxV / this._voltageMaxRaw;
-    //         return;
-    //     } else if (data[3] === this._currentPort) {
-    //         const currentRaw = data.readUInt16LE(4);
-    //         this._current = this._currentMaxMA * currentRaw / this._currentMaxRaw;
-    //         return;
-    //     }
-
     //     if ((data[3] === 0x3d && this.type === Consts.HubType.CONTROL_PLUS_HUB)) { // Control+ CPU Temperature
     //         /**
     //          * Emits when a change is detected on a temperature sensor. Measured in degrees centigrade.
@@ -443,75 +376,6 @@ export class LPF2Hub extends Hub {
 
     //     if (port && port.connected) {
     //         switch (port.type) {
-    //             case Consts.DeviceType.CONTROL_PLUS_TILT: {
-    //                 const tiltZ = data.readInt16LE(4);
-    //                 const tiltY = data.readInt16LE(6);
-    //                 const tiltX = data.readInt16LE(8);
-    //                 this._lastTiltX = tiltX;
-    //                 this._lastTiltY = tiltY;
-    //                 this._lastTiltZ = tiltZ;
-    //                 this.emit("tilt", "TILT", this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.CONTROL_PLUS_GYRO: {
-    //                 const gyroX = Math.round(data.readInt16LE(4) * 7 / 400);
-    //                 const gyroY = Math.round(data.readInt16LE(6) * 7 / 400);
-    //                 const gyroZ = Math.round(data.readInt16LE(8) * 7 / 400);
-    //                 /**
-    //                  * Emits when gyroscope detects movement. Measured in DPS - degrees per second.
-    //                  * @event LPF2Hub#gyro
-    //                  * @param {string} port
-    //                  * @param {number} x
-    //                  * @param {number} y
-    //                  * @param {number} z
-    //                  */
-    //                 this.emit("gyro", "GYRO", gyroX, gyroY, gyroZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.CONTROL_PLUS_ACCELEROMETER: {
-    //                 const accelX = Math.round(data.readInt16LE(4) / 4.096);
-    //                 const accelY = Math.round(data.readInt16LE(6) / 4.096);
-    //                 const accelZ = Math.round(data.readInt16LE(8) / 4.096);
-    //                 /**
-    //                  * Emits when accelerometer detects movement. Measured in mG.
-    //                  * @event LPF2Hub#accel
-    //                  * @param {string} port
-    //                  * @param {number} x
-    //                  * @param {number} y
-    //                  * @param {number} z
-    //                  */
-    //                 this.emit("accel", "ACCEL", accelX, accelY, accelZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.BOOST_TILT: {
-    //                 const tiltX = data.readInt8(4);
-    //                 const tiltY = data.readInt8(5);
-    //                 this._lastTiltX = tiltX;
-    //                 this._lastTiltY = tiltY;
-    //                 this.emit("tilt", port.id, this._lastTiltX, this._lastTiltY, this._lastTiltZ);
-    //                 break;
-    //             }
-    //             case Consts.DeviceType.POWERED_UP_REMOTE_BUTTON: {
-    //                 switch (data[4]) {
-    //                     case 0x01: {
-    //                         this.emit("button", port.id, Consts.ButtonState.UP);
-    //                         break;
-    //                     }
-    //                     case 0xff: {
-    //                         this.emit("button", port.id, Consts.ButtonState.DOWN);
-    //                         break;
-    //                     }
-    //                     case 0x7f: {
-    //                         this.emit("button", port.id, Consts.ButtonState.STOP);
-    //                         break;
-    //                     }
-    //                     case 0x00: {
-    //                         this.emit("button", port.id, Consts.ButtonState.RELEASED);
-    //                         break;
-    //                     }
-    //                 }
-    //                 break;
-    //             }
     //             case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR: {
     //                 if (data[4] <= 10) {
     //                     this.emit("color", port.id, data[4]);

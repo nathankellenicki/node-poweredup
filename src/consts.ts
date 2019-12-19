@@ -2,7 +2,7 @@
  * @typedef HubType
  * @property {number} UNKNOWN 0
  * @property {number} WEDO2_SMART_HUB 1
- * @property {number} BOOST_MOVE_HUB 2
+ * @property {number} MOVE_HUB 2
  * @property {number} POWERED_UP_HUB 3
  * @property {number} POWERED_UP_REMOTE 4
  * @property {number} DUPLO_TRAIN_HUB 5
@@ -11,11 +11,11 @@
 export enum HubType {
     UNKNOWN = 0,
     WEDO2_SMART_HUB = 1,
-    BOOST_MOVE_HUB = 2,
-    POWERED_UP_HUB = 3,
-    POWERED_UP_REMOTE = 4,
-    DUPLO_TRAIN_HUB = 5,
-    CONTROL_PLUS_HUB = 6
+    MOVE_HUB = 2,
+    HUB = 3,
+    REMOTE_CONTROL = 4,
+    DUPLO_TRAIN_BASE = 5,
+    TECHNIC_MEDIUM_HUB = 6
 }
 
 
@@ -55,16 +55,16 @@ export enum DeviceType {
     SIMPLE_MEDIUM_LINEAR_MOTOR = 1,
     TRAIN_MOTOR = 2,
     LIGHT = 8,
-    VOLTAGE = 20,
-    CURRENT = 21,
+    VOLTAGE_SENSOR = 20,
+    CURRENT_SENSOR = 21,
     PIEZO_TONE = 22,
-    RGB_LIGHT = 23,
+    HUB_LED = 23,
     TILT_SENSOR = 34,
     MOTION_SENSOR = 35,
     COLOR_DISTANCE_SENSOR = 37,
     MEDIUM_LINEAR_MOTOR = 38,
     MOVE_HUB_MEDIUM_LINEAR_MOTOR = 39,
-    BOOST_TILT = 40,
+    MOVE_HUB_TILT_SENSOR = 40,
     DUPLO_TRAIN_BASE_MOTOR = 41,
     DUPLO_TRAIN_BASE_SPEAKER = 42,
     DUPLO_TRAIN_BASE_COLOR = 43,
@@ -72,11 +72,11 @@ export enum DeviceType {
     TECHNIC_LARGE_LINEAR_MOTOR = 46,
     TECHNIC_XLARGE_LINEAR_MOTOR = 47,
     CONTROL_PLUS_GEST = 54,
-    POWERED_UP_REMOTE_BUTTON = 55,
+    PUP_REMOTE_BUTTON = 55,
     RSSI = 56,
-    CONTROL_PLUS_ACCELEROMETER = 57,
-    CONTROL_PLUS_GYRO = 58,
-    CONTROL_PLUS_TILT = 59,
+    TECHNIC_MEDIUM_HUB_ACCELEROMETER = 57,
+    TECHNIC_MEDIUM_HUB_GYRO_SENSOR = 58,
+    TECHNIC_MEDIUM_HUB_TILT_SENSOR = 59,
     TEMPERATURE = 60,
 }
 
@@ -155,11 +155,11 @@ export enum DuploTrainBaseSound {
 
 
 export enum BLEManufacturerData {
-    DUPLO_TRAIN_HUB_ID = 32,
-    BOOST_MOVE_HUB_ID = 64,
-    POWERED_UP_HUB_ID = 65,
-    POWERED_UP_REMOTE_ID = 66,
-    CONTROL_PLUS_LARGE_HUB = 128
+    DUPLO_TRAIN_BASE_ID = 32,
+    MOVE_HUB_ID = 64,
+    HUB_ID = 65,
+    REMOTE_CONTROL_ID = 66,
+    TECHNIC_MEDIUM_HUB = 128
 }
 
 

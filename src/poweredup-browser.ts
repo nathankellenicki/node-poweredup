@@ -1,11 +1,11 @@
 import { WebBLEDevice } from "./webbleabstraction";
 
-import { BoostMoveHub } from "./hubs/boostmovehub";
-import { ControlPlusHub } from "./hubs/controlplushub";
+import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
+import { MoveHub } from "./hubs/movehub";
 import { Hub } from "./hubs/hub";
-import { PUPHub } from "./hubs/puphub";
-import { PUPRemote } from "./hubs/pupremote";
+import { RemoteControl } from "./hubs/remotecontrol";
+import { TechnicMediumHub } from "./hubs/technicmediumhub";
 import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
 
 import * as Consts from "./consts";
@@ -24,7 +24,7 @@ const debug = Debug("poweredup");
 export class PoweredUP extends EventEmitter {
 
 
-    private _connectedHubs: {[uuid: string]: Hub} = {};
+    private _connectedHubs: {[uuid: string]: BaseHub} = {};
 
 
     constructor () {
@@ -76,7 +76,7 @@ export class PoweredUP extends EventEmitter {
     /**
      * Retrieve a list of Powered UP Hubs.
      * @method PoweredUP#getHubs
-     * @returns {Hub[]}
+     * @returns {BaseHub[]}
      */
     public getHubs () {
         return Object.values(this._connectedHubs);
@@ -87,7 +87,7 @@ export class PoweredUP extends EventEmitter {
      * Retrieve a Powered UP Hub by UUID.
      * @method PoweredUP#getHubByUUID
      * @param {string} uuid
-     * @returns {Hub | null}
+     * @returns {BaseHub | null}
      */
     public getHubByUUID (uuid: string) {
         return this._connectedHubs[uuid];
@@ -98,7 +98,7 @@ export class PoweredUP extends EventEmitter {
      * Retrieve a Powered UP Hub by primary MAC address.
      * @method PoweredUP#getHubByPrimaryMACAddress
      * @param {string} address
-     * @returns {Hub}
+     * @returns {BaseHub}
      */
     public getHubByPrimaryMACAddress (address: string) {
         return Object.values(this._connectedHubs).filter((hub) => hub.primaryMACAddress === address)[0];
@@ -109,7 +109,7 @@ export class PoweredUP extends EventEmitter {
      * Retrieve a list of Powered UP Hub by name.
      * @method PoweredUP#getHubsByName
      * @param {string} name
-     * @returns {Hub[]}
+     * @returns {BaseHub[]}
      */
     public getHubsByName (name: string) {
         return Object.values(this._connectedHubs).filter((hub) => hub.name === name);
@@ -120,7 +120,7 @@ export class PoweredUP extends EventEmitter {
      * Retrieve a list of Powered UP Hub by type.
      * @method PoweredUP#getHubsByType
      * @param {string} name
-     * @returns {Hub[]}
+     * @returns {BaseHub[]}
      */
     public getHubsByType (hubType: number) {
         return Object.values(this._connectedHubs).filter((hub) => hub.type === hubType);
@@ -139,20 +139,20 @@ export class PoweredUP extends EventEmitter {
                     if (message[2] === 0x01 && message[3] === 0x0b) {
                         process.nextTick(() => {
                             switch (message[5]) {
-                                case Consts.BLEManufacturerData.POWERED_UP_REMOTE_ID:
-                                    resolve(Consts.HubType.POWERED_UP_REMOTE);
+                                case Consts.BLEManufacturerData.REMOTE_CONTROL_ID:
+                                    resolve(Consts.HubType.REMOTE_CONTROL);
                                     break;
-                                case Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID:
-                                    resolve(Consts.HubType.BOOST_MOVE_HUB);
+                                case Consts.BLEManufacturerData.MOVE_HUB_ID:
+                                    resolve(Consts.HubType.MOVE_HUB);
                                     break;
-                                case Consts.BLEManufacturerData.POWERED_UP_HUB_ID:
-                                    resolve(Consts.HubType.POWERED_UP_HUB);
+                                case Consts.BLEManufacturerData.HUB_ID:
+                                    resolve(Consts.HubType.HUB);
                                     break;
-                                case Consts.BLEManufacturerData.DUPLO_TRAIN_HUB_ID:
-                                    resolve(Consts.HubType.DUPLO_TRAIN_HUB);
+                                case Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID:
+                                    resolve(Consts.HubType.DUPLO_TRAIN_BASE);
                                     break;
-                                case Consts.BLEManufacturerData.CONTROL_PLUS_LARGE_HUB:
-                                    resolve(Consts.HubType.CONTROL_PLUS_HUB);
+                                case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB:
+                                    resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
                                     break;
                             }
                         });
@@ -170,7 +170,7 @@ export class PoweredUP extends EventEmitter {
 
         const device = new WebBLEDevice(server);
 
-        let hub: Hub;
+        let hub: BaseHub;
 
         let hubType = Consts.HubType.UNKNOWN;
         let isLPF2Hub = false;
@@ -195,20 +195,20 @@ export class PoweredUP extends EventEmitter {
             case Consts.HubType.WEDO2_SMART_HUB:
                 hub = new WeDo2SmartHub(device);
                 break;
-            case Consts.HubType.BOOST_MOVE_HUB:
-                hub = new BoostMoveHub(device);
+            case Consts.HubType.MOVE_HUB:
+                hub = new MoveHub(device);
                 break;
-            case Consts.HubType.POWERED_UP_HUB:
-                hub = new PUPHub(device);
+            case Consts.HubType.HUB:
+                hub = new Hub(device);
                 break;
-            case Consts.HubType.POWERED_UP_REMOTE:
-                hub = new PUPRemote(device);
+            case Consts.HubType.REMOTE_CONTROL:
+                hub = new RemoteControl(device);
                 break;
-            case Consts.HubType.DUPLO_TRAIN_HUB:
+            case Consts.HubType.DUPLO_TRAIN_BASE:
                 hub = new DuploTrainBase(device);
                 break;
-            case Consts.HubType.CONTROL_PLUS_HUB:
-                hub = new ControlPlusHub(device);
+            case Consts.HubType.TECHNIC_MEDIUM_HUB:
+                hub = new TechnicMediumHub(device);
                 break;
             default:
                 return;
@@ -231,7 +231,7 @@ export class PoweredUP extends EventEmitter {
             /**
              * Emits when a Powered UP Hub device is found.
              * @event PoweredUP#discover
-             * @param {WeDo2SmartHub | BoostMoveHub | ControlPlusHub | PUPHub | PUPRemote | DuploTrainBase} hub
+             * @param {WeDo2SmartHub | MoveHub | TechnicMediumHub | Hub | RemoteControl | DuploTrainBase} hub
              */
             this.emit("discover", hub);
 

@@ -84,6 +84,10 @@ export class Device extends EventEmitter {
         return this._type;
     }
 
+    public get mode () {
+        return this._mode;
+    }
+
     protected get isWeDo2SmartHub () {
         return this._isWeDo2SmartHub;
     }

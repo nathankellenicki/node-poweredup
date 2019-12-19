@@ -8,41 +8,38 @@ import { LPF2Hub } from "./lpf2hub";
 import * as Consts from "../consts";
 
 import Debug = require("debug");
-const debug = Debug("boostmovehub");
+const debug = Debug("movehub");
 
 
 /**
- * The BoostMoveHub is emitted if the discovered device is a Boost Move Hub.
- * @class BoostMoveHub
+ * The MoveHub is emitted if the discovered device is a Move Hub.
+ * @class MoveHub
  * @extends LPF2Hub
- * @extends Hub
+ * @extends BaseHub
  */
-export class BoostMoveHub extends LPF2Hub {
+export class MoveHub extends LPF2Hub {
 
 
-    public static IsBoostMoveHub (peripheral: Peripheral) {
+    public static IsMoveHub (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
             peripheral.advertisement.serviceUuids &&
             peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &&
             peripheral.advertisement.manufacturerData &&
             peripheral.advertisement.manufacturerData.length > 3 &&
-            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.BOOST_MOVE_HUB_ID
+            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.MOVE_HUB_ID
         );
     }
 
-    protected _currentPort = 0x3b;
-    protected _voltagePort = 0x3c;
-
     constructor (device: IBLEAbstraction) {
-        super(device, BoostMoveHub.PortMap, Consts.HubType.BOOST_MOVE_HUB);
-        debug("Discovered Boost Move Hub");
+        super(device, MoveHub.PortMap, Consts.HubType.MOVE_HUB);
+        debug("Discovered Move Hub");
     }
 
 
     public connect () {
         return new Promise(async (resolve, reject) => {
-            debug("Connecting to Boost Move Hub");
+            debug("Connecting to Move Hub");
             await super.connect();
             debug("Connect completed");
             return resolve();
@@ -52,21 +49,20 @@ export class BoostMoveHub extends LPF2Hub {
 
     protected _checkFirmware (version: string) {
         if (compareVersion("2.0.00.0017", version) === 1) {
-            throw new Error(`Your Boost Move Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
+            throw new Error(`Your Move Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
         }
     }
 
 
 }
 
-export namespace BoostMoveHub {
+export namespace MoveHub {
 
     export const PortMap: {[portName: string]: number} = {
         "A": 0,
         "B": 1,
         "C": 2,
-        "D": 3,
-        "TILT": 58
+        "D": 3
     }
 
 }
