@@ -19,6 +19,7 @@ import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
 import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
 import { RemoteControlButton } from "../devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
+import { PiezoBuzzer } from "../devices/piezobuzzer";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
 import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
@@ -335,6 +336,9 @@ export class BaseHub extends EventEmitter {
                 break;
             case Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR:
                 device = new MoveHubMediumLinearMotor(this, portId);
+                break;
+            case Consts.DeviceType.PIEZO_BUZZER:
+                device = new PiezoBuzzer(this, portId);
                 break;
             case Consts.DeviceType.MOTION_SENSOR:
                 device = new MotionSensor(this, portId);

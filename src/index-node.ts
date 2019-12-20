@@ -23,6 +23,7 @@ import { MediumLinearMotor } from "./devices/mediumlinearmotor";
 import { MotionSensor } from "./devices/motionsensor";
 import { MoveHubMediumLinearMotor } from "./devices/movehubmediumlinearmotor";
 import { MoveHubTiltSensor } from "./devices/movehubtiltsensor";
+import { PiezoBuzzer } from "./devices/piezobuzzer";
 import { RemoteControlButton } from "./devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "./devices/simplemediumlinearmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
@@ -59,6 +60,7 @@ export {
     MoveHub,
     MoveHubMediumLinearMotor,
     MoveHubTiltSensor,
+    PiezoBuzzer,
     RemoteControlButton,
     SimpleMediumLinearMotor,
     TechnicMediumHubAccelerometerSensor,

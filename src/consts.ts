@@ -57,7 +57,7 @@ export enum DeviceType {
     LIGHT = 8,
     VOLTAGE_SENSOR = 20,
     CURRENT_SENSOR = 21,
-    PIEZO_TONE = 22,
+    PIEZO_BUZZER = 22,
     HUB_LED = 23,
     TILT_SENSOR = 34,
     MOTION_SENSOR = 35,

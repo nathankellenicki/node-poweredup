@@ -230,7 +230,11 @@ export class LPF2Hub extends BaseHub {
 
         // Battery level reports
         } else if (message[3] === 0x06) {
-            this._batteryLevel = message[5];
+            const batteryLevel = message[5];
+            if (batteryLevel !== this._batteryLevel) {
+                this._batteryLevel = batteryLevel;
+                this.emit("batteryLevel", batteryLevel);
+            }
         }
 
     }

@@ -11,25 +11,30 @@ export class CurrentSensor extends Device {
     }
 
     public receive (message: Buffer) {
-        const mode = this._mode;
+        const mode = this.mode;
 
         switch (mode) {
             case CurrentSensor.Mode.CURRENT:
-                let maxCurrentValue = CurrentSensor.MaxCurrentValue[this.hub.type];
-                if (maxCurrentValue === undefined) {
-                    maxCurrentValue = CurrentSensor.MaxCurrentValue[Consts.HubType.UNKNOWN];
+                if (this.isWeDo2SmartHub) {
+                    const current =  message.readInt16LE(2) / 1000;
+                    this.emit("current", current);
+                } else {
+                    let maxCurrentValue = CurrentSensor.MaxCurrentValue[this.hub.type];
+                    if (maxCurrentValue === undefined) {
+                        maxCurrentValue = CurrentSensor.MaxCurrentValue[Consts.HubType.UNKNOWN];
+                    }
+                    let maxCurrentRaw = CurrentSensor.MaxCurrentRaw[this.hub.type];
+                    if (maxCurrentRaw === undefined) {
+                        maxCurrentRaw = CurrentSensor.MaxCurrentRaw[Consts.HubType.UNKNOWN];
+                    }
+                    const current = message.readUInt16LE(4) * maxCurrentValue / maxCurrentRaw;
+                    /**
+                     * Emits when a current change is detected.
+                     * @event CurrentSensor#current
+                     * @param {number} current
+                     */
+                    this.emit("current", current);
                 }
-                let maxCurrentRaw = CurrentSensor.MaxCurrentRaw[this.hub.type];
-                if (maxCurrentRaw === undefined) {
-                    maxCurrentRaw = CurrentSensor.MaxCurrentRaw[Consts.HubType.UNKNOWN];
-                }
-                const current = message.readUInt16LE(4) * maxCurrentValue / maxCurrentRaw;
-                /**
-                 * Emits when a current change is detected.
-                 * @event CurrentSensor#current
-                 * @param {number} current
-                 */
-                this.emit("current", current);
                 break;
         }
     }

@@ -15,21 +15,26 @@ export class VoltageSensor extends Device {
 
         switch (mode) {
             case VoltageSensor.Mode.VOLTAGE:
-                let maxVoltageValue = VoltageSensor.MaxVoltageValue[this.hub.type];
-                if (maxVoltageValue === undefined) {
-                    maxVoltageValue = VoltageSensor.MaxVoltageValue[Consts.HubType.UNKNOWN];
+                if (this.isWeDo2SmartHub) {
+                    const voltage = message.readInt16LE(2) / 40;
+                    this.emit("voltage", voltage);
+                } else {
+                    let maxVoltageValue = VoltageSensor.MaxVoltageValue[this.hub.type];
+                    if (maxVoltageValue === undefined) {
+                        maxVoltageValue = VoltageSensor.MaxVoltageValue[Consts.HubType.UNKNOWN];
+                    }
+                    let maxVoltageRaw = VoltageSensor.MaxVoltageRaw[this.hub.type];
+                    if (maxVoltageRaw === undefined) {
+                        maxVoltageRaw = VoltageSensor.MaxVoltageRaw[Consts.HubType.UNKNOWN];
+                    }
+                    const voltage = message.readUInt16LE(4) * maxVoltageValue / maxVoltageRaw;
+                    /**
+                     * Emits when a voltage change is detected.
+                     * @event VoltageSensor#voltage
+                     * @param {number} voltage
+                     */
+                    this.emit("voltage", voltage);
                 }
-                let maxVoltageRaw = VoltageSensor.MaxVoltageRaw[this.hub.type];
-                if (maxVoltageRaw === undefined) {
-                    maxVoltageRaw = VoltageSensor.MaxVoltageRaw[Consts.HubType.UNKNOWN];
-                }
-                const voltage = message.readUInt16LE(4) * maxVoltageValue / maxVoltageRaw;
-                /**
-                 * Emits when a voltage change is detected.
-                 * @event VoltageSensor#voltage
-                 * @param {number} voltage
-                 */
-                this.emit("voltage", voltage);
                 break;
         }
     }
