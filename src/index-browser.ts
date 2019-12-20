@@ -4,8 +4,8 @@ import { PoweredUP } from "./poweredup-browser";
 
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
-import { MoveHub } from "./hubs/movehub";
 import { Hub } from "./hubs/hub";
+import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
 import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
@@ -13,6 +13,10 @@ import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
 import { ColorDistanceSensor } from "./devices/colordistancesensor";
 import { CurrentSensor } from "./devices/currentsensor";
 import { Device } from "./devices/device";
+import { DuploTrainBaseColorSensor } from "./devices/duplotrainbasecolorsensor";
+import { DuploTrainBaseMotor } from "./devices/duplotrainbasemotor";
+import { DuploTrainBaseSpeaker } from "./devices/duplotrainbasespeaker";
+import { DuploTrainBaseSpeedometer } from "./devices/duplotrainbasespeedometer";
 import { HubLED } from "./devices/hubled";
 import { Light } from "./devices/light";
 import { MediumLinearMotor } from "./devices/mediumlinearmotor";
@@ -44,6 +48,10 @@ window.PoweredUP = {
     Consts,
     ColorDistanceSensor,
     Device,
+    DuploTrainBaseColorSensor,
+    DuploTrainBaseMotor,
+    DuploTrainBaseSpeaker,
+    DuploTrainBaseSpeedometer,
     HubLED,
     Light,
     MediumLinearMotor,

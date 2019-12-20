@@ -92,22 +92,33 @@ export class Device extends EventEmitter {
         return this._isWeDo2SmartHub;
     }
 
+
+    public writeDirect (mode: number, data: Buffer, callback?: () => void) {
+        if (this.isWeDo2SmartHub) {
+            this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, callback);
+        } else {
+            this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL, callback);
+        }
+    }
+
+    protected subscribeAndWriteDirect (modeName: string, data: Buffer, callback?: () => void) {
+        const previousMode = this.mode;
+        const modeNum = this.subscribe(modeName);
+        if (modeNum !== undefined) {
+            this.writeDirect(modeNum, data, () => {
+                if (previousMode) {
+                    this.subscribe(previousMode);
+                    if (callback) {
+                        callback();
+                    }
+                }
+            });
+        }
+    }
+
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
         this._ensureConnected();
         this.hub.send(data, characteristic, callback);
-    }
-
-    protected sendWithMode (modeName: string, data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
-        const previousMode = this.mode;
-        this.subscribe(modeName);
-        this.send(data, characteristic, () => {
-            if (previousMode) {
-                this.subscribe(previousMode);
-                if (callback) {
-                    callback();
-                }
-            }
-        });
     }
 
     protected sendLinearPowerCommand (value: number) {
@@ -125,16 +136,19 @@ export class Device extends EventEmitter {
 
     public subscribe (modeName: string) {
         this._ensureConnected();
+        const modeNum = this._modes[modeName].num[this.hub.type];
+
         if (modeName !== this._mode) {
             this._mode = modeName;
 
-            const modeNum = this._modes[modeName].num[this.hub.type];
             if (modeNum === undefined) {
                 // TODO : error handling -> unsupported mode
                 return;
             }
             this.hub.subscribe(this.portId, this.type, modeNum);
         }
+
+        return modeNum;
     }
 
     public receive (message: Buffer) {

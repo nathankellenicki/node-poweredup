@@ -23,7 +23,7 @@ export class HubLED extends Light {
             if (typeof color === "boolean") {
                 color = 0;
             }
-            this.sendWithMode("COLOR", Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, color]));
+            this.subscribeAndWriteDirect("COLOR", Buffer.from([color]));
             return resolve();
         });
     }
@@ -39,7 +39,7 @@ export class HubLED extends Light {
      */
     public setRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
-            this.sendWithMode("RGB", Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, red, green, blue]));
+            this.subscribeAndWriteDirect("RGB", Buffer.from([red, green, blue]));
             return resolve();
         });
     }

@@ -21,7 +21,10 @@ export class BasicMotor extends Device {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public setPower (power: number) {
-        return this.sendLinearPowerCommand(mapSpeed(power));
+        return new Promise((resolve) => {
+            this.writeDirect(0x00, Buffer.from([mapSpeed(power)]));
+            return resolve();
+        });
     }
 
 

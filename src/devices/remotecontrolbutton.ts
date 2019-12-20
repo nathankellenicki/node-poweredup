@@ -7,7 +7,7 @@ import * as Consts from "../consts";
 export class RemoteControlButton extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, RemoteControlButton.ModeMap, Consts.DeviceType.PUP_REMOTE_BUTTON);
+        super(hub, portId, RemoteControlButton.ModeMap, Consts.DeviceType.REMOTE_CONTROL_BUTTON);
     }
 
     public receive (message: Buffer) {

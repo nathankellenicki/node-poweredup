@@ -19,6 +19,9 @@ export class Light extends Device {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public setBrightness (brightness: number) {
-        return this.sendLinearPowerCommand(brightness);
+        return new Promise((resolve) => {
+            this.writeDirect(0x00, Buffer.from([brightness]));
+            return resolve();
+        });
     }
 }

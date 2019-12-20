@@ -40,23 +40,7 @@ export class DuploTrainBase extends LPF2Hub {
         return new Promise(async (resolve, reject) => {
             debug("Connecting to Duplo Train Base");
             await super.connect();
-            // this.subscribe(0x01, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER, 0x01);
             debug("Connect completed");
-            return resolve();
-        });
-    }
-
-
-    /**
-     * Play a built-in train sound.
-     * @method DuploTrainBase#playSound
-     * @param {DuploTrainBaseSound} sound
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public playSound (sound: number) {
-        return new Promise((resolve, reject) => {
-            const data = Buffer.from([0x81, 0x01, 0x11, 0x51, 0x01, sound]);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
             return resolve();
         });
     }

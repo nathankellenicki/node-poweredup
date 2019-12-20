@@ -5,6 +5,12 @@ import { IBLEAbstraction } from "../interfaces";
 import { ColorDistanceSensor } from "../devices/colordistancesensor";
 import { CurrentSensor } from "../devices/currentsensor";
 import { Device } from "../devices/device";
+
+import { DuploTrainBaseColorSensor } from "../devices/duplotrainbasecolorsensor";
+import { DuploTrainBaseMotor } from "../devices/duplotrainbasemotor";
+import { DuploTrainBaseSpeaker } from "../devices/duplotrainbasespeaker";
+import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer";
+
 import { HubLED } from "../devices/hubled";
 import { Light } from "../devices/light";
 import { MediumLinearMotor } from "../devices/mediumlinearmotor";
@@ -48,10 +54,11 @@ export class BaseHub extends EventEmitter {
 
     private _type: Consts.HubType;
     private _portMap: {[portName: string]: number} = {};
-    private _attachCallbacks: ((device: Device) => void)[] = [];
+    private _attachCallbacks: ((device: Device) => boolean)[] = [];
 
     constructor (device: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
         super();
+        this.setMaxListeners(20); // Technic Medium Hub has 9 built in devices + 4 external ports. Node.js throws a warning after 11 attached event listeners.
         this._type = type;
         this._bleDevice = device;
         this._portMap = portMap;
@@ -177,7 +184,7 @@ export class BaseHub extends EventEmitter {
 
     public getDeviceAtPort (portName: string) {
         const portId = this._portMap[portName];
-        if (portId) {
+        if (portId !== undefined) {
             return this._attachedDevices[portId];
         } else {
             throw new Error(`Port ${portName} does not exist on this hub type`);
@@ -193,7 +200,10 @@ export class BaseHub extends EventEmitter {
             }
             this._attachCallbacks.push((device) => {
                 if (device.portName === portName) {
-                    return resolve(device);
+                    resolve(device);
+                    return true;
+                } else {
+                    return false;
                 }
             });
         });
@@ -218,7 +228,10 @@ export class BaseHub extends EventEmitter {
             }
             this._attachCallbacks.push((device) => {
                 if (device.type === deviceType) {
-                    return resolve(device);
+                    resolve(device);
+                    return true;
+                } else {
+                    return false;
                 }
             })
         });
@@ -283,9 +296,15 @@ export class BaseHub extends EventEmitter {
          * @param {Device} device
          */
         this.emit("attach", device);
-        this._attachCallbacks.forEach((callback) => {
-            callback(device);
-        });
+        debug(`Attached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
+
+        let i = this._attachCallbacks.length;
+        while (i--) {
+            const callback = this._attachCallbacks[i];
+            if (callback(device)) {
+                this._attachCallbacks.splice(i, 1); 
+            }
+        }
     }
 
 
@@ -297,6 +316,7 @@ export class BaseHub extends EventEmitter {
          * @param {Device} device
          */
         this.emit("detach", device);
+        debug(`Detached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
     }
 
 
@@ -352,11 +372,23 @@ export class BaseHub extends EventEmitter {
             case Consts.DeviceType.CURRENT_SENSOR:
                 device = new CurrentSensor(this, portId);
                 break;
-            case Consts.DeviceType.PUP_REMOTE_BUTTON:
+            case Consts.DeviceType.REMOTE_CONTROL_BUTTON:
                 device = new RemoteControlButton(this, portId);
                 break;
             case Consts.DeviceType.HUB_LED:
                 device = new HubLED(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR:
+                device = new DuploTrainBaseColorSensor(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR:
+                device = new DuploTrainBaseMotor(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER:
+                device = new DuploTrainBaseSpeaker(this, portId);
+                break;
+            case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER:
+                device = new DuploTrainBaseSpeedometer(this, portId);
                 break;
             default:
                 device = new Device(this, portId, undefined, deviceType);
