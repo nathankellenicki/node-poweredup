@@ -25,7 +25,7 @@ export class TechnicMediumHubGyroSensor extends Device {
                 const gyroX = Math.round(message.readInt16LE(4) * 7 / 400);
                 const gyroY = Math.round(message.readInt16LE(6) * 7 / 400);
                 const gyroZ = Math.round(message.readInt16LE(8) * 7 / 400);
-                this.emit("gyro", gyroX, gyroY, -gyroZ);
+                this.emitGlobal("gyro", gyroX, gyroY, -gyroZ);
                 break;
         }
     }

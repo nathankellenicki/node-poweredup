@@ -17,7 +17,7 @@ export class CurrentSensor extends Device {
             case CurrentSensor.Mode.CURRENT:
                 if (this.isWeDo2SmartHub) {
                     const current =  message.readInt16LE(2) / 1000;
-                    this.emit("current", current);
+                    this.emitGlobal("current", current);
                 } else {
                     let maxCurrentValue = CurrentSensor.MaxCurrentValue[this.hub.type];
                     if (maxCurrentValue === undefined) {
@@ -33,7 +33,7 @@ export class CurrentSensor extends Device {
                      * @event CurrentSensor#current
                      * @param {number} current
                      */
-                    this.emit("current", current);
+                    this.emitGlobal("current", current);
                 }
                 break;
         }

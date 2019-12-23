@@ -322,84 +322,42 @@ export class BaseHub extends EventEmitter {
 
 
     protected _createDevice (deviceType: number, portId: number) {
-        let device;
+        let constructor;
 
-        switch (deviceType) {
-            case Consts.DeviceType.LIGHT:
-                device = new Light(this, portId);
-                break;
-            case Consts.DeviceType.TRAIN_MOTOR:
-                device = new TrainMotor(this, portId);
-                break;
-            case Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR:
-                device = new SimpleMediumLinearMotor(this, portId);
-                break;
-            case Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR:
-                device = new MoveHubMediumLinearMotor(this, portId);
-                break;
-            case Consts.DeviceType.PIEZO_BUZZER:
-                device = new PiezoBuzzer(this, portId);
-                break;
-            case Consts.DeviceType.MOTION_SENSOR:
-                device = new MotionSensor(this, portId);
-                break;
-            case Consts.DeviceType.TILT_SENSOR:
-                device = new TiltSensor(this, portId);
-                break;
-            case Consts.DeviceType.MOVE_HUB_TILT_SENSOR:
-                device = new MoveHubTiltSensor(this, portId);
-                break;
-            case Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR:
-                device = new TechnicMediumHubTiltSensor(this, portId);
-                break;
-            case Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR:
-                device = new TechnicMediumHubGyroSensor(this, portId);
-                break;
-            case Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER:
-                device = new TechnicMediumHubAccelerometerSensor(this, portId);
-                break;
-            case Consts.DeviceType.MEDIUM_LINEAR_MOTOR:
-                device = new MediumLinearMotor(this, portId);
-                break;
-            case Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR:
-                device = new TechnicLargeLinearMotor(this, portId);
-                break;
-            case Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR:
-                device = new TechnicXLargeLinearMotor(this, portId);
-                break;
-            case Consts.DeviceType.COLOR_DISTANCE_SENSOR:
-                device = new ColorDistanceSensor(this, portId);
-                break;
-            case Consts.DeviceType.VOLTAGE_SENSOR:
-                device = new VoltageSensor(this, portId);
-                break;
-            case Consts.DeviceType.CURRENT_SENSOR:
-                device = new CurrentSensor(this, portId);
-                break;
-            case Consts.DeviceType.REMOTE_CONTROL_BUTTON:
-                device = new RemoteControlButton(this, portId);
-                break;
-            case Consts.DeviceType.HUB_LED:
-                device = new HubLED(this, portId);
-                break;
-            case Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR:
-                device = new DuploTrainBaseColorSensor(this, portId);
-                break;
-            case Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR:
-                device = new DuploTrainBaseMotor(this, portId);
-                break;
-            case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER:
-                device = new DuploTrainBaseSpeaker(this, portId);
-                break;
-            case Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER:
-                device = new DuploTrainBaseSpeedometer(this, portId);
-                break;
-            default:
-                device = new Device(this, portId, undefined, deviceType);
-                break;
+        // NK TODO: This needs to go in a better place
+        const deviceConstructors: {[type: number]: typeof Device} = {
+            [Consts.DeviceType.LIGHT]: Light,
+            [Consts.DeviceType.TRAIN_MOTOR]: TrainMotor,
+            [Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR]: SimpleMediumLinearMotor,
+            [Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR]: MoveHubMediumLinearMotor,
+            [Consts.DeviceType.MOTION_SENSOR]: MotionSensor,
+            [Consts.DeviceType.TILT_SENSOR]: TiltSensor,
+            [Consts.DeviceType.MOVE_HUB_TILT_SENSOR]: MoveHubTiltSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR]: TechnicMediumHubTiltSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: TechnicMediumHubGyroSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: TechnicMediumHubAccelerometerSensor,
+            [Consts.DeviceType.MEDIUM_LINEAR_MOTOR]: MediumLinearMotor,
+            [Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR]: TechnicLargeLinearMotor,
+            [Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR]: TechnicXLargeLinearMotor,
+            [Consts.DeviceType.COLOR_DISTANCE_SENSOR]: ColorDistanceSensor,
+            [Consts.DeviceType.VOLTAGE_SENSOR]: VoltageSensor,
+            [Consts.DeviceType.CURRENT_SENSOR]: CurrentSensor,
+            [Consts.DeviceType.REMOTE_CONTROL_BUTTON]: RemoteControlButton,
+            [Consts.DeviceType.HUB_LED]: HubLED,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR]: DuploTrainBaseColorSensor,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR]: DuploTrainBaseMotor,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER]: DuploTrainBaseSpeaker,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER]: DuploTrainBaseSpeedometer
+        };
+
+        constructor = deviceConstructors[deviceType as Consts.DeviceType];
+        
+        if (constructor) {
+            return new constructor(this, portId);
+        } else {
+            return new Device(this, portId, undefined, deviceType);
         }
 
-        return device;
     }
 
 

@@ -28,16 +28,7 @@ export class Device extends EventEmitter {
         this._modeMap = modeMap;
         this._isWeDo2SmartHub = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
-        const detachListener = (device: Device) => {
-            if (device.portId === this.portId) {
-                this._connected = false;
-                this.hub.removeListener("detach", detachListener);
-                this.emit("detach");
-            }
-        };
-        this.hub.on("detach", detachListener);
-
-        this.on("newListener", (event) => {
+        const attachListener = (event: string) => {
             if (event === "detach") {
                 return;
             }
@@ -46,7 +37,25 @@ export class Device extends EventEmitter {
                     this.subscribe(this._modeMap[event]);
                 }
             }
-        });
+        };
+
+        const detachListener = (device: Device) => {
+            if (device.portId === this.portId) {
+                this._connected = false;
+                this.hub.removeListener("detach", detachListener);
+                this.emit("detach");
+            }
+        };
+        
+        for (let event in this._modeMap) {
+            if (this.hub.listenerCount(event) > 0) {
+                attachListener(event);
+            }
+        }
+
+        this.hub.on("newListener", attachListener);
+        this.on("newListener", attachListener);
+        this.hub.on("detach", detachListener);
     }
 
     public get connected () {
@@ -99,7 +108,14 @@ export class Device extends EventEmitter {
     }
 
     public receive (message: Buffer) {
-        this.emit("receive", message);
+        this.emitGlobal("receive", message);
+    }
+
+    public emitGlobal (event: string, ...args: any) {
+        this.emit(event, ...args);
+        if (this.hub.listenerCount(event) > 0) {
+            this.hub.emit(event, this, ...args);
+        }
     }
 
     public finish () {

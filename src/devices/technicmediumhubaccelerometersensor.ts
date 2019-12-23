@@ -15,19 +15,19 @@ export class TechnicMediumHubAccelerometerSensor extends Device {
 
         switch (mode) {
             case TechnicMediumHubAccelerometerSensor.Mode.ACCEL:
-            /**
-             * Emits when accelerometer detects movement. Measured in mG.
-             * @event LPF2Hub#accel
-             * @param {string} port
-             * @param {number} x
-             * @param {number} y
-             * @param {number} z
-             */
-            const accelX = Math.round(message.readInt16LE(4) / 4.096);
-            const accelY = Math.round(message.readInt16LE(6) / 4.096);
-            const accelZ = Math.round(message.readInt16LE(8) / 4.096);
-            this.emit("accel", accelX, accelY, accelZ);
-            break;
+                /**
+                 * Emits when accelerometer detects movement. Measured in mG.
+                 * @event LPF2Hub#accel
+                 * @param {string} port
+                 * @param {number} x
+                 * @param {number} y
+                 * @param {number} z
+                 */
+                const accelX = Math.round(message.readInt16LE(4) / 4.096);
+                const accelY = Math.round(message.readInt16LE(6) / 4.096);
+                const accelZ = Math.round(message.readInt16LE(8) / 4.096);
+                this.emitGlobal("accel", accelX, accelY, accelZ);
+                break;
         }
     }
 

@@ -23,7 +23,7 @@ export class TiltSensor extends Device {
                  * @param {number} x
                  * @param {number} y
                  */
-                this.emit("tilt", tiltX, tiltY);
+                this.emitGlobal("tilt", tiltX, tiltY);
                 break;
         }
     }

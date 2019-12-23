@@ -25,7 +25,7 @@ export class TechnicMediumHubTiltSensor extends Device {
                 const tiltZ = message.readInt16LE(4);
                 const tiltY = message.readInt16LE(6);
                 const tiltX = message.readInt16LE(8);
-                this.emit("tilt", tiltX, tiltY, -tiltZ);
+                this.emitGlobal("tilt", tiltX, tiltY, -tiltZ);
                 break;
         }
     }
