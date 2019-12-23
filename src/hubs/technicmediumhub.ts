@@ -115,9 +115,12 @@ export namespace TechnicMediumHub {
         "B": 1,
         "C": 2,
         "D": 3,
-        "ACCEL": 97,
-        "GYRO": 98,
-        "TILT": 99
+        "HUB_LED": 50,
+        "CURRENT_SENSOR": 59,
+        "VOLTAGE_SENSOR": 60,
+        "ACCELEROMETER": 97,
+        "GYRO_SENSOR": 98,
+        "TILT_SENSOR": 99
     }
 
 }

@@ -28,7 +28,7 @@ export class Device extends EventEmitter {
         this._modeMap = modeMap;
         this._isWeDo2SmartHub = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
 
-        const attachListener = (event: string) => {
+        const eventAttachListener = (event: string) => {
             if (event === "detach") {
                 return;
             }
@@ -39,23 +39,23 @@ export class Device extends EventEmitter {
             }
         };
 
-        const detachListener = (device: Device) => {
+        const deviceDetachListener = (device: Device) => {
             if (device.portId === this.portId) {
                 this._connected = false;
-                this.hub.removeListener("detach", detachListener);
+                this.hub.removeListener("detach", deviceDetachListener);
                 this.emit("detach");
             }
         };
         
         for (let event in this._modeMap) {
             if (this.hub.listenerCount(event) > 0) {
-                attachListener(event);
+                eventAttachListener(event);
             }
         }
 
-        this.hub.on("newListener", attachListener);
-        this.on("newListener", attachListener);
-        this.hub.on("detach", detachListener);
+        this.hub.on("newListener", eventAttachListener);
+        this.on("newListener", eventAttachListener);
+        this.hub.on("detach", deviceDetachListener);
     }
 
     public get connected () {

@@ -232,7 +232,11 @@ export namespace WeDo2SmartHub {
 
     export const PortMap: {[portName: string]: number} = {
         "A": 1,
-        "B": 2
+        "B": 2,
+        "CURRENT_SENSOR": 3,
+        "VOLTAGE_SENSOR": 4,
+        "PIEZO_BUZZER": 5,
+        "HUB_LED": 6
     }
 
 }
