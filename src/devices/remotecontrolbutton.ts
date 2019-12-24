@@ -21,7 +21,7 @@ export class RemoteControlButton extends Device {
                  * @param {number} event
                  */
                 const event = message[4];
-                this.emitGlobal("button", event);
+                this.emitGlobal("remoteButton", event);
                 break;
         }
     }
@@ -35,7 +35,7 @@ export namespace RemoteControlButton {
     }
 
     export const ModeMap: {[event: string]: number} = {
-        "button": RemoteControlButton.Mode.BUTTON_EVENTS
+        "remoteButton": RemoteControlButton.Mode.BUTTON_EVENTS
     }
 
     export const ButtonState: {[state: string]: number} = {
