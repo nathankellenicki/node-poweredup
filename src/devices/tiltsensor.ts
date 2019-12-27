@@ -15,15 +15,15 @@ export class TiltSensor extends Device {
 
         switch (mode) {
             case TiltSensor.Mode.TILT:
-                const tiltX = message.readInt8(this.isWeDo2SmartHub ? 2 : 4);
-                const tiltY = message.readInt8(this.isWeDo2SmartHub ? 3 : 5);
+                const x = message.readInt8(this.isWeDo2SmartHub ? 2 : 4);
+                const y = message.readInt8(this.isWeDo2SmartHub ? 3 : 5);
                 /**
                  * Emits when a tilt sensor is activated.
                  * @event LPF2Hub#tilt
                  * @param {number} x
                  * @param {number} y
                  */
-                this.emitGlobal("tilt", tiltX, tiltY);
+                this.emitGlobal("tilt", { x, y });
                 break;
         }
     }

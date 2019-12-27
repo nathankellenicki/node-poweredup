@@ -168,7 +168,7 @@ export class WeDo2SmartHub extends BaseHub {
         const batteryLevel = data[0];
         if (batteryLevel !== this._batteryLevel) {
             this._batteryLevel = batteryLevel;
-            this.emit("batteryLevel", batteryLevel);
+            this.emit("batteryLevel", { batteryLevel });
         }
     }
 
@@ -209,10 +209,10 @@ export class WeDo2SmartHub extends BaseHub {
              * @param {string} button
              * @param {ButtonState} state
              */
-            this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
+            this.emit("button", { event: Consts.ButtonState.PRESSED });
             return;
         } else if (message[0] === 0x00) {
-            this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
+            this.emit("button", { event: Consts.ButtonState.RELEASED });
             return;
         }
 

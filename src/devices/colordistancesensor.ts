@@ -23,7 +23,7 @@ export class ColorDistanceSensor extends Device {
                      * @event ColorDistanceSensor#color
                      * @param {Color} color
                      */
-                    this.emitGlobal("color", color);
+                    this.emitGlobal("color", { color });
                 }
                 break;
 
@@ -39,7 +39,7 @@ export class ColorDistanceSensor extends Device {
                      * @event ColorDistanceSensor#distance
                      * @param {number} distance Distance, in millimeters.
                      */
-                    this.emitGlobal("distance", distance);
+                    this.emitGlobal("distance", { distance });
                 }
                 break;
 
@@ -65,7 +65,7 @@ export class ColorDistanceSensor extends Device {
                  */
                 if (message[4] <= 10) {
                     const color = message[4];
-                    this.emitGlobal("colorAndDistance", color, distance);
+                    this.emitGlobal("colorAndDistance", { color, distance });
                 }
                 break;
 
