@@ -1,6 +1,6 @@
 import { Peripheral } from "@abandonware/noble";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./generic/lpf2hub";
 
 import * as Consts from "../consts";
 
@@ -16,8 +16,6 @@ const debug = Debug("duplotrainbase");
  * @extends BaseHub
  */
 export class DuploTrainBase extends LPF2Hub {
-
-
     public static IsDuploTrainBase (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
@@ -28,10 +26,17 @@ export class DuploTrainBase extends LPF2Hub {
             peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID
         );
     }
-    
+
+    protected static _type: number = 5;
+    protected static _typeName: string = "DUPLO_TRAIN_BASE";
+    protected static _portMap: {[portName: string]: number} = {
+        "MOTOR": 0,
+        "COLOR": 18,
+        "SPEEDOMETER": 19
+    };
 
     constructor (device: IBLEAbstraction) {
-        super(device, DuploTrainBase.PortMap, Consts.HubType.DUPLO_TRAIN_BASE);
+        super(device);
         debug("Discovered Duplo Train Base");
     }
 
@@ -45,15 +50,5 @@ export class DuploTrainBase extends LPF2Hub {
         });
     }
 
-
-}
-
-export namespace DuploTrainBase {
-
-    export const PortMap: {[portName: string]: number} = {
-        "MOTOR": 0,
-        "COLOR": 18,
-        "SPEEDOMETER": 19
-    }
 
 }

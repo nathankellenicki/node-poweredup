@@ -1,14 +1,15 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
 export class DuploTrainBaseSpeaker extends Device {
+    protected static _type = 42;
 
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, {});
     }
 
 

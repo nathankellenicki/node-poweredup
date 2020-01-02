@@ -1,10 +1,17 @@
 import { EventEmitter } from "events";
 
-import { IDeviceInterface, IDeviceMode } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../../interfaces";
 
-import * as Consts from "../consts";
+import { BLECharacteristic, HubType, ValueBits, ValueType } from "../../consts";
+
+export type DeviceVersion = {
+    hardware: string,
+    software: string,
+}
 
 export class Device extends EventEmitter {
+    protected static _type: number = 0;
+    protected static _typeName: string = "UNKNOW";
 
     public autoSubscribe: boolean = true;
 
@@ -15,19 +22,20 @@ export class Device extends EventEmitter {
     private _hub: IDeviceInterface;
     private _portId: number;
     private _connected: boolean = true;
-    private _type: Consts.DeviceType;
     private _modes: {[name: string]: IDeviceMode} = {};
     private _eventMap: {[event: string]: string};
 
     private _isWeDo2SmartHub: boolean;
 
-    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: IDeviceMode} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+    private _versions: DeviceVersion;
+
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion, modes: {[name: string]: IDeviceMode} = {}) {
         super();
         this._hub = hub;
         this._portId = portId;
-        this._type = type;
         this._modes = modes;
-        this._isWeDo2SmartHub = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
+        this._isWeDo2SmartHub = (this.hub.type === HubType.WEDO2_SMART_HUB);
+        this._versions = versions;
 
         this._eventMap = Object.keys(modes).reduce(
             (map: {[event: string]: string}, name) => {
@@ -89,12 +97,32 @@ export class Device extends EventEmitter {
         return this.hub.getPortNameForPortId(this.portId);
     }
 
-    public get type () {
+    public static get type () {
         return this._type;
+    }
+
+    public static get typeName () {
+        return this._typeName;
+    }
+
+    public get type () {
+        return this.constructor._type;
+    }
+
+    public get typeName () {
+        return this.constructor._typeName;
     }
 
     public get mode () {
         return this._mode;
+    }
+
+    public get hardwareVersion () {
+        return this._versions.hardware;
+    }
+
+    public get softwareVersion () {
+        return this._versions.software;
     }
 
     protected get isWeDo2SmartHub () {
@@ -104,9 +132,9 @@ export class Device extends EventEmitter {
 
     public writeDirect (mode: number, data: Buffer, callback?: () => void) {
         if (this.isWeDo2SmartHub) {
-            this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, callback);
+            this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE, callback);
         } else {
-            this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL, callback);
+            this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), BLECharacteristic.LPF2_ALL, callback);
         }
     }
 
@@ -125,7 +153,7 @@ export class Device extends EventEmitter {
         }
     }
 
-    public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
+    public send (data: Buffer, characteristic: string = BLECharacteristic.LPF2_ALL, callback?: () => void) {
         this._ensureConnected();
         this.hub.send(data, characteristic, callback);
     }
@@ -134,7 +162,7 @@ export class Device extends EventEmitter {
         return new Promise((resolve) => {
             if (this.isWeDo2SmartHub) {
                 const data = Buffer.from([this.portId, 0x01, 0x02, value]);
-                this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+                this.send(data, BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
                 const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x00, value]);
                 this.send(data);
@@ -175,33 +203,33 @@ export class Device extends EventEmitter {
 
         const data = [];
 
-        for (let index = 0; index <= message.length; index += Consts.ValueBits[mode.values.type]) {
+        for (let index = 0; index <= message.length; index += ValueBits[mode.values.type]) {
             switch (mode.values.type) {
-                case Consts.ValueType.UInt8: {
+                case ValueType.UInt8: {
                     data.push(message.readUInt8(index));
                     break;
                 }
-                case Consts.ValueType.Int8: {
+                case ValueType.Int8: {
                     data.push(message.readInt8(index));
                     break;
                 }
-                case Consts.ValueType.UInt16: {
+                case ValueType.UInt16: {
                     data.push(message.readUInt16LE(index));
                     break;
                 }
-                case Consts.ValueType.Int16: {
+                case ValueType.Int16: {
                     data.push(message.readInt16LE(index));
                     break;
                 }
-                case Consts.ValueType.UInt32: {
+                case ValueType.UInt32: {
                     data.push(message.readUInt32LE(index));
                     break;
                 }
-                case Consts.ValueType.Int32: {
+                case ValueType.Int32: {
                     data.push(message.readInt32LE(index));
                     break;
                 }
-                case Consts.ValueType.Float: {
+                case ValueType.Float: {
                     data.push(message.readFloatLE(index));
                     break;
                 }

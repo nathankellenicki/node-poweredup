@@ -1,13 +1,14 @@
-import { TachoMotor } from "./tachomotor";
+import { TachoMotor } from "./generic/tachomotor";
 
 import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "../consts";
+import { DeviceVersion } from "./generic/device";
 
 export class MoveHubMediumLinearMotor extends TachoMotor {
+    protected static _type = 39;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, {});
     }
 
 }

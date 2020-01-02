@@ -1,13 +1,12 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "../consts";
-
 export class TechnicMediumHubGyroSensor extends Device {
+    protected static _type = 58;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, TechnicMediumHubGyroSensor.ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, TechnicMediumHubGyroSensor.ModeMap);
     }
 
     public receive (message: Buffer) {
@@ -41,5 +40,5 @@ export namespace TechnicMediumHubGyroSensor {
     export const ModeMap: {[event: string]: number} = {
         "gyro": TechnicMediumHubGyroSensor.Mode.GYRO
     }
-    
+
 }

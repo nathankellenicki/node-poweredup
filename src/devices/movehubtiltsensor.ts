@@ -1,13 +1,14 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
 export class MoveHubTiltSensor extends Device {
+    protected static _type = 40;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, MoveHubTiltSensor.ModeMap, Consts.DeviceType.MOVE_HUB_TILT_SENSOR);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, MoveHubTiltSensor.ModeMap);
     }
 
     public receive (message: Buffer) {
@@ -39,5 +40,5 @@ export namespace MoveHubTiltSensor {
     export const ModeMap: {[event: string]: number} = {
         "tilt": MoveHubTiltSensor.Mode.TILT
     }
-    
+
 }

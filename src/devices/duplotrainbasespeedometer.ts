@@ -1,13 +1,12 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "../consts";
-
 export class DuploTrainBaseSpeedometer extends Device {
+    protected static _type = 44;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, DuploTrainBaseSpeedometer.ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, DuploTrainBaseSpeedometer.ModeMap);
     }
 
     public receive (message: Buffer) {

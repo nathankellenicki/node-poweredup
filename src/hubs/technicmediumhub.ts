@@ -2,7 +2,7 @@ import { Peripheral } from "@abandonware/noble";
 
 import { IBLEAbstraction } from "../interfaces";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./generic/lpf2hub";
 
 import * as Consts from "../consts";
 
@@ -18,7 +18,6 @@ const debug = Debug("technicmediumhub");
  */
 export class TechnicMediumHub extends LPF2Hub {
 
-
     public static IsTechnicMediumHub (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
@@ -30,8 +29,23 @@ export class TechnicMediumHub extends LPF2Hub {
         );
     }
 
+    protected static _type = 6;
+    protected static _typeName = "TECHNIC_MEDIUM_HUB";
+    protected static _portMap = {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+        "D": 3,
+        "HUB_LED": 50,
+        "CURRENT_SENSOR": 59,
+        "VOLTAGE_SENSOR": 60,
+        "ACCELEROMETER": 97,
+        "GYRO_SENSOR": 98,
+        "TILT_SENSOR": 99
+    };
+
     constructor (device: IBLEAbstraction) {
-        super(device, TechnicMediumHub.PortMap, Consts.HubType.TECHNIC_MEDIUM_HUB);
+        super(device);
         debug("Discovered Control+ Hub");
     }
 
@@ -105,22 +119,5 @@ export class TechnicMediumHub extends LPF2Hub {
     //     });
     // }
 
-
-}
-
-export namespace TechnicMediumHub {
-
-    export const PortMap: {[portName: string]: number} = {
-        "A": 0,
-        "B": 1,
-        "C": 2,
-        "D": 3,
-        "HUB_LED": 50,
-        "CURRENT_SENSOR": 59,
-        "VOLTAGE_SENSOR": 60,
-        "ACCELEROMETER": 97,
-        "GYRO_SENSOR": 98,
-        "TILT_SENSOR": 99
-    }
 
 }

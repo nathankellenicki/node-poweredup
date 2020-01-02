@@ -2,7 +2,7 @@ import { Peripheral } from "@abandonware/noble";
 
 import { IBLEAbstraction } from "../interfaces";
 
-import { BaseHub } from "./basehub";
+import { BaseHub } from "./generic/basehub";
 
 import * as Consts from "../consts";
 
@@ -20,7 +20,6 @@ const debug = Debug("wedo2smarthub");
  */
 export class WeDo2SmartHub extends BaseHub {
 
-
     public static IsWeDo2SmartHub (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
@@ -29,13 +28,22 @@ export class WeDo2SmartHub extends BaseHub {
         );
     }
 
+    protected static _type = 1;
+    protected static _typeName = "WEDO2_SMART_HUB";
+    protected static _portMap = {
+        "A": 1,
+        "B": 2,
+        "CURRENT_SENSOR": 3,
+        "VOLTAGE_SENSOR": 4,
+        "PIEZO_BUZZER": 5,
+        "HUB_LED": 6
+    };
 
     private _lastTiltX: number = 0;
     private _lastTiltY: number = 0;
 
-
     constructor (device: IBLEAbstraction) {
-        super(device, WeDo2SmartHub.PortMap, Consts.HubType.WEDO2_SMART_HUB);
+        super(device);
         debug("Discovered WeDo 2.0 Smart Hub");
     }
 
@@ -119,7 +127,7 @@ export class WeDo2SmartHub extends BaseHub {
         }
         return new Promise((resolve, reject) => {
             const data = Buffer.from(name, "ascii");
-            // Send this twice, as sometimes the first time doesn't take
+            // Send this twice, as sometimes the first time doesn"t take
             this.send(data, Consts.BLECharacteristic.WEDO2_NAME_ID);
             this.send(data, Consts.BLECharacteristic.WEDO2_NAME_ID);
             this._name = name;
@@ -225,18 +233,5 @@ export class WeDo2SmartHub extends BaseHub {
 
     }
 
-
-}
-
-export namespace WeDo2SmartHub {
-
-    export const PortMap: {[portName: string]: number} = {
-        "A": 1,
-        "B": 2,
-        "CURRENT_SENSOR": 3,
-        "VOLTAGE_SENSOR": 4,
-        "PIEZO_BUZZER": 5,
-        "HUB_LED": 6
-    }
 
 }

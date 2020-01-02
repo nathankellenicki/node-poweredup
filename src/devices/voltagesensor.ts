@@ -1,67 +1,53 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import * as Consts from "../consts";
+import { HubType, ValueType } from "../consts";
 
 export class VoltageSensor extends Device {
+    protected static _type = 20;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, VoltageSensor.ModeMap, Consts.DeviceType.VOLTAGE_SENSOR);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, VoltageSensor.modes);
     }
-
-    public receive (message: Buffer) {
-        const mode = this._mode;
-
-        switch (mode) {
-            case VoltageSensor.Mode.VOLTAGE:
-                if (this.isWeDo2SmartHub) {
-                    const voltage = message.readInt16LE(2) / 40;
-                    this.emitGlobal("voltage", voltage);
-                } else {
-                    let maxVoltageValue = VoltageSensor.MaxVoltageValue[this.hub.type];
-                    if (maxVoltageValue === undefined) {
-                        maxVoltageValue = VoltageSensor.MaxVoltageValue[Consts.HubType.UNKNOWN];
-                    }
-                    let maxVoltageRaw = VoltageSensor.MaxVoltageRaw[this.hub.type];
-                    if (maxVoltageRaw === undefined) {
-                        maxVoltageRaw = VoltageSensor.MaxVoltageRaw[Consts.HubType.UNKNOWN];
-                    }
-                    const voltage = message.readUInt16LE(4) * maxVoltageValue / maxVoltageRaw;
-                    /**
-                     * Emits when a voltage change is detected.
-                     * @event VoltageSensor#voltage
-                     * @param {number} voltage
-                     */
-                    this.emitGlobal("voltage", voltage);
-                }
-                break;
-        }
-    }
-
 }
 
 export namespace VoltageSensor {
-
-    export enum Mode {
-        VOLTAGE = 0x00
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "voltage": VoltageSensor.Mode.VOLTAGE
-    }
+    export const modes: { [name: string]: IDeviceMode } = {
+        VOLTAGE: {
+            /**
+             * Emits when a voltage change is detected.
+             * @event VoltageSensor#voltage
+             * @param {number} current
+             */
+            input: true,
+            event: "voltage",
+            values: { type: ValueType.UInt8, count: 1, min: 0, max: 255 },
+            num: {
+                [HubType.MOVE_HUB]: 0x00,
+                [HubType.TECHNIC_MEDIUM_HUB]: 0x00,
+                [HubType.HUB]: 0x00,
+                [HubType.WEDO2_SMART_HUB]: 0x00
+            },
+            transform(hubType, data) {
+                const maxVoltageValue = VoltageSensor.MaxVoltageValue[hubType] || VoltageSensor.MaxVoltageValue[HubType.UNKNOWN];
+                const maxVoltageRaw = VoltageSensor.MaxVoltageRaw[hubType] || VoltageSensor.MaxVoltageRaw[HubType.UNKNOWN];
+                return [data[0] * maxVoltageValue / maxVoltageRaw];
+            }
+        }
+    };
 
     export const MaxVoltageValue: {[hubType: number]: number} = {
-        [Consts.HubType.UNKNOWN]: 9.615,
-        [Consts.HubType.DUPLO_TRAIN_BASE]: 6.4,
-        [Consts.HubType.REMOTE_CONTROL]: 6.4,
+        [HubType.UNKNOWN]: 9.615,
+        [HubType.DUPLO_TRAIN_BASE]: 6.4,
+        [HubType.REMOTE_CONTROL]: 6.4,
     }
 
     export const MaxVoltageRaw: {[hubType: number]: number} = {
-        [Consts.HubType.UNKNOWN]: 3893,
-        [Consts.HubType.DUPLO_TRAIN_BASE]: 3047,
-        [Consts.HubType.REMOTE_CONTROL]: 3200,
-        [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4095,
+        [HubType.UNKNOWN]: 3893,
+        [HubType.DUPLO_TRAIN_BASE]: 3047,
+        [HubType.REMOTE_CONTROL]: 3200,
+        [HubType.TECHNIC_MEDIUM_HUB]: 4095,
     }
-    
+
 }

@@ -1,14 +1,13 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import { DeviceType, HubType } from "../consts";
-
 export class Light extends Device {
+    protected static _type = 8;
 
 
-    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: IDeviceMode} = {}, type: DeviceType = DeviceType.LIGHT) {
-        super(hub, portId, modes, type);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion, modes: {[name: string]: IDeviceMode} = {}) {
+        super(hub, portId, versions, modes);
     }
 
 

@@ -1,19 +1,20 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
 export class PiezoBuzzer extends Device {
+    protected static _type = 22;
 
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.PIEZO_BUZZER);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions);
     }
 
 
     /**
-     * Play a tone on the Hub's in-built buzzer
+     * Play a tone on the Hub"s in-built buzzer
      * @method PiezoBuzzer#playTone
      * @param {number} frequency
      * @param {number} time How long the tone should play for (in milliseconds).

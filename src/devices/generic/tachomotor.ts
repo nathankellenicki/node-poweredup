@@ -1,14 +1,14 @@
 import { BasicMotor } from "./basicmotor";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../../interfaces";
 
-import * as Consts from "../consts";
-import { mapSpeed } from "../utils";
+import { mapSpeed } from "../../utils";
+import { DeviceVersion } from "./device";
 
 export class TachoMotor extends BasicMotor {
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, Object.assign({}, modeMap, TachoMotor.ModeMap), type);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion, modeMap: {[event: string]: number} = {}) {
+        super(hub, portId, versions, Object.assign({}, modeMap, TachoMotor.ModeMap));
     }
 
     public receive (message: Buffer) {

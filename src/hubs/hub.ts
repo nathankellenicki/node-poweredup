@@ -3,7 +3,7 @@ import compareVersion from "compare-versions";
 
 import { IBLEAbstraction } from "../interfaces";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./generic/lpf2hub";
 
 import * as Consts from "../consts";
 
@@ -19,7 +19,6 @@ const debug = Debug("hub");
  */
 export class Hub extends LPF2Hub {
 
-
     public static IsHub (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
@@ -31,10 +30,20 @@ export class Hub extends LPF2Hub {
         );
     }
 
+    protected static _type: number = 3;
+    protected static _typeName: string = "HUB";
+    protected static _portMap: {[portName: string]: number} = {
+        "A": 0,
+        "B": 1,
+        "HUB_LED": 50,
+        "CURRENT_SENSOR": 59,
+        "VOLTAGE_SENSOR": 60
+    };
+
     protected _currentPort = 0x3b;
 
     constructor (device: IBLEAbstraction) {
-        super(device, Hub.PortMap, Consts.HubType.HUB);
+        super(device);
         debug("Discovered Powered UP Hub");
     }
 
@@ -51,21 +60,9 @@ export class Hub extends LPF2Hub {
 
     protected _checkFirmware (version: string) {
         if (compareVersion("1.1.00.0004", version) === 1) {
-            throw new Error(`Your Powered Up Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
+            throw new Error(`Your Powered Up Hub"s (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
         }
     }
 
-
-}
-
-export namespace Hub {
-
-    export const PortMap: {[portName: string]: number} = {
-        "A": 0,
-        "B": 1,
-        "HUB_LED": 50,
-        "CURRENT_SENSOR": 59,
-        "VOLTAGE_SENSOR": 60
-    }
 
 }

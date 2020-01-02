@@ -1,12 +1,15 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import { DeviceType, HubType, ValueType } from "../consts";
+import { HubType, ValueType } from "../consts";
 
 export class ColorDistanceSensor extends Device {
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ColorDistanceSensor.modes, DeviceType.COLOR_DISTANCE_SENSOR);
+    protected static _type = 37;
+    protected static _typeName: string = "COLOR_DISTANCE_SENSOR";
+
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, ColorDistanceSensor.modes);
     }
 
     public receive (message: Buffer) {

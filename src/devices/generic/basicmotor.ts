@@ -1,16 +1,14 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./device";
 
-import { IDeviceInterface, IDeviceMode } from "../interfaces";
+import { IDeviceInterface, IDeviceMode } from "../../interfaces";
 
-import * as Consts from "../consts";
-
-import { mapSpeed } from "../utils";
+import { mapSpeed } from "../../utils";
 
 export class BasicMotor extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number, modes: {[name: string]: IDeviceMode}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, modes, type);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion, modes: {[name: string]: IDeviceMode}) {
+        super(hub, portId, versions, modes);
     }
 
 

@@ -1,14 +1,16 @@
 import { Light } from "./light";
+import { DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import { BLECharacteristic, DeviceType, HubType } from "../consts";
+import { BLECharacteristic, HubType } from "../consts";
 
 export class HubLED extends Light {
+    protected static _type = 23;
 
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, HubLED.modes, DeviceType.HUB_LED);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, HubLED.modes);
     }
 
 

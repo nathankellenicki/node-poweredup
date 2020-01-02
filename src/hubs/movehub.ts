@@ -3,7 +3,7 @@ import compareVersion from "compare-versions";
 
 import { IBLEAbstraction } from "../interfaces";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./generic/lpf2hub";
 
 import * as Consts from "../consts";
 
@@ -19,7 +19,6 @@ const debug = Debug("movehub");
  */
 export class MoveHub extends LPF2Hub {
 
-
     public static IsMoveHub (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
@@ -31,8 +30,21 @@ export class MoveHub extends LPF2Hub {
         );
     }
 
+    protected static _type: number = 2;
+    protected static _typeName: string = "MOVE_HUB";
+    protected static _portMap: {[portName: string]: number} = {
+        "A": 0,
+        "B": 1,
+        "C": 2,
+        "D": 3,
+        "HUB_LED": 50,
+        "TILT_SENSOR": 58,
+        "CURRENT_SENSOR": 59,
+        "VOLTAGE_SENSOR": 60
+    };
+
     constructor (device: IBLEAbstraction) {
-        super(device, MoveHub.PortMap, Consts.HubType.MOVE_HUB);
+        super(device);
         debug("Discovered Move Hub");
     }
 
@@ -49,24 +61,9 @@ export class MoveHub extends LPF2Hub {
 
     protected _checkFirmware (version: string) {
         if (compareVersion("2.0.00.0017", version) === 1) {
-            throw new Error(`Your Move Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
+            throw new Error(`Your Move Hub"s (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
         }
     }
 
-
-}
-
-export namespace MoveHub {
-
-    export const PortMap: {[portName: string]: number} = {
-        "A": 0,
-        "B": 1,
-        "C": 2,
-        "D": 3,
-        "HUB_LED": 50,
-        "TILT_SENSOR": 58,
-        "CURRENT_SENSOR": 59,
-        "VOLTAGE_SENSOR": 60
-    }
 
 }

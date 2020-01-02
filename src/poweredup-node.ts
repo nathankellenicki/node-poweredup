@@ -2,7 +2,7 @@ import { Peripheral } from "@abandonware/noble";
 
 import { NobleDevice } from "./nobleabstraction";
 
-import { BaseHub } from "./hubs/basehub";
+import { BaseHub } from "./hubs/generic/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
 import { MoveHub } from "./hubs/movehub";

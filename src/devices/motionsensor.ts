@@ -1,13 +1,12 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "../consts";
-
 export class MotionSensor extends Device {
+    protected static _type = 35;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, MotionSensor.ModeMap, Consts.DeviceType.MOTION_SENSOR);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, MotionSensor.ModeMap);
     }
 
     public receive (message: Buffer) {

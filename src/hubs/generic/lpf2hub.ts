@@ -1,8 +1,10 @@
 import { BaseHub } from "./basehub";
 
-import * as Consts from "../consts";
+import * as Consts from "../../consts";
 
-import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils";
+import { decodeMACAddress, decodeVersion, toBin, toHex } from "../../utils";
+
+import { DeviceTypeNames } from "../../devices";
 
 import Debug = require("debug");
 const debug = Debug("lpf2hub");
@@ -67,7 +69,7 @@ export class LPF2Hub extends BaseHub {
         return new Promise((resolve, reject) => {
             let data = Buffer.from([0x01, 0x01, 0x01]);
             data = Buffer.concat([data, Buffer.from(name, "ascii")]);
-            // Send this twice, as sometimes the first time doesn't take
+            // Send this twice, as sometimes the first time doesn"t take
             this.send(data, Consts.BLECharacteristic.LPF2_ALL);
             this.send(data, Consts.BLECharacteristic.LPF2_ALL);
             this._name = name;
@@ -247,17 +249,17 @@ export class LPF2Hub extends BaseHub {
 
         // Handle device attachments
         if (event === 0x01) {
+            const hwVersion = decodeVersion(message.readInt32LE(7));
+            const swVersion = decodeVersion(message.readInt32LE(11));
 
             if (modeInfoDebug.enabled) {
-                const deviceTypeName = Consts.DeviceTypeNames[message[5]] || "Unknown";
+                const deviceTypeName = DeviceTypeNames[message[5]] || "Unknown";
                 modeInfoDebug(`Port ${toHex(portId)}, type ${toHex(deviceType, 4)} (${deviceTypeName})`);
-                const hwVersion = decodeVersion(message.readInt32LE(7));
-                const swVersion = decodeVersion(message.readInt32LE(11));
                 modeInfoDebug(`Port ${toHex(portId)}, hardware version ${hwVersion}, software version ${swVersion}`);
                 this._sendPortInformationRequest(portId);
             }
 
-            const device = this._createDevice(deviceType, portId);
+            const device = this._createDevice(deviceType, portId, { hardware: hwVersion, software: swVersion });
             this._attachDevice(device);
 
         // Handle device detachments

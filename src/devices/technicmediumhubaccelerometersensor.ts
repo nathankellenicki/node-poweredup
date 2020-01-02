@@ -1,13 +1,14 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
 export class TechnicMediumHubAccelerometerSensor extends Device {
+    protected static _type = 57;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, TechnicMediumHubAccelerometerSensor.ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, TechnicMediumHubAccelerometerSensor.ModeMap);
     }
 
     public receive (message: Buffer) {
@@ -42,5 +43,5 @@ export namespace TechnicMediumHubAccelerometerSensor {
     export const ModeMap: {[event: string]: number} = {
         "accel": TechnicMediumHubAccelerometerSensor.Mode.ACCEL
     }
-    
+
 }

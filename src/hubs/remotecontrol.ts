@@ -2,7 +2,7 @@ import { Peripheral } from "@abandonware/noble";
 
 import { IBLEAbstraction } from "../interfaces";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./generic/lpf2hub";
 
 import * as Consts from "../consts";
 
@@ -18,7 +18,6 @@ const debug = Debug("remotecontrol");
  */
 export class RemoteControl extends LPF2Hub {
 
-
     public static IsRemoteControl (peripheral: Peripheral) {
         return (
             peripheral.advertisement &&
@@ -30,9 +29,18 @@ export class RemoteControl extends LPF2Hub {
         );
     }
 
+    protected static _type: number = 4;
+    protected static _typeName: string = "REMOTE_CONTROL";
+    protected static _portMap: {[portName: string]: number} = {
+        "LEFT": 0,
+        "RIGHT": 1,
+        "HUB_LED": 52,
+        "VOLTAGE_SENSOR": 59,
+        "REMOTE_CONTROL_RSSI": 60
+    };
 
     constructor (device: IBLEAbstraction) {
-        super(device, RemoteControl.PortMap, Consts.HubType.REMOTE_CONTROL);
+        super(device);
         debug("Discovered Powered UP Remote");
     }
 
@@ -46,17 +54,5 @@ export class RemoteControl extends LPF2Hub {
         });
     }
 
-
-}
-
-export namespace RemoteControl {
-
-    export const PortMap: {[portName: string]: number} = {
-        "LEFT": 0,
-        "RIGHT": 1,
-        "HUB_LED": 52,
-        "VOLTAGE_SENSOR": 59,
-        "REMOTE_CONTROL_RSSI": 60
-    }
 
 }

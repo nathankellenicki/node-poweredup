@@ -17,7 +17,7 @@ export interface IBLEAbstraction extends EventEmitter {
 }
 
 export interface IDeviceInterface extends EventEmitter {
-    type: Consts.HubType;
+    type: number;
     getPortNameForPortId: (portId: number) => string | undefined;
     send: (message: Buffer, uuid: string, callback?: () => void) => void;
     subscribe: (portId: number, deviceType: number, mode: number) => void;
@@ -32,6 +32,6 @@ export interface IDeviceMode {
         min?: number,
         max?: number
     };
-    num: { [type in Consts.HubType]?: number };
-    transform?: (hubType: Consts.HubType, data: number[]) => number[];
+    num: { [type: number]: number };
+    transform?: (hubType: number, data: number[]) => number[];
 }

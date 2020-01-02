@@ -1,14 +1,8 @@
 import { WebBLEDevice } from "./webbleabstraction";
 
-import { BaseHub } from "./hubs/basehub";
-import { DuploTrainBase } from "./hubs/duplotrainbase";
-import { Hub } from "./hubs/hub";
-import { MoveHub } from "./hubs/movehub";
-import { RemoteControl } from "./hubs/remotecontrol";
-import { TechnicMediumHub } from "./hubs/technicmediumhub";
-import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
-
 import * as Consts from "./consts";
+
+import { BaseHub, hubs, hubType} from "./hubs";
 
 import { EventEmitter } from "events";
 
@@ -127,7 +121,7 @@ export class PoweredUP extends EventEmitter {
     }
 
 
-    private _determineLPF2HubType (device: IBLEAbstraction): Promise<Consts.HubType> {
+    private _determineLPF2HubType (device: IBLEAbstraction): Promise<number> {
         return new Promise((resolve, reject) => {
             let buf: Buffer = Buffer.alloc(0);
             device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
@@ -140,19 +134,19 @@ export class PoweredUP extends EventEmitter {
                         process.nextTick(() => {
                             switch (message[5]) {
                                 case Consts.BLEManufacturerData.REMOTE_CONTROL_ID:
-                                    resolve(Consts.HubType.REMOTE_CONTROL);
+                                    resolve(hubType.REMOTE_CONTROL);
                                     break;
                                 case Consts.BLEManufacturerData.MOVE_HUB_ID:
-                                    resolve(Consts.HubType.MOVE_HUB);
+                                    resolve(hubType.MOVE_HUB);
                                     break;
                                 case Consts.BLEManufacturerData.HUB_ID:
-                                    resolve(Consts.HubType.HUB);
+                                    resolve(hubType.HUB);
                                     break;
                                 case Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID:
-                                    resolve(Consts.HubType.DUPLO_TRAIN_BASE);
+                                    resolve(hubType.DUPLO_TRAIN_BASE);
                                     break;
                                 case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB:
-                                    resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
+                                    resolve(hubType.TECHNIC_MEDIUM_HUB);
                                     break;
                             }
                         });
@@ -170,17 +164,15 @@ export class PoweredUP extends EventEmitter {
 
         const device = new WebBLEDevice(server);
 
-        let hub: BaseHub;
-
-        let hubType = Consts.HubType.UNKNOWN;
+        let type = hubType.UNKNOWN;
         let isLPF2Hub = false;
         try {
             await device.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB);
-            hubType = Consts.HubType.WEDO2_SMART_HUB;
+            type = hubType.WEDO2_SMART_HUB;
         // tslint:disable-next-line
         } catch (error) {}
         try {
-            if (hubType !== Consts.HubType.WEDO2_SMART_HUB) {
+            if (type !== hubType.WEDO2_SMART_HUB) {
                 await device.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
                 isLPF2Hub = true;
             }
@@ -188,31 +180,16 @@ export class PoweredUP extends EventEmitter {
         } catch (error) {}
 
         if (isLPF2Hub) {
-            hubType = await this._determineLPF2HubType(device);
+            type = await this._determineLPF2HubType(device);
         }
 
-        switch (hubType) {
-            case Consts.HubType.WEDO2_SMART_HUB:
-                hub = new WeDo2SmartHub(device);
-                break;
-            case Consts.HubType.MOVE_HUB:
-                hub = new MoveHub(device);
-                break;
-            case Consts.HubType.HUB:
-                hub = new Hub(device);
-                break;
-            case Consts.HubType.REMOTE_CONTROL:
-                hub = new RemoteControl(device);
-                break;
-            case Consts.HubType.DUPLO_TRAIN_BASE:
-                hub = new DuploTrainBase(device);
-                break;
-            case Consts.HubType.TECHNIC_MEDIUM_HUB:
-                hub = new TechnicMediumHub(device);
-                break;
-            default:
-                return;
+        const constructor = hubs[type];
+
+        if (!constructor) {
+            return;
         }
+
+        const hub = new constructor(device);
 
         device.on("discoverComplete", () => {
 

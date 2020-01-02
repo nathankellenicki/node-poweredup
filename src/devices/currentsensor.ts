@@ -1,13 +1,14 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import { DeviceType, HubType, ValueType } from "../consts";
+import { HubType, ValueType } from "../consts";
 
 export class CurrentSensor extends Device {
+    protected static _type = 21;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, CurrentSensor.modes, DeviceType.CURRENT_SENSOR);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, CurrentSensor.modes);
     }
 }
 

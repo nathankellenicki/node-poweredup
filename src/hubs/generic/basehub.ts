@@ -1,45 +1,31 @@
 import { EventEmitter } from "events";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction } from "../../interfaces";
 
-import { ColorDistanceSensor } from "../devices/colordistancesensor";
-import { CurrentSensor } from "../devices/currentsensor";
-import { Device } from "../devices/device";
+import { Device, DeviceVersion } from "../../devices/generic/device";
 
-import { DuploTrainBaseColorSensor } from "../devices/duplotrainbasecolorsensor";
-import { DuploTrainBaseMotor } from "../devices/duplotrainbasemotor";
-import { DuploTrainBaseSpeaker } from "../devices/duplotrainbasespeaker";
-import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer";
+import { devices, deviceTypeNames } from "../../devices";
 
-import { HubLED } from "../devices/hubled";
-import { Light } from "../devices/light";
-import { MediumLinearMotor } from "../devices/mediumlinearmotor";
-import { MotionSensor } from "../devices/motionsensor";
-import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
-import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
-import { RemoteControlButton } from "../devices/remotecontrolbutton";
-import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
-import { PiezoBuzzer } from "../devices/piezobuzzer";
-import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
-import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
-import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
-import { TechnicMediumHubTiltSensor } from "../devices/technicmediumhubtiltsensor";
-import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor";
-import { TiltSensor } from "../devices/tiltsensor";
-import { TrainMotor } from "../devices/trainmotor";
-import { VoltageSensor } from "../devices/voltagesensor";
-
-import * as Consts from "../consts";
+import * as Consts from "../../consts";
 
 import Debug = require("debug");
 const debug = Debug("basehub");
-
 
 /**
  * @class BaseHub
  * @extends EventEmitter
  */
 export class BaseHub extends EventEmitter {
+    public static get type () {
+        return this._type;
+    }
+    public static get typeName () {
+        return this._typeName;
+    }
+
+    protected static _type: number = 0;
+    protected static _typeName: string = "UNKNOW";
+    protected static _portMap: {[portName: string]: number} = {};
 
     protected _attachedDevices: {[portId: number]: Device} = {};
     // protected _virtualPorts: {[portName: string]: Port} = {};
@@ -53,16 +39,12 @@ export class BaseHub extends EventEmitter {
 
     protected _bleDevice: IBLEAbstraction;
 
-    private _type: Consts.HubType;
-    private _portMap: {[portName: string]: number} = {};
-    private _attachCallbacks: ((device: Device) => boolean)[] = [];
+    private _attachCallbacks: Array<((device: Device) => boolean)> = [];
 
-    constructor (device: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
+    constructor (device: IBLEAbstraction, portMap: {[portName: string]: number} = {}) {
         super();
         this.setMaxListeners(20); // Technic Medium Hub has 9 built in devices + 4 external ports. Node.js throws a warning after 11 attached event listeners.
-        this._type = type;
         this._bleDevice = device;
-        this._portMap = portMap;
         device.on("disconnect", () => {
             /**
              * Emits when the hub is disconnected.
@@ -87,16 +69,23 @@ export class BaseHub extends EventEmitter {
      * @property {string} type Hub type
      */
     public get type () {
-        return this._type;
+        return this.constructor._type;
     }
 
+    /**
+     * @readonly
+     * @property {string} typeName Hub type name
+     */
+    public get typeName () {
+        return this.constructor._typeName;
+    }
 
     /**
      * @readonly
      * @property {string[]} ports Array of port names
      */
     public get ports () {
-        return Object.keys(this._portMap);
+        return Object.keys(this._getPortMap());
     }
 
 
@@ -184,7 +173,7 @@ export class BaseHub extends EventEmitter {
 
 
     public getDeviceAtPort (portName: string) {
-        const portId = this._portMap[portName];
+        const portId = this._getPortMap()[portName];
         if (portId !== undefined) {
             return this._attachedDevices[portId];
         } else {
@@ -234,14 +223,14 @@ export class BaseHub extends EventEmitter {
                 } else {
                     return false;
                 }
-            })
+            });
         });
     }
 
 
     public getPortNameForPortId (portId: number) {
-        for (const port of Object.keys(this._portMap)) {
-            if (this._portMap[port] === portId) {
+        for (const port of Object.keys(this._getPortMap())) {
+            if (this._getPortMap()[port] === portId) {
                 return port;
             }
         }
@@ -297,13 +286,13 @@ export class BaseHub extends EventEmitter {
          * @param {Device} device
          */
         this.emit("attach", device);
-        debug(`Attached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
+        debug(`Attached device type ${device.type} (${deviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
 
         let i = this._attachCallbacks.length;
         while (i--) {
             const callback = this._attachCallbacks[i];
             if (callback(device)) {
-                this._attachCallbacks.splice(i, 1); 
+                this._attachCallbacks.splice(i, 1);
             }
         }
     }
@@ -317,45 +306,17 @@ export class BaseHub extends EventEmitter {
          * @param {Device} device
          */
         this.emit("detach", device);
-        debug(`Detached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
+        debug(`Detached device type ${device.type} (${deviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
     }
 
 
-    protected _createDevice (deviceType: number, portId: number) {
-        let constructor;
+    protected _createDevice (deviceType: number, portId: number, versions: DeviceVersion) {
+        const constructor = devices[deviceType];
 
-        // NK TODO: This needs to go in a better place
-        const deviceConstructors: {[type: number]: typeof Device} = {
-            [Consts.DeviceType.LIGHT]: Light,
-            [Consts.DeviceType.TRAIN_MOTOR]: TrainMotor,
-            [Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR]: SimpleMediumLinearMotor,
-            [Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR]: MoveHubMediumLinearMotor,
-            [Consts.DeviceType.MOTION_SENSOR]: MotionSensor,
-            [Consts.DeviceType.TILT_SENSOR]: TiltSensor,
-            [Consts.DeviceType.MOVE_HUB_TILT_SENSOR]: MoveHubTiltSensor,
-            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR]: TechnicMediumHubTiltSensor,
-            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: TechnicMediumHubGyroSensor,
-            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: TechnicMediumHubAccelerometerSensor,
-            [Consts.DeviceType.MEDIUM_LINEAR_MOTOR]: MediumLinearMotor,
-            [Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR]: TechnicLargeLinearMotor,
-            [Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR]: TechnicXLargeLinearMotor,
-            [Consts.DeviceType.COLOR_DISTANCE_SENSOR]: ColorDistanceSensor,
-            [Consts.DeviceType.VOLTAGE_SENSOR]: VoltageSensor,
-            [Consts.DeviceType.CURRENT_SENSOR]: CurrentSensor,
-            [Consts.DeviceType.REMOTE_CONTROL_BUTTON]: RemoteControlButton,
-            [Consts.DeviceType.HUB_LED]: HubLED,
-            [Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR]: DuploTrainBaseColorSensor,
-            [Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR]: DuploTrainBaseMotor,
-            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER]: DuploTrainBaseSpeaker,
-            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER]: DuploTrainBaseSpeedometer
-        };
-
-        constructor = deviceConstructors[deviceType as Consts.DeviceType];
-        
         if (constructor) {
-            return new constructor(this, portId);
+            return new constructor(this, portId, versions);
         } else {
-            return new Device(this, portId, undefined, deviceType);
+            return new Device(this, portId, versions, undefined);
         }
 
     }
@@ -365,5 +326,8 @@ export class BaseHub extends EventEmitter {
         return this._attachedDevices[portId];
     }
 
+    protected _getPortMap() {
+        return this.constructor._portMap;
+    }
 
 }

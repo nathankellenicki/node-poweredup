@@ -1,13 +1,12 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "../consts";
-
 export class DuploTrainBaseColorSensor extends Device {
+    protected static _type = 43;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, DuploTrainBaseColorSensor.ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, DuploTrainBaseColorSensor.ModeMap);
     }
 
     public receive (message: Buffer) {

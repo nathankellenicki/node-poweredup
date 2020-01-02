@@ -1,13 +1,12 @@
-import { Device } from "./device";
+import { Device, DeviceVersion } from "./generic/device";
 
 import { IDeviceInterface } from "../interfaces";
 
-import * as Consts from "../consts";
-
 export class RemoteControlButton extends Device {
+    protected static _type = 55;
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, RemoteControlButton.ModeMap, Consts.DeviceType.REMOTE_CONTROL_BUTTON);
+    constructor (hub: IDeviceInterface, portId: number, versions: DeviceVersion) {
+        super(hub, portId, versions, RemoteControlButton.ModeMap);
     }
 
     public receive (message: Buffer) {
@@ -44,5 +43,5 @@ export namespace RemoteControlButton {
         "STOP": 0x7f,
         "RELEASED": 0x00,
     }
-    
+
 }
