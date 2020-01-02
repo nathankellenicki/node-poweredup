@@ -62,7 +62,11 @@ export namespace MoveHub {
         "A": 0,
         "B": 1,
         "C": 2,
-        "D": 3
+        "D": 3,
+        "HUB_LED": 50,
+        "TILT_SENSOR": 58,
+        "CURRENT_SENSOR": 59,
+        "VOLTAGE_SENSOR": 60
     }
 
 }

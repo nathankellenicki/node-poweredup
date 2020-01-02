@@ -40,16 +40,7 @@ export class Device extends EventEmitter {
             {}
         );
 
-        const detachListener = (device: Device) => {
-            if (device.portId === this.portId) {
-                this._connected = false;
-                this.hub.removeListener("detach", detachListener);
-                this.emit("detach");
-            }
-        };
-        this.hub.on("detach", detachListener);
-
-        this.on("newListener", (event) => {
+        const eventAttachListener = (event: string) => {
             if (event === "detach") {
                 return;
             }
@@ -61,7 +52,25 @@ export class Device extends EventEmitter {
 
                 this.subscribe(this._eventMap[event]);
             }
-        });
+        };
+
+        const deviceDetachListener = (device: Device) => {
+            if (device.portId === this.portId) {
+                this._connected = false;
+                this.hub.removeListener("detach", deviceDetachListener);
+                this.emit("detach");
+            }
+        };
+
+        for (let event in this._eventMap) {
+            if (this.hub.listenerCount(event) > 0) {
+                eventAttachListener(event);
+            }
+        }
+
+        this.hub.on("newListener", eventAttachListener);
+        this.on("newListener", eventAttachListener);
+        this.hub.on("detach", deviceDetachListener);
     }
 
     public get connected () {
@@ -200,13 +209,20 @@ export class Device extends EventEmitter {
         }
 
         if (mode.event) {
-            this.emit(
+            this.emitGlobal(
                 mode.event,
                 ...(mode.transform ? mode.transform(this.hub.type, data) : data)
             );
         }
 
         return data;
+    }
+
+    public emitGlobal (event: string, ...args: any) {
+        this.emit(event, ...args);
+        if (this.hub.listenerCount(event) > 0) {
+            this.hub.emit(event, this, ...args);
+        }
     }
 
     public finish () {

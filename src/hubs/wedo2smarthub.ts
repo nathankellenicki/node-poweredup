@@ -9,6 +9,7 @@ import * as Consts from "../consts";
 import { isWebBluetooth } from "../utils";
 
 import Debug = require("debug");
+import { HubLED } from "../devices/hubled";
 const debug = Debug("wedo2smarthub");
 
 
@@ -53,8 +54,6 @@ export class WeDo2SmartHub extends BaseHub {
                 await this._bleDevice.discoverCharacteristicsForService("battery_service");
                 await this._bleDevice.discoverCharacteristicsForService("device_information");
             }
-            this.subscribe(0x03, 0x15, 0x00); // Activate voltage reports
-            this.subscribe(0x04, 0x14, 0x00); // Activate current reports
             debug("Connect completed");
             this.emit("connect");
             resolve();
@@ -129,85 +128,6 @@ export class WeDo2SmartHub extends BaseHub {
     }
 
 
-    /**
-     * Set the color of the LED on the Hub via a color value.
-     * @method WeDo2SmartHub#setLEDColor
-     * @param {Color} color
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDColor (color: number | boolean) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x06, 0x17, 0x01, 0x01]);
-            this.send(data, Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
-            if (typeof color === "boolean") {
-                color = 0;
-            }
-            data = Buffer.from([0x06, 0x04, 0x01, color]);
-            this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            return resolve();
-        });
-    }
-
-
-    /**
-     * Set the color of the LED on the Hub via RGB values.
-     * @method WeDo2SmartHub#setLEDRGB
-     * @param {number} red
-     * @param {number} green
-     * @param {number} blue
-     * @returns {Promise} Resolved upon successful issuance of command.
-     */
-    public setLEDRGB (red: number, green: number, blue: number) {
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x06, 0x17, 0x01, 0x02]);
-            this.send(data, Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
-            data = Buffer.from([0x06, 0x04, 0x03, red, green, blue]);
-            this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            return resolve();
-        });
-    }
-
-
-    // /**
-    //  * Ramp the motor speed on a given port.
-    //  * @method WeDo2SmartHub#rampMotorSpeed
-    //  * @param {string} port
-    //  * @param {number} fromSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-    //  * @param {number} toSpeed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-    //  * @param {number} time How long the ramp should last (in milliseconds).
-    //  * @returns {Promise} Resolved upon successful completion of command.
-    //  */
-    // public rampMotorSpeed (port: string, fromSpeed: number, toSpeed: number, time: number) {
-    //     const portObj = this._portLookup(port);
-    //     portObj.cancelEventTimer();
-    //     return new Promise((resolve, reject) => {
-    //         this._calculateRamp(fromSpeed, toSpeed, time, portObj)
-    //         .on("changeSpeed", (speed) => {
-    //             this.setMotorSpeed(port, speed, true);
-    //         })
-    //         .on("finished", resolve);
-    //     });
-    // }
-
-
-    /**
-     * Play a tone on the Hub's in-built buzzer
-     * @method WeDo2SmartHub#playTone
-     * @param {number} frequency
-     * @param {number} time How long the tone should play for (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the tone has finished playing).
-     */
-    public playTone (frequency: number, time: number) {
-        return new Promise((resolve, reject) => {
-            const data = Buffer.from([0x05, 0x02, 0x04, 0x00, 0x00, 0x00, 0x00]);
-            data.writeUInt16LE(frequency, 3);
-            data.writeUInt16LE(time, 5);
-            this.send(data, Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            global.setTimeout(resolve, time);
-        });
-    }
-
-
     public send (message: Buffer, uuid: string, callback?: () => void) {
         if (debug.enabled) {
             debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
@@ -245,7 +165,11 @@ export class WeDo2SmartHub extends BaseHub {
 
     private _parseBatteryMessage (data: Buffer) {
         debug("Received Message (WEDO2_BATTERY)", data);
-        this._batteryLevel = data[0];
+        const batteryLevel = data[0];
+        if (batteryLevel !== this._batteryLevel) {
+            this._batteryLevel = batteryLevel;
+            this.emit("batteryLevel", batteryLevel);
+        }
     }
 
 
@@ -299,52 +223,6 @@ export class WeDo2SmartHub extends BaseHub {
             device.receive(message);
         }
 
-        // if (data[0] === 0x01) {
-        //     /**
-        //      * Emits when a button is pressed.
-        //      * @event WeDo2SmartHub#button
-        //      * @param {string} button
-        //      * @param {ButtonState} state
-        //      */
-        //     this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
-        //     return;
-        // } else if (data[0] === 0x00) {
-        //     this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
-        //     return;
-        // }
-
-        // // Voltage
-        // if (data[1] === 0x03) {
-        //     const voltage = data.readInt16LE(2);
-        //     this._voltage = voltage / 40;
-        // // Current
-        // } else if (data[1] === 0x04) {
-        //     const current = data.readInt16LE(2);
-        //     this._current = current / 1000;
-        // }
-
-        // const port = this._getPortForPortNumber(data[1]);
-
-        // if (!port) {
-        //     return;
-        // }
-
-        // if (port && port.connected) {
-        //     switch (port.type) {
-        //         case Consts.DeviceType.COLOR_DISTANCE_SENSOR: {
-        //             const distance = data[2];
-        //             /**
-        //              * Emits when a color sensor is activated.
-        //              * @event WeDo2SmartHub#color
-        //              * @param {string} port
-        //              * @param {Color} color
-        //              */
-        //             this.emit("color", port.id, distance);
-        //             break;
-        //         }
-        //     }
-        // }
-
     }
 
 
@@ -354,7 +232,11 @@ export namespace WeDo2SmartHub {
 
     export const PortMap: {[portName: string]: number} = {
         "A": 1,
-        "B": 2
+        "B": 2,
+        "CURRENT_SENSOR": 3,
+        "VOLTAGE_SENSOR": 4,
+        "PIEZO_BUZZER": 5,
+        "HUB_LED": 6
     }
 
 }

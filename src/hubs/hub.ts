@@ -62,7 +62,10 @@ export namespace Hub {
 
     export const PortMap: {[portName: string]: number} = {
         "A": 0,
-        "B": 1
+        "B": 1,
+        "HUB_LED": 50,
+        "CURRENT_SENSOR": 59,
+        "VOLTAGE_SENSOR": 60
     }
 
 }

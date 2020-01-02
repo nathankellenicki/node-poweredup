@@ -22,7 +22,7 @@ export class TachoMotor extends BasicMotor {
                  * @event TachoMotor#rotate
                  * @param {number} rotation
                  */
-                this.emit("rotate", rotation);
+                this.emitGlobal("rotate", rotation);
                 break;
         }
     }

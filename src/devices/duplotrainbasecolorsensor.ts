@@ -23,7 +23,7 @@ export class DuploTrainBaseColorSensor extends Device {
                      * @event DuploTrainBaseColorSensor#color
                      * @param {Color} color
                      */
-                    this.emit("color", color);
+                    this.emitGlobal("color", color);
                 }
                 break;
 

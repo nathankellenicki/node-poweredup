@@ -23,7 +23,7 @@ export class MoveHubTiltSensor extends Device {
                  */
                 const tiltX = message.readInt8(4);
                 const tiltY = message.readInt8(5);
-                this.emit("tilt", -tiltX, tiltY);
+                this.emitGlobal("tilt", -tiltX, tiltY);
                 break;
         }
     }

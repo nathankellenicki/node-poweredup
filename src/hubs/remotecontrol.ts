@@ -53,7 +53,10 @@ export namespace RemoteControl {
 
     export const PortMap: {[portName: string]: number} = {
         "LEFT": 0,
-        "RIGHT": 1
+        "RIGHT": 1,
+        "HUB_LED": 52,
+        "VOLTAGE_SENSOR": 59,
+        "REMOTE_CONTROL_RSSI": 60
     }
 
 }

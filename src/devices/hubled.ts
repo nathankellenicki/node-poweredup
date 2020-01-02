@@ -2,7 +2,7 @@ import { Light } from "./light";
 
 import { IDeviceInterface, IDeviceMode } from "../interfaces";
 
-import { DeviceType, HubType } from "../consts";
+import { BLECharacteristic, DeviceType, HubType } from "../consts";
 
 export class HubLED extends Light {
 
@@ -23,7 +23,13 @@ export class HubLED extends Light {
             if (typeof color === "boolean") {
                 color = 0;
             }
-            this.subscribeAndWriteDirect("COLOR", Buffer.from([color]));
+
+            if (this.isWeDo2SmartHub) {
+                this.send(Buffer.from([0x06, 0x17, 0x01, 0x01]), BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
+                this.send(Buffer.from([0x06, 0x04, 0x01, color]), BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+            } else {
+                this.subscribeAndWriteDirect("COLOR", Buffer.from([color]));
+            }
             return resolve();
         });
     }
@@ -39,7 +45,12 @@ export class HubLED extends Light {
      */
     public setRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {
-            this.subscribeAndWriteDirect("RGB", Buffer.from([red, green, blue]));
+            if (this.isWeDo2SmartHub) {
+                this.send(Buffer.from([0x06, 0x17, 0x01, 0x02]), BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
+                this.send(Buffer.from([0x06, 0x04, 0x03, red, green, blue]), BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+            } else {
+                this.subscribeAndWriteDirect("RGB", Buffer.from([red, green, blue]));
+            }
             return resolve();
         });
     }
