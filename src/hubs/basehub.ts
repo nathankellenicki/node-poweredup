@@ -289,6 +289,11 @@ export class BaseHub extends EventEmitter {
     }
 
 
+    public unsubscribe (portId: number, deviceType: number, mode: number) {
+        // NK Do nothing here
+    }
+
+
     protected _attachDevice (device: Device) {
         this._attachedDevices[device.portId] = device;
         /**

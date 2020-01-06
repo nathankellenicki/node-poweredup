@@ -141,8 +141,8 @@ export class WeDo2SmartHub extends BaseHub {
     }
 
 
-    protected _deactivatePortDevice (port: number, type: number, mode: number, format: number, callback?: () => void) {
-        this.send(Buffer.from([0x01, 0x02, port, type, mode, 0x01, 0x00, 0x00, 0x00, format, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE, callback);
+    public unsubscribe (portId: number, deviceType: number, mode: number) {
+        this.send(Buffer.from([0x01, 0x02, portId, deviceType, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
     }
 
 
