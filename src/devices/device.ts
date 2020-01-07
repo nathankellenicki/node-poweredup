@@ -107,11 +107,15 @@ export class Device extends EventEmitter {
         }
     }
 
+    public unsubscribe (mode: number) {
+        this._ensureConnected();
+    }
+
     public receive (message: Buffer) {
         this.emitGlobal("receive", { message });
     }
 
-    public emitGlobal (event: string, ...args: any) {
+    public emitGlobal (event: string, ...args: any[]) {
         this.emit(event, ...args);
         if (this.hub.listenerCount(event) > 0) {
             this.hub.emit(event, this, ...args);
