@@ -8,14 +8,14 @@ import { mapSpeed } from "../utils";
 export class TachoMotor extends BasicMotor {
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, Object.assign({}, modeMap, TachoMotor.ModeMap), type);
+        super(hub, portId, Object.assign({}, modeMap, ModeMap), type);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case TachoMotor.Mode.ROTATION:
+            case Mode.ROTATION:
                 const rotation = message.readInt32LE(this.isWeDo2SmartHub ? 2 : 4);
                 /**
                  * Emits when a rotation sensor is activated.
@@ -51,14 +51,10 @@ export class TachoMotor extends BasicMotor {
 
 }
 
-export namespace TachoMotor {
-
-    export enum Mode {
-        ROTATION = 0x02
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "rotate": TachoMotor.Mode.ROTATION
-    }
-
+export enum Mode {
+    ROTATION = 0x02
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "rotate": Mode.ROTATION
+};

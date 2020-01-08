@@ -28,10 +28,10 @@ export class DuploTrainBase extends LPF2Hub {
             peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID
         );
     }
-    
+
 
     constructor (device: IBLEAbstraction) {
-        super(device, DuploTrainBase.PortMap, Consts.HubType.DUPLO_TRAIN_BASE);
+        super(device, PortMap, Consts.HubType.DUPLO_TRAIN_BASE);
         debug("Discovered Duplo Train Base");
     }
 
@@ -48,12 +48,9 @@ export class DuploTrainBase extends LPF2Hub {
 
 }
 
-export namespace DuploTrainBase {
+export const PortMap: {[portName: string]: number} = {
+    "MOTOR": 0,
+    "COLOR": 18,
+    "SPEEDOMETER": 19
+};
 
-    export const PortMap: {[portName: string]: number} = {
-        "MOTOR": 0,
-        "COLOR": 18,
-        "SPEEDOMETER": 19
-    }
-
-}

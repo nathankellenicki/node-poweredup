@@ -17,9 +17,9 @@ import { MediumLinearMotor } from "../devices/mediumlinearmotor";
 import { MotionSensor } from "../devices/motionsensor";
 import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
 import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
+import { PiezoBuzzer } from "../devices/piezobuzzer";
 import { RemoteControlButton } from "../devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
-import { PiezoBuzzer } from "../devices/piezobuzzer";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
 import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
@@ -234,7 +234,7 @@ export class BaseHub extends EventEmitter {
                 } else {
                     return false;
                 }
-            })
+            });
         });
     }
 
@@ -313,7 +313,7 @@ export class BaseHub extends EventEmitter {
         while (i--) {
             const callback = this._attachCallbacks[i];
             if (callback(device)) {
-                this._attachCallbacks.splice(i, 1); 
+                this._attachCallbacks.splice(i, 1);
             }
         }
     }
@@ -343,6 +343,7 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.MOTION_SENSOR]: MotionSensor,
             [Consts.DeviceType.TILT_SENSOR]: TiltSensor,
             [Consts.DeviceType.MOVE_HUB_TILT_SENSOR]: MoveHubTiltSensor,
+            [Consts.DeviceType.PIEZO_BUZZER]: PiezoBuzzer,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR]: TechnicMediumHubTiltSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: TechnicMediumHubGyroSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: TechnicMediumHubAccelerometerSensor,
@@ -361,7 +362,7 @@ export class BaseHub extends EventEmitter {
         };
 
         constructor = deviceConstructors[deviceType as Consts.DeviceType];
-        
+
         if (constructor) {
             return new constructor(this, portId);
         } else {

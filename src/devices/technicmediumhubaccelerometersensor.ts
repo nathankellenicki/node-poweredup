@@ -7,14 +7,14 @@ import * as Consts from "../consts";
 export class TechnicMediumHubAccelerometerSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, TechnicMediumHubAccelerometerSensor.ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER);
+        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case TechnicMediumHubAccelerometerSensor.Mode.ACCEL:
+            case Mode.ACCEL:
                 /**
                  * Emits when accelerometer detects movement. Measured in mG.
                  * @event LPF2Hub#accel
@@ -33,14 +33,10 @@ export class TechnicMediumHubAccelerometerSensor extends Device {
 
 }
 
-export namespace TechnicMediumHubAccelerometerSensor {
-
-    export enum Mode {
-        ACCEL = 0x00
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "accel": TechnicMediumHubAccelerometerSensor.Mode.ACCEL
-    }
-    
+export enum Mode {
+    ACCEL = 0x00
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "accel": Mode.ACCEL
+};

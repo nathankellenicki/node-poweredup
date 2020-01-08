@@ -7,14 +7,14 @@ import * as Consts from "../consts";
 export class ColorDistanceSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ColorDistanceSensor.ModeMap, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+        super(hub, portId, ModeMap, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case ColorDistanceSensor.Mode.COLOR:
+            case Mode.COLOR:
                 if (message[this.isWeDo2SmartHub ? 2 : 4] <= 10) {
                     const color = message[this.isWeDo2SmartHub ? 2 : 4];
 
@@ -27,7 +27,7 @@ export class ColorDistanceSensor extends Device {
                 }
                 break;
 
-            case ColorDistanceSensor.Mode.DISTANCE:
+            case Mode.DISTANCE:
                 if (this.isWeDo2SmartHub) {
                     break;
                 }
@@ -43,7 +43,7 @@ export class ColorDistanceSensor extends Device {
                 }
                 break;
 
-            case ColorDistanceSensor.Mode.COLOR_AND_DISTANCE:
+            case Mode.COLOR_AND_DISTANCE:
                 if (this.isWeDo2SmartHub) {
                     break;
                 }
@@ -74,18 +74,14 @@ export class ColorDistanceSensor extends Device {
 
 }
 
-export namespace ColorDistanceSensor {
-
-    export enum Mode {
-        COLOR = 0x00,
-        DISTANCE = 0x01,
-        COLOR_AND_DISTANCE = 0x08
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "color": ColorDistanceSensor.Mode.COLOR,
-        "distance": ColorDistanceSensor.Mode.DISTANCE,
-        "colorAndDistance": ColorDistanceSensor.Mode.COLOR_AND_DISTANCE
-    }
-
+export enum Mode {
+    COLOR = 0x00,
+    DISTANCE = 0x01,
+    COLOR_AND_DISTANCE = 0x08
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "color": Mode.COLOR,
+    "distance": Mode.DISTANCE,
+    "colorAndDistance": Mode.COLOR_AND_DISTANCE
+};

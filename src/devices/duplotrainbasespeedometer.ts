@@ -7,14 +7,14 @@ import * as Consts from "../consts";
 export class DuploTrainBaseSpeedometer extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, DuploTrainBaseSpeedometer.ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER);
+        super(hub, portId, ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case DuploTrainBaseSpeedometer.Mode.SPEED:
+            case Mode.SPEED:
                 const speed = message.readInt16LE(4);
 
                 /**
@@ -30,14 +30,10 @@ export class DuploTrainBaseSpeedometer extends Device {
 
 }
 
-export namespace DuploTrainBaseSpeedometer {
-
-    export enum Mode {
-        SPEED = 0x00
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "speed": DuploTrainBaseSpeedometer.Mode.SPEED
-    }
-
+export enum Mode {
+    SPEED = 0x00
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "speed": Mode.SPEED
+};

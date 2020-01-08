@@ -31,7 +31,7 @@ export class TechnicMediumHub extends LPF2Hub {
     }
 
     constructor (device: IBLEAbstraction) {
-        super(device, TechnicMediumHub.PortMap, Consts.HubType.TECHNIC_MEDIUM_HUB);
+        super(device, PortMap, Consts.HubType.TECHNIC_MEDIUM_HUB);
         debug("Discovered Control+ Hub");
     }
 
@@ -108,19 +108,15 @@ export class TechnicMediumHub extends LPF2Hub {
 
 }
 
-export namespace TechnicMediumHub {
-
-    export const PortMap: {[portName: string]: number} = {
-        "A": 0,
-        "B": 1,
-        "C": 2,
-        "D": 3,
-        "HUB_LED": 50,
-        "CURRENT_SENSOR": 59,
-        "VOLTAGE_SENSOR": 60,
-        "ACCELEROMETER": 97,
-        "GYRO_SENSOR": 98,
-        "TILT_SENSOR": 99
-    }
-
-}
+export const PortMap: {[portName: string]: number} = {
+    "A": 0,
+    "B": 1,
+    "C": 2,
+    "D": 3,
+    "HUB_LED": 50,
+    "CURRENT_SENSOR": 59,
+    "VOLTAGE_SENSOR": 60,
+    "ACCELEROMETER": 97,
+    "GYRO_SENSOR": 98,
+    "TILT_SENSOR": 99
+};

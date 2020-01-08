@@ -7,14 +7,14 @@ import * as Consts from "../consts";
 export class MotionSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, MotionSensor.ModeMap, Consts.DeviceType.MOTION_SENSOR);
+        super(hub, portId, ModeMap, Consts.DeviceType.MOTION_SENSOR);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case MotionSensor.Mode.DISTANCE:
+            case Mode.DISTANCE:
                 let distance = message[this.isWeDo2SmartHub ? 2 : 4];
                 if (message[this.isWeDo2SmartHub ? 3 : 5] === 1) {
                     distance = distance + 255;
@@ -32,14 +32,10 @@ export class MotionSensor extends Device {
 
 }
 
-export namespace MotionSensor {
-
-    export enum Mode {
-        DISTANCE = 0x00
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "distance": MotionSensor.Mode.DISTANCE
-    }
-
+export enum Mode {
+    DISTANCE = 0x00
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "distance": Mode.DISTANCE
+};

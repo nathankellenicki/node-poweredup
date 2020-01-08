@@ -32,7 +32,7 @@ export class MoveHub extends LPF2Hub {
     }
 
     constructor (device: IBLEAbstraction) {
-        super(device, MoveHub.PortMap, Consts.HubType.MOVE_HUB);
+        super(device, PortMap, Consts.HubType.MOVE_HUB);
         debug("Discovered Move Hub");
     }
 
@@ -56,17 +56,13 @@ export class MoveHub extends LPF2Hub {
 
 }
 
-export namespace MoveHub {
-
-    export const PortMap: {[portName: string]: number} = {
-        "A": 0,
-        "B": 1,
-        "C": 2,
-        "D": 3,
-        "HUB_LED": 50,
-        "TILT_SENSOR": 58,
-        "CURRENT_SENSOR": 59,
-        "VOLTAGE_SENSOR": 60
-    }
-
-}
+export const PortMap: {[portName: string]: number} = {
+    "A": 0,
+    "B": 1,
+    "C": 2,
+    "D": 3,
+    "HUB_LED": 50,
+    "TILT_SENSOR": 58,
+    "CURRENT_SENSOR": 59,
+    "VOLTAGE_SENSOR": 60
+};

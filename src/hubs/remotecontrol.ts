@@ -32,7 +32,7 @@ export class RemoteControl extends LPF2Hub {
 
 
     constructor (device: IBLEAbstraction) {
-        super(device, RemoteControl.PortMap, Consts.HubType.REMOTE_CONTROL);
+        super(device, PortMap, Consts.HubType.REMOTE_CONTROL);
         debug("Discovered Powered UP Remote");
     }
 
@@ -49,14 +49,10 @@ export class RemoteControl extends LPF2Hub {
 
 }
 
-export namespace RemoteControl {
-
-    export const PortMap: {[portName: string]: number} = {
-        "LEFT": 0,
-        "RIGHT": 1,
-        "HUB_LED": 52,
-        "VOLTAGE_SENSOR": 59,
-        "REMOTE_CONTROL_RSSI": 60
-    }
-
-}
+export const PortMap: {[portName: string]: number} = {
+    "LEFT": 0,
+    "RIGHT": 1,
+    "HUB_LED": 52,
+    "VOLTAGE_SENSOR": 59,
+    "REMOTE_CONTROL_RSSI": 60
+};

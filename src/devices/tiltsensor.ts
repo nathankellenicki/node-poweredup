@@ -7,14 +7,14 @@ import * as Consts from "../consts";
 export class TiltSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, TiltSensor.ModeMap, Consts.DeviceType.TILT_SENSOR);
+        super(hub, portId, ModeMap, Consts.DeviceType.TILT_SENSOR);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case TiltSensor.Mode.TILT:
+            case Mode.TILT:
                 const x = message.readInt8(this.isWeDo2SmartHub ? 2 : 4);
                 const y = message.readInt8(this.isWeDo2SmartHub ? 3 : 5);
                 /**
@@ -30,14 +30,10 @@ export class TiltSensor extends Device {
 
 }
 
-export namespace TiltSensor {
-
-    export enum Mode {
-        TILT = 0x00
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "tilt": TiltSensor.Mode.TILT
-    }
-    
+export enum Mode {
+    TILT = 0x00
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "tilt": Mode.TILT
+};

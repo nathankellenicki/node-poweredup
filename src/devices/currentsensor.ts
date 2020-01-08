@@ -7,25 +7,25 @@ import * as Consts from "../consts";
 export class CurrentSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, CurrentSensor.ModeMap, Consts.DeviceType.CURRENT_SENSOR);
+        super(hub, portId, ModeMap, Consts.DeviceType.CURRENT_SENSOR);
     }
 
     public receive (message: Buffer) {
         const mode = this.mode;
 
         switch (mode) {
-            case CurrentSensor.Mode.CURRENT:
+            case Mode.CURRENT:
                 if (this.isWeDo2SmartHub) {
                     const current =  message.readInt16LE(2) / 1000;
                     this.emitGlobal("current", { current });
                 } else {
-                    let maxCurrentValue = CurrentSensor.MaxCurrentValue[this.hub.type];
+                    let maxCurrentValue = MaxCurrentValue[this.hub.type];
                     if (maxCurrentValue === undefined) {
-                        maxCurrentValue = CurrentSensor.MaxCurrentValue[Consts.HubType.UNKNOWN];
+                        maxCurrentValue = MaxCurrentValue[Consts.HubType.UNKNOWN];
                     }
-                    let maxCurrentRaw = CurrentSensor.MaxCurrentRaw[this.hub.type];
+                    let maxCurrentRaw = MaxCurrentRaw[this.hub.type];
                     if (maxCurrentRaw === undefined) {
-                        maxCurrentRaw = CurrentSensor.MaxCurrentRaw[Consts.HubType.UNKNOWN];
+                        maxCurrentRaw = MaxCurrentRaw[Consts.HubType.UNKNOWN];
                     }
                     const current = message.readUInt16LE(4) * maxCurrentValue / maxCurrentRaw;
                     /**
@@ -41,23 +41,19 @@ export class CurrentSensor extends Device {
 
 }
 
-export namespace CurrentSensor {
-
-    export enum Mode {
-        CURRENT = 0x00
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "current": CurrentSensor.Mode.CURRENT
-    }
-
-    export const MaxCurrentValue: {[hubType: number]: number} = {
-        [Consts.HubType.UNKNOWN]: 2444,
-        [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4175,
-    }
-
-    export const MaxCurrentRaw: {[hubType: number]: number} = {
-        [Consts.HubType.UNKNOWN]: 4095,
-    }
-    
+export enum Mode {
+    CURRENT = 0x00
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "current": Mode.CURRENT
+};
+
+const MaxCurrentValue: {[hubType: number]: number} = {
+    [Consts.HubType.UNKNOWN]: 2444,
+    [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4175,
+};
+
+const MaxCurrentRaw: {[hubType: number]: number} = {
+    [Consts.HubType.UNKNOWN]: 4095,
+};

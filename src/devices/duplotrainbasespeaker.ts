@@ -20,7 +20,7 @@ export class DuploTrainBaseSpeaker extends Device {
      */
     public playSound (sound: Consts.DuploTrainBaseSound) {
         return new Promise((resolve, reject) => {
-            this.subscribe(DuploTrainBaseSpeaker.Mode.SOUND);
+            this.subscribe(Mode.SOUND);
             this.writeDirect(0x01, Buffer.from([sound]));
             return resolve();
         });
@@ -29,10 +29,6 @@ export class DuploTrainBaseSpeaker extends Device {
 
 }
 
-export namespace DuploTrainBaseSpeaker {
-
-    export enum Mode {
-        SOUND = 0x01
-    }
-
+export enum Mode {
+    SOUND = 0x01
 }

@@ -7,14 +7,14 @@ import * as Consts from "../consts";
 export class DuploTrainBaseColorSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, DuploTrainBaseColorSensor.ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR);
+        super(hub, portId, ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR);
     }
 
     public receive (message: Buffer) {
         const mode = this._mode;
 
         switch (mode) {
-            case DuploTrainBaseColorSensor.Mode.COLOR:
+            case Mode.COLOR:
                 if (message[4] <= 10) {
                     const color = message[4];
 
@@ -32,14 +32,10 @@ export class DuploTrainBaseColorSensor extends Device {
 
 }
 
-export namespace DuploTrainBaseColorSensor {
-
-    export enum Mode {
-        COLOR = 0x00
-    }
-
-    export const ModeMap: {[event: string]: number} = {
-        "color": DuploTrainBaseColorSensor.Mode.COLOR
-    }
-
+export enum Mode {
+    COLOR = 0x00
 }
+
+export const ModeMap: {[event: string]: number} = {
+    "color": Mode.COLOR
+};

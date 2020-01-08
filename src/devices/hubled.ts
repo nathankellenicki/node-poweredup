@@ -27,7 +27,7 @@ export class HubLED extends Device {
                 this.send(Buffer.from([0x06, 0x17, 0x01, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
                 this.send(Buffer.from([0x06, 0x04, 0x01, color]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
-                this.subscribe(HubLED.Mode.COLOR);
+                this.subscribe(Mode.COLOR);
                 this.writeDirect(0x00, Buffer.from([color]));
             }
             return resolve();
@@ -49,7 +49,7 @@ export class HubLED extends Device {
                 this.send(Buffer.from([0x06, 0x17, 0x01, 0x02]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
                 this.send(Buffer.from([0x06, 0x04, 0x03, red, green, blue]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
-                this.subscribe(HubLED.Mode.RGB);
+                this.subscribe(Mode.RGB);
                 this.writeDirect(0x01, Buffer.from([red, green, blue]));
             }
             return resolve();
@@ -59,11 +59,7 @@ export class HubLED extends Device {
 
 }
 
-export namespace HubLED {
-
-    export enum Mode {
-        COLOR = 0x00,
-        RGB = 0x01
-    }
-
+export enum Mode {
+    COLOR = 0x00,
+    RGB = 0x01
 }

@@ -47,8 +47,8 @@ export class Device extends EventEmitter {
                 this.emit("detach");
             }
         };
-        
-        for (let event in this._modeMap) {
+
+        for (const event in this._modeMap) {
             if (this.hub.listenerCount(event) > 0) {
                 eventAttachListener(event);
             }

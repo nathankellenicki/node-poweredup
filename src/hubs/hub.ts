@@ -34,7 +34,7 @@ export class Hub extends LPF2Hub {
     protected _currentPort = 0x3b;
 
     constructor (device: IBLEAbstraction) {
-        super(device, Hub.PortMap, Consts.HubType.HUB);
+        super(device, PortMap, Consts.HubType.HUB);
         debug("Discovered Powered UP Hub");
     }
 
@@ -58,14 +58,10 @@ export class Hub extends LPF2Hub {
 
 }
 
-export namespace Hub {
-
-    export const PortMap: {[portName: string]: number} = {
-        "A": 0,
-        "B": 1,
-        "HUB_LED": 50,
-        "CURRENT_SENSOR": 59,
-        "VOLTAGE_SENSOR": 60
-    }
-
-}
+export const PortMap: {[portName: string]: number} = {
+    "A": 0,
+    "B": 1,
+    "HUB_LED": 50,
+    "CURRENT_SENSOR": 59,
+    "VOLTAGE_SENSOR": 60
+};
