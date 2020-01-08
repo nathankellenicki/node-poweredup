@@ -28,6 +28,7 @@ export class Device extends EventEmitter {
         this._type = type;
         this._modeMap = modeMap;
         this._isWeDo2SmartHub = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
+        this._isVirtualPort = this.hub.isPortVirtual(portId);
 
         const eventAttachListener = (event: string) => {
             if (event === "detach") {
@@ -85,6 +86,10 @@ export class Device extends EventEmitter {
 
     protected get isWeDo2SmartHub () {
         return this._isWeDo2SmartHub;
+    }
+
+    protected get isVirtualPort () {
+        return this._isVirtualPort;
     }
 
     public writeDirect (mode: number, data: Buffer, callback?: () => void) {

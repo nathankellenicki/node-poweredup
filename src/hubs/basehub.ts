@@ -50,11 +50,11 @@ export class BaseHub extends EventEmitter {
     protected _batteryLevel: number = 100;
     protected _rssi: number = -60;
     protected _portMap: {[portName: string]: number} = {};
+    protected _virtualPorts: number[] = [];
 
     protected _bleDevice: IBLEAbstraction;
 
     private _type: Consts.HubType;
-    private _virtualPorts: number[] = [];
     private _attachCallbacks: Array<((device: Device) => boolean)> = [];
 
     constructor (bleDevice: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
@@ -62,7 +62,7 @@ export class BaseHub extends EventEmitter {
         this.setMaxListeners(23); // Technic Medium Hub has 9 built in devices + 4 external ports. Node.js throws a warning after 10 attached event listeners.
         this._type = type;
         this._bleDevice = bleDevice;
-        this._portMap = portMap;
+        this._portMap = Object.assign({}, portMap);
         bleDevice.on("disconnect", () => {
             /**
              * Emits when the hub is disconnected.

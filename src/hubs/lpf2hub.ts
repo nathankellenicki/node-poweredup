@@ -273,31 +273,27 @@ export class LPF2Hub extends BaseHub {
             const device = this._getDeviceByPortId(portId);
             if (device) {
                 this._detachDevice(device);
+                if (this.isPortVirtual(portId)) {
+                    const portName = this.getPortNameForPortId(portId);
+                    if (portName) {
+                        delete this._portMap[portName];
+                    }
+                    this._virtualPorts = this._virtualPorts.filter((virtualPortId) => virtualPortId !== portId);
+                }
             }
+
+        // Handle virtual port creation
+        } else if (event === 0x02) {
+            const firstPortName = this.getPortNameForPortId(message[7]);
+            const secondPortName = this.getPortNameForPortId(message[8]);
+            // @ts-ignore NK These should never be undefined
+            const virtualPortName = firstPortName + secondPortName;
+            const virtualPortId = message[3];
+            this._portMap[virtualPortName] = virtualPortId;
+            this._virtualPorts.push(virtualPortId);
+            const device = this._createDevice(deviceType, virtualPortId);
+            this._attachDevice(device);
         }
-
-        // let port = this._getPortForPortNumber(data[3]);
-
-        // if (!port) {
-        //     if (data[4] === 0x02) {
-        //         const portA = this._getPortForPortNumber(data[7]);
-        //         const portB = this._getPortForPortNumber(data[8]);
-        //         if (portA && portB) {
-        //             this._virtualPorts[`${portA.id}${portB.id}`] = new Port(`${portA.id}${portB.id}`, data[3]);
-        //             port = this._getPortForPortNumber(data[3]);
-        //             if (port) {
-        //                 port.connected = true;
-        //                 this._registerDeviceAttachment(port, deviceType);
-        //             } else {
-        //                 return;
-        //             }
-        //         } else {
-        //             return;
-        //         }
-        //     } else {
-        //         return;
-        //     }
-        // }
 
     }
 

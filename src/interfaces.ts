@@ -21,4 +21,5 @@ export interface IDeviceInterface extends EventEmitter {
     getPortNameForPortId: (portId: number) => string | undefined;
     send: (message: Buffer, uuid: string, callback?: () => void) => void;
     subscribe: (portId: number, deviceType: number, mode: number) => void;
+    isPortVirtual: (portId: number) => boolean;
 }
