@@ -94,20 +94,28 @@ export class LPF2Hub extends BaseHub {
     }
 
 
-    // protected _combinePorts (port: string, type: number) {
-    //     if (!this._ports[port]) {
-    //         return;
-    //     }
-    //     const portObj = this._portLookup(port);
-    //     if (portObj) {
-    //         Object.keys(this._ports).forEach((id) => {
-    //             if (this._ports[id].type === type && this._ports[id].value !== portObj.value && !this._virtualPorts[`${portObj.value < this._ports[id].value ? portObj.id : this._ports[id].id}${portObj.value > this._ports[id].value ? portObj.id : this._ports[id].id}`]) {
-    //                 debug("Combining ports", portObj.value < this._ports[id].value ? portObj.id : id, portObj.value > this._ports[id].value ? portObj.id : id);
-    //                 this.send(Buffer.from([0x61, 0x01, portObj.value < this._ports[id].value ? portObj.value : this._ports[id].value, portObj.value > this._ports[id].value ? portObj.value : this._ports[id].value]), Consts.BLECharacteristic.LPF2_ALL);
-    //             }
-    //         });
-    //     }
-    // }
+    public createVirtualPort (firstPortName: string, secondPortName: string) {
+        const firstPortId = this._portMap[firstPortName];
+        if (!firstPortId) {
+            throw new Error(`Port ${firstPortName} does not exist on this hub`);
+        }
+        const secondPortId = this._portMap[secondPortName];
+        if (!secondPortId) {
+            throw new Error(`Port ${secondPortName} does not exist on this hub`);
+        }
+        const firstDevice = this._getDeviceByPortId(firstPortId);
+        if (!firstDevice) {
+            throw new Error(`Port ${firstPortName} does not have an attached device`);
+        }
+        const secondDevice = this._getDeviceByPortId(secondPortId);
+        if (!secondDevice) {
+            throw new Error(`Port ${secondPortName} does not have an attached device`);
+        }
+        if (firstDevice.type !== secondDevice.type) {
+            throw new Error(`Both devices must be of the same type to create a virtual port`);
+        }
+        this.send(Buffer.from([0x61, 0x01, firstPortId, secondPortId]), Consts.BLECharacteristic.LPF2_ALL);
+    }
 
 
     protected _checkFirmware (version: string) {

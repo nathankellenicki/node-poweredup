@@ -42,7 +42,6 @@ const debug = Debug("basehub");
 export class BaseHub extends EventEmitter {
 
     protected _attachedDevices: {[portId: number]: Device} = {};
-    // protected _virtualPorts: {[portName: string]: Port} = {};
 
     protected _name: string = "";
     protected _firmwareVersion: string = "0.0.00.0000";
@@ -50,20 +49,21 @@ export class BaseHub extends EventEmitter {
     protected _primaryMACAddress: string = "00:00:00:00:00:00";
     protected _batteryLevel: number = 100;
     protected _rssi: number = -60;
+    protected _portMap: {[portName: string]: number} = {};
 
     protected _bleDevice: IBLEAbstraction;
 
     private _type: Consts.HubType;
-    private _portMap: {[portName: string]: number} = {};
-    private _attachCallbacks: ((device: Device) => boolean)[] = [];
+    private _virtualPorts: number[] = [];
+    private _attachCallbacks: Array<((device: Device) => boolean)> = [];
 
-    constructor (device: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
+    constructor (bleDevice: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
         super();
-        this.setMaxListeners(20); // Technic Medium Hub has 9 built in devices + 4 external ports. Node.js throws a warning after 11 attached event listeners.
+        this.setMaxListeners(23); // Technic Medium Hub has 9 built in devices + 4 external ports. Node.js throws a warning after 10 attached event listeners.
         this._type = type;
-        this._bleDevice = device;
+        this._bleDevice = bleDevice;
         this._portMap = portMap;
-        device.on("disconnect", () => {
+        bleDevice.on("disconnect", () => {
             /**
              * Emits when the hub is disconnected.
              * @event Hub#disconnect
@@ -246,6 +246,11 @@ export class BaseHub extends EventEmitter {
             }
         }
         return;
+    }
+
+
+    public isPortVirtual (portId: number) {
+        return (this._virtualPorts.indexOf(portId) > -1);
     }
 
 

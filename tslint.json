@@ -13,7 +13,7 @@
         "prefer-for-of": false,
         "typedef": true,
         "no-console": false,
-        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
+        "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore", "require-const-for-all-caps", "allow-pascal-case"],
         "object-literal-key-quotes": false,
         "object-literal-sort-keys": false,
         "no-string-literal": false,

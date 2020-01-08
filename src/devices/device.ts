@@ -19,6 +19,7 @@ export class Device extends EventEmitter {
     private _modeMap: {[event: string]: number} = {};
 
     private _isWeDo2SmartHub: boolean;
+    private _isVirtualPort: boolean = false;
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
