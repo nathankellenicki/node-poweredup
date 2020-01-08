@@ -208,10 +208,10 @@ export class LPF2Hub extends BaseHub {
                  * @param {string} button
                  * @param {ButtonState} state
                  */
-                this.emit("button", "GREEN", Consts.ButtonState.PRESSED);
+                this.emit("button", { event: Consts.ButtonState.PRESSED });
                 return;
             } else if (message[5] === 0) {
-                this.emit("button", "GREEN", Consts.ButtonState.RELEASED);
+                this.emit("button", { event: Consts.ButtonState.RELEASED });
                 return;
             }
 
@@ -229,7 +229,7 @@ export class LPF2Hub extends BaseHub {
             const rssi = message.readInt8(5);
             if (rssi !== 0) {
                 this._rssi = rssi;
-                this.emit("rssiChange", this._rssi);
+                this.emit("rssi", { rssi: this._rssi });
             }
 
         // primary MAC Address
@@ -241,7 +241,7 @@ export class LPF2Hub extends BaseHub {
             const batteryLevel = message[5];
             if (batteryLevel !== this._batteryLevel) {
                 this._batteryLevel = batteryLevel;
-                this.emit("batteryLevel", batteryLevel);
+                this.emit("batteryLevel", { batteryLevel });
             }
         }
 

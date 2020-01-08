@@ -113,7 +113,7 @@ export class Device extends EventEmitter {
     }
 
     public receive (message: Buffer) {
-        this.emitGlobal("receive", message);
+        this.emitGlobal("receive", { message });
     }
 
     public emitGlobal (event: string, ...args: any[]) {

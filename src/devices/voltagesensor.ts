@@ -17,7 +17,7 @@ export class VoltageSensor extends Device {
             case VoltageSensor.Mode.VOLTAGE:
                 if (this.isWeDo2SmartHub) {
                     const voltage = message.readInt16LE(2) / 40;
-                    this.emitGlobal("voltage", voltage);
+                    this.emitGlobal("voltage", { voltage });
                 } else {
                     let maxVoltageValue = VoltageSensor.MaxVoltageValue[this.hub.type];
                     if (maxVoltageValue === undefined) {
@@ -33,7 +33,7 @@ export class VoltageSensor extends Device {
                      * @event VoltageSensor#voltage
                      * @param {number} voltage
                      */
-                    this.emitGlobal("voltage", voltage);
+                    this.emitGlobal("voltage", { voltage });
                 }
                 break;
         }

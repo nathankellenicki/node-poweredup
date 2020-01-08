@@ -19,12 +19,13 @@ export class MotionSensor extends Device {
                 if (message[this.isWeDo2SmartHub ? 3 : 5] === 1) {
                     distance = distance + 255;
                 }
+                distance *= 10;
                 /**
                  * Emits when a distance sensor is activated.
                  * @event MotionSensor#distance
                  * @param {number} distance Distance, in millimeters.
                  */
-                this.emitGlobal("distance", distance * 10);
+                this.emitGlobal("distance", { distance });
                 break;
         }
     }

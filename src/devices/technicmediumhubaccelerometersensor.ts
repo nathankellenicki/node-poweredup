@@ -23,10 +23,10 @@ export class TechnicMediumHubAccelerometerSensor extends Device {
                  * @param {number} y
                  * @param {number} z
                  */
-                const accelX = Math.round(message.readInt16LE(4) / 4.096);
-                const accelY = Math.round(message.readInt16LE(6) / 4.096);
-                const accelZ = Math.round(message.readInt16LE(8) / 4.096);
-                this.emitGlobal("accel", accelX, accelY, accelZ);
+                const x = Math.round(message.readInt16LE(4) / 4.096);
+                const y = Math.round(message.readInt16LE(6) / 4.096);
+                const z = Math.round(message.readInt16LE(8) / 4.096);
+                this.emitGlobal("accel", { x, y, z });
                 break;
         }
     }
