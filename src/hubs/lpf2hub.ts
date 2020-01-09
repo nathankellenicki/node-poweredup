@@ -106,7 +106,7 @@ export class LPF2Hub extends BaseHub {
         if (firstDevice.type !== secondDevice.type) {
             throw new Error(`Both devices must be of the same type to create a virtual port`);
         }
-        this.send(Buffer.from([0x61, 0x01, firstPortId, secondPortId]), Consts.BLECharacteristic.LPF2_ALL);
+        this.send(Buffer.from([0x61, 0x01, firstDevice.portId, secondDevice.portId]), Consts.BLECharacteristic.LPF2_ALL);
     }
 
 

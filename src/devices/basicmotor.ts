@@ -15,8 +15,8 @@ export class BasicMotor extends Device {
 
 
     /**
-     * Set the motor speed.
-     * @method BasicMotor#power
+     * Set the motor power.
+     * @method BasicMotor#setPower
      * @param {number} power For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @returns {Promise} Resolved upon successful completion of command.
      */
