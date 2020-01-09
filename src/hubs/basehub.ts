@@ -188,7 +188,7 @@ export class BaseHub extends EventEmitter {
         if (portId !== undefined) {
             return this._attachedDevices[portId];
         } else {
-            throw new Error(`Port ${portName} does not exist on this hub type`);
+            return undefined;
         }
     }
 

@@ -95,19 +95,11 @@ export class LPF2Hub extends BaseHub {
 
 
     public createVirtualPort (firstPortName: string, secondPortName: string) {
-        const firstPortId = this._portMap[firstPortName];
-        if (!firstPortId) {
-            throw new Error(`Port ${firstPortName} does not exist on this hub`);
-        }
-        const secondPortId = this._portMap[secondPortName];
-        if (!secondPortId) {
-            throw new Error(`Port ${secondPortName} does not exist on this hub`);
-        }
-        const firstDevice = this._getDeviceByPortId(firstPortId);
+        const firstDevice = this.getDeviceAtPort(firstPortName);
         if (!firstDevice) {
             throw new Error(`Port ${firstPortName} does not have an attached device`);
         }
-        const secondDevice = this._getDeviceByPortId(secondPortId);
+        const secondDevice = this.getDeviceAtPort(secondPortName);
         if (!secondDevice) {
             throw new Error(`Port ${secondPortName} does not have an attached device`);
         }
