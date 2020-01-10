@@ -22,4 +22,5 @@ export interface IDeviceInterface extends EventEmitter {
     send: (message: Buffer, uuid: string, callback?: () => void) => void;
     subscribe: (portId: number, deviceType: number, mode: number) => void;
     isPortVirtual: (portId: number) => boolean;
+    sleep: (delay: number) => Promise<any>;
 }

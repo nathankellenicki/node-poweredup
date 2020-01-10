@@ -36,7 +36,6 @@ export class Device extends EventEmitter {
             }
             if (this.autoSubscribe) {
                 if (this._modeMap[event] !== undefined) {
-                    console.log(this._modeMap[event]);
                     this.subscribe(this._modeMap[event]);
                 }
             }

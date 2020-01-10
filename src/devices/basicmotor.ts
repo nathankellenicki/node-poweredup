@@ -29,7 +29,17 @@ export class BasicMotor extends Device {
 
 
     /**
-     * Fully (hard) stop the motor.
+     * Stop the motor.
+     * @method BasicMotor#stop
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public stop () {
+        return this.setPower(0);
+    }
+
+
+    /**
+     * Brake the motor.
      * @method BasicMotor#brake
      * @returns {Promise} Resolved upon successful completion of command.
      */

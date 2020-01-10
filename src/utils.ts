@@ -38,3 +38,20 @@ export const normalizeAngle = (angle: number) => {
     }
     return angle;
 };
+
+export const roundAngleToNearest90 = (angle: number) => {
+    angle = normalizeAngle(angle);
+    if (angle < -135) {
+        return -180;
+    }
+    if (angle < -45) {
+        return -90;
+    }
+    if (angle < 45) {
+        return 0;
+    }
+    if (angle < 135) {
+        return 90;
+    }
+    return -180;
+};
