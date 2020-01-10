@@ -29,3 +29,12 @@ export const decodeVersion = (version: number) => {
 export const decodeMACAddress = (address: Uint8Array) => {
     return Array.from(address).map((part) => toHex(part, 2)).join(":");
 };
+
+export const normalizeAngle = (angle: number) => {
+    if (angle >= 180) {
+        return angle - (360 * ((angle + 180) / 360));
+    } else if (angle < -180) {
+        return angle + (360 * ((180 - angle) / 360));
+    }
+    return angle;
+};
