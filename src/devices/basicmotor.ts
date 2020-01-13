@@ -4,7 +4,7 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
-import { mapSpeed } from "../utils";
+import { calculateRamp, mapSpeed } from "../utils";
 
 export class BasicMotor extends Device {
 
@@ -20,10 +20,33 @@ export class BasicMotor extends Device {
      * @param {number} power For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @returns {Promise} Resolved upon successful completion of command.
      */
-    public setPower (power: number) {
+    public setPower (power: number, interrupt: boolean = true) {
+        if (interrupt) {
+            this.cancelEventTimer();
+        }
         return new Promise((resolve) => {
             this.writeDirect(0x00, Buffer.from([mapSpeed(power)]));
             return resolve();
+        });
+    }
+
+
+    /**
+     * Ramp the motor power.
+     * @method BasicMotor#rampPower
+     * @param {number} fromPower For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} toPower For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} time How long the ramp should last (in milliseconds).
+     * @returns {Promise} Resolved upon successful completion of command.
+     */
+    public rampPower (fromPower: number, toPower: number, time: number) {
+        this.cancelEventTimer();
+        return new Promise((resolve) => {
+            calculateRamp(this, fromPower, toPower, time)
+            .on("changePower", (power) => {
+                this.setPower(power, false);
+            })
+            .on("finished", resolve);
         });
     }
 
@@ -34,6 +57,7 @@ export class BasicMotor extends Device {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public stop () {
+        this.cancelEventTimer();
         return this.setPower(0);
     }
 
@@ -44,6 +68,7 @@ export class BasicMotor extends Device {
      * @returns {Promise} Resolved upon successful completion of command.
      */
     public brake () {
+        this.cancelEventTimer();
         return this.setPower(127);
     }
 

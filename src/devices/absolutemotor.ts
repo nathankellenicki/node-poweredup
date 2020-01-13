@@ -44,6 +44,7 @@ export class AbsoluteMotor extends TachoMotor {
         if (this.isWeDo2SmartHub) {
             throw new Error("Absolute positioning is not available on the WeDo 2.0 Smart Hub");
         }
+        this.cancelEventTimer();
         return new Promise((resolve) => {
             this._busy = true;
             if (speed === undefined || speed === null) {
@@ -78,6 +79,7 @@ export class AbsoluteMotor extends TachoMotor {
         if (this.isWeDo2SmartHub) {
             throw new Error("Absolute positioning is not available on the WeDo 2.0 Smart Hub");
         }
+        this.cancelEventTimer();
         return new Promise((resolve) => {
             this._busy = true;
             let message;
@@ -97,6 +99,7 @@ export class AbsoluteMotor extends TachoMotor {
     }
 
     public async calibrateServo () {
+        this.cancelEventTimer();
         const oldMode = this.mode;
         let currentAngle = 0;
         const listener = ({ angle }: { angle: number }) => {
@@ -142,6 +145,7 @@ export class AbsoluteMotor extends TachoMotor {
     }
 
     public async resetServo (angle: number) {
+        this.cancelEventTimer();
         const oldMode = this.mode;
         let currentAngle = 0;
         const listener = ({ angle }: { angle: number }) => {

@@ -1,3 +1,6 @@
+import { EventEmitter } from "events";
+import { Device } from "./devices/device";
+
 // @ts-ignore
 export const isWebBluetooth = (typeof navigator !== "undefined" && navigator && navigator.bluetooth);
 
@@ -54,4 +57,34 @@ export const roundAngleToNearest90 = (angle: number) => {
         return 90;
     }
     return -180;
+};
+
+export const calculateRamp = (device: Device, fromPower: number, toPower: number, time: number) => {
+    const emitter = new EventEmitter();
+    const steps = Math.abs(toPower - fromPower);
+    let delay = time / steps;
+    let increment = 1;
+    if (delay < 50 && steps > 0) {
+        increment = 50 / delay;
+        delay = 50;
+    }
+    if (fromPower > toPower) {
+        increment = -increment;
+    }
+    let i = 0;
+    const interval = setInterval(() => {
+        let power = Math.round(fromPower + (++i * increment));
+        if (toPower > fromPower && power > toPower) {
+            power = toPower;
+        } else if (fromPower > toPower && power < toPower) {
+            power = toPower;
+        }
+        emitter.emit("changePower", power);
+        if (power === toPower) {
+            clearInterval(interval);
+            emitter.emit("finished");
+        }
+    }, delay);
+    device.setEventTimer(interval);
+    return emitter;
 };
