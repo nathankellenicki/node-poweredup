@@ -22,7 +22,7 @@ export class DuploTrainBaseSpeedometer extends Device {
                  * @event DuploTrainBaseSpeedometer#speed
                  * @param {number} speed
                  */
-                this.emitGlobal("speed", { speed });
+                this.notify("speed", { speed });
                 break;
 
         }

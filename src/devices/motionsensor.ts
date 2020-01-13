@@ -25,7 +25,7 @@ export class MotionSensor extends Device {
                  * @event MotionSensor#distance
                  * @param {number} distance Distance, in millimeters.
                  */
-                this.emitGlobal("distance", { distance });
+                this.notify("distance", { distance });
                 break;
         }
     }

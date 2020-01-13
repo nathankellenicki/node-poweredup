@@ -21,7 +21,7 @@ export class RemoteControlButton extends Device {
                  * @param {number} event
                  */
                 const event = message[4];
-                this.emitGlobal("remoteButton", { event });
+                this.notify("remoteButton", { event });
                 break;
         }
     }

@@ -22,7 +22,7 @@ export class AbsoluteMotor extends TachoMotor {
                  * @event AbsoluteMotor#absolute
                  * @param {number} absolute
                  */
-                this.emitGlobal("absolute", { angle });
+                this.notify("absolute", { angle });
                 break;
             default:
                 super.receive(message);

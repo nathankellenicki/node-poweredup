@@ -7,6 +7,7 @@ import * as Consts from "../consts";
 export class Device extends EventEmitter {
 
     public autoSubscribe: boolean = true;
+    public values: {[event: string]: any} = {};
 
     protected _mode: number | undefined;
     protected _busy: boolean = false;
@@ -123,13 +124,14 @@ export class Device extends EventEmitter {
     }
 
     public receive (message: Buffer) {
-        this.emitGlobal("receive", { message });
+        this.notify("receive", { message });
     }
 
-    public emitGlobal (event: string, ...args: any[]) {
-        this.emit(event, ...args);
+    public notify (event: string, values: any) {
+        this.values[event] = values;
+        this.emit(event, values);
         if (this.hub.listenerCount(event) > 0) {
-            this.hub.emit(event, this, ...args);
+            this.hub.emit(event, this, values);
         }
     }
 
