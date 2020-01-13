@@ -28,7 +28,6 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
     })
 
     hub.on("tilt", (device, { x, y, z }) => {
-        console.log(x, y, z);
         log(`Tilt detected on port ${device.portName} (X: ${x}, Y: ${y}${z !== undefined ? `, Z: ${z}`: ""})`);
     });
 
