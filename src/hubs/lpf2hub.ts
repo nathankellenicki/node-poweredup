@@ -195,7 +195,6 @@ export class LPF2Hub extends BaseHub {
 
         // Button press reports
         if (message[3] === 0x02) {
-            console.log("BUTTON PRESS", message);
             if (message[5] === 1) {
                 /**
                  * Emits when a button is pressed.

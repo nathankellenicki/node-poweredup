@@ -20,7 +20,9 @@ import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
 import { PiezoBuzzer } from "../devices/piezobuzzer";
 import { RemoteControlButton } from "../devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
+import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
+import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor";
 import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
 import { TechnicMediumHubTiltSensor } from "../devices/technicmediumhubtiltsensor";
@@ -348,6 +350,8 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: TechnicMediumHubGyroSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: TechnicMediumHubAccelerometerSensor,
             [Consts.DeviceType.MEDIUM_LINEAR_MOTOR]: MediumLinearMotor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_ANGULAR_MOTOR]: TechnicMediumAngularMotor,
+            [Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR]: TechnicLargeAngularMotor,
             [Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR]: TechnicLargeLinearMotor,
             [Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR]: TechnicXLargeLinearMotor,
             [Consts.DeviceType.COLOR_DISTANCE_SENSOR]: ColorDistanceSensor,

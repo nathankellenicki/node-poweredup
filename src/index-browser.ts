@@ -26,7 +26,9 @@ import { MoveHubTiltSensor } from "./devices/movehubtiltsensor";
 import { PiezoBuzzer } from "./devices/piezobuzzer";
 import { RemoteControlButton } from "./devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "./devices/simplemediumlinearmotor";
+import { TechnicLargeAngularMotor } from "./devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
+import { TechnicMediumAngularMotor } from "./devices/technicmediumangularmotor";
 import { TechnicMediumHubAccelerometerSensor } from "./devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "./devices/technicmediumhubgyrosensor";
 import { TechnicMediumHubTiltSensor } from "./devices/technicmediumhubtiltsensor";
@@ -66,6 +68,8 @@ window.PoweredUP = {
     TechnicMediumHubAccelerometerSensor,
     TechnicMediumHubGyroSensor,
     TechnicMediumHubTiltSensor,
+    TechnicMediumAngularMotor,
+    TechnicLargeAngularMotor,
     TechnicLargeLinearMotor,
     TechnicXLargeLinearMotor,
     TiltSensor,
