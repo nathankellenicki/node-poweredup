@@ -139,6 +139,8 @@ export class LPF2Hub extends BaseHub {
                     const callback = this._propertyRequestCallbacks[property];
                     if (callback) {
                         callback(message);
+                    } else {
+                        this._parseHubPropertyResponse(message);
                     }
                     delete this._propertyRequestCallbacks[property];
                     break;
@@ -193,6 +195,7 @@ export class LPF2Hub extends BaseHub {
 
         // Button press reports
         if (message[3] === 0x02) {
+            console.log("BUTTON PRESS", message);
             if (message[5] === 1) {
                 /**
                  * Emits when a button is pressed.

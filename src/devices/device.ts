@@ -81,6 +81,10 @@ export class Device extends EventEmitter {
         return this._type;
     }
 
+    public get typeName () {
+        return Consts.DeviceTypeNames[this.type];
+    }
+
     public get mode () {
         return this._mode;
     }
