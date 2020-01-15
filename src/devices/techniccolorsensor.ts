@@ -33,7 +33,7 @@ export class TechnicColorSensor extends Device {
                 /**
                  * Emits when the light reflectivity changes.
                  * @event TechnicColorSensor#reflect Percentage, from 0 to 100.
-                 * @param {Color} reflect
+                 * @param {number} reflect
                  */
                 this.notify("reflect", { reflect });
                 break;
@@ -44,7 +44,7 @@ export class TechnicColorSensor extends Device {
                 /**
                  * Emits when the ambient light changes.
                  * @event TechnicColorSensor#ambient Percentage, from 0 to 100.
-                 * @param {Color} ambient
+                 * @param {number} ambient
                  */
                 this.notify("ambient", { ambient });
                 break;

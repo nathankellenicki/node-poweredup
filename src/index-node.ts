@@ -28,6 +28,7 @@ import { RemoteControlButton } from "./devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "./devices/simplemediumlinearmotor";
 import { TechnicColorSensor } from "./devices/techniccolorsensor";
 import { TechnicDistanceSensor } from "./devices/technicdistancesensor";
+import { TechnicForceSensor } from "./devices/technicforcesensor";
 import { TechnicLargeAngularMotor } from "./devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
 import { TechnicMediumAngularMotor } from "./devices/technicmediumangularmotor";
@@ -69,6 +70,7 @@ export {
     SimpleMediumLinearMotor,
     TechnicColorSensor,
     TechnicDistanceSensor,
+    TechnicForceSensor,
     TechnicMediumHubAccelerometerSensor,
     TechnicMediumHubGyroSensor,
     TechnicMediumHubTiltSensor,

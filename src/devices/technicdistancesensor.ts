@@ -20,7 +20,7 @@ export class TechnicDistanceSensor extends Device {
                 /**
                  * Emits when the detected distance changes (Slow sampling covers 40mm to 2500mm).
                  * @event TechnicDistanceSensor#distance Distance, from 40 to 2500mm
-                 * @param {Color} distance
+                 * @param {number} distance
                  */
                 this.notify("distance", { distance });
                 break;
@@ -31,7 +31,7 @@ export class TechnicDistanceSensor extends Device {
                 /**
                  * Emits when the detected distance changes (Fast sampling covers 50mm to 320mm).
                  * @event TechnicDistanceSensor#fastDistance Distance, from 50 to 320mm
-                 * @param {Color} fastDistance
+                 * @param {number} fastDistance
                  */
                 this.notify("fastDistance", { fastDistance });
                 break;

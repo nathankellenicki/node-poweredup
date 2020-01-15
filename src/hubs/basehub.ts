@@ -22,6 +22,7 @@ import { RemoteControlButton } from "../devices/remotecontrolbutton";
 import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
 import { TechnicColorSensor } from "../devices/techniccolorsensor";
 import { TechnicDistanceSensor } from "../devices/technicdistancesensor";
+import { TechnicForceSensor } from "../devices/technicforcesensor";
 import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
 import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor";
@@ -350,6 +351,7 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.PIEZO_BUZZER]: PiezoBuzzer,
             [Consts.DeviceType.TECHNIC_COLOR_SENSOR]: TechnicColorSensor,
             [Consts.DeviceType.TECHNIC_DISTANCE_SENSOR]: TechnicDistanceSensor,
+            [Consts.DeviceType.TECHNIC_FORCE_SENSOR]: TechnicForceSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR]: TechnicMediumHubTiltSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: TechnicMediumHubGyroSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: TechnicMediumHubAccelerometerSensor,
