@@ -134,11 +134,11 @@ export const ColorNames = Color;
  * @property {number} STOP 4
  */
 export enum ButtonState {
-    PRESSED = 0,
-    RELEASED = 1,
-    UP = 2,
-    DOWN = 3,
-    STOP = 4
+    PRESSED = 2,
+    RELEASED = 0,
+    UP = 1,
+    DOWN = 255,
+    STOP = 127
 }
 
 
