@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>node-poweredup Class: Hub</title>
+	<title>node-poweredup Class: RemoteControl</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,13 +72,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Hub</h1>
+	<h1 class="page-title">Class: RemoteControl</h1>
 <section>
 
 <header>
     
         <h2>
-        Hub
+        RemoteControl
         </h2>
         
     
@@ -91,7 +91,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Hub"><span class="type-signature"></span>new Hub()</h4>
+    <h4 class="name" id="RemoteControl"><span class="type-signature"></span>new RemoteControl()</h4>
     
     
 </dt>
@@ -99,7 +99,7 @@
 
     
     <div class="description">
-        <p>The Hub is emitted if the discovered device is a Hub.</p>
+        <p>The RemoteControl is emitted if the discovered device is a Remote Control.</p>
     </div>
     
 
@@ -145,8 +145,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="hubs_hub.js.html">hubs/hub.js</a>,
-				 <a href="hubs_hub.js.html#sunlight-1-line-18">line 18</a>
+				<a href="hubs_remotecontrol.js.html">hubs/remotecontrol.js</a>,
+				 <a href="hubs_remotecontrol.js.html#sunlight-1-line-14">line 14</a>
 			</li>
 		</ul>
 	</dd>
@@ -290,6 +290,11 @@
 	
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#batteryLevel">BaseHub#batteryLevel</a>
+    </li></ul></dd>
+    
 
     
 
@@ -417,6 +422,11 @@
 	</dd>
 	
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#firmwareVersion">BaseHub#firmwareVersion</a>
+    </li></ul></dd>
     
 
     
@@ -546,6 +556,11 @@
 	
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#hardwareVersion">BaseHub#hardwareVersion</a>
+    </li></ul></dd>
+    
 
     
 
@@ -673,6 +688,11 @@
 	</dd>
 	
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#name">BaseHub#name</a>
+    </li></ul></dd>
     
 
     
@@ -802,6 +822,11 @@
 	
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#ports">BaseHub#ports</a>
+    </li></ul></dd>
+    
 
     
 
@@ -929,6 +954,11 @@
 	</dd>
 	
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#primaryMACAddress">BaseHub#primaryMACAddress</a>
+    </li></ul></dd>
     
 
     
@@ -1058,6 +1088,11 @@
 	
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#rssi">BaseHub#rssi</a>
+    </li></ul></dd>
+    
 
     
 
@@ -1185,6 +1220,11 @@
 	</dd>
 	
 
+    
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#type">BaseHub#type</a>
+    </li></ul></dd>
     
 
     
@@ -1314,6 +1354,11 @@
 	
 
     
+    <dt class="tag-overrides">Overrides:</dt>
+    <dd class="tag-overrides"><ul class="dummy"><li>
+        <a href="BaseHub.html#uuid">BaseHub#uuid</a>
+    </li></ul></dd>
+    
 
     
 
@@ -1363,230 +1408,6 @@
         <h3 class="subsection-title">Methods</h3>
 
         <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="connect"><span class="type-signature"></span>connect()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Connect to the Hub.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="hubs_basehub.js.html">hubs/basehub.js</a>,
-				 <a href="hubs_basehub.js.html#sunlight-1-line-135">line 135</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Resolved upon successful connect.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="disconnect"><span class="type-signature"></span>disconnect()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Disconnect the Hub.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="hubs_basehub.js.html">hubs/basehub.js</a>,
-				 <a href="hubs_basehub.js.html#sunlight-1-line-152">line 152</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Resolved upon successful disconnect.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
             
 <hr>
 <dt>
@@ -1878,332 +1699,6 @@
     
 </dd>
 
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="sleep"><span class="type-signature"></span>sleep(delay)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Sleep a given amount of time.</p>
-<p>This is a helper method to make it easier to add delays into a chain of commands.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>delay</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">number</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>How long to sleep (in milliseconds).</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="hubs_basehub.js.html">hubs/basehub.js</a>,
-				 <a href="hubs_basehub.js.html#sunlight-1-line-220">line 220</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Resolved after the delay is finished.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="wait"><span class="type-signature"></span>wait(commands)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Wait until a given list of concurrently running commands are complete.</p>
-<p>This is a helper method to make it easier to wait for concurrent commands to complete.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>commands</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;Promise.&lt;any>></span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Array of executing commands.</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="hubs_basehub.js.html">hubs/basehub.js</a>,
-				 <a href="hubs_basehub.js.html#sunlight-1-line-233">line 233</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    <p>Resolved after the commands are finished.</p>
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
         </dl>
     
 
@@ -2435,282 +1930,6 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="event:attach">attach</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Emits when a device is attached to the Hub.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>device</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Device</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="hubs_basehub.js.html">hubs/basehub.js</a>,
-				 <a href="hubs_basehub.js.html#sunlight-1-line-257">line 257</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:attach">attach</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Emits when a device is detached from the Hub.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>device</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Device</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="hubs_basehub.js.html">hubs/basehub.js</a>,
-				 <a href="hubs_basehub.js.html#sunlight-1-line-274">line 274</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
     <h4 class="name" id="event:button">button</h4>
     
     
@@ -2850,94 +2069,6 @@
 			<li>
 				<a href="hubs_lpf2hub.js.html">hubs/lpf2hub.js</a>,
 				 <a href="hubs_lpf2hub.js.html#sunlight-1-line-172">line 172</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:disconnect">disconnect</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Emits when the hub is disconnected.</p>
-    </div>
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="hubs_basehub.js.html">hubs/basehub.js</a>,
-				 <a href="hubs_basehub.js.html#sunlight-1-line-65">line 65</a>
 			</li>
 		</ul>
 	</dd>

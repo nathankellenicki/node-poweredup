@@ -69,7 +69,7 @@ export class BasicMotor extends Device {
      */
     public brake () {
         this.cancelEventTimer();
-        return this.setPower(127);
+        return this.setPower(Consts.BrakingStyle.BRAKE);
     }
 
 

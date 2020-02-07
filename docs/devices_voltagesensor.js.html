@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>node-poweredup Index</title>
+	<title>node-poweredup Source: devices/voltagesensor.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -67,251 +67,82 @@
 <div class="row">
 
 	
-	<div class="col-md-8">
+	<div class="col-md-12">
 	
 		<div id="main">
 			
 
-	
-	
-
-
-
-
-
-
-
-
-
-
-
-	
-	
-
-
-
-
-
-    <section class="readme-section">
-        <article><p><a href="https://drone.kellenicki.com/nkellenicki/node-poweredup"><img src="https://drone.kellenicki.com/api/badges/nkellenicki/node-poweredup/status.svg" alt="Drone"></a><br>
-<a href="https://www.npmjs.com/package/node-poweredup"><img src="https://img.shields.io/npm/v/node-poweredup.svg?style=flat" alt="NPM Version"></a></p>
-<h1><strong>node-poweredup</strong> - A Javascript module to interface with LEGO Powered Up components.</h1>
-<h3>Introduction</h3>
-<p>LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO WeDo 2.0 released in 2016, LEGO Boost released in 2017, LEGO Powered Up released in 2018, and LEGO Technic CONTROL+ released in 2019. It also includes the 2018 Duplo App-Controlled Train sets.</p>
-<p>This library allows communication and control of Powered Up devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.</p>
-<h3>Node.js Installation</h3>
-<p>Node.js v8.0 required.</p>
-<pre class="prettyprint source lang-javascript"><code>npm install node-poweredup --save
-</code></pre>
-<p>node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are <a href="https://github.com/noble/noble#prerequisites">certain dependencies which may need installed first</a>.</p>
-<p>Note: node-poweredup has been tested on macOS 10.13 and Debian/Raspbian on the Raspberry Pi 3 Model B.</p>
-<h3>Compatibility</h3>
-<p>While most Powered Up components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.</p>
-<table>
-<thead>
-<tr>
-<th>Device Name</th>
-<th>Product Code</th>
-<th>Type</th>
-<th>WeDo 2.0 Smart Hub</th>
-<th>Boost Move Hub</th>
-<th>Powered Up Hub</th>
-<th>Control+ Hub</th>
-<th>Availability</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>WeDo 2.0 Tilt Sensor</td>
-<td><a href="https://brickset.com/sets/45305-1/">45305</a></td>
-<td>Sensor</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/45300-1/">45300</a></td>
-</tr>
-<tr>
-<td>WeDo 2.0 Motion Sensor</td>
-<td><a href="https://brickset.com/sets/45304-1/">45304</a></td>
-<td>Sensor</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/45300-1/">45300</a></td>
-</tr>
-<tr>
-<td>WeDo 2.0 Medium Motor</td>
-<td><a href="https://brickset.com/sets/45303-1/">45303</a></td>
-<td>Motor</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/45300-1/">45300</a><br /> <a href="https://brickset.com/sets/76112-1/">76112</a></td>
-</tr>
-<tr>
-<td>Boost Color and Distance Sensor</td>
-<td><a href="https://brickset.com/sets/88007-1/">88007</a></td>
-<td>Sensor</td>
-<td><em>Partial</em></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/17101-1/">17101</a></td>
-</tr>
-<tr>
-<td>Boost Tacho Motor</td>
-<td><a href="https://brickset.com/sets/88008-1/">88008</a></td>
-<td>Motor/Sensor</td>
-<td><em>Partial</em></td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/17101-1/">17101</a></td>
-</tr>
-<tr>
-<td>Powered Up Train Motor</td>
-<td><a href="https://brickset.com/sets/88011-1/">88011</a></td>
-<td>Motor</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a></td>
-</tr>
-<tr>
-<td>Powered Up LED Lights</td>
-<td><a href="https://brickset.com/sets/88005-1/">88005</a></td>
-<td>Light</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/88005-1/">88005</a></td>
-</tr>
-<tr>
-<td>Control+ Large Motor</td>
-<td>22169</td>
-<td>Motor/Sensor</td>
-<td><em>Partial</em></td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a></td>
-</tr>
-<tr>
-<td>Control+ XLarge Motor</td>
-<td>22172</td>
-<td>Motor/Sensor</td>
-<td><em>Partial</em></td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-<td><a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a></td>
-</tr>
-</tbody>
-</table>
-<p>In addition, the Hubs themselves have certain built-in features which this library exposes.</p>
-<table>
-<thead>
-<tr>
-<th>Hub Name</th>
-<th>Product Code</th>
-<th>Built-In Features</th>
-<th>Availability</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>WeDo 2.0 Smart hub</td>
-<td><a href="https://brickset.com/sets/45301-1/">45301</a></td>
-<td>RGB LED<br />Piezo Buzzer<br />Button</td>
-<td><a href="https://brickset.com/sets/45300-1/">45300</a></td>
-</tr>
-<tr>
-<td>Boost Move Hub</td>
-<td><a href="https://brickset.com/sets/88006-1/">88006</a></td>
-<td>RGB LED<br />Tilt Sensor<br />2x Tacho Motors<br />Button</td>
-<td><a href="https://brickset.com/sets/17101-1/">17101</a></td>
-</tr>
-<tr>
-<td>Powered Up Hub</td>
-<td><a href="https://brickset.com/sets/88009-1/">88009</a></td>
-<td>RGB LED<br />Button</td>
-<td><a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a><br /><a href="https://brickset.com/sets/76112-1/">76112</a></td>
-</tr>
-<tr>
-<td>Powered Up Remote</td>
-<td><a href="https://brickset.com/sets/88010-1/">88010</a></td>
-<td>RGB LED<br />Left and Right Control Buttons<br />Button</td>
-<td><a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a></td>
-</tr>
-<tr>
-<td>Duplo Train Base</td>
-<td>28743</td>
-<td>RGB LED/Headlights<br />Speaker<br />Speedometer<br />Motor<br />Color and Distance Sensor<br />Button</td>
-<td><a href="https://brickset.com/sets/10874-1/">10874</a><br /><a href="https://brickset.com/sets/10875-1/">10875</a></td>
-</tr>
-<tr>
-<td>Control+ Hub</td>
-<td>22127</td>
-<td>RGB LED<br />Button<br />Tilt Sensor<br />Accelerometer</td>
-<td><a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a></td>
-</tr>
-</tbody>
-</table>
-<h3>Known Issues and Limitations</h3>
-<ul>
-<li>
-<p>The Boost Color and Distance sensor only works in color mode with the WeDo 2.0 Smart Hub.</p>
-</li>
-<li>
-<p>When used with the WeDo 2.0 Smart Hub, the Boost Tacho Motor and Control+ Motors do not support rotating the motor by angle.</p>
-</li>
-<li>
-<p>When used with the Boost Move Hub, the Control+ Motors do not currently accept commands.</p>
-</li>
-</ul>
-<h3>Documentation</h3>
-<p><a href="https://nathankellenicki.github.io/node-poweredup/">Full documentation is available here.</a></p>
-<h3>Node.js Sample Usage</h3>
-<pre class="prettyprint source lang-javascript"><code>const PoweredUP = require(&quot;node-poweredup&quot;);
-const poweredUP = new PoweredUP.PoweredUP();
-
-poweredUP.on(&quot;discover&quot;, async (hub) => { // Wait to discover a Hub
-    console.log(`Discovered ${hub.name}!`);
-    await hub.connect(); // Connect to the Hub
-    const motorA = hub.waitForDeviceAtPort(&quot;A&quot;); // Make sure a motor is plugged into port A
-    const motorB = hub.waitForDeviceAtPort(&quot;B&quot;); // Make sure a motor is plugged into port B
-    console.log(&quot;Connected&quot;);
-
-    while (true) { // Repeat indefinitely
-        console.log(&quot;Running motor B at speed 75&quot;);
-        motorB.setPower(&quot;B&quot;, 75); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
-        console.log(&quot;Running motor A at speed 100 for 2 seconds&quot;);
-        motorA.setPower(&quot;A&quot;, 100); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
-        await hub.sleep(2000);
-        motorA.setPower(&quot;A&quot;, 0);
-        await hub.sleep(1000); // Do nothing for 1 second
-        console.log(&quot;Running motor A at speed -50 for 1 second&quot;);
-        motorA.setPower(&quot;A&quot;, -50); // Run a motor attached to port A for 1 second at 1/2 speed in reverse (-50) then stop
-        hub.sleep(1000);
-        motorA.setPower(&quot;A&quot;, 0);
-        await hub.sleep(1000); // Do nothing for 1 second
+		<h1 class="page-title">Source: devices/voltagesensor.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">"use strict";
+var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
+    if (mod &amp;&amp; mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const device_1 = require("./device");
+const Consts = __importStar(require("../consts"));
+class VoltageSensor extends device_1.Device {
+    constructor(hub, portId) {
+        super(hub, portId, exports.ModeMap, Consts.DeviceType.VOLTAGE_SENSOR);
     }
-});
-
-poweredUP.scan(); // Start scanning for Hubs
-console.log(&quot;Scanning for Hubs...&quot;);
-</code></pre>
-<p>More examples are available in the &quot;examples&quot; directory.</p>
-<h3>Credits</h3>
-<p>Thanks go to Jorge Pereira (<a href="https://github.com/JorgePe">@JorgePe</a>), Sebastian Raff (<a href="https://github.com/hobbyquaker">@hobbyquaker</a>), Valentin Heun (<a href="https://github.com/vheun">@vheun</a>), Johan Korten (<a href="https://github.com/jakorten">@jakorten</a>), and Andrey Pokhilko (<a href="https://github.com/undera">@undera</a>) for their various works, contributions, and assistance on figuring out the LEGO Boost, WeDo 2.0, and Powered Up protocols.</p></article>
-    </section>
-
-
+    receive(message) {
+        const mode = this._mode;
+        switch (mode) {
+            case Mode.VOLTAGE:
+                if (this.isWeDo2SmartHub) {
+                    const voltage = message.readInt16LE(2) / 40;
+                    this.notify("voltage", { voltage });
+                }
+                else {
+                    let maxVoltageValue = MaxVoltageValue[this.hub.type];
+                    if (maxVoltageValue === undefined) {
+                        maxVoltageValue = MaxVoltageValue[Consts.HubType.UNKNOWN];
+                    }
+                    let maxVoltageRaw = MaxVoltageRaw[this.hub.type];
+                    if (maxVoltageRaw === undefined) {
+                        maxVoltageRaw = MaxVoltageRaw[Consts.HubType.UNKNOWN];
+                    }
+                    const voltage = message.readUInt16LE(4) * maxVoltageValue / maxVoltageRaw;
+                    /**
+                     * Emits when a voltage change is detected.
+                     * @event VoltageSensor#voltage
+                     * @param {number} voltage
+                     */
+                    this.notify("voltage", { voltage });
+                }
+                break;
+        }
+    }
+}
+exports.VoltageSensor = VoltageSensor;
+var Mode;
+(function (Mode) {
+    Mode[Mode["VOLTAGE"] = 0] = "VOLTAGE";
+})(Mode = exports.Mode || (exports.Mode = {}));
+exports.ModeMap = {
+    "voltage": Mode.VOLTAGE
+};
+const MaxVoltageValue = {
+    [Consts.HubType.UNKNOWN]: 9.615,
+    [Consts.HubType.DUPLO_TRAIN_BASE]: 6.4,
+    [Consts.HubType.REMOTE_CONTROL]: 6.4,
+};
+const MaxVoltageRaw = {
+    [Consts.HubType.UNKNOWN]: 3893,
+    [Consts.HubType.DUPLO_TRAIN_BASE]: 3047,
+    [Consts.HubType.REMOTE_CONTROL]: 3200,
+    [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4095,
+};
+//# sourceMappingURL=voltagesensor.js.map</pre>
+    </article>
+</section>
 
 
 
@@ -322,10 +153,6 @@ console.log(&quot;Scanning for Hubs...&quot;);
 
 	<div class="clearfix"></div>
 
-	
-		<div class="col-md-3">
-			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
-		</div>
 	
 
 </div>

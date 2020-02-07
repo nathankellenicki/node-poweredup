@@ -143,6 +143,17 @@ export enum ButtonState {
 
 
 /**
+ * @typedef BrakingStyle
+ * @property {number} HOLD 127
+ * @property {number} BRAKE 128
+ */
+export enum BrakingStyle {
+    HOLD = 127,
+    BRAKE = 128
+}
+
+
+/**
  * @typedef DuploTrainBaseSound
  * @property {number} BRAKE 3
  * @property {number} STATION_DEPARTURE 5
