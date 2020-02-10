@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class TechnicXLargeLinearMotor
+ * @extends AbsoluteMotor
+ */
 export class TechnicXLargeLinearMotor extends AbsoluteMotor {
 
     constructor (hub: IDeviceInterface, portId: number) {

@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class Device
+ * @extends EventEmitter
+ */
 export class Device extends EventEmitter {
 
     public autoSubscribe: boolean = true;
@@ -62,10 +66,18 @@ export class Device extends EventEmitter {
         this.hub.on("detach", deviceDetachListener);
     }
 
+    /**
+     * @readonly
+     * @property {boolean} connected Check if the device is still attached.
+     */
     public get connected () {
         return this._connected;
     }
 
+    /**
+     * @readonly
+     * @property {Hub} hub The Hub the device is attached to.
+     */
     public get hub () {
         return this._hub;
     }
@@ -74,10 +86,18 @@ export class Device extends EventEmitter {
         return this._portId;
     }
 
+    /**
+     * @readonly
+     * @property {string} portName The port the device is attached to.
+     */
     public get portName () {
         return this.hub.getPortNameForPortId(this.portId);
     }
 
+    /**
+     * @readonly
+     * @property {number} type The type of the device
+     */
     public get type () {
         return this._type;
     }
@@ -86,6 +106,10 @@ export class Device extends EventEmitter {
         return Consts.DeviceTypeNames[this.type];
     }
 
+    /**
+     * @readonly
+     * @property {number} mode The mode the device is currently in
+     */
     public get mode () {
         return this._mode;
     }
@@ -94,6 +118,10 @@ export class Device extends EventEmitter {
         return this._isWeDo2SmartHub;
     }
 
+    /**
+     * @readonly
+     * @property {boolean} isVirtualPort Is this device attached to a virtual port (ie. a combined device)
+     */
     protected get isVirtualPort () {
         return this._isVirtualPort;
     }

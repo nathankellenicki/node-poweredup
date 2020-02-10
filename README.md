@@ -5,13 +5,13 @@
 
 ### Introduction
 
-LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO WeDo 2.0 released in 2016, LEGO Boost released in 2017, LEGO Powered Up released in 2018, and LEGO Technic CONTROL+ released in 2019. It also includes the 2018 Duplo App-Controlled Train sets.
+LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO Education WeDo 2.0 released in 2016, LEGO Boost released in 2017, LEGO Powered Up released in 2018, LEGO Technic CONTROL+ released in 2019, and LEGO Education SPIKE Prime released in 2020. It also includes the 2018 Duplo App-Controlled Train sets.
 
 This library allows communication and control of Powered Up devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.
 
 ### Node.js Installation
 
-Node.js v8.0 required.
+Node.js v8.0+ required.
 
 ```javascript
 npm install node-poweredup --save
@@ -19,7 +19,7 @@ npm install node-poweredup --save
 
 node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/noble/noble#prerequisites).
 
-Note: node-poweredup has been tested on macOS 10.13 and Debian/Raspbian on the Raspberry Pi 3 Model B.
+Note: node-poweredup has been tested on macOS 10.15 and Debian/Raspbian on the Raspberry Pi 3 Model B.
 
 ### Compatibility
 
@@ -36,6 +36,12 @@ While most Powered Up components and Hubs are compatible with each other, there 
 | Powered Up LED Lights           | <a href="https://brickset.com/sets/88005-1/">88005</a>        | Light         |       Yes      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/88005-1/">88005</a> |
 | Control+ Large Motor            | 22169        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 | Control+ XLarge Motor            | 22172        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
+| SPIKE Prime Medium Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Large Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Color Sensor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Distance Sensor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Force Sensor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+
 
 In addition, the Hubs themselves have certain built-in features which this library exposes.
 
@@ -55,6 +61,8 @@ In addition, the Hubs themselves have certain built-in features which this libra
 * When used with the WeDo 2.0 Smart Hub, the Boost Tacho Motor and Control+ Motors do not support rotating the motor by angle.
 
 * When used with the Boost Move Hub, the Control+ Motors do not currently accept commands.
+
+* The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython and Bluetooth Classic to develop for this Hub.
 
 ### Documentation
 

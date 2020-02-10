@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class DuploTrainBaseColorSensor
+ * @extends Device
+ */
 export class DuploTrainBaseColorSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -21,6 +25,7 @@ export class DuploTrainBaseColorSensor extends Device {
                     /**
                      * Emits when a color sensor is activated.
                      * @event DuploTrainBaseColorSensor#color
+                     * @type {object}
                      * @param {Color} color
                      */
                     this.notify("color", { color });

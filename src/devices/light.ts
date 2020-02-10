@@ -5,6 +5,10 @@ import { IDeviceInterface } from "../interfaces";
 import * as Consts from "../consts";
 import { calculateRamp } from "../utils";
 
+/**
+ * @class Light
+ * @extends Device
+ */
 export class Light extends Device {
 
 

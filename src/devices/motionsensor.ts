@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class MotionSensor
+ * @extends Device
+ */
 export class MotionSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -23,6 +27,7 @@ export class MotionSensor extends Device {
                 /**
                  * Emits when a distance sensor is activated.
                  * @event MotionSensor#distance
+                 * @type {object}
                  * @param {number} distance Distance, in millimeters.
                  */
                 this.notify("distance", { distance });

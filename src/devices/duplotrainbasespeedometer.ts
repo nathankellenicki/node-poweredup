@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class DuploTraniBaseSpeedometer
+ * @extends Device
+ */
 export class DuploTrainBaseSpeedometer extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -20,6 +24,7 @@ export class DuploTrainBaseSpeedometer extends Device {
                 /**
                  * Emits on a speed change.
                  * @event DuploTrainBaseSpeedometer#speed
+                 * @type {object}
                  * @param {number} speed
                  */
                 this.notify("speed", { speed });

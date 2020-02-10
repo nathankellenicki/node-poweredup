@@ -189,7 +189,7 @@ export class PoweredUP extends EventEmitter {
             /**
              * Emits when a Powered UP Hub device is found.
              * @event PoweredUP#discover
-             * @param {WeDo2SmartHub | MoveHub | TechnicMediumHub | Hub | RemoteControl | DuploTrainBase} hub
+             * @param {WeDo2SmartHub | MoveHub | TechnicMediumHub | RemoteControl | DuploTrainBase} hub
              */
             this.emit("discover", hub);
 

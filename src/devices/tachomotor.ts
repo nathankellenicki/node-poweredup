@@ -5,6 +5,10 @@ import { IDeviceInterface } from "../interfaces";
 import * as Consts from "../consts";
 import { mapSpeed } from "../utils";
 
+/**
+ * @class TachoMotor
+ * @extends BasicMotor
+ */
 export class TachoMotor extends BasicMotor {
 
     protected _brakeStyle: Consts.BrakingStyle = Consts.BrakingStyle.BRAKE;
@@ -22,6 +26,7 @@ export class TachoMotor extends BasicMotor {
                 /**
                  * Emits when a rotation sensor is activated.
                  * @event TachoMotor#rotate
+                 * @type {object}
                  * @param {number} rotation
                  */
                 this.notify("rotate", { degrees });
@@ -30,6 +35,13 @@ export class TachoMotor extends BasicMotor {
     }
 
 
+    /**
+     * Set the braking style of the motor.
+     *
+     * Note: This applies to setSpeed, rotateByDegrees, and gotoAngle.
+     * @method TachoMotor#setBrakingStyle
+     * @param {number} style Either BRAKE or HOLD
+     */
     public setBrakingStyle (style: Consts.BrakingStyle) {
         this._brakeStyle = style;
     }
@@ -39,7 +51,7 @@ export class TachoMotor extends BasicMotor {
      * Set the motor speed.
      * @method TachoMotor#setSpeed
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setSpeed (speed: [number, number] | number, time: number | undefined) {
         if (!this.isVirtualPort && speed instanceof Array) {

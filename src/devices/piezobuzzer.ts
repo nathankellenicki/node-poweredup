@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class PiezoBuzzer
+ * @extends Device
+ */
 export class PiezoBuzzer extends Device {
 
 

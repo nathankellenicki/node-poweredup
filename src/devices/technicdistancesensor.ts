@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class TechnicDistanceSensor
+ * @extends Device
+ */
 export class TechnicDistanceSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -19,8 +23,9 @@ export class TechnicDistanceSensor extends Device {
 
                 /**
                  * Emits when the detected distance changes (Slow sampling covers 40mm to 2500mm).
-                 * @event TechnicDistanceSensor#distance Distance, from 40 to 2500mm
-                 * @param {number} distance
+                 * @event TechnicDistanceSensor#distance
+                 * @type {object}
+                 * @param {number} distance Distance, from 40 to 2500mm
                  */
                 this.notify("distance", { distance });
                 break;
@@ -30,8 +35,9 @@ export class TechnicDistanceSensor extends Device {
 
                 /**
                  * Emits when the detected distance changes (Fast sampling covers 50mm to 320mm).
-                 * @event TechnicDistanceSensor#fastDistance Distance, from 50 to 320mm
-                 * @param {number} fastDistance
+                 * @event TechnicDistanceSensor#fastDistance
+                 * @type {object}
+                 * @param {number} fastDistance Distance, from 50 to 320mm
                  */
                 this.notify("fastDistance", { fastDistance });
                 break;
@@ -45,7 +51,7 @@ export class TechnicDistanceSensor extends Device {
      * @param {number} bottomLeft Bottom left quadrant (below left eye). 0-100 brightness.
      * @param {number} topRight Top right quadrant (above right eye). 0-100 brightness.
      * @param {number} bottomRight Bottom right quadrant (below right eye). 0-100 brightness.
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setBrightness (topLeft: number, bottomLeft: number, topRight: number, bottomRight: number) {
         this.writeDirect(0x05, Buffer.from([topLeft, topRight, bottomLeft, bottomRight]));

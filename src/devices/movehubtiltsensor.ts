@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class MoveHubTiltSensor
+ * @extends Device
+ */
 export class MoveHubTiltSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -18,6 +22,7 @@ export class MoveHubTiltSensor extends Device {
                 /**
                  * Emits when a tilt sensor is activated.
                  * @event MoveHubTiltSensor#tilt
+                 * @type {object}
                  * @param {number} x
                  * @param {number} y
                  */

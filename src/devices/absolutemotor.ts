@@ -5,6 +5,10 @@ import { IDeviceInterface } from "../interfaces";
 import * as Consts from "../consts";
 import { mapSpeed, normalizeAngle, roundAngleToNearest90 } from "../utils";
 
+/**
+ * @class AbsoluteMotor
+ * @extends TachoMotor
+ */
 export class AbsoluteMotor extends TachoMotor {
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
@@ -20,6 +24,7 @@ export class AbsoluteMotor extends TachoMotor {
                 /**
                  * Emits when a the motors absolute position is changed.
                  * @event AbsoluteMotor#absolute
+                 * @type {object}
                  * @param {number} absolute
                  */
                 this.notify("absolute", { angle });

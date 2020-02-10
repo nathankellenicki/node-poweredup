@@ -4,19 +4,21 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class DuploTrainBaseSpeaker
+ * @extends Device
+ */
 export class DuploTrainBaseSpeaker extends Device {
-
 
     constructor (hub: IDeviceInterface, portId: number) {
         super(hub, portId, {}, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
     }
 
-
     /**
      * Play a built-in train sound.
      * @method DuploTrainBaseSpeaker#playSound
      * @param {DuploTrainBaseSound} sound
-     * @returns {Promise} Resolved upon successful issuance of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public playSound (sound: Consts.DuploTrainBaseSound) {
         return new Promise((resolve, reject) => {
@@ -25,7 +27,6 @@ export class DuploTrainBaseSpeaker extends Device {
             return resolve();
         });
     }
-
 
 }
 

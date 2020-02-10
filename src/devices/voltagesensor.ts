@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class VoltageSensor
+ * @extends Device
+ */
 export class VoltageSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -31,6 +35,7 @@ export class VoltageSensor extends Device {
                     /**
                      * Emits when a voltage change is detected.
                      * @event VoltageSensor#voltage
+                     * @type {object}
                      * @param {number} voltage
                      */
                     this.notify("voltage", { voltage });

@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class TechnicMediumHubGyroSensor
+ * @extends Device
+ */
 export class TechnicMediumHubGyroSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -18,6 +22,7 @@ export class TechnicMediumHubGyroSensor extends Device {
                 /**
                  * Emits when gyroscope detects movement. Measured in DPS - degrees per second.
                  * @event TechnicMediumHubGyroSensor#gyro
+                 * @type {object}
                  * @param {number} x
                  * @param {number} y
                  * @param {number} z

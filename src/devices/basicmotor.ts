@@ -6,6 +6,10 @@ import * as Consts from "../consts";
 
 import { calculateRamp, mapSpeed } from "../utils";
 
+/**
+ * @class BasicMotor
+ * @extends Device
+ */
 export class BasicMotor extends Device {
 
 
@@ -18,7 +22,7 @@ export class BasicMotor extends Device {
      * Set the motor power.
      * @method BasicMotor#setPower
      * @param {number} power For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setPower (power: number, interrupt: boolean = true) {
         if (interrupt) {
@@ -54,7 +58,7 @@ export class BasicMotor extends Device {
     /**
      * Stop the motor.
      * @method BasicMotor#stop
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public stop () {
         this.cancelEventTimer();
@@ -65,7 +69,7 @@ export class BasicMotor extends Device {
     /**
      * Brake the motor.
      * @method BasicMotor#brake
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public brake () {
         this.cancelEventTimer();

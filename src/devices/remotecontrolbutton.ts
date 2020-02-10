@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class RemoteControlButton
+ * @extends Device
+ */
 export class RemoteControlButton extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -18,6 +22,7 @@ export class RemoteControlButton extends Device {
                 /**
                  * Emits when a button on the remote is pressed or released.
                  * @event RemoteControlButton#button
+                 * @type {object}
                  * @param {number} event
                  */
                 const event = message[4];

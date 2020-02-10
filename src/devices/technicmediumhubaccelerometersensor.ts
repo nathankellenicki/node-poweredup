@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class TechnicMediumHubAccelerometerSensor
+ * @extends Device
+ */
 export class TechnicMediumHubAccelerometerSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -17,8 +21,8 @@ export class TechnicMediumHubAccelerometerSensor extends Device {
             case Mode.ACCEL:
                 /**
                  * Emits when accelerometer detects movement. Measured in mG.
-                 * @event LPF2Hub#accel
-                 * @param {string} port
+                 * @event TechnicMediumHubAccelerometerSensor#accel
+                 * @type {object}
                  * @param {number} x
                  * @param {number} y
                  * @param {number} z

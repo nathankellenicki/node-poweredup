@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class TechnicForceSensor
+ * @extends Device
+ */
 export class TechnicForceSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -19,8 +23,9 @@ export class TechnicForceSensor extends Device {
 
                 /**
                  * Emits when force is applied.
-                 * @event TechnicForceSensor#force Force, in newtons (0-10).
-                 * @param {number} force
+                 * @event TechnicForceSensor#force
+                 * @type {object}
+                 * @param {number} force Force, in newtons (0-10).
                  */
                 this.notify("force", { force });
                 break;
@@ -30,8 +35,9 @@ export class TechnicForceSensor extends Device {
 
                 /**
                  * Emits when the sensor is touched.
-                 * @event TechnicForceSensor#touch Touched on/off (boolean).
-                 * @param {boolean} touch
+                 * @event TechnicForceSensor#touch
+                 * @type {object}
+                 * @param {boolean} touch Touched on/off (boolean).
                  */
                 this.notify("touched", { touched });
                 break;
@@ -41,8 +47,9 @@ export class TechnicForceSensor extends Device {
 
                 /**
                  * Emits when the sensor is tapped.
-                 * @event TechnicForceSensor#tapped How hard the sensor was tapped, from 0-3.
-                 * @param {number} tapped
+                 * @event TechnicForceSensor#tapped
+                 * @type {object}
+                 * @param {number} tapped How hard the sensor was tapped, from 0-3.
                  */
                 this.notify("tapped", { tapped });
                 break;

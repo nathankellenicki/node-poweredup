@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class CurrentSensor
+ * @extends Device
+ */
 export class CurrentSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -31,6 +35,7 @@ export class CurrentSensor extends Device {
                     /**
                      * Emits when a current change is detected.
                      * @event CurrentSensor#current
+                     * @type {object}
                      * @param {number} current
                      */
                     this.notify("current", { current });

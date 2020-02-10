@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class TiltSensor
+ * @extends Device
+ */
 export class TiltSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -19,7 +23,8 @@ export class TiltSensor extends Device {
                 const y = message.readInt8(this.isWeDo2SmartHub ? 3 : 5);
                 /**
                  * Emits when a tilt sensor is activated.
-                 * @event LPF2Hub#tilt
+                 * @event TiltSensor#tilt
+                 * @type {object}
                  * @param {number} x
                  * @param {number} y
                  */

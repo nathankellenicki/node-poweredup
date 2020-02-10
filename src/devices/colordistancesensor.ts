@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class ColorDistanceSensor
+ * @extends Device
+ */
 export class ColorDistanceSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -21,6 +25,7 @@ export class ColorDistanceSensor extends Device {
                     /**
                      * Emits when a color sensor is activated.
                      * @event ColorDistanceSensor#color
+                     * @type {object}
                      * @param {Color} color
                      */
                     this.notify("color", { color });
@@ -37,6 +42,7 @@ export class ColorDistanceSensor extends Device {
                     /**
                      * Emits when a distance sensor is activated.
                      * @event ColorDistanceSensor#distance
+                     * @type {object}
                      * @param {number} distance Distance, in millimeters.
                      */
                     this.notify("distance", { distance });
@@ -60,6 +66,7 @@ export class ColorDistanceSensor extends Device {
                 /**
                  * A combined color and distance event, emits when the sensor is activated.
                  * @event ColorDistanceSensor#colorAndDistance
+                 * @type {object}
                  * @param {Color} color
                  * @param {number} distance Distance, in millimeters.
                  */

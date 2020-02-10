@@ -94,6 +94,15 @@ export class LPF2Hub extends BaseHub {
     }
 
 
+    /**
+     * Combines two ports with into a single virtual port.
+     *
+     * Note: The devices attached to the ports must be of the same device type.
+     * @method LPF2Hub#createVirtualPort
+     * @param {string} firstPortName First port name
+     * @param {string} secondPortName Second port name
+     * @returns {Promise} Resolved upon successful issuance of command.
+     */
     public createVirtualPort (firstPortName: string, secondPortName: string) {
         const firstDevice = this.getDeviceAtPort(firstPortName);
         if (!firstDevice) {

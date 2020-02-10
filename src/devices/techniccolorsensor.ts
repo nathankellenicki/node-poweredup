@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class TechnicColorSensor
+ * @extends Device
+ */
 export class TechnicColorSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
@@ -21,6 +25,7 @@ export class TechnicColorSensor extends Device {
                     /**
                      * Emits when a color sensor is activated.
                      * @event TechnicColorSensor#color
+                     * @type {object}
                      * @param {Color} color
                      */
                     this.notify("color", { color });
@@ -32,8 +37,9 @@ export class TechnicColorSensor extends Device {
 
                 /**
                  * Emits when the light reflectivity changes.
-                 * @event TechnicColorSensor#reflect Percentage, from 0 to 100.
-                 * @param {number} reflect
+                 * @event TechnicColorSensor#reflect
+                 * @type {object}
+                 * @param {number} reflect Percentage, from 0 to 100.
                  */
                 this.notify("reflect", { reflect });
                 break;
@@ -43,8 +49,9 @@ export class TechnicColorSensor extends Device {
 
                 /**
                  * Emits when the ambient light changes.
-                 * @event TechnicColorSensor#ambient Percentage, from 0 to 100.
-                 * @param {number} ambient
+                 * @event TechnicColorSensor#ambient
+                 * @type {object}
+                 * @param {number} ambient Percentage, from 0 to 100.
                  */
                 this.notify("ambient", { ambient });
                 break;

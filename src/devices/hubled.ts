@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class HubLED
+ * @extends Device
+ */
 export class HubLED extends Device {
 
 
@@ -16,7 +20,7 @@ export class HubLED extends Device {
      * Set the color of the LED on the Hub via a color value.
      * @method HubLED#setColor
      * @param {Color} color
-     * @returns {Promise} Resolved upon successful issuance of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
@@ -41,7 +45,7 @@ export class HubLED extends Device {
      * @param {number} red
      * @param {number} green
      * @param {number} blue
-     * @returns {Promise} Resolved upon successful issuance of command.
+     * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setRGB (red: number, green: number, blue: number) {
         return new Promise((resolve, reject) => {

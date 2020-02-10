@@ -4,6 +4,10 @@ import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
+/**
+ * @class MediumLinearMotor
+ * @extends TachoMotor
+ */
 export class MediumLinearMotor extends TachoMotor {
 
     constructor (hub: IDeviceInterface, portId: number) {
