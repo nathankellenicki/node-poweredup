@@ -60,7 +60,7 @@ export class BaseHub extends EventEmitter {
     protected _bleDevice: IBLEAbstraction;
 
     private _type: Consts.HubType;
-    private _attachCallbacks: Array<((device: Device) => boolean)> = [];
+    private _attachCallbacks: ((device: Device) => boolean)[] = [];
 
     constructor (bleDevice: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
         super();
@@ -315,7 +315,7 @@ export class BaseHub extends EventEmitter {
      * @param {Array<Promise<any>>} commands Array of executing commands.
      * @returns {Promise} Resolved after the commands are finished.
      */
-    public wait (commands: Array<Promise<any>>) {
+    public wait (commands: Promise<any>[]) {
         return Promise.all(commands);
     }
 

@@ -3,6 +3,10 @@
 
 # **node-poweredup** - A Javascript module to interface with LEGO Powered Up components.
 
+### Announcements
+
+*Important*: v6.0.0 is a complete re-architecting of this library. Improvements include proper device and mode support through an external Device object, correct handling of firmware features, and promise-based functionality for interfacing with device attachments. Although many new features were added, existing code will almost surely break upon upgrade.
+
 ### Introduction
 
 LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO Education WeDo 2.0 released in 2016, LEGO Boost released in 2017, LEGO Powered Up released in 2018, LEGO Technic CONTROL+ released in 2019, and LEGO Education SPIKE Prime released in 2020. It also includes the 2018 Duplo App-Controlled Train sets.
