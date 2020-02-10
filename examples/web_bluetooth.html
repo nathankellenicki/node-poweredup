@@ -3,14 +3,22 @@
 
 <head>
 <title>Web Bluetooth node-poweredup Example</title>
-<script src="https://cdn.jsdelivr.net/npm/node-poweredup@latest/dist/browser/poweredup.js"></script>
-<!-- <script src="../dist/browser/poweredup.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/node-poweredup@latest/dist/browser/poweredup.js"></script> -->
+<script src="../dist/browser/poweredup.js"></script>
 <link rel="stylesheet" type="text/css" href="./web_bluetooth.css" />
 <script>
 
 const poweredUP = new PoweredUP.PoweredUP();
 
 poweredUP.on("discover", async (hub) => { // Wait to discover hubs
+
+    hub.on("attach", (device) => {
+        log(`Device ${device.typeName} attached to port ${device.portName}`) ;
+    });
+
+    hub.on("detach", (device) => {
+        log(`Device ${device.typeName} detached to port ${device.portName}`) ;
+    });
 
     await hub.connect(); // Connect to hub
     log(`Connected to ${hub.name}!`);
@@ -19,37 +27,24 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
         log(`Disconnected ${hub.name}`);
     })
 
-    hub.on("tilt", (port, x, y, z) => {
-        log(`Tilt detected on port ${port} (X: ${x}, Y: ${y}${z !== "undefined" ? `, Z: ${z}`: ""})`);
+    hub.on("tilt", (device, { x, y, z }) => {
+        log(`Tilt detected on port ${device.portName} (X: ${x}, Y: ${y}${z !== undefined ? `, Z: ${z}`: ""})`);
     });
 
-    hub.on("accel", (port, x, y, z) => {
-        log(`Accelerometer detected on port ${port} (X: ${x}, Y: ${y}, Z: ${z})`);
+    hub.on("distance", (device, { distance }) => {
+        log(`Motion detected on port ${device.portName} (Distance: ${distance})`);
     });
 
-
-    hub.on("distance", (port, distance) => {
-        log(`Motion detected on port ${port} (Distance: ${distance})`);
+    hub.on("rotate", (device, { degrees }) => {
+        log(`Rotation detected on port ${device.portName} (Degrees: ${degrees})`);
     });
 
-    hub.on("color", (port, color) => {
-        log(`Color detected on port ${port} (Color: ${color})`);
+    hub.on("button", ({ event }) => {
+        log(`Green button press detected (Event: ${event})`);
     });
 
-    hub.on("rotate", (port, rotation) => {
-        log(`Rotation detected on port ${port} (Rotation: ${rotation})`);
-    });
-
-    hub.on("button", (button, state) => {
-        log(`Button press detected (Button: ${button}, State: ${state})`);
-    });
-
-    hub.on("attach", (port, device) => {
-        log(`Device attached to port ${port} (Device ID: ${device})`) ;
-    });
-
-    hub.on("detach", (port) => {
-        log(`Device detached from port ${port}`) ;
+    hub.on("remoteButton", (device, { event }) => {
+        log(`Remote control button press detected on port ${device.portName} (Event: ${event})`);
     });
 
     renderHub(hub);
@@ -59,10 +54,11 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 let color = 1;
 setInterval(() => {
 
-    const hubs = poweredUP.getConnectedHubs(); // Get an array of all connected hubs
+    const hubs = poweredUP.getHubs(); // Get an array of all connected hubs
     document.getElementById("color").style.backgroundColor = PoweredUP.Consts.ColorNames[color];
-    hubs.forEach((hub) => {
-        hub.setLEDColor(color); // Set the color
+    hubs.forEach(async (hub) => {
+        const led = await hub.waitForDeviceByType(PoweredUP.Consts.DeviceType.HUB_LED);
+        led.setColor(color); // Set the color
     })
     color++;
     if (color > 10) {
@@ -93,7 +89,7 @@ const scan = function () {
 }
 
 const disconnect = function (uuid) {
-    poweredUP.getConnectedHubByUUID(decodeURIComponent(uuid)).disconnect();
+    poweredUP.getHubByUUID(decodeURIComponent(uuid)).disconnect();
     document.getElementById(`hub-${uuid}`).remove();
 }
 
