@@ -42,9 +42,9 @@ While most Powered Up components and Hubs are compatible with each other, there 
 | Control+ XLarge Motor            | 22172        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 | SPIKE Prime Medium Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
 | SPIKE Prime Large Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
-| SPIKE Prime Color Sensor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
-| SPIKE Prime Distance Sensor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
-| SPIKE Prime Force Sensor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Color Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Distance Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Force Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
 
 
 In addition, the Hubs themselves have certain built-in features which this library exposes.
@@ -60,11 +60,9 @@ In addition, the Hubs themselves have certain built-in features which this libra
 
 ### Known Issues and Limitations
 
-* The Boost Color and Distance sensor only works in color mode with the WeDo 2.0 Smart Hub.
+* The WeDo 2.0 Smart Hub uses an older firmware which is no longer being updated. As a result, only certain motors and sensors work with it. See the table above.
 
-* When used with the WeDo 2.0 Smart Hub, the Boost Tacho Motor and Control+ Motors do not support rotating the motor by angle.
-
-* When used with the Boost Move Hub, the Control+ Motors do not currently accept commands.
+* When used with the Boost Move Hub, the Control+ Motors do not currently accept commands (This is a known but which requires a firmware update from Lego to fix)
 
 * The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython and Bluetooth Classic to develop for this Hub.
 
@@ -81,22 +79,22 @@ const poweredUP = new PoweredUP.PoweredUP();
 poweredUP.on("discover", async (hub) => { // Wait to discover a Hub
     console.log(`Discovered ${hub.name}!`);
     await hub.connect(); // Connect to the Hub
-    const motorA = hub.waitForDeviceAtPort("A"); // Make sure a motor is plugged into port A
-    const motorB = hub.waitForDeviceAtPort("B"); // Make sure a motor is plugged into port B
+    const motorA = await hub.waitForDeviceAtPort("A"); // Make sure a motor is plugged into port A
+    const motorB = await hub.waitForDeviceAtPort("B"); // Make sure a motor is plugged into port B
     console.log("Connected");
 
     while (true) { // Repeat indefinitely
-        console.log("Running motor B at speed 75");
-        motorB.setPower("B", 75); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
+        console.log("Running motor B at speed 50");
+        motorB.setPower(50); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
         console.log("Running motor A at speed 100 for 2 seconds");
-        motorA.setPower("A", 100); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
+        motorA.setPower(100); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
         await hub.sleep(2000);
-        motorA.setPower("A", 0);
+        motorA.brake();
         await hub.sleep(1000); // Do nothing for 1 second
-        console.log("Running motor A at speed -50 for 1 second");
-        motorA.setPower("A", -50); // Run a motor attached to port A for 1 second at 1/2 speed in reverse (-50) then stop
-        hub.sleep(1000);
-        motorA.setPower("A", 0);
+        console.log("Running motor A at speed -30 for 1 second");
+        motorA.setPower(-30); // Run a motor attached to port A for 2 seconds at 1/2 speed in reverse (-50) then stop
+        await hub.sleep(2000);
+        motorA.brake();
         await hub.sleep(1000); // Do nothing for 1 second
     }
 });

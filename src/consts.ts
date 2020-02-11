@@ -148,8 +148,9 @@ export enum ButtonState {
  * @property {number} BRAKE 128
  */
 export enum BrakingStyle {
-    HOLD = 127,
-    BRAKE = 128
+    FLOAT = 0,
+    HOLD = 126,
+    BRAKE = 127
 }
 
 
