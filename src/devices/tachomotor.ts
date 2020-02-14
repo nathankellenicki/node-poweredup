@@ -44,8 +44,10 @@ export class TachoMotor extends BasicMotor {
                  * @param {number} rotation
                  */
                 this.notify("rotate", { degrees });
-                break;
+                return message.slice(4);
         }
+
+        return message;
     }
 
 

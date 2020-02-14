@@ -38,8 +38,10 @@ export class TechnicMediumHubGyroSensor extends Device {
                 const y = Math.round(message.readInt16LE(6) * 7 / 400);
                 const z = Math.round(message.readInt16LE(8) * 7 / 400);
                 this.notify("gyro", { x, y, z });
-                break;
+                return message.slice(6);
         }
+
+        return message;
     }
 
 }

@@ -35,9 +35,11 @@ export class DuploTrainBaseSpeedometer extends Device {
                  * @param {number} speed
                  */
                 this.notify("speed", { speed });
-                break;
+                return message.slice(2);
 
         }
+
+        return message;
     }
 
 }

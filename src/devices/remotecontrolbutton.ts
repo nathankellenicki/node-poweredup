@@ -41,8 +41,10 @@ export class RemoteControlButton extends Device {
                  */
                 const event = message[4];
                 this.notify("remoteButton", { event });
-                break;
+                return message.slice(1);
         }
+
+        return message;
     }
 
 }

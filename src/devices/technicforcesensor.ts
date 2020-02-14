@@ -39,7 +39,7 @@ export class TechnicForceSensor extends Device {
                  * @param {number} force Force, in newtons (0-10).
                  */
                 this.notify("force", { force });
-                break;
+                return message.slice(1);
 
             case TechnicForceSensor.Mode.TOUCHED:
                 const touched = message[4] ? true : false;
@@ -51,7 +51,7 @@ export class TechnicForceSensor extends Device {
                  * @param {boolean} touch Touched on/off (boolean).
                  */
                 this.notify("touched", { touched });
-                break;
+                return message.slice(1);
 
             case TechnicForceSensor.Mode.TAPPED:
                 const tapped = message[4];
@@ -63,8 +63,10 @@ export class TechnicForceSensor extends Device {
                  * @param {number} tapped How hard the sensor was tapped, from 0-3.
                  */
                 this.notify("tapped", { tapped });
-                break;
+                return message.slice(1);
         }
+
+        return message;
     }
 
 }

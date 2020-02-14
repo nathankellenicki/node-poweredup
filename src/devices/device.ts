@@ -212,6 +212,7 @@ export class Device extends EventEmitter {
 
     public parse (mode: number, message: Buffer) {
         this.notify("receive", { message });
+        return message;
     }
 
     public notify (event: string, values: any) {

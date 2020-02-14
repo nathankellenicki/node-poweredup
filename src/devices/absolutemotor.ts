@@ -43,10 +43,9 @@ export class AbsoluteMotor extends TachoMotor {
                  * @param {number} absolute
                  */
                 this.notify("absolute", { angle });
-                break;
+                return message.slice(2);
             default:
-                super.parse(mode, message);
-                break;
+                return super.parse(mode, message);
         }
     }
 

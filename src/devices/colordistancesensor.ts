@@ -53,7 +53,7 @@ export class ColorDistanceSensor extends Device {
 
             case ColorDistanceSensor.Mode.DISTANCE:
                 if (this.isWeDo2SmartHub) {
-                    break;
+                    return message;
                 }
                 if (message[0] <= 10) {
                     const distance = Math.floor(message[0] * 25.4) - 20;
@@ -70,7 +70,7 @@ export class ColorDistanceSensor extends Device {
 
             default:
                 if (this.isWeDo2SmartHub) {
-                    break;
+                    return message;
                 }
 
                 let distance = message[1];

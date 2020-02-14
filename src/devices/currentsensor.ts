@@ -47,8 +47,10 @@ export class CurrentSensor extends Device {
                      */
                     this.notify("current", { current });
                 }
-                break;
+                return message.slice(2);
         }
+
+        return message;
     }
 
 }
