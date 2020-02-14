@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -13,8 +13,14 @@ import { calculateRamp, mapSpeed } from "../utils";
 export class BasicMotor extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, modeMap, type);
+    constructor (
+        hub: IHubInterface,
+        portId: number,
+        modeMap: {[event: string]: number} = {},
+        dataSets: {[mode: number]: number} = {},
+        type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
+    ) {
+        super(hub, portId, modeMap, dataSets, type);
     }
 
 

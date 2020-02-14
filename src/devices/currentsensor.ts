@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,22 @@ import * as Consts from "../consts";
  */
 export class CurrentSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.CURRENT_SENSOR);
+    public static Mode = {
+        CURRENT: 0x00
     }
 
-    public receive (message: Buffer) {
-        const mode = this.mode;
+    public static ModeMap: {[event: string]: number} = {
+        "current": CurrentSensor.Mode.CURRENT
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, CurrentSensor.ModeMap, {}, Consts.DeviceType.CURRENT_SENSOR);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.CURRENT:
+            case CurrentSensor.Mode.CURRENT:
                 if (this.isWeDo2SmartHub) {
                     const current =  message.readInt16LE(2) / 1000;
                     this.notify("current", { current });
@@ -45,14 +52,6 @@ export class CurrentSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    CURRENT = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "current": Mode.CURRENT
-};
 
 const MaxCurrentValue: {[hubType: number]: number} = {
     [Consts.HubType.UNKNOWN]: 2444,

@@ -135,17 +135,6 @@ export class WeDo2SmartHub extends BaseHub {
         this._bleDevice.writeToCharacteristic(uuid, message, callback);
     }
 
-
-    public subscribe (portId: number, deviceType: number, mode: number) {
-        this.send(Buffer.from([0x01, 0x02, portId, deviceType, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
-    }
-
-
-    public unsubscribe (portId: number, deviceType: number, mode: number) {
-        this.send(Buffer.from([0x01, 0x02, portId, deviceType, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
-    }
-
-
     private _getCharacteristicNameFromUUID (uuid: string) {
         const keys = Object.keys(Consts.BLECharacteristic);
         for (let i = 0; i < keys.length; i++) {
@@ -220,7 +209,7 @@ export class WeDo2SmartHub extends BaseHub {
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
-            device.receive(message);
+            device.receiveSingle(message);
         }
 
     }

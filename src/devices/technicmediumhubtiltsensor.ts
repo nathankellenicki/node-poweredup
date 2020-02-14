@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,22 @@ import * as Consts from "../consts";
  */
 export class TechnicMediumHubTiltSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR);
+    public static Mode = {
+        TILT: 0x00
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "tilt": TechnicMediumHubTiltSensor.Mode.TILT
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, TechnicMediumHubTiltSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.TILT:
+            case TechnicMediumHubTiltSensor.Mode.TILT:
                 /**
                  * Emits when a tilt sensor is activated.
                  * @event TechnicMediumHubTiltSensor#tilt
@@ -36,11 +43,3 @@ export class TechnicMediumHubTiltSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    TILT = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "tilt": Mode.TILT
-};

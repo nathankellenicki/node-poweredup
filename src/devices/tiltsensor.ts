@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,23 @@ import * as Consts from "../consts";
  */
 export class TiltSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TILT_SENSOR);
+
+    public static Mode = {
+        TILT: 0x00
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "tilt": TiltSensor.Mode.TILT
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, TiltSensor.ModeMap, {}, Consts.DeviceType.TILT_SENSOR);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.TILT:
+            case TiltSensor.Mode.TILT:
                 const x = message.readInt8(this.isWeDo2SmartHub ? 2 : 4);
                 const y = message.readInt8(this.isWeDo2SmartHub ? 3 : 5);
                 /**
@@ -34,11 +42,3 @@ export class TiltSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    TILT = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "tilt": Mode.TILT
-};

@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,24 @@ import * as Consts from "../consts";
  */
 export class TechnicDistanceSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_DISTANCE_SENSOR);
+    public static Mode = {
+        DISTANCE: 0x00,
+        FAST_DISTANCE: 0x01
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "distance": TechnicDistanceSensor.Mode.DISTANCE,
+        "fastDistance": TechnicDistanceSensor.Mode.FAST_DISTANCE
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, TechnicDistanceSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_DISTANCE_SENSOR);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.DISTANCE:
+            case TechnicDistanceSensor.Mode.DISTANCE:
                 const distance = message.readUInt16LE(4);
 
                 /**
@@ -30,7 +39,7 @@ export class TechnicDistanceSensor extends Device {
                 this.notify("distance", { distance });
                 break;
 
-            case Mode.FAST_DISTANCE:
+            case TechnicDistanceSensor.Mode.FAST_DISTANCE:
                 const fastDistance = message.readUInt16LE(4);
 
                 /**
@@ -58,13 +67,3 @@ export class TechnicDistanceSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    DISTANCE = 0x00,
-    FAST_DISTANCE = 0x01
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "distance": Mode.DISTANCE,
-    "fastDistance": Mode.FAST_DISTANCE
-};

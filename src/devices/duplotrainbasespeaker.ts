@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,8 +10,12 @@ import * as Consts from "../consts";
  */
 export class DuploTrainBaseSpeaker extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
+    public static Mode = {
+        SOUND: 0x01
+    }
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, {}, {}, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
     }
 
     /**
@@ -22,14 +26,10 @@ export class DuploTrainBaseSpeaker extends Device {
      */
     public playSound (sound: Consts.DuploTrainBaseSound) {
         return new Promise((resolve, reject) => {
-            this.subscribe(Mode.SOUND);
+            this.subscribeSingle(DuploTrainBaseSpeaker.Mode.SOUND);
             this.writeDirect(0x01, Buffer.from([sound]));
             return resolve();
         });
     }
 
-}
-
-export enum Mode {
-    SOUND = 0x01
 }

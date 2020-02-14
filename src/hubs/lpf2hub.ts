@@ -84,16 +84,6 @@ export class LPF2Hub extends BaseHub {
     }
 
 
-    public subscribe (portId: number, deviceType: number, mode: number) {
-        this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
-    }
-
-
-    public unsubscribe (portId: number, mode: number) {
-        this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.LPF2_ALL);
-    }
-
-
     /**
      * Combines two ports with into a single virtual port.
      *
@@ -168,6 +158,10 @@ export class LPF2Hub extends BaseHub {
                 }
                 case 0x45: {
                     this._parseSensorMessage(message);
+                    break;
+                }
+                case 0x46: {
+                    this._parseCombinedMessage(message);
                     break;
                 }
                 case 0x82: {
@@ -389,7 +383,26 @@ export class LPF2Hub extends BaseHub {
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
-            device.receive(message);
+            device.receiveSingle(message);
+        }
+
+    }
+
+
+    private _parseCombinedMessage (message: Buffer) {
+
+        const portId = message[3];
+        const device = this._getDeviceByPortId(portId);
+        const modeMask = message.readUInt16BE(4);
+        message = message.slice(5);
+        if (device) {
+            for (const mode of device.combinedModes.reverse()) {
+                const isIncluded = !!((modeMask >>> mode) & 1);
+                if (isIncluded) {
+                    // @ts-ignore
+                    message = device.parse(mode, message);
+                }
+            }
         }
 
     }

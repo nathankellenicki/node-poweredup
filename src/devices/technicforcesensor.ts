@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,26 @@ import * as Consts from "../consts";
  */
 export class TechnicForceSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_FORCE_SENSOR);
+    public static Mode = {
+        FORCE: 0x00,
+        TOUCHED: 0x01,
+        TAPPED: 0x02
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "force": TechnicForceSensor.Mode.FORCE,
+        "touched": TechnicForceSensor.Mode.TOUCHED,
+        "tapped": TechnicForceSensor.Mode.TAPPED
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, TechnicForceSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_FORCE_SENSOR);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.FORCE:
+            case TechnicForceSensor.Mode.FORCE:
                 const force = message[4] / 10;
 
                 /**
@@ -30,7 +41,7 @@ export class TechnicForceSensor extends Device {
                 this.notify("force", { force });
                 break;
 
-            case Mode.TOUCHED:
+            case TechnicForceSensor.Mode.TOUCHED:
                 const touched = message[4] ? true : false;
 
                 /**
@@ -42,7 +53,7 @@ export class TechnicForceSensor extends Device {
                 this.notify("touched", { touched });
                 break;
 
-            case Mode.TAPPED:
+            case TechnicForceSensor.Mode.TAPPED:
                 const tapped = message[4];
 
                 /**
@@ -57,15 +68,3 @@ export class TechnicForceSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    FORCE = 0x00,
-    TOUCHED = 0x01,
-    TAPPED = 0x02
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "force": Mode.FORCE,
-    "touched": Mode.TOUCHED,
-    "tapped": Mode.TAPPED
-};

@@ -326,17 +326,6 @@ export class BaseHub extends EventEmitter {
         }
     }
 
-
-    public subscribe (portId: number, deviceType: number, mode: number) {
-        // NK Do nothing here
-    }
-
-
-    public unsubscribe (portId: number, deviceType: number, mode: number) {
-        // NK Do nothing here
-    }
-
-
     protected _attachDevice (device: Device) {
         this._attachedDevices[device.portId] = device;
         /**
@@ -409,7 +398,7 @@ export class BaseHub extends EventEmitter {
         if (constructor) {
             return new constructor(this, portId);
         } else {
-            return new Device(this, portId, undefined, deviceType);
+            return new Device(this, portId, undefined, undefined, deviceType);
         }
 
     }

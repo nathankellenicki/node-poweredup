@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,22 @@ import * as Consts from "../consts";
  */
 export class DuploTrainBaseSpeedometer extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER);
+    public static Mode = {
+        SPEED: 0x00
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "speed": DuploTrainBaseSpeedometer.Mode.SPEED
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, DuploTrainBaseSpeedometer.ModeMap, {}, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.SPEED:
+            case DuploTrainBaseSpeedometer.Mode.SPEED:
                 const speed = message.readInt16LE(4);
 
                 /**
@@ -34,11 +41,3 @@ export class DuploTrainBaseSpeedometer extends Device {
     }
 
 }
-
-export enum Mode {
-    SPEED = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "speed": Mode.SPEED
-};

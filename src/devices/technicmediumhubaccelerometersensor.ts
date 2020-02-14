@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,22 @@ import * as Consts from "../consts";
  */
 export class TechnicMediumHubAccelerometerSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER);
+    public static Mode = {
+        ACCEL: 0x00
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "accel": TechnicMediumHubAccelerometerSensor.Mode.ACCEL
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, TechnicMediumHubAccelerometerSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.ACCEL:
+            case TechnicMediumHubAccelerometerSensor.Mode.ACCEL:
                 /**
                  * Emits when accelerometer detects movement. Measured in mG.
                  * @event TechnicMediumHubAccelerometerSensor#accel
@@ -36,11 +43,3 @@ export class TechnicMediumHubAccelerometerSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    ACCEL = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "accel": Mode.ACCEL
-};

@@ -1,6 +1,6 @@
 import { BasicMotor } from "./basicmotor";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 import { mapSpeed } from "../utils";
@@ -11,17 +11,31 @@ import { mapSpeed } from "../utils";
  */
 export class TachoMotor extends BasicMotor {
 
-    protected _brakeStyle: Consts.BrakingStyle = Consts.BrakingStyle.BRAKE;
-
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, Object.assign({}, modeMap, ModeMap), type);
+    public static Mode = {
+        ROTATION: 0x02
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "rotate": TachoMotor.Mode.ROTATION
+    };
+
+
+    protected _brakeStyle: Consts.BrakingStyle = Consts.BrakingStyle.BRAKE;
+
+    constructor (
+        hub: IHubInterface,
+        portId: number,
+        modeMap: {[event: string]: number} = {},
+        dataSets: {[mode: number]: number} = {},
+        type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
+    ) {
+        super(hub, portId, Object.assign({}, modeMap, TachoMotor.ModeMap), Object.assign({}, dataSets, {}), type);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.ROTATION:
+            case TachoMotor.Mode.ROTATION:
                 const degrees = message.readInt32LE(this.isWeDo2SmartHub ? 2 : 4);
                 /**
                  * Emits when a rotation sensor is activated.
@@ -123,11 +137,3 @@ export class TachoMotor extends BasicMotor {
     }
 
 }
-
-export enum Mode {
-    ROTATION = 0x02
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "rotate": Mode.ROTATION
-};

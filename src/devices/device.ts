@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -14,25 +14,36 @@ export class Device extends EventEmitter {
     public values: {[event: string]: any} = {};
 
     protected _mode: number | undefined;
+    protected _combinedModes: number[] = [];
     protected _busy: boolean = false;
     protected _finished: (() => void) | undefined;
 
-    private _hub: IDeviceInterface;
+    protected _supportsCombined: boolean = false;
+
+    private _hub: IHubInterface;
     private _portId: number;
     private _connected: boolean = true;
     private _type: Consts.DeviceType;
     private _modeMap: {[event: string]: number} = {};
+    private _dataSets: {[mode: number]: number} = {};
 
     private _isWeDo2SmartHub: boolean;
     private _isVirtualPort: boolean = false;
     private _eventTimer: NodeJS.Timer | null = null;
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+    constructor (
+        hub: IHubInterface,
+        portId: number,
+        modeMap: {[event: string]: number} = {},
+        dataSets: {[mode: number]: number} = {},
+        type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
+    ) {
         super();
         this._hub = hub;
         this._portId = portId;
         this._type = type;
         this._modeMap = modeMap;
+        this._dataSets = dataSets;
         this._isWeDo2SmartHub = (this.hub.type === Consts.HubType.WEDO2_SMART_HUB);
         this._isVirtualPort = this.hub.isPortVirtual(portId);
 
@@ -42,7 +53,11 @@ export class Device extends EventEmitter {
             }
             if (this.autoSubscribe) {
                 if (this._modeMap[event] !== undefined) {
-                    this.subscribe(this._modeMap[event]);
+                    if (this._supportsCombined) {
+                        this.subscribeMulti(this._modeMap[event]);
+                    } else {
+                        this.subscribeSingle(this._modeMap[event]);
+                    }
                 }
             }
         };
@@ -114,6 +129,10 @@ export class Device extends EventEmitter {
         return this._mode;
     }
 
+    public get combinedModes () {
+        return this._combinedModes;
+    }
+
     protected get isWeDo2SmartHub () {
         return this._isWeDo2SmartHub;
     }
@@ -139,19 +158,59 @@ export class Device extends EventEmitter {
         this.hub.send(data, characteristic, callback);
     }
 
-    public subscribe (mode: number) {
+    public subscribeMulti (mode: number) {
         this._ensureConnected();
-        if (mode !== this._mode) {
-            this._mode = mode;
-            this.hub.subscribe(this.portId, this.type, mode);
+        if (this.isWeDo2SmartHub) {
+            throw new Error("Subscribing to multiple sensor modes is not available on the WeDo 2.0 Smart Hub");
+        }
+        if (!this._supportsCombined) {
+            throw new Error("This sensor does not support subscribing to multiple modes");
+        }
+        if (this._combinedModes.indexOf(mode) < 0) {
+            this._combinedModes.push(mode);
+            this.send(Buffer.from([0x42, this.portId, 0x02]));
+            const dataSets: number[] = [];
+            for (let i = 0; i < this._combinedModes.length; i++) {
+                this.send(Buffer.from([0x41, this.portId, this._combinedModes[i], 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
+                for (let j = 0; j < this._dataSets[this._combinedModes[i]]; j++) {
+                    dataSets.push((this._combinedModes[i] << 4) + j);
+                }
+            }
+            this.send(Buffer.from([0x42, this.portId, 0x01, 0x00].concat(dataSets)));
+            this.send(Buffer.from([0x42, this.portId, 0x03]));
         }
     }
 
-    public unsubscribe (mode: number) {
+    public subscribeSingle (mode: number) {
         this._ensureConnected();
+        if (mode !== this._mode) {
+            this._mode = mode;
+            if (this.isWeDo2SmartHub) {
+                this.send(Buffer.from([0x01, 0x02, this.portId, this.type, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
+            } else {
+                this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
+            }
+        }
     }
 
-    public receive (message: Buffer) {
+    public unsubscribeSingle (mode: number) {
+        this._ensureConnected();
+        if (this.mode !== undefined) {
+            if (this.isWeDo2SmartHub) {
+                this.send(Buffer.from([0x01, 0x02, this.portId, this.type, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
+            } else {
+                this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.LPF2_ALL);
+            }
+        }
+    }
+
+    public receiveSingle (message: Buffer) {
+        if (this.mode !== undefined) {
+            this.parse(this.mode, message);
+        }
+    }
+
+    public parse (mode: number, message: Buffer) {
         this.notify("receive", { message });
     }
 

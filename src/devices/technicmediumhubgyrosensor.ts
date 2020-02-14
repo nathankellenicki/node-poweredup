@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,22 @@ import * as Consts from "../consts";
  */
 export class TechnicMediumHubGyroSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR);
+    public static Mode = {
+        GYRO: 0x00
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "gyro": TechnicMediumHubGyroSensor.Mode.GYRO
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, TechnicMediumHubGyroSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.GYRO:
+            case TechnicMediumHubGyroSensor.Mode.GYRO:
                 /**
                  * Emits when gyroscope detects movement. Measured in DPS - degrees per second.
                  * @event TechnicMediumHubGyroSensor#gyro
@@ -36,11 +43,3 @@ export class TechnicMediumHubGyroSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    GYRO = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "gyro": Mode.GYRO
-};

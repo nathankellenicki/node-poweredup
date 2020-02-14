@@ -1,6 +1,6 @@
 import { TachoMotor } from "./tachomotor";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 import { mapSpeed, normalizeAngle, roundAngleToNearest90 } from "../utils";
@@ -11,15 +11,30 @@ import { mapSpeed, normalizeAngle, roundAngleToNearest90 } from "../utils";
  */
 export class AbsoluteMotor extends TachoMotor {
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, Object.assign({}, modeMap, ModeMap), type);
+    public static Mode = {
+        ROTATION: 0x02,
+        ABSOLUTE: 0x03
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "rotate": AbsoluteMotor.Mode.ROTATION,
+        "absolute": AbsoluteMotor.Mode.ABSOLUTE
+    };
+
+    constructor (
+        hub: IHubInterface,
+        portId: number,
+        modeMap: {[event: string]: number} = {},
+        dataSets: {[mode: number]: number} = {},
+        type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
+    ) {
+        super(hub, portId, Object.assign({}, modeMap, AbsoluteMotor.ModeMap), Object.assign({}, dataSets, {}), type);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.ABSOLUTE:
+            case AbsoluteMotor.Mode.ABSOLUTE:
                 const angle = normalizeAngle(message.readInt16LE(this.isWeDo2SmartHub ? 2 : 4));
                 /**
                  * Emits when a the motors absolute position is changed.
@@ -30,7 +45,7 @@ export class AbsoluteMotor extends TachoMotor {
                 this.notify("absolute", { angle });
                 break;
             default:
-                super.receive(message);
+                super.parse(mode, message);
                 break;
         }
     }
@@ -72,13 +87,3 @@ export class AbsoluteMotor extends TachoMotor {
     }
 
 }
-
-export enum Mode {
-    ROTATION = 0x02,
-    ABSOLUTE = 0x03
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "rotate": Mode.ROTATION,
-    "absolute": Mode.ABSOLUTE
-};

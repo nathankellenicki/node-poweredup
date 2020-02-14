@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,28 @@ import * as Consts from "../consts";
  */
 export class TechnicColorSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_COLOR_SENSOR);
+
+public static Mode = {
+    COLOR: 0x00,
+    REFLECTIVITY: 0x01,
+    AMBIENT_LIGHT: 0x02
+}
+
+public static ModeMap: {[event: string]: number} = {
+    "color": TechnicColorSensor.Mode.COLOR,
+    "reflect": TechnicColorSensor.Mode.REFLECTIVITY,
+    "ambient": TechnicColorSensor.Mode.AMBIENT_LIGHT
+};
+
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, TechnicColorSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_COLOR_SENSOR);
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.COLOR:
+            case TechnicColorSensor.Mode.COLOR:
                 if (message[4] <= 10) {
                     const color = message[4];
 
@@ -32,7 +45,7 @@ export class TechnicColorSensor extends Device {
                 }
                 break;
 
-            case Mode.REFLECTIVITY:
+            case TechnicColorSensor.Mode.REFLECTIVITY:
                 const reflect = message[4];
 
                 /**
@@ -44,7 +57,7 @@ export class TechnicColorSensor extends Device {
                 this.notify("reflect", { reflect });
                 break;
 
-            case Mode.AMBIENT_LIGHT:
+            case TechnicColorSensor.Mode.AMBIENT_LIGHT:
                 const ambient = message[4];
 
                 /**
@@ -59,15 +72,3 @@ export class TechnicColorSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    COLOR = 0x00,
-    REFLECTIVITY = 0x01,
-    AMBIENT_LIGHT = 0x02
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "color": Mode.COLOR,
-    "reflect": Mode.REFLECTIVITY,
-    "ambient": Mode.AMBIENT_LIGHT
-};

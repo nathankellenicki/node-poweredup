@@ -16,11 +16,10 @@ export interface IBLEAbstraction extends EventEmitter {
     writeToCharacteristic: (uuid: string, data: Buffer, callback?: () => void) => void;
 }
 
-export interface IDeviceInterface extends EventEmitter {
+export interface IHubInterface extends EventEmitter {
     type: Consts.HubType;
     getPortNameForPortId: (portId: number) => string | undefined;
     send: (message: Buffer, uuid: string, callback?: () => void) => void;
-    subscribe: (portId: number, deviceType: number, mode: number) => void;
     isPortVirtual: (portId: number) => boolean;
     sleep: (delay: number) => Promise<any>;
 }

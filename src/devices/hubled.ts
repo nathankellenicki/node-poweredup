@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,9 +10,13 @@ import * as Consts from "../consts";
  */
 export class HubLED extends Device {
 
+    public static Mode = {
+        COLOR: 0x00,
+        RGB: 0x01
+    }
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.HUB_LED);
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, {}, {}, Consts.DeviceType.HUB_LED);
     }
 
 
@@ -31,7 +35,7 @@ export class HubLED extends Device {
                 this.send(Buffer.from([0x06, 0x17, 0x01, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
                 this.send(Buffer.from([0x06, 0x04, 0x01, color]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
-                this.subscribe(Mode.COLOR);
+                this.subscribeSingle(HubLED.Mode.COLOR);
                 this.writeDirect(0x00, Buffer.from([color]));
             }
             return resolve();
@@ -53,7 +57,7 @@ export class HubLED extends Device {
                 this.send(Buffer.from([0x06, 0x17, 0x01, 0x02]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
                 this.send(Buffer.from([0x06, 0x04, 0x03, red, green, blue]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
-                this.subscribe(Mode.RGB);
+                this.subscribeSingle(HubLED.Mode.RGB);
                 this.writeDirect(0x01, Buffer.from([red, green, blue]));
             }
             return resolve();
@@ -61,9 +65,4 @@ export class HubLED extends Device {
     }
 
 
-}
-
-export enum Mode {
-    COLOR = 0x00,
-    RGB = 0x01
 }

@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,15 +10,22 @@ import * as Consts from "../consts";
  */
 export class VoltageSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.VOLTAGE_SENSOR);
+    public static Mode = {
+        VOLTAGE: 0x00
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static ModeMap: {[event: string]: number} = {
+        "voltage": VoltageSensor.Mode.VOLTAGE
+    };
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, VoltageSensor.ModeMap, {}, Consts.DeviceType.VOLTAGE_SENSOR);
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.VOLTAGE:
+            case VoltageSensor.Mode.VOLTAGE:
                 if (this.isWeDo2SmartHub) {
                     const voltage = message.readInt16LE(2) / 40;
                     this.notify("voltage", { voltage });
@@ -45,14 +52,6 @@ export class VoltageSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    VOLTAGE = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "voltage": Mode.VOLTAGE
-};
 
 const MaxVoltageValue: {[hubType: number]: number} = {
     [Consts.HubType.UNKNOWN]: 9.615,

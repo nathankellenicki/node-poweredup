@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 import { calculateRamp } from "../utils";
@@ -12,8 +12,8 @@ import { calculateRamp } from "../utils";
 export class Light extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.LIGHT);
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, {}, {}, Consts.DeviceType.LIGHT);
     }
 
 

@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -10,17 +10,36 @@ import * as Consts from "../consts";
  */
 export class ColorDistanceSensor extends Device {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+    public static Mode = {
+        COLOR: 0x00,
+        DISTANCE: 0x01,
+        COLOR_AND_DISTANCE: 0x08
     }
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+    public static DataSets = {
+        [ColorDistanceSensor.Mode.COLOR]: 1,
+        [ColorDistanceSensor.Mode.DISTANCE]: 1,
+        [ColorDistanceSensor.Mode.COLOR_AND_DISTANCE]: 4
+    }
+
+    public static ModeMap: {[event: string]: number} = {
+        "color": ColorDistanceSensor.Mode.COLOR,
+        "distance": ColorDistanceSensor.Mode.DISTANCE,
+        "colorAndDistance": ColorDistanceSensor.Mode.COLOR_AND_DISTANCE
+    };
+
+
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, ColorDistanceSensor.ModeMap, ColorDistanceSensor.DataSets, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+        this._supportsCombined = true;
+    }
+
+    public parse (mode: number, message: Buffer) {
 
         switch (mode) {
-            case Mode.COLOR:
-                if (message[this.isWeDo2SmartHub ? 2 : 4] <= 10) {
-                    const color = message[this.isWeDo2SmartHub ? 2 : 4];
+            case ColorDistanceSensor.Mode.COLOR:
+                if (message[this.isWeDo2SmartHub ? 2 : 0] <= 10) {
+                    const color = message[this.isWeDo2SmartHub ? 2 : 0];
 
                     /**
                      * Emits when a color sensor is activated.
@@ -30,14 +49,14 @@ export class ColorDistanceSensor extends Device {
                      */
                     this.notify("color", { color });
                 }
-                break;
+                return message.slice(1);
 
-            case Mode.DISTANCE:
+            case ColorDistanceSensor.Mode.DISTANCE:
                 if (this.isWeDo2SmartHub) {
                     break;
                 }
-                if (message[4] <= 10) {
-                    const distance = Math.floor(message[4] * 25.4) - 20;
+                if (message[0] <= 10) {
+                    const distance = Math.floor(message[0] * 25.4) - 20;
 
                     /**
                      * Emits when a distance sensor is activated.
@@ -47,15 +66,15 @@ export class ColorDistanceSensor extends Device {
                      */
                     this.notify("distance", { distance });
                 }
-                break;
+                return message.slice(1);
 
-            case Mode.COLOR_AND_DISTANCE:
+            default:
                 if (this.isWeDo2SmartHub) {
                     break;
                 }
 
-                let distance = message[5];
-                const partial = message[7];
+                let distance = message[1];
+                const partial = message[3];
 
                 if (partial > 0) {
                     distance += 1.0 / partial;
@@ -70,25 +89,13 @@ export class ColorDistanceSensor extends Device {
                  * @param {Color} color
                  * @param {number} distance Distance, in millimeters.
                  */
-                if (message[4] <= 10) {
+                if (message[0] <= 10) {
                     const color = message[4];
                     this.notify("colorAndDistance", { color, distance });
                 }
-                break;
+                return message.slice(4);
 
         }
     }
 
 }
-
-export enum Mode {
-    COLOR = 0x00,
-    DISTANCE = 0x01,
-    COLOR_AND_DISTANCE = 0x08
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "color": Mode.COLOR,
-    "distance": Mode.DISTANCE,
-    "colorAndDistance": Mode.COLOR_AND_DISTANCE
-};

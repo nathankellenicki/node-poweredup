@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IHubInterface } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,8 +11,8 @@ import * as Consts from "../consts";
 export class PiezoBuzzer extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.PIEZO_BUZZER);
+    constructor (hub: IHubInterface, portId: number) {
+        super(hub, portId, {}, {}, Consts.DeviceType.PIEZO_BUZZER);
     }
 
 
