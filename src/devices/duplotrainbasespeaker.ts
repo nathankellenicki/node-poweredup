@@ -28,6 +28,12 @@ export class DuploTrainBaseSpeaker extends Device {
         });
     }
 
+    /**
+     * Play a built-in system tone.
+     * @method DuploTrainBaseSpeaker#playTone
+     * @param {number} tone
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
     public playTone (tone: number) {
         this.subscribe(Mode.TONE);
         this.writeDirect(0x02, Buffer.from([tone]));
