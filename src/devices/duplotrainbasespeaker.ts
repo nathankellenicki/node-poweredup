@@ -28,8 +28,14 @@ export class DuploTrainBaseSpeaker extends Device {
         });
     }
 
+    public playTone (tone: number) {
+        this.subscribe(Mode.TONE);
+        this.writeDirect(0x02, Buffer.from([tone]));
+    }
+
 }
 
 export enum Mode {
-    SOUND = 0x01
+    SOUND = 0x01,
+    TONE = 0x02
 }
