@@ -3,15 +3,19 @@
 
 # **node-poweredup** - A Javascript module to interface with LEGO Powered Up components.
 
+### Announcements
+
+*Important*: v6.0.0 is a complete re-architecting of this library. Improvements include proper device and mode support through an external Device object, correct handling of firmware features, and promise-based functionality for interfacing with device attachments. Although many new features were added, existing code will almost surely break upon upgrade.
+
 ### Introduction
 
-LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO WeDo 2.0 released in 2016, LEGO Boost released in 2017, LEGO Powered Up released in 2018, and LEGO Technic CONTROL+ released in 2019. It also includes the 2018 Duplo App-Controlled Train sets.
+LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO Education WeDo 2.0 released in 2016, LEGO Boost released in 2017, LEGO Powered Up released in 2018, LEGO Technic CONTROL+ released in 2019, and LEGO Education SPIKE Prime released in 2020. It also includes the 2018 Duplo App-Controlled Train sets.
 
 This library allows communication and control of Powered Up devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.
 
 ### Node.js Installation
 
-Node.js v8.0 required.
+Node.js v8.0+ required.
 
 ```javascript
 npm install node-poweredup --save
@@ -19,7 +23,7 @@ npm install node-poweredup --save
 
 node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/noble/noble#prerequisites).
 
-Note: node-poweredup has been tested on macOS 10.13 and Debian/Raspbian on the Raspberry Pi 3 Model B.
+Note: node-poweredup has been tested on macOS 10.15 and Debian/Raspbian on the Raspberry Pi 3 Model B.
 
 ### Compatibility
 
@@ -36,6 +40,12 @@ While most Powered Up components and Hubs are compatible with each other, there 
 | Powered Up LED Lights           | <a href="https://brickset.com/sets/88005-1/">88005</a>        | Light         |       Yes      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/88005-1/">88005</a> |
 | Control+ Large Motor            | 22169        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 | Control+ XLarge Motor            | 22172        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
+| SPIKE Prime Medium Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Large Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Color Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Distance Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Force Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+
 
 In addition, the Hubs themselves have certain built-in features which this library exposes.
 
@@ -50,11 +60,11 @@ In addition, the Hubs themselves have certain built-in features which this libra
 
 ### Known Issues and Limitations
 
-* The Boost Color and Distance sensor only works in color mode with the WeDo 2.0 Smart Hub.
+* The WeDo 2.0 Smart Hub uses an older firmware which is no longer being updated. As a result, only certain motors and sensors work with it. See the table above.
 
-* When used with the WeDo 2.0 Smart Hub, the Boost Tacho Motor and Control+ Motors do not support rotating the motor by angle.
+* When used with the Boost Move Hub, the Control+ Motors do not currently accept commands (This is a known but which requires a firmware update from Lego to fix)
 
-* When used with the Boost Move Hub, the Control+ Motors do not currently accept commands.
+* The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython and Bluetooth Classic to develop for this Hub.
 
 ### Documentation
 
@@ -69,17 +79,22 @@ const poweredUP = new PoweredUP.PoweredUP();
 poweredUP.on("discover", async (hub) => { // Wait to discover a Hub
     console.log(`Discovered ${hub.name}!`);
     await hub.connect(); // Connect to the Hub
+    const motorA = await hub.waitForDeviceAtPort("A"); // Make sure a motor is plugged into port A
+    const motorB = await hub.waitForDeviceAtPort("B"); // Make sure a motor is plugged into port B
     console.log("Connected");
-    await hub.sleep(3000); // Sleep for 3 seconds before starting
 
     while (true) { // Repeat indefinitely
-        console.log("Running motor B at speed 75");
-        hub.setMotorSpeed("B", 75); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
+        console.log("Running motor B at speed 50");
+        motorB.setPower(50); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
         console.log("Running motor A at speed 100 for 2 seconds");
-        await hub.setMotorSpeed("A", 100,  2000); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
+        motorA.setPower(100); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
+        await hub.sleep(2000);
+        motorA.brake();
         await hub.sleep(1000); // Do nothing for 1 second
-        console.log("Running motor A at speed -50 for 1 seconds");
-        await hub.setMotorSpeed("A", -50,  1000); // Run a motor attached to port A for 1 second at 1/2 speed in reverse (-50) then stop
+        console.log("Running motor A at speed -30 for 1 second");
+        motorA.setPower(-30); // Run a motor attached to port A for 2 seconds at 1/2 speed in reverse (-50) then stop
+        await hub.sleep(2000);
+        motorA.brake();
         await hub.sleep(1000); // Do nothing for 1 second
     }
 });

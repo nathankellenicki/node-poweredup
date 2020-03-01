@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>node-poweredup Source: hubs/basehub.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.simplex.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">node-poweredup</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="AbsoluteMotor.html">AbsoluteMotor</a></li><li><a href="BaseHub.html">BaseHub</a></li><li><a href="BasicMotor.html">BasicMotor</a></li><li><a href="BoostMoveHub.html">BoostMoveHub</a></li><li><a href="ColorDistanceSensor.html">ColorDistanceSensor</a></li><li><a href="ControlPlusHub.html">ControlPlusHub</a></li><li><a href="CurrentSensor.html">CurrentSensor</a></li><li><a href="Device.html">Device</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="DuploTrainBaseColorSensor.html">DuploTrainBaseColorSensor</a></li><li><a href="DuploTrainBaseMotor.html">DuploTrainBaseMotor</a></li><li><a href="DuploTrainBaseSpeaker.html">DuploTrainBaseSpeaker</a></li><li><a href="DuploTraniBaseSpeedometer.html">DuploTraniBaseSpeedometer</a></li><li><a href="Hub.html">Hub</a></li><li><a href="HubLED.html">HubLED</a></li><li><a href="Light.html">Light</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="MediumLinearMotor.html">MediumLinearMotor</a></li><li><a href="MotionSensor.html">MotionSensor</a></li><li><a href="MoveHub.html">MoveHub</a></li><li><a href="MoveHubMediumLinearMotor.html">MoveHubMediumLinearMotor</a></li><li><a href="MoveHubTiltSensor.html">MoveHubTiltSensor</a></li><li><a href="PiezoBuzzer.html">PiezoBuzzer</a></li><li><a href="PUPHub.html">PUPHub</a></li><li><a href="PUPRemote.html">PUPRemote</a></li><li><a href="RemoteControl.html">RemoteControl</a></li><li><a href="RemoteControlButton.html">RemoteControlButton</a></li><li><a href="SimpleMediumLinearMotor.html">SimpleMediumLinearMotor</a></li><li><a href="TachoMotor.html">TachoMotor</a></li><li><a href="TechnicColorSensor.html">TechnicColorSensor</a></li><li><a href="TechnicDistanceSensor.html">TechnicDistanceSensor</a></li><li><a href="TechnicForceSensor.html">TechnicForceSensor</a></li><li><a href="TechnicLargeAngularMotor.html">TechnicLargeAngularMotor</a></li><li><a href="TechnicLargeLinearMotor.html">TechnicLargeLinearMotor</a></li><li><a href="TechnicMediumAngularMotor.html">TechnicMediumAngularMotor</a></li><li><a href="TechnicMediumHub.html">TechnicMediumHub</a></li><li><a href="TechnicMediumHubAccelerometerSensor.html">TechnicMediumHubAccelerometerSensor</a></li><li><a href="TechnicMediumHubGyroSensor.html">TechnicMediumHubGyroSensor</a></li><li><a href="TechnicMediumHubTiltSensor.html">TechnicMediumHubTiltSensor</a></li><li><a href="TechnicXLargeLinearMotor.html">TechnicXLargeLinearMotor</a></li><li><a href="TiltSensor.html">TiltSensor</a></li><li><a href="TrainMotor.html">TrainMotor</a></li><li><a href="VoltageSensor.html">VoltageSensor</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="events.list.html" class="dropdown-toggle" data-toggle="dropdown">Events<b class="caret"></b></a>
+				<ul class="dropdown-menu ">
+					<li><a href="AbsoluteMotor.html#event:absolute">AbsoluteMotor#event:absolute</a></li><li><a href="AbsoluteMotor.html#event:rotate">AbsoluteMotor#event:rotate</a></li><li><a href="BoostMoveHub.html#event:attach">BoostMoveHub#event:attach</a></li><li><a href="BoostMoveHub.html#event:button">BoostMoveHub#event:button</a></li><li><a href="BoostMoveHub.html#event:detach">BoostMoveHub#event:detach</a></li><li><a href="BoostMoveHub.html#event:disconnect">BoostMoveHub#event:disconnect</a></li><li><a href="ColorDistanceSensor.html#event:color">ColorDistanceSensor#event:color</a></li><li><a href="ColorDistanceSensor.html#event:colorAndDistance">ColorDistanceSensor#event:colorAndDistance</a></li><li><a href="ColorDistanceSensor.html#event:distance">ColorDistanceSensor#event:distance</a></li><li><a href="ControlPlusHub.html#event:attach">ControlPlusHub#event:attach</a></li><li><a href="ControlPlusHub.html#event:button">ControlPlusHub#event:button</a></li><li><a href="ControlPlusHub.html#event:detach">ControlPlusHub#event:detach</a></li><li><a href="ControlPlusHub.html#event:disconnect">ControlPlusHub#event:disconnect</a></li><li><a href="CurrentSensor.html#event:current">CurrentSensor#event:current</a></li><li><a href="DuploTrainBase.html#event:button">DuploTrainBase#event:button</a></li><li><a href="DuploTrainBaseColorSensor.html#event:color">DuploTrainBaseColorSensor#event:color</a></li><li><a href="DuploTrainBaseColorSensor.html#event:reflect">DuploTrainBaseColorSensor#event:reflect</a></li><li><a href="DuploTrainBaseColorSensor.html#event:rgb">DuploTrainBaseColorSensor#event:rgb</a></li><li><a href="DuploTrainBaseSpeedometer.html#event:speed">DuploTrainBaseSpeedometer#event:speed</a></li><li><a href="Hub.html#event:attach">Hub#event:attach</a></li><li><a href="Hub.html#event:button">Hub#event:button</a></li><li><a href="Hub.html#event:detach">Hub#event:detach</a></li><li><a href="Hub.html#event:disconnect">Hub#event:disconnect</a></li><li><a href="LPF2Hub.html#event:button">LPF2Hub#event:button</a></li><li><a href="MediumLinearMotor.html#event:rotate">MediumLinearMotor#event:rotate</a></li><li><a href="MotionSensor.html#event:distance">MotionSensor#event:distance</a></li><li><a href="MoveHub.html#event:button">MoveHub#event:button</a></li><li><a href="MoveHubMediumLinearMotor.html#event:rotate">MoveHubMediumLinearMotor#event:rotate</a></li><li><a href="MoveHubTiltSensor.html#event:tilt">MoveHubTiltSensor#event:tilt</a></li><li><a href="PUPHub.html#event:attach">PUPHub#event:attach</a></li><li><a href="PUPHub.html#event:button">PUPHub#event:button</a></li><li><a href="PUPHub.html#event:detach">PUPHub#event:detach</a></li><li><a href="PUPHub.html#event:disconnect">PUPHub#event:disconnect</a></li><li><a href="PUPRemote.html#event:attach">PUPRemote#event:attach</a></li><li><a href="PUPRemote.html#event:button">PUPRemote#event:button</a></li><li><a href="PUPRemote.html#event:detach">PUPRemote#event:detach</a></li><li><a href="PUPRemote.html#event:disconnect">PUPRemote#event:disconnect</a></li><li><a href="RemoteControl.html#event:button">RemoteControl#event:button</a></li><li><a href="RemoteControlButton.html#event:button">RemoteControlButton#event:button</a></li><li><a href="TachoMotor.html#event:rotate">TachoMotor#event:rotate</a></li><li><a href="TechnicColorSensor.html#event:ambient">TechnicColorSensor#event:ambient</a></li><li><a href="TechnicColorSensor.html#event:color">TechnicColorSensor#event:color</a></li><li><a href="TechnicColorSensor.html#event:reflect">TechnicColorSensor#event:reflect</a></li><li><a href="TechnicDistanceSensor.html#event:distance">TechnicDistanceSensor#event:distance</a></li><li><a href="TechnicDistanceSensor.html#event:fastDistance">TechnicDistanceSensor#event:fastDistance</a></li><li><a href="TechnicForceSensor.html#event:force">TechnicForceSensor#event:force</a></li><li><a href="TechnicForceSensor.html#event:tapped">TechnicForceSensor#event:tapped</a></li><li><a href="TechnicForceSensor.html#event:touch">TechnicForceSensor#event:touch</a></li><li><a href="TechnicLargeAngularMotor.html#event:absolute">TechnicLargeAngularMotor#event:absolute</a></li><li><a href="TechnicLargeAngularMotor.html#event:rotate">TechnicLargeAngularMotor#event:rotate</a></li><li><a href="TechnicLargeLinearMotor.html#event:absolute">TechnicLargeLinearMotor#event:absolute</a></li><li><a href="TechnicLargeLinearMotor.html#event:rotate">TechnicLargeLinearMotor#event:rotate</a></li><li><a href="TechnicMediumAngularMotor.html#event:absolute">TechnicMediumAngularMotor#event:absolute</a></li><li><a href="TechnicMediumAngularMotor.html#event:rotate">TechnicMediumAngularMotor#event:rotate</a></li><li><a href="TechnicMediumHub.html#event:button">TechnicMediumHub#event:button</a></li><li><a href="TechnicMediumHubAccelerometerSensor.html#event:accel">TechnicMediumHubAccelerometerSensor#event:accel</a></li><li><a href="TechnicMediumHubGyroSensor.html#event:gyro">TechnicMediumHubGyroSensor#event:gyro</a></li><li><a href="TechnicMediumHubTiltSensor.html#event:tilt">TechnicMediumHubTiltSensor#event:tilt</a></li><li><a href="TechnicXLargeLinearMotor.html#event:absolute">TechnicXLargeLinearMotor#event:absolute</a></li><li><a href="TechnicXLargeLinearMotor.html#event:rotate">TechnicXLargeLinearMotor#event:rotate</a></li><li><a href="TiltSensor.html#event:tilt">TiltSensor#event:tilt</a></li><li><a href="VoltageSensor.html#event:voltage">VoltageSensor#event:voltage</a></li><li><a href="WeDo2SmartHub.html#event:button">WeDo2SmartHub#event:button</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: hubs/basehub.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">"use strict";
+var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
+    if (mod &amp;&amp; mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+    result["default"] = mod;
+    return result;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const events_1 = require("events");
+const colordistancesensor_1 = require("../devices/colordistancesensor");
+const currentsensor_1 = require("../devices/currentsensor");
+const device_1 = require("../devices/device");
+const duplotrainbasecolorsensor_1 = require("../devices/duplotrainbasecolorsensor");
+const duplotrainbasemotor_1 = require("../devices/duplotrainbasemotor");
+const duplotrainbasespeaker_1 = require("../devices/duplotrainbasespeaker");
+const duplotrainbasespeedometer_1 = require("../devices/duplotrainbasespeedometer");
+const hubled_1 = require("../devices/hubled");
+const light_1 = require("../devices/light");
+const mediumlinearmotor_1 = require("../devices/mediumlinearmotor");
+const motionsensor_1 = require("../devices/motionsensor");
+const movehubmediumlinearmotor_1 = require("../devices/movehubmediumlinearmotor");
+const movehubtiltsensor_1 = require("../devices/movehubtiltsensor");
+const piezobuzzer_1 = require("../devices/piezobuzzer");
+const remotecontrolbutton_1 = require("../devices/remotecontrolbutton");
+const simplemediumlinearmotor_1 = require("../devices/simplemediumlinearmotor");
+const techniccolorsensor_1 = require("../devices/techniccolorsensor");
+const technicdistancesensor_1 = require("../devices/technicdistancesensor");
+const technicforcesensor_1 = require("../devices/technicforcesensor");
+const techniclargeangularmotor_1 = require("../devices/techniclargeangularmotor");
+const techniclargelinearmotor_1 = require("../devices/techniclargelinearmotor");
+const technicmediumangularmotor_1 = require("../devices/technicmediumangularmotor");
+const technicmediumhubaccelerometersensor_1 = require("../devices/technicmediumhubaccelerometersensor");
+const technicmediumhubgyrosensor_1 = require("../devices/technicmediumhubgyrosensor");
+const technicmediumhubtiltsensor_1 = require("../devices/technicmediumhubtiltsensor");
+const technicxlargelinearmotor_1 = require("../devices/technicxlargelinearmotor");
+const tiltsensor_1 = require("../devices/tiltsensor");
+const trainmotor_1 = require("../devices/trainmotor");
+const voltagesensor_1 = require("../devices/voltagesensor");
+const Consts = __importStar(require("../consts"));
+const Debug = require("debug");
+const debug = Debug("basehub");
+/**
+ * @class BaseHub
+ * @extends EventEmitter
+ */
+class BaseHub extends events_1.EventEmitter {
+    constructor(bleDevice, portMap = {}, type = Consts.HubType.UNKNOWN) {
+        super();
+        this._attachedDevices = {};
+        this._name = "";
+        this._firmwareVersion = "0.0.00.0000";
+        this._hardwareVersion = "0.0.00.0000";
+        this._primaryMACAddress = "00:00:00:00:00:00";
+        this._batteryLevel = 100;
+        this._rssi = -60;
+        this._portMap = {};
+        this._virtualPorts = [];
+        this._attachCallbacks = [];
+        this.setMaxListeners(23); // Technic Medium Hub has 9 built in devices + 4 external ports. Node.js throws a warning after 10 attached event listeners.
+        this._type = type;
+        this._bleDevice = bleDevice;
+        this._portMap = Object.assign({}, portMap);
+        bleDevice.on("disconnect", () => {
+            /**
+             * Emits when the hub is disconnected.
+             * @event Hub#disconnect
+             */
+            this.emit("disconnect");
+        });
+    }
+    /**
+     * @readonly
+     * @property {string} name Name of the hub
+     */
+    get name() {
+        return this._bleDevice.name;
+    }
+    /**
+     * @readonly
+     * @property {string} type Hub type
+     */
+    get type() {
+        return this._type;
+    }
+    /**
+     * @readonly
+     * @property {string[]} ports Array of port names
+     */
+    get ports() {
+        return Object.keys(this._portMap);
+    }
+    /**
+     * @readonly
+     * @property {string} firmwareVersion Firmware version of the hub
+     */
+    get firmwareVersion() {
+        return this._firmwareVersion;
+    }
+    /**
+     * @readonly
+     * @property {string} hardwareVersion Hardware version of the hub
+     */
+    get hardwareVersion() {
+        return this._hardwareVersion;
+    }
+    /**
+     * @readonly
+     * @property {string} primaryMACAddress Primary MAC address of the hub
+     */
+    get primaryMACAddress() {
+        return this._primaryMACAddress;
+    }
+    /**
+     * @readonly
+     * @property {string} uuid UUID of the hub
+     */
+    get uuid() {
+        return this._bleDevice.uuid;
+    }
+    /**
+     * @readonly
+     * @property {number} batteryLevel Battery level of the hub (Percentage between 0-100)
+     */
+    get batteryLevel() {
+        return this._batteryLevel;
+    }
+    /**
+     * @readonly
+     * @property {number} rssi Signal strength of the hub
+     */
+    get rssi() {
+        return this._rssi;
+    }
+    /**
+     * Connect to the Hub.
+     * @method Hub#connect
+     * @returns {Promise} Resolved upon successful connect.
+     */
+    connect() {
+        return new Promise(async (connectResolve, connectReject) => {
+            if (this._bleDevice.connecting) {
+                return connectReject("Already connecting");
+            }
+            else if (this._bleDevice.connected) {
+                return connectReject("Already connected");
+            }
+            await this._bleDevice.connect();
+            return connectResolve();
+        });
+    }
+    /**
+     * Disconnect the Hub.
+     * @method Hub#disconnect
+     * @returns {Promise} Resolved upon successful disconnect.
+     */
+    disconnect() {
+        return this._bleDevice.disconnect();
+    }
+    /**
+     * Retrieves the device attached to a given port.
+     * @method Hub#getDeviceAtPort
+     * @param {string} portName The name of the port to retrieve the device from.
+     * @returns {Device | undefined} The device attached to the port.
+     */
+    getDeviceAtPort(portName) {
+        const portId = this._portMap[portName];
+        if (portId !== undefined) {
+            return this._attachedDevices[portId];
+        }
+        else {
+            return undefined;
+        }
+    }
+    /**
+     * Retrieves the device attached to a given port, waiting until one is attached if there isn't one.
+     *
+     * Note: If a device is never attached, the returned promise may never resolve.
+     * @method Hub#waitForDeviceAtPort
+     * @param {string} portName The name of the port to retrieve the device from.
+     * @returns {Promise} Resolved once a device is attached, or resolved immediately if a device is already attached.
+     */
+    waitForDeviceAtPort(portName) {
+        return new Promise((resolve) => {
+            const existingDevice = this.getDeviceAtPort(portName);
+            if (existingDevice) {
+                return resolve(existingDevice);
+            }
+            this._attachCallbacks.push((device) => {
+                if (device.portName === portName) {
+                    resolve(device);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        });
+    }
+    /**
+     * Retrieves all attached devices.
+     * @method Hub#getDevices
+     * @returns {Device[]} Array of all attached devices.
+     */
+    getDevices() {
+        return Object.values(this._attachedDevices);
+    }
+    /**
+     * Retrieves an array of devices of the specified type.
+     * @method Hub#getDevicesByType
+     * @param {number} deviceType The device type to lookup.
+     * @returns {Device[]} Array of all devices of the specified type.
+     */
+    getDevicesByType(deviceType) {
+        return this.getDevices().filter((device) => device.type === deviceType);
+    }
+    /**
+     * Retrieves the first device attached of the specified type, waiting until one is attached if there isn't one.
+     *
+     * Note: If a device is never attached, the returned promise may never resolve.
+     * @method Hub#waitForDeviceByType
+     * @param {number} deviceType The device type to lookup.
+     * @returns {Promise} Resolved once a device is attached, or resolved immediately if a device is already attached.
+     */
+    waitForDeviceByType(deviceType) {
+        return new Promise((resolve) => {
+            const existingDevices = this.getDevicesByType(deviceType);
+            if (existingDevices.length >= 1) {
+                return resolve(existingDevices[0]);
+            }
+            this._attachCallbacks.push((device) => {
+                if (device.type === deviceType) {
+                    resolve(device);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            });
+        });
+    }
+    getPortNameForPortId(portId) {
+        for (const port of Object.keys(this._portMap)) {
+            if (this._portMap[port] === portId) {
+                return port;
+            }
+        }
+        return;
+    }
+    isPortVirtual(portId) {
+        return (this._virtualPorts.indexOf(portId) > -1);
+    }
+    /**
+     * Sleep a given amount of time.
+     *
+     * Note: This is a helper method to make it easier to add delays into a chain of commands.
+     * @method Hub#sleep
+     * @param {number} delay How long to sleep (in milliseconds).
+     * @returns {Promise} Resolved after the delay is finished.
+     */
+    sleep(delay) {
+        return new Promise((resolve) => {
+            global.setTimeout(resolve, delay);
+        });
+    }
+    /**
+     * Wait until a given list of concurrently running commands are complete.
+     *
+     * Note: This is a helper method to make it easier to wait for concurrent commands to complete.
+     * @method Hub#wait
+     * @param {Array&lt;Promise&lt;any>>} commands Array of executing commands.
+     * @returns {Promise} Resolved after the commands are finished.
+     */
+    wait(commands) {
+        return Promise.all(commands);
+    }
+    send(message, uuid, callback) {
+        if (callback) {
+            callback();
+        }
+    }
+    subscribe(portId, deviceType, mode) {
+        // NK Do nothing here
+    }
+    unsubscribe(portId, deviceType, mode) {
+        // NK Do nothing here
+    }
+    _attachDevice(device) {
+        this._attachedDevices[device.portId] = device;
+        /**
+         * Emits when a device is attached to the Hub.
+         * @event Hub#attach
+         * @param {Device} device
+         */
+        this.emit("attach", device);
+        debug(`Attached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
+        let i = this._attachCallbacks.length;
+        while (i--) {
+            const callback = this._attachCallbacks[i];
+            if (callback(device)) {
+                this._attachCallbacks.splice(i, 1);
+            }
+        }
+    }
+    _detachDevice(device) {
+        delete this._attachedDevices[device.portId];
+        /**
+         * Emits when a device is detached from the Hub.
+         * @event Hub#detach
+         * @param {Device} device
+         */
+        this.emit("detach", device);
+        debug(`Detached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
+    }
+    _createDevice(deviceType, portId) {
+        let constructor;
+        // NK TODO: This needs to go in a better place
+        const deviceConstructors = {
+            [Consts.DeviceType.LIGHT]: light_1.Light,
+            [Consts.DeviceType.TRAIN_MOTOR]: trainmotor_1.TrainMotor,
+            [Consts.DeviceType.SIMPLE_MEDIUM_LINEAR_MOTOR]: simplemediumlinearmotor_1.SimpleMediumLinearMotor,
+            [Consts.DeviceType.MOVE_HUB_MEDIUM_LINEAR_MOTOR]: movehubmediumlinearmotor_1.MoveHubMediumLinearMotor,
+            [Consts.DeviceType.MOTION_SENSOR]: motionsensor_1.MotionSensor,
+            [Consts.DeviceType.TILT_SENSOR]: tiltsensor_1.TiltSensor,
+            [Consts.DeviceType.MOVE_HUB_TILT_SENSOR]: movehubtiltsensor_1.MoveHubTiltSensor,
+            [Consts.DeviceType.PIEZO_BUZZER]: piezobuzzer_1.PiezoBuzzer,
+            [Consts.DeviceType.TECHNIC_COLOR_SENSOR]: techniccolorsensor_1.TechnicColorSensor,
+            [Consts.DeviceType.TECHNIC_DISTANCE_SENSOR]: technicdistancesensor_1.TechnicDistanceSensor,
+            [Consts.DeviceType.TECHNIC_FORCE_SENSOR]: technicforcesensor_1.TechnicForceSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR]: technicmediumhubtiltsensor_1.TechnicMediumHubTiltSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: technicmediumhubgyrosensor_1.TechnicMediumHubGyroSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: technicmediumhubaccelerometersensor_1.TechnicMediumHubAccelerometerSensor,
+            [Consts.DeviceType.MEDIUM_LINEAR_MOTOR]: mediumlinearmotor_1.MediumLinearMotor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_ANGULAR_MOTOR]: technicmediumangularmotor_1.TechnicMediumAngularMotor,
+            [Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR]: techniclargeangularmotor_1.TechnicLargeAngularMotor,
+            [Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR]: techniclargelinearmotor_1.TechnicLargeLinearMotor,
+            [Consts.DeviceType.TECHNIC_XLARGE_LINEAR_MOTOR]: technicxlargelinearmotor_1.TechnicXLargeLinearMotor,
+            [Consts.DeviceType.COLOR_DISTANCE_SENSOR]: colordistancesensor_1.ColorDistanceSensor,
+            [Consts.DeviceType.VOLTAGE_SENSOR]: voltagesensor_1.VoltageSensor,
+            [Consts.DeviceType.CURRENT_SENSOR]: currentsensor_1.CurrentSensor,
+            [Consts.DeviceType.REMOTE_CONTROL_BUTTON]: remotecontrolbutton_1.RemoteControlButton,
+            [Consts.DeviceType.HUB_LED]: hubled_1.HubLED,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR]: duplotrainbasecolorsensor_1.DuploTrainBaseColorSensor,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR]: duplotrainbasemotor_1.DuploTrainBaseMotor,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER]: duplotrainbasespeaker_1.DuploTrainBaseSpeaker,
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER]: duplotrainbasespeedometer_1.DuploTrainBaseSpeedometer
+        };
+        constructor = deviceConstructors[deviceType];
+        if (constructor) {
+            return new constructor(this, portId);
+        }
+        else {
+            return new device_1.Device(this, portId, undefined, deviceType);
+        }
+    }
+    _getDeviceByPortId(portId) {
+        return this._attachedDevices[portId];
+    }
+}
+exports.BaseHub = BaseHub;
+//# sourceMappingURL=basehub.js.map</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	node-poweredup by Nathan Kellenicki licensed under the MIT license.
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
+	
+		on Mon Feb 24th 2020
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
