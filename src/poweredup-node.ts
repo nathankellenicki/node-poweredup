@@ -152,17 +152,17 @@ export class PoweredUP extends EventEmitter {
 
         let hub: BaseHub;
 
-        if (await WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
+        if (WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
             hub = new WeDo2SmartHub(device);
-        } else if (await MoveHub.IsMoveHub(peripheral)) {
+        } else if (MoveHub.IsMoveHub(peripheral)) {
             hub = new MoveHub(device);
-        } else if (await Hub.IsHub(peripheral)) {
+        } else if (Hub.IsHub(peripheral)) {
             hub = new Hub(device);
-        } else if (await RemoteControl.IsRemoteControl(peripheral)) {
+        } else if (RemoteControl.IsRemoteControl(peripheral)) {
             hub = new RemoteControl(device);
-        } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
+        } else if (DuploTrainBase.IsDuploTrainBase(peripheral)) {
             hub = new DuploTrainBase(device);
-        } else if (await TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
+        } else if (TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
             hub = new TechnicMediumHub(device);
         } else {
             return;

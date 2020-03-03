@@ -36,13 +36,10 @@ export class DuploTrainBase extends LPF2Hub {
     }
 
 
-    public connect () {
-        return new Promise(async (resolve, reject) => {
-            debug("Connecting to Duplo Train Base");
-            await super.connect();
-            debug("Connect completed");
-            return resolve();
-        });
+    public async connect () {
+        debug("Connecting to Duplo Train Base");
+        await super.connect();
+        debug("Connect completed");
     }
 
 
