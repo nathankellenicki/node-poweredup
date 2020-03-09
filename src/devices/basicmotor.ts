@@ -28,10 +28,7 @@ export class BasicMotor extends Device {
         if (interrupt) {
             this.cancelEventTimer();
         }
-        return new Promise((resolve) => {
-            this.writeDirect(0x00, Buffer.from([mapSpeed(power)]));
-            return resolve();
-        });
+        return this.writeDirect(0x00, Buffer.from([mapSpeed(power)]));
     }
 
 

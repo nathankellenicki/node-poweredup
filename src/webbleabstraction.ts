@@ -58,7 +58,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public connect () {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this._connected = true;
             return resolve();
         });
@@ -66,29 +66,21 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public disconnect () {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this._webBLEServer.device.gatt.disconnect();
             return resolve();
         });
     }
 
 
-    public discoverCharacteristicsForService (uuid: string) {
-        return new Promise(async (discoverResolve, discoverReject) => {
-            debug("Service/characteristic discovery started");
-            let service;
-            try {
-                service = await this._webBLEServer.getPrimaryService(uuid);
-            } catch (err) {
-                return discoverReject(err);
-            }
-            const characteristics = await service.getCharacteristics();
-            for (const characteristic of characteristics) {
-                this._characteristics[characteristic.uuid] = characteristic;
-            }
-            debug("Service/characteristic discovery finished");
-            return discoverResolve();
-        });
+    public async discoverCharacteristicsForService (uuid: string) {
+        debug("Service/characteristic discovery started");
+        const service = await this._webBLEServer.getPrimaryService(uuid);
+        const characteristics = await service.getCharacteristics();
+        for (const characteristic of characteristics) {
+            this._characteristics[characteristic.uuid] = characteristic;
+        }
+        debug("Service/characteristic discovery finished");
     }
 
 
@@ -134,12 +126,8 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public writeToCharacteristic (uuid: string, data: Buffer, callback?: () => void) {
-        this._queue = this._queue.then(() => this._characteristics[uuid].writeValue(data)).then(() => {
-            if (callback) {
-                callback();
-            }
-        });
+    public writeToCharacteristic (uuid: string, data: Buffer) {
+        return this._queue = this._queue.then(() => this._characteristics[uuid].writeValue(data));
     }
 
 
