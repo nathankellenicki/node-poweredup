@@ -383,7 +383,7 @@ export class LPF2Hub extends BaseHub {
         const portId = message[3];
         const device = this._getDeviceByPortId(portId);
         const modeMask = message.readUInt16BE(4);
-        message = message.slice(5);
+        message = message.slice(6);
         if (device) {
             for (const mode of device.combinedModes.reverse()) {
                 const isIncluded = !!((modeMask >>> mode) & 1);
