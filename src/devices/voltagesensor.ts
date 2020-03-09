@@ -47,8 +47,10 @@ export class VoltageSensor extends Device {
                      */
                     this.notify("voltage", { voltage });
                 }
-                break;
+                return message.slice(2);
         }
+
+        return message;
     }
 
 }

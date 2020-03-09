@@ -43,7 +43,7 @@ public static ModeMap: {[event: string]: number} = {
                      */
                     this.notify("color", { color });
                 }
-                break;
+                return message.slice(1);
 
             case TechnicColorSensor.Mode.REFLECTIVITY:
                 const reflect = message[4];
@@ -55,7 +55,7 @@ public static ModeMap: {[event: string]: number} = {
                  * @param {number} reflect Percentage, from 0 to 100.
                  */
                 this.notify("reflect", { reflect });
-                break;
+                return message.slice(1);
 
             case TechnicColorSensor.Mode.AMBIENT_LIGHT:
                 const ambient = message[4];
@@ -67,8 +67,10 @@ public static ModeMap: {[event: string]: number} = {
                  * @param {number} ambient Percentage, from 0 to 100.
                  */
                 this.notify("ambient", { ambient });
-                break;
+                return message.slice(1);
         }
+
+        return message;
     }
 
 }

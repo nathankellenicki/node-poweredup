@@ -37,7 +37,7 @@ export class TechnicDistanceSensor extends Device {
                  * @param {number} distance Distance, from 40 to 2500mm
                  */
                 this.notify("distance", { distance });
-                break;
+                return message.slice(2);
 
             case TechnicDistanceSensor.Mode.FAST_DISTANCE:
                 const fastDistance = message.readUInt16LE(4);
@@ -49,8 +49,10 @@ export class TechnicDistanceSensor extends Device {
                  * @param {number} fastDistance Distance, from 50 to 320mm
                  */
                 this.notify("fastDistance", { fastDistance });
-                break;
+                return message.slice(2);
         }
+
+        return message;
     }
 
     /**

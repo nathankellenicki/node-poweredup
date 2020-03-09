@@ -388,7 +388,6 @@ export class LPF2Hub extends BaseHub {
             for (const mode of device.combinedModes.reverse()) {
                 const isIncluded = !!((modeMask >>> mode) & 1);
                 if (isIncluded) {
-                    // @ts-ignore
                     message = device.parse(mode, message);
                 }
             }

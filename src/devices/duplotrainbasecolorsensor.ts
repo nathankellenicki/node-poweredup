@@ -41,7 +41,7 @@ export class DuploTrainBaseColorSensor extends Device {
                      */
                     this.notify("color", { color });
                 }
-                break;
+                return message.slice(1);
 
             case DuploTrainBaseColorSensor.Mode.REFLECTIVITY:
                 const reflect = message[4];
@@ -72,6 +72,8 @@ export class DuploTrainBaseColorSensor extends Device {
                 break;
 
         }
+
+        return message;
     }
 
 }

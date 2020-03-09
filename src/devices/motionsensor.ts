@@ -38,8 +38,10 @@ export class MotionSensor extends Device {
                  * @param {number} distance Distance, in millimeters.
                  */
                 this.notify("distance", { distance });
-                break;
+                return message.slice(2);
         }
+
+        return message;
     }
 
 }

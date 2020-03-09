@@ -37,8 +37,10 @@ export class TiltSensor extends Device {
                  * @param {number} y
                  */
                 this.notify("tilt", { x, y });
-                break;
+                return message.slice(2);
         }
+
+        return message;
     }
 
 }
