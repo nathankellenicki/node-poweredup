@@ -61,9 +61,13 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public connect () {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             this._connecting = true;
             this._noblePeripheral.connect((err: string) => {
+                if(err) {
+                    return reject(err);
+                }
+
                 this._connecting = false;
                 this._connected = true;
                 return resolve();
@@ -73,7 +77,7 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public disconnect () {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             this._noblePeripheral.disconnect();
             return resolve();
         });
@@ -81,7 +85,7 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public discoverCharacteristicsForService (uuid: string) {
-        return new Promise(async (discoverResolve, discoverReject) => {
+        return new Promise<void>(async (discoverResolve, discoverReject) => {
             uuid = this._sanitizeUUID(uuid);
             this._noblePeripheral.discoverServices([uuid], (err: string, services: Service[]) => {
                 if (err) {
@@ -135,9 +139,17 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public writeToCharacteristic (uuid: string, data: Buffer, callback?: () => void) {
-        uuid = this._sanitizeUUID(uuid);
-        this._characteristics[uuid].write(data, false, callback);
+    public writeToCharacteristic (uuid: string, data: Buffer) {
+        return new Promise<void>((resolve, reject) => {
+            uuid = this._sanitizeUUID(uuid);
+            this._characteristics[uuid].write(data, false, (error) => {
+                if(error) {
+                    return reject(error);
+                }
+
+                return resolve();
+            });
+        })
     }
 
 

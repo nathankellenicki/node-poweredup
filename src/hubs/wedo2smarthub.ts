@@ -41,7 +41,7 @@ export class WeDo2SmartHub extends BaseHub {
 
 
     public connect () {
-        return new Promise(async (resolve, reject) => {
+        return new Promise<void>(async (resolve, reject) => {
             debug("Connecting to WeDo 2.0 Smart Hub");
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB);
@@ -99,11 +99,7 @@ export class WeDo2SmartHub extends BaseHub {
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public shutdown () {
-        return new Promise((resolve, reject) => {
-            this.send(Buffer.from([0x00]), Consts.BLECharacteristic.WEDO2_DISCONNECT, () => {
-                return resolve();
-            });
-        });
+        return this.send(Buffer.from([0x00]), Consts.BLECharacteristic.WEDO2_DISCONNECT);
     }
 
 
@@ -128,11 +124,11 @@ export class WeDo2SmartHub extends BaseHub {
     }
 
 
-    public send (message: Buffer, uuid: string, callback?: () => void) {
+    public send (message: Buffer, uuid: string) {
         if (debug.enabled) {
             debug(`Sent Message (${this._getCharacteristicNameFromUUID(uuid)})`, message);
         }
-        this._bleDevice.writeToCharacteristic(uuid, message, callback);
+        return this._bleDevice.writeToCharacteristic(uuid, message);
     }
 
     private _getCharacteristicNameFromUUID (uuid: string) {

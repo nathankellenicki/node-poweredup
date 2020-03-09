@@ -11,7 +11,8 @@ import * as Consts from "../consts";
 export class DuploTrainBaseSpeaker extends Device {
 
     public static Mode = {
-        SOUND: 0x01
+        SOUND: 0x01,
+        TONE: 0x02
     }
 
     constructor (hub: IHubInterface, portId: number) {
@@ -25,9 +26,23 @@ export class DuploTrainBaseSpeaker extends Device {
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public playSound (sound: Consts.DuploTrainBaseSound) {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             this.subscribeSingle(DuploTrainBaseSpeaker.Mode.SOUND);
             this.writeDirect(0x01, Buffer.from([sound]));
+            return resolve();
+        });
+    }
+
+    /**
+     * Play a built-in system tone.
+     * @method DuploTrainBaseSpeaker#playTone
+     * @param {number} tone
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public playTone (tone: number) {
+        return new Promise((resolve) => {
+            this.subscribeSingle(DuploTrainBaseSpeaker.Mode.TONE);
+            this.writeDirect(0x02, Buffer.from([tone]));
             return resolve();
         });
     }

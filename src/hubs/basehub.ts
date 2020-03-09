@@ -165,16 +165,12 @@ export class BaseHub extends EventEmitter {
      * @returns {Promise} Resolved upon successful connect.
      */
     public connect () {
-        return new Promise(async (connectResolve, connectReject) => {
-            if (this._bleDevice.connecting) {
-                return connectReject("Already connecting");
-            } else if (this._bleDevice.connected) {
-                return connectReject("Already connected");
-            }
-            await this._bleDevice.connect();
-            return connectResolve();
-        });
-
+        if (this._bleDevice.connecting) {
+            throw new Error("Already connecting");
+        } else if (this._bleDevice.connected) {
+            throw new Error("Already connected");
+        }
+        return this._bleDevice.connect();
     }
 
 
@@ -320,10 +316,8 @@ export class BaseHub extends EventEmitter {
     }
 
 
-    public send (message: Buffer, uuid: string, callback?: () => void) {
-        if (callback) {
-            callback();
-        }
+    public send (message: Buffer, uuid: string) {
+        return Promise.resolve();
     }
 
     protected _attachDevice (device: Device) {

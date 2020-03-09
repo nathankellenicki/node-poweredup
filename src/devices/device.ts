@@ -145,17 +145,17 @@ export class Device extends EventEmitter {
         return this._isVirtualPort;
     }
 
-    public writeDirect (mode: number, data: Buffer, callback?: () => void) {
+    public writeDirect (mode: number, data: Buffer) {
         if (this.isWeDo2SmartHub) {
-            this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+            return this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
         } else {
-            this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL, callback);
+            return this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL);
         }
     }
 
-    public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
+    public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL) {
         this._ensureConnected();
-        this.hub.send(data, characteristic, callback);
+        return this.hub.send(data, characteristic);
     }
 
     public subscribeMulti (mode: number) {
