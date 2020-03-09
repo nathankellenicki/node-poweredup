@@ -15,6 +15,10 @@ export class TachoMotor extends BasicMotor {
         ROTATION: 0x02
     }
 
+    public static DataSets = {
+        [TachoMotor.Mode.ROTATION]: 1
+    }
+
     public static ModeMap: {[event: string]: number} = {
         "rotate": TachoMotor.Mode.ROTATION
     };
@@ -29,7 +33,8 @@ export class TachoMotor extends BasicMotor {
         dataSets: {[mode: number]: number} = {},
         type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
     ) {
-        super(hub, portId, Object.assign({}, modeMap, TachoMotor.ModeMap), Object.assign({}, dataSets, {}), type);
+        super(hub, portId, Object.assign({}, modeMap, TachoMotor.ModeMap), Object.assign({}, dataSets, TachoMotor.DataSets), type);
+        this._supportsCombined = true;
     }
 
     public parse (mode: number, message: Buffer) {

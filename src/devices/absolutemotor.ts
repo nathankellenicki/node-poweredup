@@ -16,6 +16,11 @@ export class AbsoluteMotor extends TachoMotor {
         ABSOLUTE: 0x03
     }
 
+    public static DataSets = {
+        [AbsoluteMotor.Mode.ROTATION]: 1,
+        [AbsoluteMotor.Mode.ABSOLUTE]: 1
+    }
+
     public static ModeMap: {[event: string]: number} = {
         "rotate": AbsoluteMotor.Mode.ROTATION,
         "absolute": AbsoluteMotor.Mode.ABSOLUTE
@@ -28,7 +33,8 @@ export class AbsoluteMotor extends TachoMotor {
         dataSets: {[mode: number]: number} = {},
         type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
     ) {
-        super(hub, portId, Object.assign({}, modeMap, AbsoluteMotor.ModeMap), Object.assign({}, dataSets, {}), type);
+        super(hub, portId, Object.assign({}, modeMap, AbsoluteMotor.ModeMap), Object.assign({}, dataSets, AbsoluteMotor.DataSets), type);
+        this._supportsCombined = true;
     }
 
     public parse (mode: number, message: Buffer) {
