@@ -79,11 +79,92 @@ export class ColorDistanceSensor extends Device {
         }
     }
 
+
+    /**
+     * Set the power of a Power Functions motor via IR
+     * @method ColorDistanceSensor#sendPFIRMessage
+     * @param {number} channel Channel number, between 1-4
+     * @param {string} output Outport port, "RED" (A) or "BLUE" (B)
+     * @param {number} power -7 (full reverse) to 7 (full forward). 0 is stop. 8 is brake.
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public setPFPower (channel: number, output: string, power: number) {
+        const message = Buffer.alloc(2);
+        // Send "Single output mode"
+        message[0] = ((channel - 1) << 4) + (output === "RED" ? 4 : 5);
+        message[1] = this._pfPowerToPWM(power) << 4;
+        this.sendPFIRMessage(message);
+    }
+
+
+    /**
+     * Start Power Functions motors running via IR
+     *
+     * NOTE: This command is designed for bang-bang style operation. To keep the motors running, the sensor needs to be within range of the IR receiver constantly.
+     * @method ColorDistanceSensor#sendPFIRMessage
+     * @param {Buffer} channel Channel number, between 1-4
+     * @param {Buffer} powerA -7 (full reverse) to 7 (full forward). 0 is stop. 8 is brake.
+     * @param {Buffer} powerB -7 (full reverse) to 7 (full forward). 0 is stop. 8 is brake.
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public startPFMotors (channel: number, powerA: number, powerB: number) {
+        const message = Buffer.alloc(2);
+        // Send "Combo PWD mode"
+        message[0] = (((channel - 1) + 4) << 4) + this._pfPowerToPWM(powerA);
+        message[1] += this._pfPowerToPWM(powerB) << 4;
+        this.sendPFIRMessage(message);
+    }
+
+
+    /**
+     * Send a raw Power Functions IR command
+     * @method ColorDistanceSensor#sendPFIRMessage
+     * @param {Buffer} message 2 byte payload making up a Power Functions protocol command. NOTE: Only specify nibbles 1-3, nibble 4 should be zeroed.
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public sendPFIRMessage (message: Buffer) {
+        const payload = Buffer.alloc(2);
+        payload[0] = (message[0] << 4) + (message[1] >> 4);
+        payload[1] = message[0] >> 4;
+        this.subscribe(Mode.PF_IR);
+        this.writeDirect(0x07, payload);
+    }
+
+
+    /**
+     * Set the color of the LED on the sensor via a color value.
+     * @method ColorDistanceSensor#setColor
+     * @param {Color} color
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public setColor (color: number | boolean) {
+        return new Promise((resolve, reject) => {
+            if (typeof color === "boolean") {
+                color = 0;
+            }
+            if (this.isWeDo2SmartHub) {
+                throw new Error("Setting LED color is not available on the WeDo 2.0 Smart Hub");
+            } else {
+                this.subscribe(Mode.LED);
+                this.writeDirect(0x05, Buffer.from([color]));
+            }
+            return resolve();
+        });
+    }
+
+
+    private _pfPowerToPWM (power: number) {
+        return (power < 0 ? 16 + power : power);
+    }
+
+
 }
 
 export enum Mode {
     COLOR = 0x00,
     DISTANCE = 0x01,
+    LED = 0x05,
+    PF_IR = 0x07,
     COLOR_AND_DISTANCE = 0x08
 }
 
