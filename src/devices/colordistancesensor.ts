@@ -192,7 +192,7 @@ export class ColorDistanceSensor extends Device {
 
 
     private _pfPowerToPWM (power: number) {
-        return (power < 0 ? 16 + power : power);
+        return power & 15;
     }
 
 
