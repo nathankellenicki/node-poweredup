@@ -97,7 +97,7 @@ export class ColorDistanceSensor extends Device {
             address = 1;
         }
         const message = Buffer.alloc(2);
-        // Send "Single output mode"
+        // Send "Extended toggle address command"
         message[0] = ((channel - 1) << 4) + (address << 3);
         message[1] = 6;
         return this.sendPFIRMessage(message);
