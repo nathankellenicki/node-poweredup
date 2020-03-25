@@ -112,7 +112,7 @@ export class ColorDistanceSensor extends Device {
      * @param {number} power -7 (full reverse) to 7 (full forward). 0 is stop. 8 is brake.
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
-    public setPFPower (channel: number, output: string, power: number) {
+    public setPFPower (channel: number, output: "RED" | "BLUE", power: number) {
         let address = 0;
         if (channel > 4) {
             channel -= 4;
