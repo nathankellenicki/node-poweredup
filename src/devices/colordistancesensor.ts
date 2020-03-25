@@ -145,7 +145,7 @@ export class ColorDistanceSensor extends Device {
         const message = Buffer.alloc(2);
         // Send "Combo PWD mode"
         message[0] = (((channel - 1) + 4 + (address << 3)) << 4) + this._pfPowerToPWM(powerA);
-        message[1] += this._pfPowerToPWM(powerB) << 4;
+        message[1] = this._pfPowerToPWM(powerB) << 4;
         return this.sendPFIRMessage(message);
     }
 
