@@ -10,8 +10,6 @@ import * as Consts from "../consts";
  */
 export class ColorDistanceSensor extends Device {
 
-    private _pfToggleBit = 0;
-
     constructor (hub: IDeviceInterface, portId: number) {
         super(hub, portId, ModeMap, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
     }
@@ -99,7 +97,7 @@ export class ColorDistanceSensor extends Device {
         const message = Buffer.alloc(2);
         // Send "Extended toggle address command"
         message[0] = ((channel - 1) << 4) + (address << 3);
-        message[1] = 6;
+        message[1] = 6 << 4;
         return this.sendPFIRMessage(message);
     }
 
@@ -112,7 +110,7 @@ export class ColorDistanceSensor extends Device {
      * @param {number} power -7 (full reverse) to 7 (full forward). 0 is stop. 8 is brake.
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
-    public setPFPower (channel: number, output: "RED" | "BLUE", power: number) {
+    public setPFPower (channel: number, output: Output, power: number) {
         let address = 0;
         if (channel > 4) {
             channel -= 4;
@@ -136,7 +134,7 @@ export class ColorDistanceSensor extends Device {
      * @param {Buffer} powerB -7 (full reverse) to 7 (full forward). 0 is stop. 8 is brake.
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
-    public startPFMotors (channel: number, powerA: number, powerB: number) {
+    public startPFMotors (channel: number, powerBlue: number, powerRed: number) {
         let address = 0;
         if (channel > 4) {
             channel -= 4;
@@ -144,8 +142,8 @@ export class ColorDistanceSensor extends Device {
         }
         const message = Buffer.alloc(2);
         // Send "Combo PWM mode"
-        message[0] = (((channel - 1) + 4 + (address << 3)) << 4) + this._pfPowerToPWM(powerA);
-        message[1] = this._pfPowerToPWM(powerB) << 4;
+        message[0] = (((channel - 1) + 4 + (address << 3)) << 4) + this._pfPowerToPWM(powerBlue);
+        message[1] = this._pfPowerToPWM(powerRed) << 4;
         return this.sendPFIRMessage(message);
     }
 
@@ -211,3 +209,8 @@ export const ModeMap: {[event: string]: number} = {
     "distance": Mode.DISTANCE,
     "colorAndDistance": Mode.COLOR_AND_DISTANCE
 };
+
+export enum Output {
+    RED = "RED",
+    BLUE = "BLUE"
+}
