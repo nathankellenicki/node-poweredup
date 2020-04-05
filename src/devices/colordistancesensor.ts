@@ -175,7 +175,7 @@ export class ColorDistanceSensor extends Device {
      */
     public setColor (color: number | boolean) {
         return new Promise((resolve, reject) => {
-            if (typeof color === "boolean") {
+            if (color === false) {
                 color = 0;
             }
             if (this.isWeDo2SmartHub) {
