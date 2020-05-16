@@ -206,3 +206,432 @@ export enum BLECharacteristic {
     WEDO2_NAME_ID = "00001524-1212-efde-1523-785feabcd123", // "1524"
     LPF2_ALL = "00001624-1212-efde-1623-785feabcd123"
 }
+
+
+/**
+ * @typedef MessageTypes
+ * @property {number} HUB_PROPERTIES 0x01
+ * @property {number} HUB_ACTIONS 0x02
+ * @property {number} HUB_ALERTS 0x03
+ * @property {number} HUB_ATTACHED_IO 0x04
+ * @property {number} GENERIC_ERROR_MESSAGES 0x05
+ * @property {number} HW_NETWORK_COMMANDS 0x08
+ * @property {number} FW_UPDATE_GO_INTO_BOOT_MODE 0x10
+ * @property {number} FW_UPDATE_LOCK_MEMORY 0x11
+ * @property {number} FW_UPDATE_LOCK_STATUS_REQUEST 0x12
+ * @property {number} FW_LOCK_STATUS 0x13
+ * @property {number} PORT_INFORMATION_REQUEST 0X21
+ * @property {number} PORT_MODE_INFORMATION_REQUEST 0X22
+ * @property {number} PORT_INPUT_FORMAT_SETUP_SINGLE 0X41
+ * @property {number} PORT_INPUT_FORMAT_SETUP_COMBINEDMODE 0X42
+ * @property {number} PORT_INFORMATION 0X43
+ * @property {number} PORT_MODE_INFORMATION 0X44
+ * @property {number} PORT_VALUE_SINGLE 0X45
+ * @property {number} PORT_VALUE_COMBINEDMODE 0X46
+ * @property {number} PORT_INPUT_FORMAT_SINGLE 0X47
+ * @property {number} PORT_INPUT_FORMAT_COMBINEDMODE 0X48
+ * @property {number} VIRTUAL_PORT_SETUP 0X61
+ * @property {number} PORT_OUTPUT_COMMAND 0X81
+ * @property {number} PORT_OUTPUT_COMMAND_FEEDBACK 0X82
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#message-types
+ */
+export enum MessageTypes {
+    HUB_PROPERTIES = 0x01,
+    HUB_ACTIONS = 0x02,
+    HUB_ALERTS = 0x03,
+    HUB_ATTACHED_IO = 0x04,
+    GENERIC_ERROR_MESSAGES = 0x05,
+    HW_NETWORK_COMMANDS = 0x08,
+    FW_UPDATE_GO_INTO_BOOT_MODE = 0x10,
+    FW_UPDATE_LOCK_MEMORY = 0x11,
+    FW_UPDATE_LOCK_STATUS_REQUEST = 0x12,
+    FW_LOCK_STATUS = 0x13,
+    PORT_INFORMATION_REQUEST = 0X21,
+    PORT_MODE_INFORMATION_REQUEST = 0X22,
+    PORT_INPUT_FORMAT_SETUP_SINGLE = 0X41,
+    PORT_INPUT_FORMAT_SETUP_COMBINEDMODE = 0X42,
+    PORT_INFORMATION = 0X43,
+    PORT_MODE_INFORMATION = 0X44,
+    PORT_VALUE_SINGLE = 0X45,
+    PORT_VALUE_COMBINEDMODE = 0X46,
+    PORT_INPUT_FORMAT_SINGLE = 0X47,
+    PORT_INPUT_FORMAT_COMBINEDMODE = 0X48,
+    VIRTUAL_PORT_SETUP = 0X61,
+    PORT_OUTPUT_COMMAND = 0X81,
+    PORT_OUTPUT_COMMAND_FEEDBACK = 0X82,
+}
+
+
+/**
+ * @typedef HubPropertyReference
+ * @param {number} ADVERTISING_NAME 0x01
+ * @param {number} BUTTON 0x02
+ * @param {number} FW_VERSION 0x03
+ * @param {number} HW_VERSION 0x04
+ * @param {number} RSSI 0x05
+ * @param {number} BATTERY_VOLTAGE 0x06
+ * @param {number} BATTERY_TYPE 0x07
+ * @param {number} MANUFACTURER_NAME 0x08
+ * @param {number} RADIO_FIRMWARE_VERSION 0x09
+ * @param {number} LEGO_WIRELESS_PROTOCOL_VERSION 0x0A
+ * @param {number} SYSTEM_TYPE_ID 0x0B
+ * @param {number} HW_NETWORK_ID 0x0C
+ * @param {number} PRIMARY_MAC_ADDRESS 0x0D
+ * @param {number} SECONDARY_MAC_ADDRESS 0x0E
+ * @param {number} HARDWARE_NETWORK_FAMILY 0x0F
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
+ */
+export enum HubPropertyReference {
+    ADVERTISING_NAME = 0x01,
+    BUTTON = 0x02,
+    FW_VERSION = 0x03,
+    HW_VERSION = 0x04,
+    RSSI = 0x05,
+    BATTERY_VOLTAGE = 0x06,
+    BATTERY_TYPE = 0x07,
+    MANUFACTURER_NAME = 0x08,
+    RADIO_FIRMWARE_VERSION = 0x09,
+    LEGO_WIRELESS_PROTOCOL_VERSION = 0x0A,
+    SYSTEM_TYPE_ID = 0x0B,
+    HW_NETWORK_ID = 0x0C,
+    PRIMARY_MAC_ADDRESS = 0x0D,
+    SECONDARY_MAC_ADDRESS = 0x0E,
+    HARDWARE_NETWORK_FAMILY = 0x0F,
+}
+
+
+/**
+ * @typedef HubPropertyOperation
+ * @param {number} SET_DOWNSTREAM 0x01
+ * @param {number} ENABLE_UPDATES_DOWNSTREAM 0x02
+ * @param {number} DISABLE_UPDATES_DOWNSTREAM 0x03
+ * @param {number} RESET_DOWNSTREAM 0x04
+ * @param {number} REQUEST_UPDATE_DOWNSTREAM 0x05
+ * @param {number} UPDATE_UPSTREAM 0x06
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
+ */
+export enum HubPropertyOperation {
+    SET_DOWNSTREAM = 0x01,
+    ENABLE_UPDATES_DOWNSTREAM = 0x02,
+    DISABLE_UPDATES_DOWNSTREAM = 0x03,
+    RESET_DOWNSTREAM = 0x04,
+    REQUEST_UPDATE_DOWNSTREAM = 0x05,
+    UPDATE_UPSTREAM = 0x06,
+}
+
+
+/**
+ * @typedef HubPropertyPayload
+ * @param {number} ADVERTISING_NAME 0x01
+ * @param {number} BUTTON_STATE 0x02
+ * @param {number} FW_VERSION 0x03
+ * @param {number} HW_VERSION 0x04
+ * @param {number} RSSI 0x05
+ * @param {number} BATTERY_VOLTAGE 0x06
+ * @param {number} BATTERY_TYPE 0x07
+ * @param {number} MANUFACTURER_NAME 0x08
+ * @param {number} RADIO_FIRMWARE_VERSION 0x09
+ * @param {number} LWP_PROTOCOL_VERSION 0x0A
+ * @param {number} SYSTEM_TYPE_ID 0x0B
+ * @param {number} HW_NETWORK_ID 0x0C
+ * @param {number} PRIMARY_MAC_ADDRESS 0x0D
+ * @param {number} SECONDARY_MAC_ADDRESS 0x0E
+ * @param {number} HW_NETWORK_FAMILY 0x0F
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
+ */
+export enum HubPropertyPayload {
+    ADVERTISING_NAME = 0x01,
+    BUTTON_STATE = 0x02,
+    FW_VERSION = 0x03,
+    HW_VERSION = 0x04,
+    RSSI = 0x05,
+    BATTERY_VOLTAGE = 0x06,
+    BATTERY_TYPE = 0x07,
+    MANUFACTURER_NAME = 0x08,
+    RADIO_FIRMWARE_VERSION = 0x09,
+    LWP_PROTOCOL_VERSION = 0x0A,
+    SYSTEM_TYPE_ID = 0x0B,
+    HW_NETWORK_ID = 0x0C,
+    PRIMARY_MAC_ADDRESS = 0x0D,
+    SECONDARY_MAC_ADDRESS = 0x0E,
+    HW_NETWORK_FAMILY = 0x0F,
+}
+
+
+/**
+ * @typedef ActionTypes
+ * @param {number} SWITCH_OFF_HUB 0x01
+ * @param {number} DISCONNECT 0x02
+ * @param {number} VCC_PORT_CONTROL_ON 0x03
+ * @param {number} VCC_PORT_CONTROL_OFF 0x04
+ * @param {number} ACTIVATE_BUSY_INDICATION 0x05
+ * @param {number} RESET_BUSY_INDICATION 0x06
+ * @param {number} SHUTDOWN 0X2F
+ * @param {number} HUB_WILL_SWITCH_OFF 0x30
+ * @param {number} HUB_WILL_DISCONNECT 0x31
+ * @param {number} HUB_WILL_GO_INTO_BOOT_MODE 0x32
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#action-types
+ */
+export enum ActionTypes {
+    SWITCH_OFF_HUB = 0x01,
+    DISCONNECT = 0x02,
+    VCC_PORT_CONTROL_ON = 0x03,
+    VCC_PORT_CONTROL_OFF = 0x04,
+    ACTIVATE_BUSY_INDICATION = 0x05,
+    RESET_BUSY_INDICATION = 0x06,
+    SHUTDOWN = 0X2F,
+    HUB_WILL_SWITCH_OFF = 0x30,
+    HUB_WILL_DISCONNECT = 0x31,
+    HUB_WILL_GO_INTO_BOOT_MODE = 0x32,
+}
+
+
+/**
+ * @typedef AlertType
+ * @param {number} LOW_VOLTAGE 0x01
+ * @param {number} HIGH_CURRENT 0x02
+ * @param {number} LOW_SIGNAL_STRENGTH 0x03
+ * @param {number} OVER_POWER_CONDITION 0x04
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-type
+ */
+export enum AlertType {
+    LOW_VOLTAGE = 0x01,
+    HIGH_CURRENT = 0x02,
+    LOW_SIGNAL_STRENGTH = 0x03,
+    OVER_POWER_CONDITION = 0x04,
+}
+
+
+/**
+ * @typedef AlertOperation
+ * @param {number} ENABLE_UPDATE 0x01
+ * @param {number} DISABLE_UPDATE 0x02
+ * @param {number} REQUEST_UPDATE 0x03
+ * @param {number} UPDATE 0x04
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-operation
+ */
+export enum AlertOperation {
+    LOW_VOLTAGE = 0x01,
+    HIGH_CURRENT = 0x02,
+    LOW_SIGNAL_STRENGTH = 0x03,
+    OVER_POWER_CONDITION = 0x04,
+}
+
+
+/**
+ * @typedef AlertPayload
+ * @param {number} STATUS_OK 0x00
+ * @param {number} ALERT 0xFF
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-payload
+ */
+export enum AlertPayload {
+    STATUS_OK = 0x00,
+    ALERT = 0xFF,
+}
+
+
+/**
+ * @typedef Event
+ * @param {number} DETACHED_IO 0x00
+ * @param {number} ATTACHED_IO 0x01
+ * @param {number} ATTACHED_VIRTUAL_IO 0x02
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#event
+ */
+export enum AlertPayload {
+    DETACHED_IO = 0x00,
+    ATTACHED_IO = 0x01,
+    ATTACHED_VIRTUAL_IO = 0x02,
+}
+
+
+/**
+ * @typedef IOTypeID
+ * @param {number} MOTOR 0x0001
+ * @param {number} SYSTEM_TRAIN_MOTOR 0x0002
+ * @param {number} BUTTON 0x0005
+ * @param {number} LED_LIGHT 0x0008
+ * @param {number} VOLTAGE 0x0014
+ * @param {number} CURRENT 0x0015
+ * @param {number} PIEZO_TONE_SOUND 0x0016
+ * @param {number} RGB_LIGHT 0x0017
+ * @param {number} EXTERNAL_TILT_SENSOR 0x0022
+ * @param {number} MOTION_SENSOR 0x0023
+ * @param {number} VISION_SENSOR 0x0025
+ * @param {number} EXTERNAL_MOTOR 0x0026
+ * @param {number} INTERNAL_MOTOR 0x0027
+ * @param {number} INTERNAL_TILT 0x0028
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#io-type-id
+ */
+export enum IOTypeID {
+    MOTOR = 0x0001,
+    SYSTEM_TRAIN_MOTOR = 0x0002,
+    BUTTON = 0x0005,
+    LED_LIGHT = 0x0008,
+    VOLTAGE = 0x0014,
+    CURRENT = 0x0015,
+    PIEZO_TONE_SOUND = 0x0016,
+    RGB_LIGHT = 0x0017,
+    EXTERNAL_TILT_SENSOR = 0x0022,
+    MOTION_SENSOR = 0x0023,
+    VISION_SENSOR = 0x0025,
+    EXTERNAL_MOTOR = 0x0026,
+    INTERNAL_MOTOR = 0x0027,
+    INTERNAL_TILT = 0x0028,
+}
+
+
+/**
+ * @typedef ErrorCode
+ * @param {number} ACK 0x01
+ * @param {number} MACK 0x02
+ * @param {number} BUFFER_OVERFLOW 0x03
+ * @param {number} TIMEOUT 0x04
+ * @param {number} COMMAND_NOT_RECOGNIZED 0x05
+ * @param {number} INVALID_USE 0x06
+ * @param {number} OVERCURRENT 0x07
+ * @param {number} INTERNAL_ERROR 0x08
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#error-codes
+ */
+export enum ErrorCode {
+    ACK = 0x01,
+    MACK = 0x02,
+    BUFFER_OVERFLOW = 0x03,
+    TIMEOUT = 0x04,
+    COMMAND_NOT_RECOGNIZED = 0x05,
+    INVALID_USE = 0x06,
+    OVERCURRENT = 0x07,
+    INTERNAL_ERROR = 0x08,
+}
+
+
+/**
+ * @typedef HWNetWorkCommandType
+ * @param {number} CONNECTION_REQUEST 0x02
+ * @param {number} FAMILY_REQUEST 0x03
+ * @param {number} FAMILY_SET 0x04
+ * @param {number} JOIN_DENIED 0x05
+ * @param {number} GET_FAMILY 0x06
+ * @param {number} FAMILY 0x07
+ * @param {number} GET_SUBFAMILY 0x08
+ * @param {number} SUBFAMILY 0x09
+ * @param {number} SUBFAMILY_SET 0x0A
+ * @param {number} GET_EXTENDED_FAMILY 0x0B
+ * @param {number} EXTENDED_FAMILY 0x0C
+ * @param {number} EXTENDED_FAMILY_SET 0x0D
+ * @param {number} RESET_LONG_PRESS_TIMING 0x0E
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-command-type
+ */
+export enum HWNetWorkCommandType {
+    CONNECTION_REQUEST = 0x02,
+    FAMILY_REQUEST = 0x03,
+    FAMILY_SET = 0x04,
+    JOIN_DENIED = 0x05,
+    GET_FAMILY = 0x06,
+    FAMILY = 0x07,
+    GET_SUBFAMILY = 0x08,
+    SUBFAMILY = 0x09,
+    SUBFAMILY_SET = 0x0A,
+    GET_EXTENDED_FAMILY = 0x0B,
+    EXTENDED_FAMILY = 0x0C,
+    EXTENDED_FAMILY_SET = 0x0D,
+    RESET_LONG_PRESS_TIMING = 0x0E,
+}
+
+
+/**
+ * @typedef HWNetworkFamily
+ * @param {number} GREEN 0x01
+ * @param {number} YELLOW 0x02
+ * @param {number} RED 0x03
+ * @param {number} BLUE 0x04
+ * @param {number} PURPLE 0x05
+ * @param {number} LIGHT_BLUE 0x06
+ * @param {number} TEAL 0x07
+ * @param {number} PINK 0x08
+ * @param {number} WHITE 0x00
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-family
+ */
+export enum HWNetworkFamily {
+    GREEN = 0x01,
+    YELLOW = 0x02,
+    RED = 0x03,
+    BLUE = 0x04,
+    PURPLE = 0x05,
+    LIGHT_BLUE = 0x06,
+    TEAL = 0x07,
+    PINK = 0x08,
+    WHITE = 0x00,
+}
+
+
+/**
+ * @typedef HWNetworkSubFamily
+ * @param {number} ONE_FLASH 0x01
+ * @param {number} TWO_FLASHES 0x02
+ * @param {number} THREE_FLASHES 0x03
+ * @param {number} FOUR_FLASHES 0x04
+ * @param {number} FIVE_FLASHES 0x05
+ * @param {number} SIX_FLASHES 0x06
+ * @param {number} SEVEN_FLASHES 0x07
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-sub-family
+ */
+export enum HWNetworkSubFamily {
+    ONE_FLASH = 0x01,
+    TWO_FLASHES = 0x02,
+    THREE_FLASHES = 0x03,
+    FOUR_FLASHES = 0x04,
+    FIVE_FLASHES = 0x05,
+    SIX_FLASHES = 0x06,
+    SEVEN_FLASHES = 0x07,
+}
+
+
+/**
+ * @typedef ModeInformationTypes
+ * @param {number} NAME 0x00
+ * @param {number} RAW 0x01
+ * @param {number} PCT 0x02
+ * @param {number} SI 0x03
+ * @param {number} SYMBOL 0x04
+ * @param {number} MAPPING 0x05
+ * @param {number} USED_INTERNALLY 0x06
+ * @param {number} MOTOR_BIAS 0x07
+ * @param {number} CAPABILITY_BITS 0x08
+ * @param {number} VALUE_FORMAT 0x80
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#mode-information-types
+ */
+export enum ModeInformationTypes {
+    NAME = 0x00,
+    RAW = 0x01,
+    PCT = 0x02,
+    SI = 0x03,
+    SYMBOL = 0x04,
+    MAPPING = 0x05,
+    USED_INTERNALLY = 0x06,
+    MOTOR_BIAS = 0x07,
+    CAPABILITY_BITS = 0x08,
+    VALUE_FORMAT = 0x80,
+}
+
+
+/**
+ * @typedef PortInputFormatSetupSubCommand
+ * @param {number} SET_MODEANDDATASET_COMBINATIONS 0x01
+ * @param {number} LOCK_LPF2_DEVICE_FOR_SETUP 0x02
+ * @param {number} UNLOCKANDSTARTWITHMULTIUPDATEENABLED 0x03
+ * @param {number} UNLOCKANDSTARTWITHMULTIUPDATEDISABLED 0x04
+ * @param {number} NOT_USED 0x05
+ * @param {number} RESET_SENSOR 0x06
+ * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#port-input-format-setup-sub-commands
+ */
+export enum PortInputFormatSetupSubCommand {
+    SET_MODEANDDATASET_COMBINATIONS = 0x01,
+    LOCK_LPF2_DEVICE_FOR_SETUP = 0x02,
+    UNLOCKANDSTARTWITHMULTIUPDATEENABLED = 0x03,
+    UNLOCKANDSTARTWITHMULTIUPDATEDISABLED = 0x04,
+    NOT_USED = 0x05,
+    RESET_SENSOR = 0x06,
+}
+
+
+
