@@ -209,7 +209,7 @@ export enum BLECharacteristic {
 
 
 /**
- * @typedef MessageTypes
+ * @typedef MessageType
  * @property {number} HUB_PROPERTIES 0x01
  * @property {number} HUB_ACTIONS 0x02
  * @property {number} HUB_ALERTS 0x03
@@ -235,7 +235,7 @@ export enum BLECharacteristic {
  * @property {number} PORT_OUTPUT_COMMAND_FEEDBACK 0x82
  * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#message-types
  */
-export enum MessageTypes {
+export enum MessageType {
     HUB_PROPERTIES = 0x01,
     HUB_ACTIONS = 0x02,
     HUB_ALERTS = 0x03,
@@ -359,7 +359,7 @@ export enum HubPropertyPayload {
 
 
 /**
- * @typedef ActionTypes
+ * @typedef ActionType
  * @param {number} SWITCH_OFF_HUB 0x01
  * @param {number} DISCONNECT 0x02
  * @param {number} VCC_PORT_CONTROL_ON 0x03
@@ -372,7 +372,7 @@ export enum HubPropertyPayload {
  * @param {number} HUB_WILL_GO_INTO_BOOT_MODE 0x32
  * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#action-types
  */
-export enum ActionTypes {
+export enum ActionType {
     SWITCH_OFF_HUB = 0x01,
     DISCONNECT = 0x02,
     VCC_PORT_CONTROL_ON = 0x03,
@@ -587,7 +587,7 @@ export enum HWNetworkSubFamily {
 
 
 /**
- * @typedef ModeInformationTypes
+ * @typedef ModeInformationType
  * @param {number} NAME 0x00
  * @param {number} RAW 0x01
  * @param {number} PCT 0x02
@@ -600,7 +600,7 @@ export enum HWNetworkSubFamily {
  * @param {number} VALUE_FORMAT 0x80
  * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#mode-information-types
  */
-export enum ModeInformationTypes {
+export enum ModeInformationType {
     NAME = 0x00,
     RAW = 0x01,
     PCT = 0x02,
