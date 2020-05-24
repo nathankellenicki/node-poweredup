@@ -57,11 +57,11 @@ export class AbsoluteMotor extends TachoMotor {
             }
             let message;
             if (angle instanceof Array) {
-                message = Buffer.from([0x81, this.portId, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, 0x00]);
+                message = Buffer.from([0x81, this.portId, 0x11, 0x0e, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, this.useProfile()]);
                 message.writeInt32LE(normalizeAngle(angle[0]), 4);
                 message.writeInt32LE(normalizeAngle(angle[1]), 8);
             } else {
-                message = Buffer.from([0x81, this.portId, 0x11, 0x0d, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, 0x00]);
+                message = Buffer.from([0x81, this.portId, 0x11, 0x0d, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, this.useProfile()]);
                 message.writeInt32LE(normalizeAngle(angle), 4);
             }
             this.send(message);

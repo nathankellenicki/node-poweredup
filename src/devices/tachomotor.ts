@@ -12,6 +12,8 @@ import { mapSpeed } from "../utils";
 export class TachoMotor extends BasicMotor {
 
     protected _brakeStyle: Consts.BrakingStyle = Consts.BrakingStyle.BRAKE;
+    public useAccelerationProfile: boolean = true;
+    public useDecelerationProfile: boolean = true;
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super(hub, portId, Object.assign({}, modeMap, ModeMap), type);
@@ -46,6 +48,19 @@ export class TachoMotor extends BasicMotor {
         this._brakeStyle = style;
     }
 
+    public setAccelerationTime (time: number, profile: number = 0x00) {
+        const message = Buffer.from([0x81, this.portId, 0x11, 0x05, 0x00, 0x00, profile]);
+        message.writeUInt16LE(time, 4);
+        this.send(message);
+    }
+
+
+    public setDecelerationTime (time: number, profile: number = 0x00) {
+        const message = Buffer.from([0x81, this.portId, 0x11, 0x06, 0x00, 0x00, profile]);
+        message.writeUInt16LE(time, 4);
+        this.send(message);
+    }
+
 
     /**
      * Set the motor speed.
@@ -69,16 +84,16 @@ export class TachoMotor extends BasicMotor {
             let message;
             if (time !== undefined) {
                 if (speed instanceof Array) {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x0a, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), 0x64, this._brakeStyle, 0x00]);
+                    message = Buffer.from([0x81, this.portId, 0x11, 0x0a, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), 0x64, this._brakeStyle, this.useProfile()]);
                 } else {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x09, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, 0x00]);
+                    message = Buffer.from([0x81, this.portId, 0x11, 0x09, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, this.useProfile()]);
                 }
                 message.writeUInt16LE(time, 4);
             } else {
                 if (speed instanceof Array) {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x08, mapSpeed(speed[0]), mapSpeed(speed[1]), 0x64, this._brakeStyle, 0x00]);
+                    message = Buffer.from([0x81, this.portId, 0x11, 0x08, mapSpeed(speed[0]), mapSpeed(speed[1]), 0x64, this.useProfile()]);
                 } else {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x07, mapSpeed(speed), 0x64, 0x03, 0x64, this._brakeStyle, 0x00]);
+                    message = Buffer.from([0x81, this.portId, 0x11, 0x07, mapSpeed(speed), 0x64, this.useProfile()]);
                 }
             }
             this.send(message);
@@ -110,9 +125,9 @@ export class TachoMotor extends BasicMotor {
             }
             let message;
             if (speed instanceof Array) {
-                message = Buffer.from([0x81, this.portId, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), 0x64, this._brakeStyle, 0x03]);
+                message = Buffer.from([0x81, this.portId, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), 0x64, this._brakeStyle, this.useProfile()]);
             } else {
-                message = Buffer.from([0x81, this.portId, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, 0x03]);
+                message = Buffer.from([0x81, this.portId, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), 0x64, this._brakeStyle, this.useProfile()]);
             }
             message.writeUInt32LE(degrees, 4);
             this.send(message);
@@ -121,6 +136,19 @@ export class TachoMotor extends BasicMotor {
             };
         });
     }
+
+
+    protected useProfile () {
+        let value = 0x00;
+        if (this.useAccelerationProfile) {
+            value += 0x01;
+        }
+        if (this.useDecelerationProfile) {
+            value += 0x02;
+        }
+        return value;
+    }
+
 
 }
 
