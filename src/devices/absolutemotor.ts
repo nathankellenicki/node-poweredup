@@ -84,9 +84,7 @@ export class AbsoluteMotor extends TachoMotor {
         return new Promise((resolve) => {
             const oldMode = this.mode;
             let calibrated = false;
-            this.requestUpdate();
             this.on("absolute", async ({ angle }) => {
-                console.log(angle);
                 if (!calibrated) {
                     calibrated = true;
                     if (angle < 0) {
@@ -94,7 +92,6 @@ export class AbsoluteMotor extends TachoMotor {
                     } else {
                         speed = -speed;
                     }
-                    console.log(angle, speed);
                     await this.rotateByDegrees(angle, speed);
                     if (oldMode) {
                         this.subscribe(oldMode);
@@ -102,6 +99,7 @@ export class AbsoluteMotor extends TachoMotor {
                     return resolve();
                 }
             });
+            this.requestUpdate();
         });
     }
 
