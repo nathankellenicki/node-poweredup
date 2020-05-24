@@ -74,7 +74,7 @@ export class AbsoluteMotor extends TachoMotor {
 
     /**
      * Rotate motor to real zero position.
-     * 
+     *
      * Real zero is marked on Technic angular motors (SPIKE Prime). It is also available on Technic linear motors (Control+) but is unmarked.
      * @method AbsoluteMotor#gotoRealZero
      * @param {number} [speed=100] Speed between 1 - 100. Note that this will always take the shortest path to zero.
