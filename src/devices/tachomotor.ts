@@ -48,6 +48,13 @@ export class TachoMotor extends BasicMotor {
         this._brakeStyle = style;
     }
 
+
+    /**
+     * Set the global acceleration time
+     * @method TachoMotor#setAccelerationTime
+     * @param {number} time How long acceleration should last (in milliseconds).
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     */
     public setAccelerationTime (time: number, profile: number = 0x00) {
         const message = Buffer.from([0x81, this.portId, 0x11, 0x05, 0x00, 0x00, profile]);
         message.writeUInt16LE(time, 4);
@@ -55,6 +62,12 @@ export class TachoMotor extends BasicMotor {
     }
 
 
+    /**
+     * Set the global deceleration time
+     * @method TachoMotor#setDecelerationTime
+     * @param {number} time How long deceleration should last (in milliseconds).
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     */
     public setDecelerationTime (time: number, profile: number = 0x00) {
         const message = Buffer.from([0x81, this.portId, 0x11, 0x06, 0x00, 0x00, profile]);
         message.writeUInt16LE(time, 4);
@@ -66,6 +79,7 @@ export class TachoMotor extends BasicMotor {
      * Set the motor speed.
      * @method TachoMotor#setSpeed
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
+     * @param {number} time How long the motor should run for (in milliseconds).
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setSpeed (speed: [number, number] | number, time: number | undefined) {
@@ -134,6 +148,20 @@ export class TachoMotor extends BasicMotor {
             this._finished = () => {
                 return resolve();
             };
+        });
+    }
+
+
+    /**
+     * Reset zero to current position
+     * @method TachoMotor#resetZero
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     */
+    public resetZero () {
+        return new Promise((resolve) => {
+            const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
+            this.send(data);
+            return resolve();
         });
     }
 

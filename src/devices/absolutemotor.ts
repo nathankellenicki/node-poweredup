@@ -71,19 +71,6 @@ export class AbsoluteMotor extends TachoMotor {
         });
     }
 
-    /**
-     * Reset the current position as angle 0
-     * @method AbsoluteMotor#resetAngle
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
-     */
-    public resetAngle () {
-        return new Promise((resolve) => {
-            const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
-            this.send(data);
-            return resolve();
-        });
-    }
-
 
 }
 
