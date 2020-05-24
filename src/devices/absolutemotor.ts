@@ -72,6 +72,54 @@ export class AbsoluteMotor extends TachoMotor {
     }
 
 
+    /**
+     * Rotate motor to real zero position.
+     * 
+     * Real zero is marked on Technic angular motors (SPIKE Prime). It is also available on Technic linear motors (Control+) but is unmarked.
+     * @method AbsoluteMotor#gotoRealZero
+     * @param {number} [speed=100] Speed between 1 - 100. Note that this will always take the shortest path to zero.
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     */
+    public gotoRealZero (speed: number = 100) {
+        return new Promise((resolve) => {
+            const oldMode = this.mode;
+            let calibrated = false;
+            this.requestUpdate();
+            this.on("absolute", async ({ angle }) => {
+                console.log(angle);
+                if (!calibrated) {
+                    calibrated = true;
+                    if (angle < 0) {
+                        angle = Math.abs(angle);
+                    } else {
+                        speed = -speed;
+                    }
+                    console.log(angle, speed);
+                    await this.rotateByDegrees(angle, speed);
+                    if (oldMode) {
+                        this.subscribe(oldMode);
+                    }
+                    return resolve();
+                }
+            });
+        });
+    }
+
+
+    /**
+     * Reset zero to current position
+     * @method AbsoluteMotor#resetZero
+     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     */
+    public resetZero () {
+        return new Promise((resolve) => {
+            const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
+            this.send(data);
+            return resolve();
+        });
+    }
+
+
 }
 
 export enum Mode {

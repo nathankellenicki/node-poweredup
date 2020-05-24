@@ -152,20 +152,6 @@ export class TachoMotor extends BasicMotor {
     }
 
 
-    /**
-     * Reset zero to current position
-     * @method TachoMotor#resetZero
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
-     */
-    public resetZero () {
-        return new Promise((resolve) => {
-            const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
-            this.send(data);
-            return resolve();
-        });
-    }
-
-
     protected useProfile () {
         let value = 0x00;
         if (this.useAccelerationProfile) {
