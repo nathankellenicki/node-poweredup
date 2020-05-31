@@ -132,31 +132,29 @@ export class PoweredUP extends EventEmitter {
             let buf: Buffer = Buffer.alloc(0);
             device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
                 buf = Buffer.concat([buf, data]);
-                const len = buf[0];
-                if (len >= buf.length) {
+                while (buf[0] <= buf.length) {
+                    const len = buf[0];
                     const message = buf.slice(0, len);
                     buf = buf.slice(len);
                     if (message[2] === 0x01 && message[3] === 0x0b) {
-                        process.nextTick(() => {
-                            switch (message[5]) {
-                                case Consts.BLEManufacturerData.REMOTE_CONTROL_ID:
-                                    resolve(Consts.HubType.REMOTE_CONTROL);
-                                    break;
-                                case Consts.BLEManufacturerData.MOVE_HUB_ID:
-                                    resolve(Consts.HubType.MOVE_HUB);
-                                    break;
-                                case Consts.BLEManufacturerData.HUB_ID:
-                                    resolve(Consts.HubType.HUB);
-                                    break;
-                                case Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID:
-                                    resolve(Consts.HubType.DUPLO_TRAIN_BASE);
-                                    break;
-                                case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB:
-                                    resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
-                                    break;
-                            }
-                            debug("Hub type determined");
-                        });
+                        switch (message[5]) {
+                            case Consts.BLEManufacturerData.REMOTE_CONTROL_ID:
+                                resolve(Consts.HubType.REMOTE_CONTROL);
+                                break;
+                            case Consts.BLEManufacturerData.MOVE_HUB_ID:
+                                resolve(Consts.HubType.MOVE_HUB);
+                                break;
+                            case Consts.BLEManufacturerData.HUB_ID:
+                                resolve(Consts.HubType.HUB);
+                                break;
+                            case Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID:
+                                resolve(Consts.HubType.DUPLO_TRAIN_BASE);
+                                break;
+                            case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB:
+                                resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
+                                break;
+                        }
+                        debug("Hub type determined");
                     } else {
                         debug("Stashed in mailbox (LPF2_ALL)", message);
                         device.addToCharacteristicMailbox(Consts.BLECharacteristic.LPF2_ALL, message);
