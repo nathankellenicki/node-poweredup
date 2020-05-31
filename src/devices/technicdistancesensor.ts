@@ -45,7 +45,7 @@ export class TechnicDistanceSensor extends Device {
     }
 
     /**
-     * Set the brightness (or turn on/off) the lights around the eyes.
+     * Set the brightness (or turn on/off) of the lights around the eyes.
      * @method TechnicDistanceSensor#setBrightness
      * @param {number} topLeft Top left quadrant (above left eye). 0-100 brightness.
      * @param {number} bottomLeft Bottom left quadrant (below left eye). 0-100 brightness.
