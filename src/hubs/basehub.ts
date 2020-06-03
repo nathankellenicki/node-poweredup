@@ -331,8 +331,23 @@ export class BaseHub extends EventEmitter {
     }
 
 
+    public manuallyAttachDevice(deviceType: number, portId: number) {
+        if (!this._attachedDevices[portId]) {
+            const device = this._createDevice(deviceType, portId);
+            this._attachDevice(device);
+            return device;
+        } else {
+            return false;
+        }
+    }
+
+
     protected _attachDevice (device: Device) {
+        if (this._attachedDevices[device.portId] && this._attachedDevices[device.portId].type === device.type) {
+            return;
+        }
         this._attachedDevices[device.portId] = device;
+
         /**
          * Emits when a device is attached to the Hub.
          * @event Hub#attach
