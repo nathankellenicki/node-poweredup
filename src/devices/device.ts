@@ -53,7 +53,7 @@ export class Device extends EventEmitter {
             }
             if (this.autoSubscribe) {
                 if (this._modeMap[event] !== undefined) {
-                    if (this._supportsCombined) {
+                    if (this._supportsCombined && !this.isWeDo2SmartHub) {
                         this.subscribeMulti(this._modeMap[event]);
                     } else {
                         this.subscribeSingle(this._modeMap[event]);
@@ -206,6 +206,7 @@ export class Device extends EventEmitter {
 
     public receiveSingle (message: Buffer) {
         if (this.mode !== undefined) {
+            message = message.slice(4);
             this.parse(this.mode, message);
         }
     }

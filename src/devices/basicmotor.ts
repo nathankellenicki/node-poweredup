@@ -21,6 +21,7 @@ export class BasicMotor extends Device {
         type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
     ) {
         super(hub, portId, modeMap, dataSets, type);
+        this._supportsCombined = true;
     }
 
 

@@ -143,7 +143,7 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
         return new Promise<void>((resolve, reject) => {
             uuid = this._sanitizeUUID(uuid);
             this._characteristics[uuid].write(data, false, (error) => {
-                if(error) {
+                if (error) {
                     return reject(error);
                 }
 

@@ -17,6 +17,12 @@ public static Mode = {
     AMBIENT_LIGHT: 0x02
 }
 
+public static DataSets = {
+    [TechnicColorSensor.Mode.COLOR]: 1,
+    [TechnicColorSensor.Mode.REFLECTIVITY]: 1,
+    [TechnicColorSensor.Mode.AMBIENT_LIGHT]: 1
+}
+
 public static ModeMap: {[event: string]: number} = {
     "color": TechnicColorSensor.Mode.COLOR,
     "reflect": TechnicColorSensor.Mode.REFLECTIVITY,
@@ -25,15 +31,16 @@ public static ModeMap: {[event: string]: number} = {
 
 
     constructor (hub: IHubInterface, portId: number) {
-        super(hub, portId, TechnicColorSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_COLOR_SENSOR);
+        super(hub, portId, TechnicColorSensor.ModeMap, TechnicColorSensor.DataSets, Consts.DeviceType.TECHNIC_COLOR_SENSOR);
+        this._supportsCombined = true;
     }
 
     public parse (mode: number, message: Buffer) {
 
         switch (mode) {
             case TechnicColorSensor.Mode.COLOR:
-                if (message[4] <= 10) {
-                    const color = message[4];
+                if (message[0] <= 10) {
+                    const color = message[0];
 
                     /**
                      * Emits when a color sensor is activated.
@@ -46,7 +53,7 @@ public static ModeMap: {[event: string]: number} = {
                 return message.slice(1);
 
             case TechnicColorSensor.Mode.REFLECTIVITY:
-                const reflect = message[4];
+                const reflect = message[0];
 
                 /**
                  * Emits when the light reflectivity changes.
@@ -58,7 +65,7 @@ public static ModeMap: {[event: string]: number} = {
                 return message.slice(1);
 
             case TechnicColorSensor.Mode.AMBIENT_LIGHT:
-                const ambient = message[4];
+                const ambient = message[0];
 
                 /**
                  * Emits when the ambient light changes.

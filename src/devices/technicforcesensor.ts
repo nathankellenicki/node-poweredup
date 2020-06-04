@@ -16,6 +16,12 @@ export class TechnicForceSensor extends Device {
         TAPPED: 0x02
     }
 
+    public static DataSets = {
+        [TechnicForceSensor.Mode.FORCE]: 1,
+        [TechnicForceSensor.Mode.TOUCHED]: 1,
+        [TechnicForceSensor.Mode.TAPPED]: 1
+    }
+
     public static ModeMap: {[event: string]: number} = {
         "force": TechnicForceSensor.Mode.FORCE,
         "touched": TechnicForceSensor.Mode.TOUCHED,
@@ -23,14 +29,15 @@ export class TechnicForceSensor extends Device {
     };
 
     constructor (hub: IHubInterface, portId: number) {
-        super(hub, portId, TechnicForceSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_FORCE_SENSOR);
+        super(hub, portId, TechnicForceSensor.ModeMap, TechnicForceSensor.DataSets, Consts.DeviceType.TECHNIC_FORCE_SENSOR);
+        this._supportsCombined = true;
     }
 
     public parse (mode: number, message: Buffer) {
 
         switch (mode) {
             case TechnicForceSensor.Mode.FORCE:
-                const force = message[4] / 10;
+                const force = message[0] / 10;
 
                 /**
                  * Emits when force is applied.
@@ -42,7 +49,7 @@ export class TechnicForceSensor extends Device {
                 return message.slice(1);
 
             case TechnicForceSensor.Mode.TOUCHED:
-                const touched = message[4] ? true : false;
+                const touched = message[0] ? true : false;
 
                 /**
                  * Emits when the sensor is touched.
@@ -54,7 +61,7 @@ export class TechnicForceSensor extends Device {
                 return message.slice(1);
 
             case TechnicForceSensor.Mode.TAPPED:
-                const tapped = message[4];
+                const tapped = message[0];
 
                 /**
                  * Emits when the sensor is tapped.

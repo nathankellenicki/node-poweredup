@@ -15,20 +15,25 @@ export class TechnicDistanceSensor extends Device {
         FAST_DISTANCE: 0x01
     }
 
+    public static DataSets = {
+        [TechnicDistanceSensor.Mode.DISTANCE]: 1,
+        [TechnicDistanceSensor.Mode.FAST_DISTANCE]: 1
+    }
+
     public static ModeMap: {[event: string]: number} = {
         "distance": TechnicDistanceSensor.Mode.DISTANCE,
         "fastDistance": TechnicDistanceSensor.Mode.FAST_DISTANCE
     };
 
     constructor (hub: IHubInterface, portId: number) {
-        super(hub, portId, TechnicDistanceSensor.ModeMap, {}, Consts.DeviceType.TECHNIC_DISTANCE_SENSOR);
+        super(hub, portId, TechnicDistanceSensor.ModeMap, TechnicDistanceSensor.DataSets, Consts.DeviceType.TECHNIC_DISTANCE_SENSOR);
     }
 
     public parse (mode: number, message: Buffer) {
 
         switch (mode) {
             case TechnicDistanceSensor.Mode.DISTANCE:
-                const distance = message.readUInt16LE(4);
+                const distance = message.readUInt16LE(0);
 
                 /**
                  * Emits when the detected distance changes (Slow sampling covers 40mm to 2500mm).
@@ -40,7 +45,7 @@ export class TechnicDistanceSensor extends Device {
                 return message.slice(2);
 
             case TechnicDistanceSensor.Mode.FAST_DISTANCE:
-                const fastDistance = message.readUInt16LE(4);
+                const fastDistance = message.readUInt16LE(0);
 
                 /**
                  * Emits when the detected distance changes (Fast sampling covers 50mm to 320mm).

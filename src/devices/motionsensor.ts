@@ -26,8 +26,8 @@ export class MotionSensor extends Device {
 
         switch (mode) {
             case MotionSensor.Mode.DISTANCE:
-                let distance = message[this.isWeDo2SmartHub ? 2 : 4];
-                if (message[this.isWeDo2SmartHub ? 3 : 5] === 1) {
+                let distance = message[this.isWeDo2SmartHub ? 2 : 0];
+                if (message[this.isWeDo2SmartHub ? 3 : 1] === 1) {
                     distance = distance + 255;
                 }
                 distance *= 10;

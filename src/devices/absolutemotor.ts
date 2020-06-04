@@ -34,14 +34,13 @@ export class AbsoluteMotor extends TachoMotor {
         type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
     ) {
         super(hub, portId, Object.assign({}, modeMap, AbsoluteMotor.ModeMap), Object.assign({}, dataSets, AbsoluteMotor.DataSets), type);
-        this._supportsCombined = true;
     }
 
     public parse (mode: number, message: Buffer) {
 
         switch (mode) {
             case AbsoluteMotor.Mode.ABSOLUTE:
-                const angle = normalizeAngle(message.readInt16LE(this.isWeDo2SmartHub ? 2 : 4));
+                const angle = normalizeAngle(message.readInt16LE(this.isWeDo2SmartHub ? 2 : 0));
                 /**
                  * Emits when a the motors absolute position is changed.
                  * @event AbsoluteMotor#absolute
@@ -53,6 +52,7 @@ export class AbsoluteMotor extends TachoMotor {
             default:
                 return super.parse(mode, message);
         }
+
     }
 
     /**

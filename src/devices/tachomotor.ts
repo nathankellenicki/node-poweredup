@@ -37,14 +37,13 @@ export class TachoMotor extends BasicMotor {
         type: Consts.DeviceType = Consts.DeviceType.UNKNOWN
     ) {
         super(hub, portId, Object.assign({}, modeMap, TachoMotor.ModeMap), Object.assign({}, dataSets, TachoMotor.DataSets), type);
-        this._supportsCombined = true;
     }
 
     public parse (mode: number, message: Buffer) {
 
         switch (mode) {
             case TachoMotor.Mode.ROTATION:
-                const degrees = message.readInt32LE(this.isWeDo2SmartHub ? 2 : 4);
+                const degrees = message.readInt32LE(this.isWeDo2SmartHub ? 2 : 0);
                 /**
                  * Emits when a rotation sensor is activated.
                  * @event TachoMotor#rotate
