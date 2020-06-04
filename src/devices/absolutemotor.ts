@@ -100,28 +100,28 @@ export class AbsoluteMotor extends TachoMotor {
      * @param {number} [speed=100] Speed between 1 - 100. Note that this will always take the shortest path to zero.
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
-    // public gotoRealZero (speed: number = 100) {
-    //     return new Promise((resolve) => {
-    //         const oldMode = this.mode;
-    //         let calibrated = false;
-    //         this.on("absolute", async ({ angle }) => {
-    //             if (!calibrated) {
-    //                 calibrated = true;
-    //                 if (angle < 0) {
-    //                     angle = Math.abs(angle);
-    //                 } else {
-    //                     speed = -speed;
-    //                 }
-    //                 await this.rotateByDegrees(angle, speed);
-    //                 if (oldMode) {
-    //                     this.subscribe(oldMode);
-    //                 }
-    //                 return resolve();
-    //             }
-    //         });
-    //         this.requestUpdate();
-    //     });
-    // }
+    public gotoRealZero (speed: number = 100) {
+        return new Promise((resolve) => {
+            const oldMode = this.mode;
+            let calibrated = false;
+            this.on("absolute", async ({ angle }) => {
+                if (!calibrated) {
+                    calibrated = true;
+                    if (angle < 0) {
+                        angle = Math.abs(angle);
+                    } else {
+                        speed = -speed;
+                    }
+                    await this.rotateByDegrees(angle, speed);
+                    if (oldMode) {
+                        this.subscribeSingle(oldMode);
+                    }
+                    return resolve();
+                }
+            });
+            this.requestUpdate();
+        });
+    }
 
 
     /**

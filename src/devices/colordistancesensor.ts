@@ -13,6 +13,8 @@ export class ColorDistanceSensor extends Device {
     public static Mode = {
         COLOR: 0x00,
         DISTANCE: 0x01,
+        LED: 0x05,
+        PF_IR: 0x07,
         COLOR_AND_DISTANCE: 0x08
     }
 
@@ -26,6 +28,12 @@ export class ColorDistanceSensor extends Device {
         "color": ColorDistanceSensor.Mode.COLOR,
         "distance": ColorDistanceSensor.Mode.DISTANCE,
         "colorAndDistance": ColorDistanceSensor.Mode.COLOR_AND_DISTANCE
+    };
+
+
+    public static Output = {
+        RED: "RED",
+        BLUE: "BLUE"
     };
 
 
@@ -98,9 +106,6 @@ export class ColorDistanceSensor extends Device {
         }
     }
 
-<<<<<<< HEAD
-}
-=======
 
     /**
      * Switches the IR receiver into extended channel mode. After setting this, use channels 5-8 instead of 1-4 for this receiver.
@@ -132,7 +137,7 @@ export class ColorDistanceSensor extends Device {
      * @param {number} power -7 (full reverse) to 7 (full forward). 0 is stop. 8 is brake.
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
-    public setPFPower (channel: number, output: Output, power: number) {
+    public setPFPower (channel: number, output: string, power: number) {
         let address = 0;
         if (channel > 4) {
             channel -= 4;
@@ -183,7 +188,7 @@ export class ColorDistanceSensor extends Device {
             const payload = Buffer.alloc(2);
             payload[0] = (message[0] << 4) + (message[1] >> 4);
             payload[1] = message[0] >> 4;
-            this.subscribe(Mode.PF_IR);
+            this.subscribeSingle(ColorDistanceSensor.Mode.PF_IR);
             return this.writeDirect(0x07, payload);
         }
     }
@@ -203,7 +208,7 @@ export class ColorDistanceSensor extends Device {
             if (this.isWeDo2SmartHub) {
                 throw new Error("Setting LED color is not available on the WeDo 2.0 Smart Hub");
             } else {
-                this.subscribe(Mode.LED);
+                this.subscribeSingle(ColorDistanceSensor.Mode.LED);
                 this.writeDirect(0x05, Buffer.from([color]));
             }
             return resolve();
@@ -217,23 +222,3 @@ export class ColorDistanceSensor extends Device {
 
 
 }
-
-export enum Mode {
-    COLOR = 0x00,
-    DISTANCE = 0x01,
-    LED = 0x05,
-    PF_IR = 0x07,
-    COLOR_AND_DISTANCE = 0x08
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "color": Mode.COLOR,
-    "distance": Mode.DISTANCE,
-    "colorAndDistance": Mode.COLOR_AND_DISTANCE
-};
-
-export enum Output {
-    RED = "RED",
-    BLUE = "BLUE"
-}
->>>>>>> dee732c8ca1332ba857799f325838bd8fc8b5d89

@@ -321,16 +321,6 @@ export class BaseHub extends EventEmitter {
     }
 
 
-    public subscribe (portId: number, deviceType: number, mode: number) {
-        // NK Do nothing here
-    }
-
-
-    public unsubscribe (portId: number, deviceType: number, mode: number) {
-        // NK Do nothing here
-    }
-
-
     public manuallyAttachDevice(deviceType: number, portId: number) {
         if (!this._attachedDevices[portId]) {
             debug(`No device attached to portId ${portId}, creating and attaching device type ${deviceType}`);
