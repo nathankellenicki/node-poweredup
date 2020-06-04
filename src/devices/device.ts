@@ -223,6 +223,10 @@ export class Device extends EventEmitter {
         }
     }
 
+    public requestUpdate () {
+        this.send(Buffer.from([0x21, this.portId, 0x00]));
+    }
+
     public finish () {
         this._busy = false;
         if (this._finished) {

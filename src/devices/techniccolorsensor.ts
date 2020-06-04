@@ -73,4 +73,16 @@ public static ModeMap: {[event: string]: number} = {
         return message;
     }
 
+    /**
+     * Set the brightness (or turn on/off) of the lights around the sensor.
+     * @method TechnicColorSensor#setBrightness
+     * @param {number} firstSegment First light segment. 0-100 brightness.
+     * @param {number} secondSegment Second light segment. 0-100 brightness.
+     * @param {number} thirdSegment Third light segment. 0-100 brightness.
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public setBrightness (firstSegment: number, secondSegment: number, thirdSegment: number) {
+        this.writeDirect(0x03, Buffer.from([firstSegment, secondSegment, thirdSegment]));
+    }
+
 }

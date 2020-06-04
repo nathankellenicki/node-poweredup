@@ -102,23 +102,19 @@ class LPF2Hub extends basehub_1.BaseHub {
         this._messageBuffer = Buffer.alloc(0);
         this._propertyRequestCallbacks = {};
     }
-    connect() {
-        return new Promise(async (resolve, reject) => {
-            debug("LPF2Hub connecting");
-            await super.connect();
-            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
-            this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-            await this.sleep(500);
-            this._requestHubPropertyReports(0x02); // Activate button reports
-            await this._requestHubPropertyValue(0x03); // Request firmware version
-            await this._requestHubPropertyValue(0x04); // Request hardware version
-            this._requestHubPropertyReports(0x05); // Activate RSSI updates
-            this._requestHubPropertyReports(0x06); // Activate battery level reports
-            await this._requestHubPropertyValue(0x0d); // Request primary MAC address
-            this.emit("connect");
-            debug("LPF2Hub connected");
-            resolve();
-        });
+    async connect() {
+        debug("LPF2Hub connecting");
+        await super.connect();
+        await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
+        this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
+        await this._requestHubPropertyReports(0x02); // Activate button reports
+        await this._requestHubPropertyValue(0x03); // Request firmware version
+        await this._requestHubPropertyValue(0x04); // Request hardware version
+        await this._requestHubPropertyReports(0x05); // Activate RSSI updates
+        await this._requestHubPropertyReports(0x06); // Activate battery level reports
+        await this._requestHubPropertyValue(0x0d); // Request primary MAC address
+        this.emit("connect");
+        debug("LPF2Hub connected");
     }
     /**
      * Shutdown the Hub.
@@ -126,11 +122,7 @@ class LPF2Hub extends basehub_1.BaseHub {
      * @returns {Promise} Resolved upon successful disconnect.
      */
     shutdown() {
-        return new Promise((resolve, reject) => {
-            this.send(Buffer.from([0x02, 0x01]), Consts.BLECharacteristic.LPF2_ALL, () => {
-                return resolve();
-            });
-        });
+        return this.send(Buffer.from([0x02, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
     }
     /**
      * Set the name of the Hub.
@@ -138,31 +130,28 @@ class LPF2Hub extends basehub_1.BaseHub {
      * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */
-    setName(name) {
+    async setName(name) {
         if (name.length > 14) {
             throw new Error("Name must be 14 characters or less");
         }
-        return new Promise((resolve, reject) => {
-            let data = Buffer.from([0x01, 0x01, 0x01]);
-            data = Buffer.concat([data, Buffer.from(name, "ascii")]);
-            // Send this twice, as sometimes the first time doesn't take
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            this.send(data, Consts.BLECharacteristic.LPF2_ALL);
-            this._name = name;
-            return resolve();
-        });
+        let data = Buffer.from([0x01, 0x01, 0x01]);
+        data = Buffer.concat([data, Buffer.from(name, "ascii")]);
+        // Send this twice, as sometimes the first time doesn't take
+        await this.send(data, Consts.BLECharacteristic.LPF2_ALL);
+        await this.send(data, Consts.BLECharacteristic.LPF2_ALL);
+        this._name = name;
     }
-    send(message, uuid, callback) {
+    send(message, uuid) {
         message = Buffer.concat([Buffer.alloc(2), message]);
         message[0] = message.length;
         debug("Sent Message (LPF2_ALL)", message);
-        this._bleDevice.writeToCharacteristic(uuid, message, callback);
+        return this._bleDevice.writeToCharacteristic(uuid, message);
     }
     subscribe(portId, deviceType, mode) {
-        this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
+        return this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
     }
     unsubscribe(portId, mode) {
-        this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.LPF2_ALL);
+        return this.send(Buffer.from([0x41, portId, mode, 0x01, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.LPF2_ALL);
     }
     /**
      * Combines two ports with into a single virtual port.
@@ -185,7 +174,7 @@ class LPF2Hub extends basehub_1.BaseHub {
         if (firstDevice.type !== secondDevice.type) {
             throw new Error(`Both devices must be of the same type to create a virtual port`);
         }
-        this.send(Buffer.from([0x61, 0x01, firstDevice.portId, secondDevice.portId]), Consts.BLECharacteristic.LPF2_ALL);
+        return this.send(Buffer.from([0x61, 0x01, firstDevice.portId, secondDevice.portId]), Consts.BLECharacteristic.LPF2_ALL);
     }
     _checkFirmware(version) {
         return;
@@ -251,7 +240,7 @@ class LPF2Hub extends basehub_1.BaseHub {
         });
     }
     _requestHubPropertyReports(property) {
-        this.send(Buffer.from([0x01, property, 0x02]), Consts.BLECharacteristic.LPF2_ALL);
+        return this.send(Buffer.from([0x01, property, 0x02]), Consts.BLECharacteristic.LPF2_ALL);
     }
     _parseHubPropertyResponse(message) {
         // Button press reports
@@ -301,7 +290,7 @@ class LPF2Hub extends basehub_1.BaseHub {
             }
         }
     }
-    _parsePortMessage(message) {
+    async _parsePortMessage(message) {
         const portId = message[3];
         const event = message[4];
         const deviceType = event ? message.readUInt16LE(5) : 0;
@@ -313,7 +302,7 @@ class LPF2Hub extends basehub_1.BaseHub {
                 const hwVersion = utils_1.decodeVersion(message.readInt32LE(7));
                 const swVersion = utils_1.decodeVersion(message.readInt32LE(11));
                 modeInfoDebug(`Port ${utils_1.toHex(portId)}, hardware version ${hwVersion}, software version ${swVersion}`);
-                this._sendPortInformationRequest(portId);
+                await this._sendPortInformationRequest(portId);
             }
             const device = this._createDevice(deviceType, portId);
             this._attachDevice(device);
@@ -345,11 +334,11 @@ class LPF2Hub extends basehub_1.BaseHub {
             this._attachDevice(device);
         }
     }
-    _sendPortInformationRequest(port) {
-        this.send(Buffer.from([0x21, port, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
-        this.send(Buffer.from([0x21, port, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Mode combinations
+    async _sendPortInformationRequest(port) {
+        await this.send(Buffer.from([0x21, port, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
+        await this.send(Buffer.from([0x21, port, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Mode combinations
     }
-    _parsePortInformationResponse(message) {
+    async _parsePortInformationResponse(message) {
         const port = message[3];
         if (message[4] === 2) {
             const modeCombinationMasks = [];
@@ -364,16 +353,16 @@ class LPF2Hub extends basehub_1.BaseHub {
         const output = utils_1.toBin(message.readUInt16LE(9), count);
         modeInfoDebug(`Port ${utils_1.toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
         for (let i = 0; i &lt; count; i++) {
-            this._sendModeInformationRequest(port, i, 0x00); // Mode Name
-            this._sendModeInformationRequest(port, i, 0x01); // RAW Range
-            this._sendModeInformationRequest(port, i, 0x02); // PCT Range
-            this._sendModeInformationRequest(port, i, 0x03); // SI Range
-            this._sendModeInformationRequest(port, i, 0x04); // SI Symbol
-            this._sendModeInformationRequest(port, i, 0x80); // Value Format
+            await this._sendModeInformationRequest(port, i, 0x00); // Mode Name
+            await this._sendModeInformationRequest(port, i, 0x01); // RAW Range
+            await this._sendModeInformationRequest(port, i, 0x02); // PCT Range
+            await this._sendModeInformationRequest(port, i, 0x03); // SI Range
+            await this._sendModeInformationRequest(port, i, 0x04); // SI Symbol
+            await this._sendModeInformationRequest(port, i, 0x80); // Value Format
         }
     }
     _sendModeInformationRequest(port, mode, type) {
-        this.send(Buffer.from([0x22, port, mode, type]), Consts.BLECharacteristic.LPF2_ALL);
+        return this.send(Buffer.from([0x22, port, mode, type]), Consts.BLECharacteristic.LPF2_ALL);
     }
     _parseModeInformationResponse(message) {
         const port = utils_1.toHex(message[3]);
@@ -467,7 +456,7 @@ exports.LPF2Hub = LPF2Hub;
 <span class="jsdoc-message">
 	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.3</a>
 	
-		on Mon Feb 24th 2020
+		on Sun May 31st 2020
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
