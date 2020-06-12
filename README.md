@@ -40,11 +40,11 @@ While most Powered Up components and Hubs are compatible with each other, there 
 | Powered Up LED Lights           | <a href="https://brickset.com/sets/88005-1/">88005</a>        | Light         |       Yes      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/88005-1/">88005</a> |
 | Control+ Large Motor            | 22169        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 | Control+ XLarge Motor            | 22172        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
-| SPIKE Prime Medium Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
-| SPIKE Prime Large Motor            | 45678        | Motor/Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
-| SPIKE Prime Color Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
-| SPIKE Prime Distance Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
-| SPIKE Prime Force Sensor            | 45678        | Sensor  |       No      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Medium Motor            | 45678        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Large Motor            | 45678        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Color Sensor            | 45678        | Sensor  |       No      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Distance Sensor            | 45678        | Sensor  |       No      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Prime Force Sensor            | 45678        | Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
 
 
 In addition, the Hubs themselves have certain built-in features which this library exposes.
@@ -62,9 +62,9 @@ In addition, the Hubs themselves have certain built-in features which this libra
 
 * The WeDo 2.0 Smart Hub uses an older firmware which is no longer being updated. As a result, only certain motors and sensors work with it. See the table above.
 
-* When used with the Boost Move Hub, the Control+ Motors do not currently accept commands (This is a known but which requires a firmware update from Lego to fix)
+* When used with the Boost Move Hub, the Control+ Motors and SPIKE Prime Motors/Sensors do not currently accept commands (This is a known bug which requires a firmware update from Lego to fix)
 
-* The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython and Bluetooth Classic to develop for this Hub.
+* The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython to develop for this Hub using the officially provided tools and software.
 
 ### Documentation
 

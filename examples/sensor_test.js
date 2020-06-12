@@ -23,36 +23,44 @@ poweredUP.on("discover", async (hub) => {
         console.log(`Disconnected ${hub.name}`);
     })
 
-    hub.on("tilt", (port, x, y, z) => {
-        console.log(`Tilt detected on port ${port} (X: ${x}, Y: ${y}${z !== "undefined" ? `, Z: ${z}`: ""})`);
+    hub.on("tilt", (device, { x, y, z }) => {
+        console.log(`Tilt detected on port ${device.portName} (X: ${x}, Y: ${y}${z !== "undefined" ? `, Z: ${z}`: ""})`);
     });
 
-    hub.on("accel", (port, x, y, z) => {
-        console.log(`Accelerometer detected on port ${port} (X: ${x}, Y: ${y}, Z: ${z})`);
+    hub.on("accel", (device, { x, y, z }) => {
+        console.log(`Accelerometer detected on port ${device.portName} (X: ${x}, Y: ${y}, Z: ${z})`);
     });
 
-    hub.on("distance", (port, distance) => {
-        console.log(`Motion detected on port ${port} (Distance: ${distance})`);
+    hub.on("distance", (device, { distance }) => {
+        console.log(`Motion detected on port ${device.portName} (Distance: ${distance})`);
     });
 
-    hub.on("color", (port, color) => {
-        console.log(`Color detected on port ${port} (Color: ${color})`);
+    hub.on("color", (device, { color }) => {
+        console.log(`Color detected on port ${device.portName} (Color: ${color})`);
     });
 
-    hub.on("rotate", (port, rotation) => {
-        console.log(`Rotation detected on port ${port} (Rotation: ${rotation})`);
+    hub.on("rotate", (device, { degrees }) => {
+        console.log(`Rotation detected on port ${device.portName} (Rotation: ${degrees})`);
     });
 
-    hub.on("button", (button, state) => {
-        console.log(`Button press detected (Button: ${button}, State: ${state})`);
+    hub.on("force", (device, { force }) => {
+        console.log(`Force detected on port ${device.portName} (Force: ${force})`);
     });
 
-    hub.on("attach", (port, device) => {
-       console.log(`Device attached to port ${port} (Device ID: ${device})`) ;
+    hub.on("button", ({ event }) => {
+        console.log(`Green button press detected (Event: ${event})`);
     });
 
-    hub.on("detach", (port) => {
-        console.log(`Device detached from port ${port}`) ;
+    hub.on("remoteButton", (device, { event }) => {
+        console.log(`Remote control button press detected on port ${device.portName} (Event: ${event})`);
+    });
+
+    hub.on("attach", (device) => {
+       console.log(`Device attached to port ${device.portName} (Device ID: ${device.type})`) ;
+    });
+
+    hub.on("detach", (device) => {
+        console.log(`Device detached from port ${device.portName}`) ;
     });
 
 });

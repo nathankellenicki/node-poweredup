@@ -10,8 +10,8 @@ import * as Consts from "../consts";
  */
 export class TechnicLargeAngularMotor extends AbsoluteMotor {
 
-    constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR);
+    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR) {
+        super(hub, portId, {}, type);
     }
 
 }
