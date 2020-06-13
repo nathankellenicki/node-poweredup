@@ -51,12 +51,29 @@ export class Device extends EventEmitter {
             if (event === "detach") {
                 return;
             }
+
+            console.log(event);
             if (this.autoSubscribe) {
                 if (this._modeMap[event] !== undefined) {
                     if (this._supportsCombined && !this.isWeDo2SmartHub) {
                         this.subscribeMulti(this._modeMap[event]);
                     } else {
                         this.subscribeSingle(this._modeMap[event]);
+                    }
+                }
+            }
+        };
+
+        const eventRemoveListener = (event: string) => {
+            if (event === "detach") {
+                return;
+            }
+            if (this.autoSubscribe) {
+                if (this._modeMap[event] !== undefined) {
+                    if (this._supportsCombined && !this.isWeDo2SmartHub) {
+                        this.unsubscribeMulti(this._modeMap[event]);
+                    } else {
+                        this.unsubscribeSingle(this._modeMap[event]);
                     }
                 }
             }
@@ -70,14 +87,17 @@ export class Device extends EventEmitter {
             }
         };
 
-        for (const event in this._modeMap) {
-            if (this.hub.listenerCount(event) > 0) {
-                eventAttachListener(event);
+        process.nextTick(() => { // NK This is done in nextTick because we want the child constructor to complete first
+            for (const event in this._modeMap) {
+                if (this.hub.listenerCount(event) > 0) {
+                    eventAttachListener(event);
+                }
             }
-        }
-
+        });
         this.hub.on("newListener", eventAttachListener);
+        this.hub.on("removeListener", eventRemoveListener);
         this.on("newListener", eventAttachListener);
+        this.on("removeListener", eventRemoveListener);
         this.hub.on("detach", deviceDetachListener);
     }
 
@@ -168,16 +188,21 @@ export class Device extends EventEmitter {
         }
         if (this._combinedModes.indexOf(mode) < 0) {
             this._combinedModes.push(mode);
-            this.send(Buffer.from([0x42, this.portId, 0x02]));
-            const dataSets: number[] = [];
-            for (let i = 0; i < this._combinedModes.length; i++) {
-                this.send(Buffer.from([0x41, this.portId, this._combinedModes[i], 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
-                for (let j = 0; j < this._dataSets[this._combinedModes[i]]; j++) {
-                    dataSets.push((this._combinedModes[i] << 4) + j);
-                }
-            }
-            this.send(Buffer.from([0x42, this.portId, 0x01, 0x00].concat(dataSets)));
-            this.send(Buffer.from([0x42, this.portId, 0x03]));
+            this._sendMultiSubscribe();
+        }
+    }
+
+    public unsubscribeMulti (mode: number) {
+        this._ensureConnected();
+        if (this.isWeDo2SmartHub) {
+            throw new Error("Subscribing to multiple sensor modes is not available on the WeDo 2.0 Smart Hub");
+        }
+        if (!this._supportsCombined) {
+            throw new Error("This sensor does not support subscribing to multiple modes");
+        }
+        if (this._combinedModes.indexOf(mode) >= 0) {
+            this._combinedModes.splice(this._combinedModes.indexOf(mode), 1);
+            this._sendMultiSubscribe();
         }
     }
 
@@ -188,6 +213,9 @@ export class Device extends EventEmitter {
             if (this.isWeDo2SmartHub) {
                 this.send(Buffer.from([0x01, 0x02, this.portId, this.type, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
             } else {
+                if (this._supportsCombined) {
+                    this._combinedModes = [];
+                }
                 this.send(Buffer.from([0x41, this.portId, mode, 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
             }
         }
@@ -251,6 +279,19 @@ export class Device extends EventEmitter {
         if (!this.connected) {
             throw new Error("Device is not connected");
         }
+    }
+
+    private _sendMultiSubscribe () {
+        this.send(Buffer.from([0x42, this.portId, 0x02]));
+        const dataSets: number[] = [];
+        for (let i = 0; i < this._combinedModes.length; i++) {
+            this.send(Buffer.from([0x41, this.portId, this._combinedModes[i], 0x01, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
+            for (let j = 0; j < this._dataSets[this._combinedModes[i]]; j++) {
+                dataSets.push((this._combinedModes[i] << 4) + j);
+            }
+        }
+        this.send(Buffer.from([0x42, this.portId, 0x01, 0x00].concat(dataSets)));
+        this.send(Buffer.from([0x42, this.portId, 0x03]));
     }
 
 }

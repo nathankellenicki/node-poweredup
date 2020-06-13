@@ -39,6 +39,9 @@ import { TechnicXLargeLinearMotor } from "./devices/technicxlargelinearmotor";
 import { TiltSensor } from "./devices/tiltsensor";
 import { TrainMotor } from "./devices/trainmotor";
 import { VoltageSensor } from "./devices/voltagesensor";
+import { TachoMotor } from "./devices/tachomotor";
+import { AbsoluteMotor } from "./devices/absolutemotor";
+import { BasicMotor } from "./devices/basicmotor";
 
 import { isWebBluetooth } from "./utils";
 
@@ -82,6 +85,9 @@ window.PoweredUP = {
     TrainMotor,
     VoltageSensor,
     CurrentSensor,
+    TachoMotor,
+    AbsoluteMotor,
+    BasicMotor,
     isWebBluetooth
 };
 

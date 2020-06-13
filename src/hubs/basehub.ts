@@ -412,7 +412,7 @@ export class BaseHub extends EventEmitter {
         constructor = deviceConstructors[deviceType as Consts.DeviceType];
 
         if (constructor) {
-            return new constructor(this, portId);
+            return new constructor(this, portId, undefined, undefined, deviceType);
         } else {
             return new Device(this, portId, undefined, undefined, deviceType);
         }

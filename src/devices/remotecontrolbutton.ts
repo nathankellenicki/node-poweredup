@@ -39,7 +39,7 @@ export class RemoteControlButton extends Device {
                  * @type {object}
                  * @param {number} event
                  */
-                const event = message[4];
+                const event = message[0];
                 this.notify("remoteButton", { event });
                 return message.slice(1);
         }

@@ -82,7 +82,9 @@ export enum DeviceType {
     TECHNIC_MEDIUM_HUB_TEMPERATURE_SENSOR = 60,
     TECHNIC_COLOR_SENSOR = 61, // Spike Prime
     TECHNIC_DISTANCE_SENSOR = 62, // Spike Prime
-    TECHNIC_FORCE_SENSOR = 63 // Spike Prime
+    TECHNIC_FORCE_SENSOR = 63, // Spike Prime
+    TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY = 75, // Mindstorms
+    TECHNIC_LARGE_ANGULAR_MOTOR_GREY = 76, // Mindstorms
 }
 
 

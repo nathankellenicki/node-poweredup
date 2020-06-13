@@ -101,9 +101,13 @@ export class AbsoluteMotor extends TachoMotor {
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
     public gotoRealZero (speed: number = 100) {
+        if (this.isWeDo2SmartHub) {
+            throw new Error("Absolute positioning is not available on the WeDo 2.0 Smart Hub");
+        }
         return new Promise((resolve) => {
-            const oldMode = this.mode;
+            const hadAbsolute = (this._combinedModes.indexOf(AbsoluteMotor.Mode.ABSOLUTE) >= 0);
             let calibrated = false;
+
             this.on("absolute", async ({ angle }) => {
                 if (!calibrated) {
                     calibrated = true;
@@ -113,27 +117,13 @@ export class AbsoluteMotor extends TachoMotor {
                         speed = -speed;
                     }
                     await this.rotateByDegrees(angle, speed);
-                    if (oldMode) {
-                        this.subscribeSingle(oldMode);
+                    if (!hadAbsolute) {
+                        this.unsubscribeMulti(AbsoluteMotor.Mode.ABSOLUTE);
                     }
                     return resolve();
                 }
             });
             this.requestUpdate();
-        });
-    }
-
-
-    /**
-     * Reset zero to current position
-     * @method AbsoluteMotor#resetZero
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
-     */
-    public resetZero () {
-        return new Promise((resolve) => {
-            const data = Buffer.from([0x81, this.portId, 0x11, 0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
-            this.send(data);
-            return resolve();
         });
     }
 
