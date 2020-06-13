@@ -40,7 +40,7 @@ export class AbsoluteMotor extends TachoMotor {
 
         switch (mode) {
             case AbsoluteMotor.Mode.ABSOLUTE:
-                const angle = normalizeAngle(message.readInt16LE(this.isWeDo2SmartHub ? 2 : 0));
+                const angle = normalizeAngle(message.readInt16LE(0));
                 /**
                  * Emits when a the motors absolute position is changed.
                  * @event AbsoluteMotor#absolute

@@ -46,8 +46,8 @@ export class ColorDistanceSensor extends Device {
 
         switch (mode) {
             case ColorDistanceSensor.Mode.COLOR:
-                if (message[this.isWeDo2SmartHub ? 2 : 0] <= 10) {
-                    const color = message[this.isWeDo2SmartHub ? 2 : 0];
+                if (message[0] <= 10) {
+                    const color = message[0];
 
                     /**
                      * Emits when a color sensor is activated.

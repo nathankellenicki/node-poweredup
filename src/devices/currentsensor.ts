@@ -27,7 +27,7 @@ export class CurrentSensor extends Device {
         switch (mode) {
             case CurrentSensor.Mode.CURRENT:
                 if (this.isWeDo2SmartHub) {
-                    const current =  message.readInt16LE(2) / 1000;
+                    const current =  message.readInt16LE(0) / 1000;
                     this.notify("current", { current });
                 } else {
                     let maxCurrentValue = MaxCurrentValue[this.hub.type];
@@ -38,7 +38,7 @@ export class CurrentSensor extends Device {
                     if (maxCurrentRaw === undefined) {
                         maxCurrentRaw = MaxCurrentRaw[Consts.HubType.UNKNOWN];
                     }
-                    const current = message.readUInt16LE(4) * maxCurrentValue / maxCurrentRaw;
+                    const current = message.readUInt16LE(0) * maxCurrentValue / maxCurrentRaw;
                     /**
                      * Emits when a current change is detected.
                      * @event CurrentSensor#current

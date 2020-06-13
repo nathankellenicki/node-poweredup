@@ -210,7 +210,7 @@ export class Device extends EventEmitter {
         if (mode !== this._mode) {
             this._mode = mode;
             if (this.isWeDo2SmartHub) {
-                this.send(Buffer.from([0x01, 0x02, this.portId, this.type, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
+                this.send(Buffer.from([0x01, 0x02, this.portId, this.type, mode, 0x01, 0x00, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
             } else {
                 if (this._supportsCombined) {
                     this._combinedModes = [];
@@ -233,7 +233,7 @@ export class Device extends EventEmitter {
 
     public receiveSingle (message: Buffer) {
         if (this.mode !== undefined) {
-            message = message.slice(4);
+            message = message.slice(this.isWeDo2SmartHub ? 2 : 4);
             this.parse(this.mode, message);
         }
     }

@@ -27,8 +27,8 @@ export class TiltSensor extends Device {
 
         switch (mode) {
             case TiltSensor.Mode.TILT:
-                const x = message.readInt8(this.isWeDo2SmartHub ? 2 : 0);
-                const y = message.readInt8(this.isWeDo2SmartHub ? 3 : 1);
+                const x = message.readInt8(0);
+                const y = message.readInt8(1);
                 /**
                  * Emits when a tilt sensor is activated.
                  * @event TiltSensor#tilt

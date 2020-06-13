@@ -27,7 +27,7 @@ export class VoltageSensor extends Device {
         switch (mode) {
             case VoltageSensor.Mode.VOLTAGE:
                 if (this.isWeDo2SmartHub) {
-                    const voltage = message.readInt16LE(2) / 40;
+                    const voltage = message.readInt16LE(0) / 40;
                     this.notify("voltage", { voltage });
                 } else {
                     let maxVoltageValue = MaxVoltageValue[this.hub.type];
@@ -38,7 +38,8 @@ export class VoltageSensor extends Device {
                     if (maxVoltageRaw === undefined) {
                         maxVoltageRaw = MaxVoltageRaw[Consts.HubType.UNKNOWN];
                     }
-                    const voltage = message.readUInt16LE(4) * maxVoltageValue / maxVoltageRaw;
+                    const voltage = message.readUInt16LE(0) * maxVoltageValue / maxVoltageRaw;
+
                     /**
                      * Emits when a voltage change is detected.
                      * @event VoltageSensor#voltage

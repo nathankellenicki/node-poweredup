@@ -43,7 +43,7 @@ export class TachoMotor extends BasicMotor {
 
         switch (mode) {
             case TachoMotor.Mode.ROTATION:
-                const degrees = message.readInt32LE(this.isWeDo2SmartHub ? 2 : 0);
+                const degrees = message.readInt32LE(0);
                 /**
                  * Emits when a rotation sensor is activated.
                  * @event TachoMotor#rotate

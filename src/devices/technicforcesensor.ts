@@ -37,7 +37,7 @@ export class TechnicForceSensor extends Device {
 
         switch (mode) {
             case TechnicForceSensor.Mode.FORCE:
-                const force = message[this.isWeDo2SmartHub ? 2 : 4] / 10;
+                const force = message[0] / 10;
 
                 /**
                  * Emits when force is applied.
