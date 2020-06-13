@@ -52,7 +52,6 @@ export class Device extends EventEmitter {
                 return;
             }
 
-            console.log(event);
             if (this.autoSubscribe) {
                 if (this._modeMap[event] !== undefined) {
                     if (this._supportsCombined && !this.isWeDo2SmartHub) {
