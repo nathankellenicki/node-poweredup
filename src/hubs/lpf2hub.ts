@@ -254,6 +254,9 @@ export class LPF2Hub extends BaseHub {
                 const hwVersion = decodeVersion(message.readInt32LE(7));
                 const swVersion = decodeVersion(message.readInt32LE(11));
                 modeInfoDebug(`Port ${toHex(portId)}, hardware version ${hwVersion}, software version ${swVersion}`);
+            }
+
+            if (modeInfoDebug.enabled || this._autoParse) {
                 await this._sendPortInformationRequest(portId);
             }
 
@@ -311,7 +314,16 @@ export class LPF2Hub extends BaseHub {
         const output = toBin(message.readUInt16LE(9), count);
         modeInfoDebug(`Port ${toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
 
+        this._devicesModes[port] = new Array(+count);
+
         for (let i = 0; i < count; i++) {
+            this._devicesModes[port][i] = {
+                name: '',
+                raw: { min: 0, max: 255 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 255, symbol: '' },
+                values: { count: 1, type: Consts.ValueType.Int8 },
+            };
             await this._sendModeInformationRequest(port, i, 0x00); // Mode Name
             await this._sendModeInformationRequest(port, i, 0x01); // RAW Range
             await this._sendModeInformationRequest(port, i, 0x02); // PCT Range
@@ -328,31 +340,52 @@ export class LPF2Hub extends BaseHub {
 
 
     private _parseModeInformationResponse (message: Buffer) {
-        const port = toHex(message[3]);
+        const port = message[3];
+        const portHex = toHex(port);
         const mode = message[4];
         const type = message[5];
         switch (type) {
             case 0x00: // Mode Name
-                modeInfoDebug(`Port ${port}, mode ${mode}, name ${message.slice(6, message.length).toString()}`);
+                const name = message.slice(6, message.length).toString().replace(/\0/g, '');
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, name ${name}`);
+                this._devicesModes[port][mode].name=name;
                 break;
             case 0x01: // RAW Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, RAW min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, RAW min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
+                this._devicesModes[port][mode].raw.min=message.readFloatLE(6);
+                this._devicesModes[port][mode].raw.max=message.readFloatLE(10);
                 break;
             case 0x02: // PCT Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, PCT min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, PCT min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
+                this._devicesModes[port][mode].pct.min=message.readFloatLE(6);
+                this._devicesModes[port][mode].pct.max=message.readFloatLE(10);
                 break;
             case 0x03: // SI Range
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, SI min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
+                this._devicesModes[port][mode].si.min=message.readFloatLE(6);
+                this._devicesModes[port][mode].si.max=message.readFloatLE(10);
                 break;
             case 0x04: // SI Symbol
-                modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${message.slice(6, message.length).toString()}`);
+                const symbol = message.slice(6, message.length).toString().replace(/\0/g, '');
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, SI symbol ${symbol}`);
+                this._devicesModes[port][mode].si.symbol=symbol;
                 break;
             case 0x80: // Value Format
                 const numValues = message[6];
-                const dataType = ["8bit", "16bit", "32bit", "float"][message[7]];
+                const dataType = message[7];
                 const totalFigures = message[8];
                 const decimals = message[9];
-                modeInfoDebug(`Port ${port}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
+                modeInfoDebug(`Port ${portHex}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
+                this._devicesModes[port][mode].values.count=numValues;
+                this._devicesModes[port][mode].values.type=dataType;
+
+                if (this._autoParse && mode === this._devicesModes[port].length - 1) {
+                    const device = this._getDeviceByPortId(port);
+
+                    if (device) {
+                        device.setModes(this._devicesModes[port]);
+                    }
+                }
         }
     }
 

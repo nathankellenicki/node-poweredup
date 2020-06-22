@@ -46,11 +46,13 @@ export class PoweredUP extends EventEmitter {
 
 
     private _connectedHubs: {[uuid: string]: BaseHub} = {};
+    private _autoParse: boolean = false;
 
 
-    constructor () {
+    constructor ({ autoParse = false} = {}) {
         super();
         this._discoveryEventHandler = this._discoveryEventHandler.bind(this);
+        this._autoParse = autoParse;
     }
 
 
@@ -153,17 +155,17 @@ export class PoweredUP extends EventEmitter {
         let hub: BaseHub;
 
         if (WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
-            hub = new WeDo2SmartHub(device);
+            hub = new WeDo2SmartHub(device, this._autoParse);
         } else if (MoveHub.IsMoveHub(peripheral)) {
-            hub = new MoveHub(device);
+            hub = new MoveHub(device, this._autoParse);
         } else if (Hub.IsHub(peripheral)) {
-            hub = new Hub(device);
+            hub = new Hub(device, this._autoParse);
         } else if (RemoteControl.IsRemoteControl(peripheral)) {
-            hub = new RemoteControl(device);
+            hub = new RemoteControl(device, this._autoParse);
         } else if (DuploTrainBase.IsDuploTrainBase(peripheral)) {
-            hub = new DuploTrainBase(device);
+            hub = new DuploTrainBase(device, this._autoParse);
         } else if (TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
-            hub = new TechnicMediumHub(device);
+            hub = new TechnicMediumHub(device, this._autoParse);
         } else {
             return;
         }

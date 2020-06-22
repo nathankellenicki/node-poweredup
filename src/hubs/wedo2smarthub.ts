@@ -34,8 +34,8 @@ export class WeDo2SmartHub extends BaseHub {
     private _lastTiltY: number = 0;
 
 
-    constructor (device: IBLEAbstraction) {
-        super(device, PortMap, Consts.HubType.WEDO2_SMART_HUB);
+    constructor (device: IBLEAbstraction, autoParse: boolean) {
+        super(device, PortMap, Consts.HubType.WEDO2_SMART_HUB, autoParse);
         debug("Discovered WeDo 2.0 Smart Hub");
     }
 

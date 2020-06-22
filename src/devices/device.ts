@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IMode } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -13,10 +13,12 @@ export class Device extends EventEmitter {
     public autoSubscribe: boolean = true;
     public values: {[event: string]: any} = {};
 
+    protected _modes: IMode[] = [];
     protected _mode: number | undefined;
     protected _busy: boolean = false;
     protected _finished: (() => void) | undefined;
 
+    private _ready: boolean = false;
     private _hub: IDeviceInterface;
     private _portId: number;
     private _connected: boolean = true;
@@ -37,7 +39,7 @@ export class Device extends EventEmitter {
         this._isVirtualPort = this.hub.isPortVirtual(portId);
 
         const eventAttachListener = (event: string) => {
-            if (event === "detach") {
+            if (event === "detach" || !this._ready) {
                 return;
             }
             if (this.autoSubscribe) {
@@ -64,6 +66,11 @@ export class Device extends EventEmitter {
         this.hub.on("newListener", eventAttachListener);
         this.on("newListener", eventAttachListener);
         this.hub.on("detach", deviceDetachListener);
+
+        if (!this.hub.autoParse) {
+            this._ready = true;
+            this.emit('ready');
+        }
     }
 
     /**
@@ -126,6 +133,14 @@ export class Device extends EventEmitter {
         return this._isVirtualPort;
     }
 
+    /**
+     * @readonly
+     * @property {string[]} events List of availlable events.
+     */
+    public get events () {
+        return Object.keys(this._modeMap);
+    }
+
     public writeDirect (mode: number, data: Buffer) {
         if (this.isWeDo2SmartHub) {
             return this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
@@ -153,6 +168,33 @@ export class Device extends EventEmitter {
 
     public receive (message: Buffer) {
         this.notify("receive", { message });
+
+        const mode = this._mode;
+        if (mode === undefined) {
+            return;
+        }
+        const { name, values } = this._modes[mode];
+        const valueSize = Consts.ValueTypeSize[values.type];
+        const data = [];
+
+        for(let v = 0; v < values.count; v++) {
+            const offset = 4 + v * valueSize;
+            switch(values.type) {
+                case Consts.ValueType.Int8:
+                    data.push(message.readInt8(offset));
+                    break;
+                case Consts.ValueType.Int16:
+                    data.push(message.readInt16LE(offset));
+                    break;
+                case Consts.ValueType.Int32:
+                    data.push(message.readInt32LE(offset));
+                    break;
+                case Consts.ValueType.Float:
+                    data.push(message.readFloatLE(offset));
+                    break;
+            }
+        }
+        this.notify(name, data);
     }
 
     public notify (event: string, values: any) {
@@ -192,4 +234,15 @@ export class Device extends EventEmitter {
         }
     }
 
+    public setModes(modes: IMode[]) {
+        this._modes = modes;
+
+        this._modeMap = modes.reduce((map: {[name: string]: number}, mode, index) => {
+            map[mode.name] = index;
+            return map;
+        }, {});
+
+        this._ready = true;
+        this.emit('ready');
+    }
 }

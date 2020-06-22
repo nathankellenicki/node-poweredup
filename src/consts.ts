@@ -634,4 +634,23 @@ export enum PortInputFormatSetupSubCommand {
 }
 
 
+/**
+ * @typedef ValueType
+ * @param {number} Int8 0x01
+ * @param {number} Int16 0x02
+ * @param {number} Int32 0x03
+ * @param {number} Float 0x04
+ */
+export enum ValueType {
+    Int8 = 0x00,
+    Int16 = 0x01,
+    Int32 = 0x02,
+    Float = 0x03,
+}
 
+export const ValueTypeSize = {
+    [ValueType.Int8]: 1,
+    [ValueType.Int16]: 2,
+    [ValueType.Int32]: 4,
+    [ValueType.Float]: 4,
+}

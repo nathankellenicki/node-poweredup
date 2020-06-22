@@ -15,6 +15,10 @@ export class TechnicMediumHubGyroSensor extends Device {
     }
 
     public receive (message: Buffer) {
+        if (this.hub.autoParse) {
+            return super.receive(message);
+        }
+
         const mode = this._mode;
 
         switch (mode) {

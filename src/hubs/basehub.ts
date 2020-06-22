@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction, IMode } from "../interfaces";
 
 import { ColorDistanceSensor } from "../devices/colordistancesensor";
 import { CurrentSensor } from "../devices/currentsensor";
@@ -47,6 +47,8 @@ const debug = Debug("basehub");
 export class BaseHub extends EventEmitter {
 
     protected _attachedDevices: {[portId: number]: Device} = {};
+    protected _autoParse: boolean = false;
+    protected _devicesModes: {[portId: number]: IMode[]} = {};
 
     protected _name: string = "";
     protected _firmwareVersion: string = "0.0.00.0000";
@@ -62,12 +64,13 @@ export class BaseHub extends EventEmitter {
     private _type: Consts.HubType;
     private _attachCallbacks: ((device: Device) => boolean)[] = [];
 
-    constructor (bleDevice: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN) {
+    constructor (bleDevice: IBLEAbstraction, portMap: {[portName: string]: number} = {}, type: Consts.HubType = Consts.HubType.UNKNOWN, autoParse: boolean = false) {
         super();
         this.setMaxListeners(23); // Technic Medium Hub has 9 built in devices + 4 external ports. Node.js throws a warning after 10 attached event listeners.
         this._type = type;
         this._bleDevice = bleDevice;
         this._portMap = Object.assign({}, portMap);
+        this._autoParse = autoParse;
         bleDevice.on("disconnect", () => {
             /**
              * Emits when the hub is disconnected.
@@ -156,6 +159,15 @@ export class BaseHub extends EventEmitter {
      */
     public get rssi () {
         return this._rssi;
+    }
+
+
+    /**
+     * @readonly
+     * @property {boolean} autoParse Load modes from port information messages
+     */
+    public get autoParse () {
+        return this._autoParse;
     }
 
 
@@ -333,21 +345,24 @@ export class BaseHub extends EventEmitter {
 
     protected _attachDevice (device: Device) {
         this._attachedDevices[device.portId] = device;
-        /**
-         * Emits when a device is attached to the Hub.
-         * @event Hub#attach
-         * @param {Device} device
-         */
-        this.emit("attach", device);
-        debug(`Attached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
 
-        let i = this._attachCallbacks.length;
-        while (i--) {
-            const callback = this._attachCallbacks[i];
-            if (callback(device)) {
-                this._attachCallbacks.splice(i, 1);
+        device.on('ready', () => {
+            /**
+             * Emits when a device is attached to the Hub.
+             * @event Hub#attach
+             * @param {Device} device
+             */
+            this.emit("attach", device);
+            debug(`Attached device type ${device.type} (${Consts.DeviceTypeNames[device.type]}) on port ${device.portName} (${device.portId})`);
+
+            let i = this._attachCallbacks.length;
+            while (i--) {
+                const callback = this._attachCallbacks[i];
+                if (callback(device)) {
+                    this._attachCallbacks.splice(i, 1);
+                }
             }
-        }
+        })
     }
 
 
