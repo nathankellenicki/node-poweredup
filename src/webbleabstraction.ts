@@ -99,11 +99,14 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
             return callback(buf);
         };
         this._characteristics[uuid].addEventListener("characteristicvaluechanged", this._listeners[uuid]);
-        for (const data of this._mailbox) {
+
+        const mailbox = Array.from(this._mailbox);
+        this._mailbox = [];
+        for (const data of mailbox) {
             debug("Replayed from mailbox (LPF2_ALL)", data);
             callback(data);
         }
-        this._mailbox = [];
+
         this._characteristics[uuid].startNotifications();
     }
 
