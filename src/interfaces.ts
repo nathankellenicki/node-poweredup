@@ -29,6 +29,8 @@ export interface IDeviceInterface extends EventEmitter {
 
 export interface IMode {
     name: string;
+    input: boolean;
+    output: boolean;
     raw: {
         min: number;
         max: number;

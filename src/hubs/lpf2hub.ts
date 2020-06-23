@@ -319,6 +319,8 @@ export class LPF2Hub extends BaseHub {
         for (let i = 0; i < count; i++) {
             this._devicesModes[port][i] = {
                 name: '',
+                input: input[i] === '1',
+                output: output[i] === '1',
                 raw: { min: 0, max: 255 },
                 pct: { min: 0, max: 100 },
                 si: { min: 0, max: 255, symbol: '' },

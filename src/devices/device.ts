@@ -135,10 +135,18 @@ export class Device extends EventEmitter {
 
     /**
      * @readonly
-     * @property {string[]} events List of availlable events.
+     * @property {string[]} events List of availlable events (input modes).
      */
     public get events () {
-        return Object.keys(this._modeMap);
+        return this._modes.filter(mode => mode.input).map(({ name }) => name);
+    }
+
+    /**
+     * @readonly
+     * @property {string[]} writeModes List of availlable write (output modes).
+     */
+    public get writeModes () {
+        return this._modes.filter(mode => mode.output).map(({ name }) => name);
     }
 
     public writeDirect (mode: number, data: Buffer) {
@@ -147,6 +155,36 @@ export class Device extends EventEmitter {
         } else {
             return this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL);
         }
+    }
+
+    public autoparseWriteDirect (mode: string, data: number[]) {
+        if (!this.hub.autoParse) return;
+        const modeId = this._modeMap[mode];
+        if (modeId === undefined) return;
+
+        const { values } = this._modes[modeId];
+        const valueSize = Consts.ValueTypeSize[values.type];
+
+        const buf = Buffer.alloc(values.count * valueSize);
+        for(let v = 0; v < values.count; v++) {
+            const offset =  v * valueSize;
+            switch(values.type) {
+                case Consts.ValueType.Int8:
+                    buf.writeInt8(data[v] || 0, offset);
+                    break;
+                case Consts.ValueType.Int16:
+                    buf.writeInt16LE(data[v] || 0, offset);
+                    break;
+                case Consts.ValueType.Int32:
+                    buf.writeInt32LE(data[v] || 0, offset);
+                    break;
+                case Consts.ValueType.Float:
+                    buf.writeFloatLE(data[v] || 0, offset);
+                    break;
+            }
+        }
+
+        return this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, modeId]), buf]), Consts.BLECharacteristic.LPF2_ALL);
     }
 
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL) {
