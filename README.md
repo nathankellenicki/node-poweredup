@@ -66,7 +66,7 @@ In addition, the Hubs themselves have certain built-in features which this libra
 
 * The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython and Bluetooth Classic to develop for this Hub.
 
-* On most unix systems, you need root permissions to access bluetooth. You may want to [grant nodejs the access to bluetooth adapter](https://github.com/abandonware/noble#running-without-rootsudo-linux-specific)
+* On most Unix systems, you need root permissions to access Bluetooth devices. You may want to [grant the node executable access to the Bluetooth adapter](https://github.com/abandonware/noble#running-without-rootsudo-linux-specific)
 
 ### Documentation
 
