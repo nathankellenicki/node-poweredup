@@ -157,7 +157,7 @@ export class Device extends EventEmitter {
         }
     }
 
-    public autoparseWriteDirect (mode: string, data: number[]) {
+    public autoparseWriteDirect (mode: string, ...data: number[]) {
         if (!this.hub.autoParse) return;
         const modeId = this._modeMap[mode];
         if (modeId === undefined) return;
@@ -184,7 +184,7 @@ export class Device extends EventEmitter {
             }
         }
 
-        return this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, modeId]), buf]), Consts.BLECharacteristic.LPF2_ALL);
+        return this.writeDirect(modeId, buf);
     }
 
     public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL) {
