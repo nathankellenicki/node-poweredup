@@ -4,6 +4,8 @@ import { IDeviceInterface, IMode } from "../interfaces";
 
 import * as Consts from "../consts";
 
+import { normalize } from "../utils";
+
 /**
  * @class Device
  * @extends EventEmitter
@@ -211,7 +213,7 @@ export class Device extends EventEmitter {
         if (mode === undefined) {
             return;
         }
-        const { name, values } = this._modes[mode];
+        const { name, raw, pct, si, values } = this._modes[mode];
         const valueSize = Consts.ValueTypeSize[values.type];
         const data = [];
 
@@ -232,7 +234,12 @@ export class Device extends EventEmitter {
                     break;
             }
         }
-        this.notify(name, data);
+
+        this.notify(name, {
+            raw: data,
+            pct: data.map(value => normalize(value, {raw, out: pct})),
+            si: data.map(value => normalize(value, {raw, out: si}))
+        });
     }
 
     public notify (event: string, values: any) {

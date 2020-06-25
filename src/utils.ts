@@ -12,16 +12,24 @@ export const toBin = (value: number, length: number = 8) => {
     return value.toString(2).padStart(length, "0");
 };
 
+export const clamp = (value:number, { min = -100, max = 100 } = {}) =>{
+    return Math.max(Math.min(value, max), min);
+}
+
+export const normalize = (value: number, { raw = {min: 0, max: 100}, out = { min: 0, max: 100}} = {}) => {
+    const ranges = {
+        raw: raw.max - raw.min,
+        out: out.max - out.min,
+    };
+
+    return (clamp(value, raw) - raw.min) / ranges.raw * ranges.out + out.min;
+}
+
 export const mapSpeed = (speed: number) => {
     if (speed === 127) {
         return 127;
     }
-    if (speed > 100) {
-        speed = 100;
-    } else if (speed < -100) {
-        speed = -100;
-    }
-    return speed;
+    return clamp(speed);
 };
 
 export const decodeVersion = (version: number) => {
