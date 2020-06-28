@@ -269,18 +269,22 @@ export class Device extends EventEmitter {
         const output = toBin(message.readUInt16LE(9), this._modeCount);
         modeInfoDebug(`Port ${toHex(this.portId)}, total modes ${this._modeCount}, input modes ${input}, output modes ${output}`);
 
-        this._modes = new Array(+this._modeCount);
+        if (this.autoParse) {
+            this._modes = new Array(+this._modeCount);
+        }
 
         for (let i = 0; i < this._modeCount; i++) {
-            this._modes[i] = {
-                name: '',
-                input: input[this._modeCount - i - 1] === '1',
-                output: output[this._modeCount - i - 1] === '1',
-                raw: { min: 0, max: 255 },
-                pct: { min: 0, max: 100 },
-                si: { min: 0, max: 255, symbol: '' },
-                values: { count: 1, type: Consts.ValueType.Int8 },
-            };
+            if (this.autoParse) {
+                this._modes[i] = {
+                    name: '',
+                    input: input[this._modeCount - i - 1] === '1',
+                    output: output[this._modeCount - i - 1] === '1',
+                    raw: { min: 0, max: 255 },
+                    pct: { min: 0, max: 100 },
+                    si: { min: 0, max: 255, symbol: '' },
+                    values: { count: 1, type: Consts.ValueType.Int8 },
+                };
+            }
             await this._sendModeInformationRequest(i, 0x00); // Mode Name
             await this._sendModeInformationRequest(i, 0x01); // RAW Range
             await this._sendModeInformationRequest(i, 0x02); // PCT Range
@@ -302,37 +306,47 @@ export class Device extends EventEmitter {
             case 0x00: { // Mode Name
                 const name = message.slice(6, message.length).toString().replace(/\0/g, '');
                 modeInfoDebug(`${debugHeader} name ${name}`);
-                this._modes[mode].name=name;
+                if (this.autoParse) {
+                    this._modes[mode].name=name;
+                }
                 break;
             }
             case 0x01: { // RAW Range
                 const min = message.readFloatLE(6);
                 const max = message.readFloatLE(10);
                 modeInfoDebug(`${debugHeader} RAW min ${min}, max ${max}`);
-                this._modes[mode].raw.min=min
-                this._modes[mode].raw.max=max;
+                if (this.autoParse) {
+                    this._modes[mode].raw.min=min
+                    this._modes[mode].raw.max=max;
+                }
                 break;
             }
             case 0x02: { // PCT Range
                 const min = message.readFloatLE(6);
                 const max = message.readFloatLE(10);
                 modeInfoDebug(`${debugHeader} PCT min ${min}, max ${max}`);
-                this._modes[mode].pct.min=min;
-                this._modes[mode].pct.max=max;
+                if (this.autoParse) {
+                    this._modes[mode].pct.min=min;
+                    this._modes[mode].pct.max=max;
+                }
                 break;
             }
             case 0x03: {// SI Range
                 const min = message.readFloatLE(6);
                 const max = message.readFloatLE(10);
                 modeInfoDebug(`${debugHeader} SI min ${min}, max ${max}`);
-                this._modes[mode].si.min=min;
-                this._modes[mode].si.max=max;
+                if (this.autoParse) {
+                    this._modes[mode].si.min=min;
+                    this._modes[mode].si.max=max;
+                }
                 break;
             }
             case 0x04: {// SI Symbol
                 const symbol = message.slice(6, message.length).toString().replace(/\0/g, '');
                 modeInfoDebug(`${debugHeader} SI symbol ${symbol}`);
-                this._modes[mode].si.symbol=symbol;
+                if (this.autoParse) {
+                    this._modes[mode].si.symbol=symbol;
+                }
                 break;
             }
             case 0x80: {// Value Format
@@ -341,11 +355,13 @@ export class Device extends EventEmitter {
                 const totalFigures = message[8];
                 const decimals = message[9];
                 modeInfoDebug(`${debugHeader} Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
+                if (this.autoParse) {
                 this._modes[mode].values.count=numValues;
                 this._modes[mode].values.type=dataType;
 
-                if (this.autoParse && mode === this._modeCount - 1) {
-                    this._init();
+                    if (mode === this._modeCount - 1) {
+                        this._init();
+                    }
                 }
             }
         }
