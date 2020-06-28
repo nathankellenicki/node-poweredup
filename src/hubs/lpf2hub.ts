@@ -256,7 +256,7 @@ export class LPF2Hub extends BaseHub {
                 modeInfoDebug(`Port ${toHex(portId)}, hardware version ${hwVersion}, software version ${swVersion}`);
             }
 
-            if (modeInfoDebug.enabled || this._autoParse || !(message[5] in Consts.DeviceType)) {
+            if (modeInfoDebug.enabled || this._autoParse || deviceType !== Consts.DeviceType.UNKNOWN) {
                 await this._sendPortInformationRequest(portId);
             }
 
