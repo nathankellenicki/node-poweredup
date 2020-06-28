@@ -124,7 +124,7 @@ export class LPF2Hub extends BaseHub {
         }
 
         const len = this._messageBuffer[0];
-        if (len >= this._messageBuffer.length) {
+        if (len <= this._messageBuffer.length) {
 
             const message = this._messageBuffer.slice(0, len);
             this._messageBuffer = this._messageBuffer.slice(len);
