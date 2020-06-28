@@ -69,7 +69,7 @@ export class Device extends EventEmitter {
         this.on("newListener", eventAttachListener);
         this.hub.on("detach", deviceDetachListener);
 
-        if (!this.autoparse) {
+        if (!this.autoParse) {
             this._ready = true;
             this.emit('ready');
         }
@@ -159,8 +159,8 @@ export class Device extends EventEmitter {
         }
     }
 
-    public autoparseWriteDirect (mode: string, ...data: number[]) {
-        if (!this.autoparse) return;
+    public autoParseWriteDirect (mode: string, ...data: number[]) {
+        if (!this.autoParse) return;
         const modeId = this._modeMap[mode];
         if (modeId === undefined) return;
 
@@ -291,7 +291,7 @@ export class Device extends EventEmitter {
         this.emit('ready');
     }
 
-    private get autoparse() {
+    private get autoParse() {
         return this.hub.autoParse || this._type ===  Consts.DeviceType.UNKNOWN;
     }
 }
