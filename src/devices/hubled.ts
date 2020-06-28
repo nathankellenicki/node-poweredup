@@ -73,8 +73,8 @@ export class HubLED extends Device {
                 this.send(Buffer.from([0x06, 0x17, 0x01, 0x02]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
                 this.send(Buffer.from([0x06, 0x04, 0x03, red, green, blue]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
             } else {
-                this.subscribe(this._modeMap["COL O"]);
-                this.writeDirect(this._modeMap["COL O"], Buffer.from([red, green, blue]));
+                this.subscribe(this._modeMap["RGB O"]);
+                this.writeDirect(this._modeMap["RGB O"], Buffer.from([red, green, blue]));
             }
             return resolve();
         });
