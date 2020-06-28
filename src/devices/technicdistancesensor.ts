@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,41 +11,84 @@ import * as Consts from "../consts";
 export class TechnicDistanceSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_DISTANCE_SENSOR);
-    }
+        const modes = [
+            {
+                name: "distance",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 2500 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 2500, symbol: "mm" },
+                values: { count: 1, type: Consts.ValueType.Int16 }
+            },
+            {
+                name: "fastDistance",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 320 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 320, symbol: "mm" },
+                values: { count: 1, type: Consts.ValueType.Int16 }
+            },
+            {
+                name: "UNKNOW-2",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "UNKNOW-3",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "UNKNOW-4",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "brightness",
+                input: false,
+                output: true,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "" },
+                values: { count: 4, type: Consts.ValueType.Int8 }
+            }
+        ]
+        super(hub, portId, modes, Consts.DeviceType.TECHNIC_DISTANCE_SENSOR);
 
-    public receive (message: Buffer) {
-        if (this.hub.autoParse) {
-            return super.receive(message);
-        }
-
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.DISTANCE:
-                const distance = message.readUInt16LE(4);
-
-                /**
-                 * Emits when the detected distance changes (Slow sampling covers 40mm to 2500mm).
-                 * @event TechnicDistanceSensor#distance
-                 * @type {object}
-                 * @param {number} distance Distance, from 40 to 2500mm
-                 */
-                this.notify("distance", { distance });
-                break;
-
-            case Mode.FAST_DISTANCE:
-                const fastDistance = message.readUInt16LE(4);
-
-                /**
-                 * Emits when the detected distance changes (Fast sampling covers 50mm to 320mm).
-                 * @event TechnicDistanceSensor#fastDistance
-                 * @type {object}
-                 * @param {number} fastDistance Distance, from 50 to 320mm
-                 */
-                this.notify("fastDistance", { fastDistance });
-                break;
-        }
+        this._eventHandlers.distance = (data: IEventData) => {
+            const [distance] = data.raw;
+            /**
+             * Emits when the detected distance changes (Slow sampling covers 40mm to 2500mm).
+             * @event TechnicDistanceSensor#distance
+             * @type {object}
+             * @param {number} distance Distance, from 40 to 2500mm
+             */
+            this.notify("distance", { distance });
+        };
+        this._eventHandlers.fastDistance = (data: IEventData) => {
+            const [fastDistance] = data.raw;
+            /**
+             * Emits when the detected distance changes (Fast sampling covers 50mm to 320mm).
+             * @event TechnicDistanceSensor#fastDistance
+             * @type {object}
+             * @param {number} fastDistance Distance, from 50 to 320mm
+             */
+            this.notify("fastDistance", { fastDistance });
+        };
     }
 
     /**

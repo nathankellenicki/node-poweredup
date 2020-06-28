@@ -147,20 +147,16 @@ export class LPF2Hub extends BaseHub {
                     this._parsePortMessage(message);
                     break;
                 }
-                case 0x43: {
-                    this._parsePortInformationResponse(message);
-                    break;
-                }
-                case 0x44: {
-                    this._parseModeInformationResponse(message);
-                    break;
-                }
-                case 0x45: {
-                    this._parseSensorMessage(message);
-                    break;
-                }
-                case 0x82: {
-                    this._parsePortAction(message);
+                case 0x43: // PortInformationResponse
+                case 0x44: // ModeInformationResponse
+                case 0x45: // SensorMessage
+                case 0x82: { // PortAction
+                    const portId = message[3];
+                    const device = this._getDeviceByPortId(portId);
+
+                    if (device) {
+                        device.receive(message);
+                    }
                     break;
                 }
             }
@@ -240,13 +236,14 @@ export class LPF2Hub extends BaseHub {
     }
 
     private async _parsePortMessage (message: Buffer) {
-
         const portId = message[3];
         const event = message[4];
         const deviceType = event ? message.readUInt16LE(5) : 0;
 
         // Handle device attachments
         if (event === 0x01) {
+            const device = this._createDevice(deviceType, portId);
+            this._attachDevice(device);
 
             if (modeInfoDebug.enabled) {
                 const deviceTypeName = Consts.DeviceTypeNames[message[5]] || "Unknown";
@@ -260,8 +257,6 @@ export class LPF2Hub extends BaseHub {
                 await this._sendPortInformationRequest(portId);
             }
 
-            const device = this._createDevice(deviceType, portId);
-            this._attachDevice(device);
 
         // Handle device detachments
         } else if (event === 0x00) {
@@ -297,126 +292,4 @@ export class LPF2Hub extends BaseHub {
         await this.send(Buffer.from([0x21, port, 0x01]), Consts.BLECharacteristic.LPF2_ALL);
         await this.send(Buffer.from([0x21, port, 0x02]), Consts.BLECharacteristic.LPF2_ALL); // Mode combinations
     }
-
-
-    private async _parsePortInformationResponse (message: Buffer) {
-        const port = message[3];
-        if (message[4] === 2) {
-            const modeCombinationMasks: number[] = [];
-            for (let i = 5; i < message.length; i += 2) {
-                modeCombinationMasks.push(message.readUInt16LE(i));
-            }
-            modeInfoDebug(`Port ${toHex(port)}, mode combinations [${modeCombinationMasks.map((c) => toBin(c, 0)).join(", ")}]`);
-            return;
-        }
-        const count = message[6];
-        const input = toBin(message.readUInt16LE(7), count);
-        const output = toBin(message.readUInt16LE(9), count);
-        modeInfoDebug(`Port ${toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
-
-        this._devicesModes[port] = new Array(+count);
-
-        for (let i = 0; i < count; i++) {
-            this._devicesModes[port][i] = {
-                name: '',
-                input: input[i] === '1',
-                output: output[i] === '1',
-                raw: { min: 0, max: 255 },
-                pct: { min: 0, max: 100 },
-                si: { min: 0, max: 255, symbol: '' },
-                values: { count: 1, type: Consts.ValueType.Int8 },
-            };
-            await this._sendModeInformationRequest(port, i, 0x00); // Mode Name
-            await this._sendModeInformationRequest(port, i, 0x01); // RAW Range
-            await this._sendModeInformationRequest(port, i, 0x02); // PCT Range
-            await this._sendModeInformationRequest(port, i, 0x03); // SI Range
-            await this._sendModeInformationRequest(port, i, 0x04); // SI Symbol
-            await this._sendModeInformationRequest(port, i, 0x80); // Value Format
-        }
-    }
-
-
-    private _sendModeInformationRequest (port: number, mode: number, type: number) {
-        return this.send(Buffer.from([0x22, port, mode, type]), Consts.BLECharacteristic.LPF2_ALL);
-    }
-
-
-    private _parseModeInformationResponse (message: Buffer) {
-        const port = message[3];
-        const portHex = toHex(port);
-        const mode = message[4];
-        const type = message[5];
-        switch (type) {
-            case 0x00: // Mode Name
-                const name = message.slice(6, message.length).toString().replace(/\0/g, '');
-                modeInfoDebug(`Port ${portHex}, mode ${mode}, name ${name}`);
-                this._devicesModes[port][mode].name=name;
-                break;
-            case 0x01: // RAW Range
-                modeInfoDebug(`Port ${portHex}, mode ${mode}, RAW min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
-                this._devicesModes[port][mode].raw.min=message.readFloatLE(6);
-                this._devicesModes[port][mode].raw.max=message.readFloatLE(10);
-                break;
-            case 0x02: // PCT Range
-                modeInfoDebug(`Port ${portHex}, mode ${mode}, PCT min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
-                this._devicesModes[port][mode].pct.min=message.readFloatLE(6);
-                this._devicesModes[port][mode].pct.max=message.readFloatLE(10);
-                break;
-            case 0x03: // SI Range
-                modeInfoDebug(`Port ${portHex}, mode ${mode}, SI min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
-                this._devicesModes[port][mode].si.min=message.readFloatLE(6);
-                this._devicesModes[port][mode].si.max=message.readFloatLE(10);
-                break;
-            case 0x04: // SI Symbol
-                const symbol = message.slice(6, message.length).toString().replace(/\0/g, '');
-                modeInfoDebug(`Port ${portHex}, mode ${mode}, SI symbol ${symbol}`);
-                this._devicesModes[port][mode].si.symbol=symbol;
-                break;
-            case 0x80: // Value Format
-                const numValues = message[6];
-                const dataType = message[7];
-                const totalFigures = message[8];
-                const decimals = message[9];
-                modeInfoDebug(`Port ${portHex}, mode ${mode}, Value ${numValues} x ${dataType}, Decimal format ${totalFigures}.${decimals}`);
-                this._devicesModes[port][mode].values.count=numValues;
-                this._devicesModes[port][mode].values.type=dataType;
-
-                if (this._autoParse && mode === this._devicesModes[port].length - 1) {
-                    const device = this._getDeviceByPortId(port);
-
-                    if (device) {
-                        device.setModes(this._devicesModes[port]);
-                    }
-                }
-        }
-    }
-
-
-    private _parsePortAction (message: Buffer) {
-
-        const portId = message[3];
-        const device = this._getDeviceByPortId(portId);
-
-        if (device) {
-            const finished = (message[4] === 0x0a);
-            if (finished) {
-                device.finish();
-            }
-        }
-
-    }
-
-
-    private _parseSensorMessage (message: Buffer) {
-
-        const portId = message[3];
-        const device = this._getDeviceByPortId(portId);
-
-        if (device) {
-            device.receive(message);
-        }
-
-    }
-
-
 }

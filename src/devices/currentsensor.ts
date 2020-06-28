@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,48 +11,42 @@ import * as Consts from "../consts";
 export class CurrentSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.CURRENT_SENSOR);
-    }
+        const modes = [
+            {
+                name: "current", // CUR L
+                input: true,
+                output: false,
+                raw: {min: 0, max: MaxCurrentRaw[hub.type] || MaxCurrentRaw[Consts.HubType.UNKNOWN]},
+                pct: {min: 0, max: 100},
+                si: {min: 0, max: MaxCurrentValue[hub.type] || MaxCurrentValue[Consts.HubType.UNKNOWN], symbol: "mA"},
+                values: {count: 1, type: Consts.ValueType.Int16}
+            },
+            {
+                name: "CUR S",
+                input: true,
+                output: false,
+                raw: {min: 0, max: MaxCurrentRaw[hub.type] || MaxCurrentRaw[Consts.HubType.UNKNOWN]},
+                pct: {min: 0, max: 100},
+                si: {min: 0, max: MaxCurrentValue[hub.type] || MaxCurrentValue[Consts.HubType.UNKNOWN], symbol: "mA"},
+                values: {count: 1, type: Consts.ValueType.Int16}
+            }
+        ]
 
-    public receive (message: Buffer) {
-        const mode = this.mode;
+        super(hub, portId, modes, Consts.DeviceType.CURRENT_SENSOR);
 
-        switch (mode) {
-            case Mode.CURRENT:
-                if (this.isWeDo2SmartHub) {
-                    const current =  message.readInt16LE(2) / 1000;
-                    this.notify("current", { current });
-                } else {
-                    let maxCurrentValue = MaxCurrentValue[this.hub.type];
-                    if (maxCurrentValue === undefined) {
-                        maxCurrentValue = MaxCurrentValue[Consts.HubType.UNKNOWN];
-                    }
-                    let maxCurrentRaw = MaxCurrentRaw[this.hub.type];
-                    if (maxCurrentRaw === undefined) {
-                        maxCurrentRaw = MaxCurrentRaw[Consts.HubType.UNKNOWN];
-                    }
-                    const current = message.readUInt16LE(4) * maxCurrentValue / maxCurrentRaw;
-                    /**
-                     * Emits when a current change is detected.
-                     * @event CurrentSensor#current
-                     * @type {object}
-                     * @param {number} current
-                     */
-                    this.notify("current", { current });
-                }
-                break;
-        }
+        this._eventHandlers.current = (data: IEventData) => {
+            const [current] = data.si;
+            /**
+             * Emits when a current change is detected.
+             * @event CurrentSensor#current
+             * @type {object}
+             * @param {number} current
+             */
+            this.notify("current", { current });
+        };
     }
 
 }
-
-export enum Mode {
-    CURRENT = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "current": Mode.CURRENT
-};
 
 const MaxCurrentValue: {[hubType: number]: number} = {
     [Consts.HubType.UNKNOWN]: 2444,

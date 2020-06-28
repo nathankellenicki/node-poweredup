@@ -1,9 +1,42 @@
-import { TachoMotor } from "./tachomotor";
+import { TachoMotor, modes as TachoMotorModes } from "./tachomotor";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IMode, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 import { mapSpeed, normalizeAngle, roundAngleToNearest90 } from "../utils";
+
+export const modes = TachoMotorModes.concat([
+    // POWER
+    // SPEED/speed
+    // POS/rotate
+    {
+        name: "absolute", // APOS
+        input: true,
+        output: true,
+        raw: { min: -360, max: 360 },
+        pct: { min: -100, max: 100 },
+        si: { min: -360, max: 360, symbol: "DEG" },
+        values: { count: 1, type: Consts.ValueType.Int16 }
+    },
+    {
+        name: "LOAD",
+        input: true,
+        output: true,
+        raw: { min: 0, max: 127 },
+        pct: { min: 0, max: 100 },
+        si: { min: 0, max: 127, symbol: "PCT" },
+        values: { count: 1, type: Consts.ValueType.Int8 }
+    },
+    {
+        name: "CALIB",
+        input: false,
+        output: false,
+        raw: { min: 0, max: 512 },
+        pct: { min: 0, max: 100 },
+        si: { min: 0, max: 512, symbol: "RAW" },
+        values: { count: 3, type: Consts.ValueType.Int16 }
+    }
+])
 
 /**
  * @class AbsoluteMotor
@@ -11,33 +44,21 @@ import { mapSpeed, normalizeAngle, roundAngleToNearest90 } from "../utils";
  */
 export class AbsoluteMotor extends TachoMotor {
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, Object.assign({}, modeMap, ModeMap), type);
+    constructor (hub: IDeviceInterface, portId: number, _modes: IMode[] = [], type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+        super(hub, portId, _modes.length > 0 ? _modes : modes, type);
+
+        this._eventHandlers.rotate = (data: IEventData) => {
+            const [angle] = data.raw;
+            /**
+             * Emits when a the motors absolute position is changed.
+             * @event AbsoluteMotor#absolute
+             * @type {object}
+             * @param {number} absolute
+             */
+            this.notify("absolute", { angle });
+        };
     }
 
-    public receive (message: Buffer) {
-        if (this.hub.autoParse) {
-            return super.receive(message);
-        }
-
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.ABSOLUTE:
-                const angle = normalizeAngle(message.readInt16LE(this.isWeDo2SmartHub ? 2 : 4));
-                /**
-                 * Emits when a the motors absolute position is changed.
-                 * @event AbsoluteMotor#absolute
-                 * @type {object}
-                 * @param {number} absolute
-                 */
-                this.notify("absolute", { angle });
-                break;
-            default:
-                super.receive(message);
-                break;
-        }
-    }
 
     /**
      * Rotate a motor by a given angle.
@@ -121,15 +142,4 @@ export class AbsoluteMotor extends TachoMotor {
         });
     }
 
-
 }
-
-export enum Mode {
-    ROTATION = 0x02,
-    ABSOLUTE = 0x03
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "rotate": Mode.ROTATION,
-    "absolute": Mode.ABSOLUTE
-};

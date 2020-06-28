@@ -366,7 +366,7 @@ export class BaseHub extends EventEmitter {
         }
         this._attachedDevices[device.portId] = device;
 
-        device.on('ready', () => {
+        const deviceAttach = () => {
             /**
              * Emits when a device is attached to the Hub.
              * @event Hub#attach
@@ -382,7 +382,13 @@ export class BaseHub extends EventEmitter {
                     this._attachCallbacks.splice(i, 1);
                 }
             }
-        })
+        };
+
+        if (device.isReady) {
+            deviceAttach()
+        } else {
+            device.once('ready', deviceAttach)
+        }
     }
 
 

@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,82 +11,149 @@ import * as Consts from "../consts";
 export class ColorDistanceSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+        const modes = [
+            {
+                name: "color", // COLOR
+                input: true,
+                output: false,
+                raw: { min: 0, max: 10 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 10, symbol: "IDX" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "distance", // PROX
+                input: true,
+                output: false,
+                raw: { min: 0, max: 10 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 10, symbol: "DIS" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "COUNT",
+                input: false,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "CNT" },
+                values: { count: 1, type: Consts.ValueType.Int32 }
+            },
+            {
+                name: "REFLT",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "PCT" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "AMBI",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "PCT" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "COL O",
+                input: false,
+                output: true,
+                raw: { min: 0, max: 10 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 10, symbol: "IDX" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "RGB I",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 1023 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 1023, symbol: "RAW" },
+                values: { count: 3, type: Consts.ValueType.Int16 }
+            },
+            {
+                name: "IR Tx",
+                input: false,
+                output: true,
+                raw: { min: 0, max: 65535 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 65535, symbol: "N/A" },
+                values: { count: 1, type: Consts.ValueType.Int16 }
+            },
+            {
+                name: "colorAndDistance", // SPEC 1
+                input: true,
+                output: false,
+                raw: { min: 0, max: 255 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 255, symbol: "N/A" },
+                values: { count: 4, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "DEBUG",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 1023 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 10, symbol: "N/A" },
+                values: { count: 2, type: Consts.ValueType.Int16 }
+            },
+            {
+                name: "CALIB",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 65535 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 65535, symbol: "N/A" },
+                values: { count: 8, type: Consts.ValueType.Int16 }
+            }
+        ];
+        super(hub, portId, modes, Consts.DeviceType.COLOR_DISTANCE_SENSOR);
+
+
+        this._eventHandlers.color = (data: IEventData) => {
+            const [color] = data.raw;
+            /**
+             * Emits when a color sensor is activated.
+             * @event ColorDistanceSensor#color
+             * @type {object}
+             * @param {Color} color
+             */
+            this.notify("color", { color });
+        };
+        this._eventHandlers.distance = (data: IEventData) => {
+            const distance = data.si[0] * 25.4;
+            /**
+             * Emits when a distance sensor is activated.
+             * @event ColorDistanceSensor#distance
+             * @type {object}
+             * @param {number} distance Distance, in millimeters.
+             */
+            this.notify("distance", { distance });
+        };
+        this._eventHandlers.colorAndDistance = (data: IEventData) => {
+            const [color, proximity, ledColor, reflectivity] = data.raw
+
+            let distance = proximity;
+            if (reflectivity > 0) {
+                distance += 1.0 / reflectivity;
+            }
+            distance = Math.floor(distance * 25.4) - 20;
+
+            /**
+             * A combined color and distance event, emits when the sensor is activated.
+             * @event ColorDistanceSensor#colorAndDistance
+             * @type {object}
+             * @param {Color} color
+             * @param {number} distance Distance, in millimeters.
+             */
+            this.notify("colorAndDistance", { color, distance });
+        };
     }
-
-    public receive (message: Buffer) {
-        if (this.hub.autoParse) {
-            return super.receive(message);
-        }
-
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.COLOR:
-                if (message[this.isWeDo2SmartHub ? 2 : 4] <= 10) {
-                    const color = message[this.isWeDo2SmartHub ? 2 : 4];
-
-                    /**
-                     * Emits when a color sensor is activated.
-                     * @event ColorDistanceSensor#color
-                     * @type {object}
-                     * @param {Color} color
-                     */
-                    this.notify("color", { color });
-                }
-                break;
-
-            case Mode.DISTANCE:
-                if (this.isWeDo2SmartHub) {
-                    break;
-                }
-                if (message[4] <= 10) {
-                    let distance = Math.floor(message[4] * 25.4);
-
-                    if (distance < 0) {
-                        distance = 0;
-                    }
-
-                    /**
-                     * Emits when a distance sensor is activated.
-                     * @event ColorDistanceSensor#distance
-                     * @type {object}
-                     * @param {number} distance Distance, in millimeters.
-                     */
-                    this.notify("distance", { distance });
-                }
-                break;
-
-            case Mode.COLOR_AND_DISTANCE:
-                if (this.isWeDo2SmartHub) {
-                    break;
-                }
-
-                let distance = message[5];
-                const partial = message[7];
-
-                if (partial > 0) {
-                    distance += 1.0 / partial;
-                }
-
-                distance = Math.floor(distance * 25.4) - 20;
-
-                /**
-                 * A combined color and distance event, emits when the sensor is activated.
-                 * @event ColorDistanceSensor#colorAndDistance
-                 * @type {object}
-                 * @param {Color} color
-                 * @param {number} distance Distance, in millimeters.
-                 */
-                if (message[4] <= 10) {
-                    const color = message[4];
-                    this.notify("colorAndDistance", { color, distance });
-                }
-                break;
-
-        }
-    }
-
 
     /**
      * Switches the IR receiver into extended channel mode. After setting this, use channels 5-8 instead of 1-4 for this receiver.
@@ -169,7 +236,7 @@ export class ColorDistanceSensor extends Device {
             const payload = Buffer.alloc(2);
             payload[0] = (message[0] << 4) + (message[1] >> 4);
             payload[1] = message[0] >> 4;
-            this.subscribe(Mode.PF_IR);
+            this.subscribe(this._modeMap["IR Tx"]);
             return this.writeDirect(0x07, payload);
         }
     }
@@ -189,7 +256,7 @@ export class ColorDistanceSensor extends Device {
             if (this.isWeDo2SmartHub) {
                 throw new Error("Setting LED color is not available on the WeDo 2.0 Smart Hub");
             } else {
-                this.subscribe(Mode.LED);
+                this.subscribe(this._modeMap['COL O']);
                 this.writeDirect(0x05, Buffer.from([color]));
             }
             return resolve();
@@ -203,20 +270,6 @@ export class ColorDistanceSensor extends Device {
 
 
 }
-
-export enum Mode {
-    COLOR = 0x00,
-    DISTANCE = 0x01,
-    LED = 0x05,
-    PF_IR = 0x07,
-    COLOR_AND_DISTANCE = 0x08
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "color": Mode.COLOR,
-    "distance": Mode.DISTANCE,
-    "colorAndDistance": Mode.COLOR_AND_DISTANCE
-};
 
 export enum Output {
     RED = "RED",

@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,38 +11,29 @@ import * as Consts from "../consts";
 export class TiltSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TILT_SENSOR);
+        const modes = [
+            {
+                name: "tilt", // ANGLE
+                input: true,
+                output: false,
+                raw: { min: -90, max: 90 },
+                pct: { min: -100, max: 100 },
+                si: { min: -90, max: 90, symbol: "DEG" },
+                values: { count: 2, type: Consts.ValueType.Int8 }
+            }
+        ]
+        super(hub, portId, modes, Consts.DeviceType.TILT_SENSOR);
+
+        this._eventHandlers.tilt = (data: IEventData) => {
+            const [x, y] = data.si;
+            /**
+             * Emits when a tilt sensor is activated.
+             * @event TiltSensor#tilt
+             * @type {object}
+             * @param {number} x
+             * @param {number} y
+             */
+            this.notify("tilt", { x, y });
+        };
     }
-
-    public receive (message: Buffer) {
-        if (this.hub.autoParse) {
-            return super.receive(message);
-        }
-
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.TILT:
-                const x = message.readInt8(this.isWeDo2SmartHub ? 2 : 4);
-                const y = message.readInt8(this.isWeDo2SmartHub ? 3 : 5);
-                /**
-                 * Emits when a tilt sensor is activated.
-                 * @event TiltSensor#tilt
-                 * @type {object}
-                 * @param {number} x
-                 * @param {number} y
-                 */
-                this.notify("tilt", { x, y });
-                break;
-        }
-    }
-
 }
-
-export enum Mode {
-    TILT = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "tilt": Mode.TILT
-};

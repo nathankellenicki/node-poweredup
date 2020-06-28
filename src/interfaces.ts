@@ -49,3 +49,9 @@ export interface IMode {
         type: Consts.ValueType;
     };
 }
+
+export interface IEventData {
+    raw: number[],
+    pct: number[],
+    si: number[],
+}

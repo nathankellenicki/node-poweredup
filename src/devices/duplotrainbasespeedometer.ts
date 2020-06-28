@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,38 +11,29 @@ import * as Consts from "../consts";
 export class DuploTrainBaseSpeedometer extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER);
-    }
+        const modes = [
+            {
+                name: "speed",
+                input: true,
+                output: false,
+                raw: { min: -100, max: 100 },
+                pct: { min: -100, max: 100 },
+                si: { min: -100, max: 100, symbol: "" },
+                values: { count: 1, type: Consts.ValueType.Int16 }
+            }
+        ]
+        super(hub, portId, modes, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER);
 
-    public receive (message: Buffer) {
-        if (this.hub.autoParse) {
-            return super.receive(message);
-        }
-
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.SPEED:
-                const speed = message.readInt16LE(4);
-
-                /**
-                 * Emits on a speed change.
-                 * @event DuploTrainBaseSpeedometer#speed
-                 * @type {object}
-                 * @param {number} speed
-                 */
-                this.notify("speed", { speed });
-                break;
-
-        }
+        this._eventHandlers.color = (data: IEventData) => {
+            const [speed] = data.raw;
+            /**
+             * Emits on a speed change.
+             * @event DuploTrainBaseSpeedometer#speed
+             * @type {object}
+             * @param {number} speed
+             */
+            this.notify("speed", { speed });
+        };
     }
 
 }
-
-export enum Mode {
-    SPEED = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "speed": Mode.SPEED
-};

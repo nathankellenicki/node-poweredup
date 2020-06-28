@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,40 +11,40 @@ import * as Consts from "../consts";
 export class TechnicMediumHubTiltSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR);
-    }
+        const modes = [
+            {
+                name: "tilt", // POS
+                input: false,
+                output: true,
+                raw: {min: -180, max: 180},
+                pct: {min: -100, max: 100},
+                si: {min: -180, max: 180, symbol: "DEG"},
+                values: {count: 3, type: Consts.ValueType.Int16},
+            },
+            {
+                name: "IMP",
+                input: true,
+                output: false,
+                raw: {min: 0, max: 100},
+                pct: {min: 0, max: 100},
+                si: {min: 0, max: 100, symbol: "CNT"},
+                values: {count: 1, type: Consts.ValueType.Int32},
+            }
+        ]
+        super(hub, portId, modes, Consts.DeviceType.TECHNIC_MEDIUM_HUB_TILT_SENSOR);
 
-    public receive (message: Buffer) {
-        if (this.hub.autoParse) {
-            return super.receive(message);
-        }
-
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.TILT:
-                /**
-                 * Emits when a tilt sensor is activated.
-                 * @event TechnicMediumHubTiltSensor#tilt
-                 * @type {object}
-                 * @param {number} x
-                 * @param {number} y
-                 * @param {number} z
-                 */
-                const z = -message.readInt16LE(4);
-                const y = message.readInt16LE(6);
-                const x = message.readInt16LE(8);
-                this.notify("tilt", { x, y, z });
-                break;
-        }
+        this._eventHandlers.tilt = (data: IEventData) => {
+            const [x, y, z] = data.si;
+            /**
+             * Emits when a tilt sensor is activated.
+             * @event TechnicMediumHubTiltSensor#tilt
+             * @type {object}
+             * @param {number} x
+             * @param {number} y
+             * @param {number} z
+             */
+            this.notify("tilt", { x, y, z });
+        };
     }
 
 }
-
-export enum Mode {
-    TILT = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "tilt": Mode.TILT
-};

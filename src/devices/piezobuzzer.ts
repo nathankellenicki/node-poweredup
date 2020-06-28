@@ -12,7 +12,7 @@ export class PiezoBuzzer extends Device {
 
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.PIEZO_BUZZER);
+        super(hub, portId, [], Consts.DeviceType.PIEZO_BUZZER);
     }
 
 
