@@ -15,6 +15,7 @@ export class VoltageSensor extends Device {
                 name: "voltage", // VLT L
                 input: true,
                 output: false,
+                weDo2SmartHub: true,
                 raw: {min: 0, max: MaxVoltageRaw[hub.type] || MaxVoltageRaw[Consts.HubType.UNKNOWN]},
                 pct: {min: 0, max: 100},
                 si: {min: 0, max: MaxVoltageValue[hub.type] || MaxVoltageValue[Consts.HubType.UNKNOWN], symbol: "mV"},
@@ -50,6 +51,7 @@ const MaxVoltageValue: {[hubType: number]: number} = {
     [Consts.HubType.UNKNOWN]: 9.615,
     [Consts.HubType.DUPLO_TRAIN_BASE]: 6.4,
     [Consts.HubType.REMOTE_CONTROL]: 6.4,
+    [Consts.HubType.WEDO2_SMART_HUB]: 10,
 };
 
 const MaxVoltageRaw: {[hubType: number]: number} = {
@@ -57,4 +59,5 @@ const MaxVoltageRaw: {[hubType: number]: number} = {
     [Consts.HubType.DUPLO_TRAIN_BASE]: 3047,
     [Consts.HubType.REMOTE_CONTROL]: 3200,
     [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4095,
+    [Consts.HubType.WEDO2_SMART_HUB]: 400,
 };

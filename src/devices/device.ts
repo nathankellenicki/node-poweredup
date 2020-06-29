@@ -245,7 +245,7 @@ export class Device extends EventEmitter {
                 break;
             }
             case 0x45: {
-                this._parseSensorMessage(message);
+                this.parseSensorMessage(message);
                 break;
             }
             case 0x82: {
@@ -367,17 +367,22 @@ export class Device extends EventEmitter {
         }
     }
 
-    private _parseSensorMessage(message: Buffer) {
+    public parseSensorMessage(message: Buffer) {
         const mode = this._mode;
         if (mode === undefined) {
             return;
         }
-        const { name, raw, pct, si, values } = this._modes[mode];
+
+        const { name, raw, pct, si, values, weDo2SmartHub } = this._modes[mode];
+        if (this._isWeDo2SmartHub && !weDo2SmartHub) {
+            return;
+        }
         const valueSize = Consts.ValueTypeSize[values.type];
         const data = [];
+        const byteStart = this._isWeDo2SmartHub ? 2 : 4;
 
         for(let v = 0; v < values.count; v++) {
-            const offset = 4 + v * valueSize;
+            const offset = byteStart + v * valueSize;
             switch(values.type) {
                 case Consts.ValueType.Int8:
                     data.push(message.readInt8(offset));

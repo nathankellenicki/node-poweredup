@@ -5,7 +5,7 @@ import { IDeviceInterface, IMode, IEventData } from "../interfaces";
 import * as Consts from "../consts";
 import { mapSpeed } from "../utils";
 
-export const modes = BasicMotorModes.concat([
+export const modes: IMode[] = BasicMotorModes.concat([
     // POWER
     {
         name: "speed", // SPEED
@@ -20,6 +20,7 @@ export const modes = BasicMotorModes.concat([
         name: "rotate", // POS
         input: true,
         output: true,
+        weDo2SmartHub: true,
         raw: { min: -360, max: 360 },
         pct: { min: -100, max: 100 },
         si: { min: -360, max: 360, symbol: "DEG" },

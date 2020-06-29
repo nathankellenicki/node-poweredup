@@ -16,6 +16,7 @@ export class TiltSensor extends Device {
                 name: "tilt", // ANGLE
                 input: true,
                 output: false,
+                weDo2SmartHub: true,
                 raw: { min: -90, max: 90 },
                 pct: { min: -100, max: 100 },
                 si: { min: -90, max: 90, symbol: "DEG" },

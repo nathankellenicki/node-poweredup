@@ -16,6 +16,7 @@ export class MotionSensor extends Device {
                 name: "distance", // PROX
                 input: true,
                 output: false,
+                weDo2SmartHub: true,
                 raw: { min: 0, max: 512 },
                 pct: { min: 0, max: 100 },
                 si: { min: 0, max: 5120, symbol: "mm" },

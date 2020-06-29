@@ -6,7 +6,7 @@ import * as Consts from "../consts";
 
 import { calculateRamp, mapSpeed } from "../utils";
 
-export const modes = [
+export const modes: IMode[] = [
     {
         name: "POWER", // or LPF2-MOTOR
         input: false,

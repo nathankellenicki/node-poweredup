@@ -31,6 +31,7 @@ export interface IMode {
     name: string;
     input: boolean;
     output: boolean;
+    weDo2SmartHub?: boolean;
     raw: {
         min: number;
         max: number;

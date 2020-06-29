@@ -16,6 +16,7 @@ export class ColorDistanceSensor extends Device {
                 name: "color", // COLOR
                 input: true,
                 output: false,
+                weDo2SmartHub: true,
                 raw: { min: 0, max: 10 },
                 pct: { min: 0, max: 100 },
                 si: { min: 0, max: 10, symbol: "IDX" },

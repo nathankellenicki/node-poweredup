@@ -216,7 +216,7 @@ export class WeDo2SmartHub extends BaseHub {
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
-            device.receive(message);
+            device.parseSensorMessage(message);
         }
 
     }

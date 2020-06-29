@@ -16,6 +16,7 @@ export class CurrentSensor extends Device {
                 name: "current", // CUR L
                 input: true,
                 output: false,
+                weDo2SmartHub: true,
                 raw: {min: 0, max: MaxCurrentRaw[hub.type] || MaxCurrentRaw[Consts.HubType.UNKNOWN]},
                 pct: {min: 0, max: 100},
                 si: {min: 0, max: MaxCurrentValue[hub.type] || MaxCurrentValue[Consts.HubType.UNKNOWN], symbol: "mA"},
@@ -51,8 +52,10 @@ export class CurrentSensor extends Device {
 const MaxCurrentValue: {[hubType: number]: number} = {
     [Consts.HubType.UNKNOWN]: 2444,
     [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4175,
+    [Consts.HubType.WEDO2_SMART_HUB]: 5000,
 };
 
 const MaxCurrentRaw: {[hubType: number]: number} = {
     [Consts.HubType.UNKNOWN]: 4095,
+    [Consts.HubType.WEDO2_SMART_HUB]: 5000000,
 };
