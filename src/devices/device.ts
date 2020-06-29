@@ -155,17 +155,17 @@ export class Device extends EventEmitter {
 
     /**
      * @readonly
-     * @property {string[]} events List of availlable events (input modes).
+     * @property {string[]} inputs List of availlable input modes.
      */
-    public get events () {
+    public get inputs () {
         return this._modes.filter(mode => mode.input).map(({ name }) => name);
     }
 
     /**
      * @readonly
-     * @property {string[]} writeModes List of availlable write (output modes).
+     * @property {string[]} outputs List of availlable output modes).
      */
-    public get writeModes () {
+    public get outputs () {
         return this._modes.filter(mode => mode.output).map(({ name }) => name);
     }
 
