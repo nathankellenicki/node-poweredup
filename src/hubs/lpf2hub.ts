@@ -174,9 +174,13 @@ export class LPF2Hub extends BaseHub {
 
 
     private _requestHubPropertyValue (property: number) {
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             this._propertyRequestCallbacks[property] = (message) => {
-                this._parseHubPropertyResponse(message);
+                try {
+                    this._parseHubPropertyResponse(message);
+                } catch (error) {
+                    return reject(error);
+                }
                 return resolve();
             };
             this.send(Buffer.from([0x01, property, 0x05]), Consts.BLECharacteristic.LPF2_ALL);
