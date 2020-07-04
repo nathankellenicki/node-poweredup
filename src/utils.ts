@@ -22,7 +22,7 @@ export const normalize = (value: number, { raw = {min: 0, max: 100}, out = { min
         out: out.max - out.min,
     };
 
-    return (clamp(value, raw) - raw.min) / ranges.raw * ranges.out + out.min;
+    return (value - raw.min) / ranges.raw * ranges.out + out.min;
 }
 
 export const mapSpeed = (speed: number) => {
