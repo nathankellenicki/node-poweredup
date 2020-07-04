@@ -223,7 +223,7 @@ export class BaseHub extends EventEmitter {
     public waitForDeviceAtPort (portName: string) {
         return new Promise((resolve) => {
             const existingDevice = this.getDeviceAtPort(portName);
-            if (existingDevice) {
+            if (existingDevice && existingDevice.isReady) {
                 return resolve(existingDevice);
             }
             this._attachCallbacks.push((device) => {
@@ -269,7 +269,7 @@ export class BaseHub extends EventEmitter {
      */
     public waitForDeviceByType (deviceType: number) {
         return new Promise((resolve) => {
-            const existingDevices = this.getDevicesByType(deviceType);
+            const existingDevices = this.getDevicesByType(deviceType).filter(device => device.isReady);
             if (existingDevices.length >= 1) {
                 return resolve(existingDevices[0]);
             }
