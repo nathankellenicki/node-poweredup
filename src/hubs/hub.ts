@@ -33,8 +33,8 @@ export class Hub extends LPF2Hub {
 
     protected _currentPort = 0x3b;
 
-    constructor (device: IBLEAbstraction) {
-        super(device, PortMap, Consts.HubType.HUB);
+    constructor (device: IBLEAbstraction, autoParse: boolean) {
+        super(device, PortMap, Consts.HubType.HUB, autoParse);
         debug("Discovered Powered UP Hub");
     }
 

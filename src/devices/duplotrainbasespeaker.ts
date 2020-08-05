@@ -11,7 +11,7 @@ import * as Consts from "../consts";
 export class DuploTrainBaseSpeaker extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
+        super(hub, portId, [], Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER);
     }
 
     /**

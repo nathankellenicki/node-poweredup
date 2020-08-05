@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,36 +11,30 @@ import * as Consts from "../consts";
 export class TechnicMediumHubGyroSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR);
+        const modes = [
+            {
+                name: "gyro",
+                input: true,
+                output: false,
+                raw: {min: -28571.419921875, max: 28571.419921875},
+                pct: {min: -100, max: 100},
+                si: {min: -2000, max: 2000, symbol: "DPS"},
+                values: {count: 3, type: Consts.ValueType.Int16}
+            }
+        ];
+        super(hub, portId, modes, Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR);
+
+        this._eventHandlers.gyro = (data: IEventData) => {
+            const [x, y, z] = data.si;
+            /**
+             * Emits when gyroscope detects movement. Measured in DPS - degrees per second.
+             * @event TechnicMediumHubGyroSensor#gyro
+             * @type {object}
+             * @param {number} x
+             * @param {number} y
+             * @param {number} z
+             */
+            this.notify("gyro", { x, y, z });
+        };
     }
-
-    public receive (message: Buffer) {
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.GYRO:
-                /**
-                 * Emits when gyroscope detects movement. Measured in DPS - degrees per second.
-                 * @event TechnicMediumHubGyroSensor#gyro
-                 * @type {object}
-                 * @param {number} x
-                 * @param {number} y
-                 * @param {number} z
-                 */
-                const x = Math.round(message.readInt16LE(4) * 7 / 400);
-                const y = Math.round(message.readInt16LE(6) * 7 / 400);
-                const z = Math.round(message.readInt16LE(8) * 7 / 400);
-                this.notify("gyro", { x, y, z });
-                break;
-        }
-    }
-
 }
-
-export enum Mode {
-    GYRO = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "gyro": Mode.GYRO
-};

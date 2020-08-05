@@ -25,11 +25,13 @@ export class PoweredUP extends EventEmitter {
 
 
     private _connectedHubs: {[uuid: string]: BaseHub} = {};
+    private _autoParse: boolean = false;
 
 
-    constructor () {
+    constructor ({ autoParse = false} = {}) {
         super();
         this._discoveryEventHandler = this._discoveryEventHandler.bind(this);
+        this._autoParse = autoParse;
     }
 
 
@@ -193,22 +195,22 @@ export class PoweredUP extends EventEmitter {
 
         switch (hubType) {
             case Consts.HubType.WEDO2_SMART_HUB:
-                hub = new WeDo2SmartHub(device);
+                hub = new WeDo2SmartHub(device, this._autoParse);
                 break;
             case Consts.HubType.MOVE_HUB:
-                hub = new MoveHub(device);
+                hub = new MoveHub(device, this._autoParse);
                 break;
             case Consts.HubType.HUB:
-                hub = new Hub(device);
+                hub = new Hub(device, this._autoParse);
                 break;
             case Consts.HubType.REMOTE_CONTROL:
-                hub = new RemoteControl(device);
+                hub = new RemoteControl(device, this._autoParse);
                 break;
             case Consts.HubType.DUPLO_TRAIN_BASE:
-                hub = new DuploTrainBase(device);
+                hub = new DuploTrainBase(device, this._autoParse);
                 break;
             case Consts.HubType.TECHNIC_MEDIUM_HUB:
-                hub = new TechnicMediumHub(device);
+                hub = new TechnicMediumHub(device, this._autoParse);
                 break;
             default:
                 return;

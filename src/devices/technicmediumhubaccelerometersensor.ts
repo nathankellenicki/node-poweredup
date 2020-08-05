@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,36 +11,48 @@ import * as Consts from "../consts";
 export class TechnicMediumHubAccelerometerSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER);
+        const modes = [
+            {
+                name: "accel", // GRV
+                input: true,
+                output: false,
+                raw: {min: -32768, max: 32768},
+                pct: {min: -100, max: 100},
+                si: {min: -8000, max: 8000, symbol: "mG"},
+                values: {count: 3, type: Consts.ValueType.Int16}
+            },
+            {
+                name: "CAL",
+                input: true,
+                output: false,
+                raw: {min: 1, max: 1},
+                pct: {min: -100, max: 100},
+                si: {min: 1, max: 1, symbol: ""},
+                values: {count: 1, type: Consts.ValueType.Int8}
+            },
+            {
+                name: "CFG",
+                input: false,
+                output: true,
+                raw: {min: 0, max: 255},
+                pct: {min: 0, max: 100},
+                si: {min: 0, max: 255, symbol: ""},
+                values: {count: 2, type: Consts.ValueType.Int8}
+            }
+        ]
+        super(hub, portId, modes, Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER);
+
+        this._eventHandlers.accel = (data: IEventData) => {
+            const [x, y, z] = data.si;
+            /**
+             * Emits when accelerometer detects movement. Measured in mG.
+             * @event TechnicMediumHubAccelerometerSensor#accel
+             * @type {object}
+             * @param {number} x
+             * @param {number} y
+             * @param {number} z
+             */
+            this.notify("accel", { x, y, z });
+        };
     }
-
-    public receive (message: Buffer) {
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.ACCEL:
-                /**
-                 * Emits when accelerometer detects movement. Measured in mG.
-                 * @event TechnicMediumHubAccelerometerSensor#accel
-                 * @type {object}
-                 * @param {number} x
-                 * @param {number} y
-                 * @param {number} z
-                 */
-                const x = Math.round(message.readInt16LE(4) / 4.096);
-                const y = Math.round(message.readInt16LE(6) / 4.096);
-                const z = Math.round(message.readInt16LE(8) / 4.096);
-                this.notify("accel", { x, y, z });
-                break;
-        }
-    }
-
 }
-
-export enum Mode {
-    ACCEL = 0x00
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "accel": Mode.ACCEL
-};

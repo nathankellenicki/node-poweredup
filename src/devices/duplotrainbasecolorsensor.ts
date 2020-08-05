@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,68 +11,78 @@ import * as Consts from "../consts";
 export class DuploTrainBaseColorSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR);
+        const modes = [
+            {
+                name: "color",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 10 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 10, symbol: "IDX" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "UNKNOW",
+                input: false,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "PCT" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "reflect",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "PCT" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "rgb",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 1023 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 1023, symbol: "RAW" },
+                values: { count: 3, type: Consts.ValueType.Int16 }
+            }
+        ];
+
+        super(hub, portId, modes, Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR);
+
+        this._eventHandlers.color = (data: IEventData) => {
+            const [color] = data.raw;
+            /**
+             * Emits when a color sensor is activated.
+             * @event DuploTrainBaseColorSensor#color
+             * @type {object}
+             * @param {Color} color
+             */
+            this.notify("color", { color });
+        };
+        this._eventHandlers.reflectivity = (data: IEventData) => {
+            const [reflectivity] = data.raw;
+            /**
+             * Emits when the light reflectivity changes.
+             * @event DuploTrainBaseColorSensor#reflectivity
+             * @type {object}
+             * @param {Reflectivity} reflectivity
+             */
+            this.notify("reflectivity", { reflectivity });
+        };
+        this._eventHandlers.rgb = (data: IEventData) => {
+            const [r, g, b] = data.raw;
+            /**
+             * Emits when color sensor is activated.
+             * @event DuploTrainBaseColorSensor#rgb
+             * @type {object}
+             * @param {number} red
+             * @param {number} green
+             * @param {number} blue
+             */
+            this.notify("distance", { r, g, b });
+        };
     }
-
-    public receive (message: Buffer) {
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.COLOR:
-                if (message[4] <= 10) {
-                    const color = message[4];
-
-                    /**
-                     * Emits when a color sensor is activated.
-                     * @event DuploTrainBaseColorSensor#color
-                     * @type {object}
-                     * @param {Color} color
-                     */
-                    this.notify("color", { color });
-                }
-                break;
-
-            case Mode.REFLECTIVITY:
-                const reflect = message[4];
-
-                /**
-                 * Emits when the light reflectivity changes.
-                 * @event DuploTrainBaseColorSensor#reflect
-                 * @type {object}
-                 * @param {number} reflect Percentage, from 0 to 100.
-                 */
-                this.notify("reflect", { reflect });
-                break;
-
-            case Mode.RGB:
-                const red = Math.floor(message.readUInt16LE(4) / 4);
-                const green = Math.floor(message.readUInt16LE(6) / 4);
-                const blue = Math.floor(message.readUInt16LE(8) / 4);
-
-                /**
-                 * Emits when the light reflectivity changes.
-                 * @event DuploTrainBaseColorSensor#rgb
-                 * @type {object}
-                 * @param {number} red
-                 * @param {number} green
-                 * @param {number} blue
-                 */
-                this.notify("rgb", { red, green, blue });
-                break;
-
-        }
-    }
-
 }
-
-export enum Mode {
-    COLOR = 0x00,
-    REFLECTIVITY = 0x02,
-    RGB = 0x03
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "color": Mode.COLOR,
-    "reflect": Mode.REFLECTIVITY,
-    "rgb": Mode.RGB
-};

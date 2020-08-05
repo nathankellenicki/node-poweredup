@@ -31,8 +31,8 @@ export class MoveHub extends LPF2Hub {
         );
     }
 
-    constructor (device: IBLEAbstraction) {
-        super(device, PortMap, Consts.HubType.MOVE_HUB);
+    constructor (device: IBLEAbstraction, autoParse: boolean) {
+        super(device, PortMap, Consts.HubType.MOVE_HUB, autoParse);
         debug("Discovered Move Hub");
     }
 

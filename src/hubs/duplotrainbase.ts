@@ -30,8 +30,8 @@ export class DuploTrainBase extends LPF2Hub {
     }
 
 
-    constructor (device: IBLEAbstraction) {
-        super(device, PortMap, Consts.HubType.DUPLO_TRAIN_BASE);
+    constructor (device: IBLEAbstraction, autoParse: boolean) {
+        super(device, PortMap, Consts.HubType.DUPLO_TRAIN_BASE, autoParse);
         debug("Discovered Duplo Train Base");
     }
 

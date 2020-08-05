@@ -13,7 +13,7 @@ export class Light extends Device {
 
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, {}, Consts.DeviceType.LIGHT);
+        super(hub, portId, [], Consts.DeviceType.LIGHT);
     }
 
 

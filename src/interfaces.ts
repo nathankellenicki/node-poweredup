@@ -18,9 +18,41 @@ export interface IBLEAbstraction extends EventEmitter {
 
 export interface IDeviceInterface extends EventEmitter {
     type: Consts.HubType;
+    autoParse: boolean;
     getPortNameForPortId: (portId: number) => string | undefined;
     send: (message: Buffer, uuid: string) => Promise<void>;
     subscribe: (portId: number, deviceType: number, mode: number) => void;
     isPortVirtual: (portId: number) => boolean;
     sleep: (delay: number) => Promise<any>;
+
+}
+
+export interface IMode {
+    name: string;
+    input: boolean;
+    output: boolean;
+    weDo2SmartHub?: boolean;
+    raw: {
+        min: number;
+        max: number;
+    };
+    pct: {
+        min: number;
+        max: number;
+    };
+    si: {
+        min: number;
+        max: number;
+        symbol: string;
+    };
+    values: {
+        count: number;
+        type: Consts.ValueType;
+    };
+}
+
+export interface IEventData {
+    raw: number[],
+    pct: number[],
+    si: number[],
 }

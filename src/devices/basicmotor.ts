@@ -1,10 +1,22 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IMode } from "../interfaces";
 
 import * as Consts from "../consts";
 
 import { calculateRamp, mapSpeed } from "../utils";
+
+export const modes: IMode[] = [
+    {
+        name: "POWER", // or LPF2-MOTOR
+        input: false,
+        output: true,
+        raw: { min: -100, max: 100 },
+        pct: { min: -100, max: 100 },
+        si: { min: -100, max: 100, symbol: "PCT" },
+        values: { count: 1, type: Consts.ValueType.Int8 }
+    }
+];
 
 /**
  * @class BasicMotor
@@ -13,8 +25,8 @@ import { calculateRamp, mapSpeed } from "../utils";
 export class BasicMotor extends Device {
 
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, modeMap, type);
+    constructor (hub: IDeviceInterface, portId: number, _modes: IMode[] = [], type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+        super(hub, portId, _modes.length > 0 ? _modes : modes, type);
     }
 
 

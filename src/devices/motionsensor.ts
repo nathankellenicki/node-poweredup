@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,30 +11,31 @@ import * as Consts from "../consts";
 export class MotionSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.MOTION_SENSOR);
+        const modes = [
+            {
+                name: "distance", // PROX
+                input: true,
+                output: false,
+                weDo2SmartHub: true,
+                raw: { min: 0, max: 512 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 5120, symbol: "mm" },
+                values: { count: 1, type: Consts.ValueType.Int16 }
+            }
+        ]
+        super(hub, portId, modes, Consts.DeviceType.MOTION_SENSOR);
+
+        this._eventHandlers.distance = (data: IEventData) => {
+            const [distance] = data.si;
+            /**
+             * Emits when a distance sensor is activated.
+             * @event MotionSensor#distance
+             * @type {object}
+             * @param {number} distance Distance, in millimeters.
+             */
+            this.notify("distance", { distance });
+        };
     }
-
-    public receive (message: Buffer) {
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.DISTANCE:
-                let distance = message[this.isWeDo2SmartHub ? 2 : 4];
-                if (message[this.isWeDo2SmartHub ? 3 : 5] === 1) {
-                    distance = distance + 255;
-                }
-                distance *= 10;
-                /**
-                 * Emits when a distance sensor is activated.
-                 * @event MotionSensor#distance
-                 * @type {object}
-                 * @param {number} distance Distance, in millimeters.
-                 */
-                this.notify("distance", { distance });
-                break;
-        }
-    }
-
 }
 
 export enum Mode {

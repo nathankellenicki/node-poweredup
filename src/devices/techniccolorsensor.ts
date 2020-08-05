@@ -1,6 +1,6 @@
 import { Device } from "./device";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 
@@ -11,51 +11,79 @@ import * as Consts from "../consts";
 export class TechnicColorSensor extends Device {
 
     constructor (hub: IDeviceInterface, portId: number) {
-        super(hub, portId, ModeMap, Consts.DeviceType.TECHNIC_COLOR_SENSOR);
-    }
+        const modes = [
 
-    public receive (message: Buffer) {
-        const mode = this._mode;
+            {
+                name: "color",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 10 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 10, symbol: "IDX" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "reflect",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "PCT" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "ambient",
+                input: true,
+                output: false,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "PCT" },
+                values: { count: 1, type: Consts.ValueType.Int8 }
+            },
+            {
+                name: "brightness",
+                input: false,
+                output: true,
+                raw: { min: 0, max: 100 },
+                pct: { min: 0, max: 100 },
+                si: { min: 0, max: 100, symbol: "PCT" },
+                values: { count: 3, type: Consts.ValueType.Int8 }
+            }
+        ]
+        super(hub, portId, modes, Consts.DeviceType.TECHNIC_COLOR_SENSOR);
 
-        switch (mode) {
-            case Mode.COLOR:
-                if (message[4] <= 10) {
-                    const color = message[4];
 
-                    /**
-                     * Emits when a color sensor is activated.
-                     * @event TechnicColorSensor#color
-                     * @type {object}
-                     * @param {Color} color
-                     */
-                    this.notify("color", { color });
-                }
-                break;
+        this._eventHandlers.color = (data: IEventData) => {
+            const [color] = data.raw;
+            /**
+             * Emits when a color sensor is activated.
+             * @event TechnicColorSensor#color
+             * @type {object}
+             * @param {Color} color
+             */
+            this.notify("color", { color });
+        };
+        this._eventHandlers.reflect = (data: IEventData) => {
+            const [reflect] = data.raw;
+            /**
+             * Emits when the light reflectivity changes.
+             * @event TechnicColorSensor#reflect
+             * @type {object}
+             * @param {number} reflect Percentage, from 0 to 100.
+             */
+            this.notify("reflect", { reflect });
+        };
+        this._eventHandlers.ambient = (data: IEventData) => {
+            const [ambient] = data.raw;
+            /**
+             * Emits when the ambient light changes.
+             * @event TechnicColorSensor#ambient
+             * @type {object}
+             * @param {number} ambient Percentage, from 0 to 100.
+             */
+            this.notify("ambient", { ambient });
+        };
 
-            case Mode.REFLECTIVITY:
-                const reflect = message[4];
-
-                /**
-                 * Emits when the light reflectivity changes.
-                 * @event TechnicColorSensor#reflect
-                 * @type {object}
-                 * @param {number} reflect Percentage, from 0 to 100.
-                 */
-                this.notify("reflect", { reflect });
-                break;
-
-            case Mode.AMBIENT_LIGHT:
-                const ambient = message[4];
-
-                /**
-                 * Emits when the ambient light changes.
-                 * @event TechnicColorSensor#ambient
-                 * @type {object}
-                 * @param {number} ambient Percentage, from 0 to 100.
-                 */
-                this.notify("ambient", { ambient });
-                break;
-        }
     }
 
     /**
@@ -71,15 +99,3 @@ export class TechnicColorSensor extends Device {
     }
 
 }
-
-export enum Mode {
-    COLOR = 0x00,
-    REFLECTIVITY = 0x01,
-    AMBIENT_LIGHT = 0x02
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "color": Mode.COLOR,
-    "reflect": Mode.REFLECTIVITY,
-    "ambient": Mode.AMBIENT_LIGHT
-};

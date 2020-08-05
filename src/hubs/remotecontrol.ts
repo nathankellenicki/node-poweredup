@@ -31,8 +31,8 @@ export class RemoteControl extends LPF2Hub {
     }
 
 
-    constructor (device: IBLEAbstraction) {
-        super(device, PortMap, Consts.HubType.REMOTE_CONTROL);
+    constructor (device: IBLEAbstraction, autoParse: boolean) {
+        super(device, PortMap, Consts.HubType.REMOTE_CONTROL, autoParse);
         debug("Discovered Powered UP Remote");
     }
 

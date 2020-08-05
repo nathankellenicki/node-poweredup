@@ -1,9 +1,32 @@
-import { BasicMotor } from "./basicmotor";
+import { BasicMotor, modes as BasicMotorModes } from "./basicmotor";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface, IMode, IEventData } from "../interfaces";
 
 import * as Consts from "../consts";
 import { mapSpeed } from "../utils";
+
+export const modes: IMode[] = BasicMotorModes.concat([
+    // POWER
+    {
+        name: "speed", // SPEED
+        input: true,
+        output: true,
+        raw: { min: -100, max: 100 },
+        pct: { min: -100, max: 100 },
+        si: { min: -100, max: 100, symbol: "PCT" },
+        values: { count: 1, type: Consts.ValueType.Int8 }
+    },
+    {
+        name: "rotate", // POS
+        input: true,
+        output: true,
+        weDo2SmartHub: true,
+        raw: { min: -360, max: 360 },
+        pct: { min: -100, max: 100 },
+        si: { min: -360, max: 360, symbol: "DEG" },
+        values: { count: 1, type: Consts.ValueType.Int32 }
+    },
+])
 
 /**
  * @class TachoMotor
@@ -16,27 +39,20 @@ export class TachoMotor extends BasicMotor {
     public useAccelerationProfile: boolean = true;
     public useDecelerationProfile: boolean = true;
 
-    constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
-        super(hub, portId, Object.assign({}, modeMap, ModeMap), type);
+    constructor (hub: IDeviceInterface, portId: number, _modes: IMode[] = [], type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
+        super(hub, portId, _modes.length > 0 ? _modes : modes, type);
+
+        this._eventHandlers.rotate = (data: IEventData) => {
+            const [degrees] = data.raw;
+            /**
+             * Emits when a rotation sensor is activated.
+             * @event TachoMotor#rotate
+             * @type {object}
+             * @param {number} rotation
+             */
+            this.notify("rotate", { degrees });
+        };
     }
-
-    public receive (message: Buffer) {
-        const mode = this._mode;
-
-        switch (mode) {
-            case Mode.ROTATION:
-                const degrees = message.readInt32LE(this.isWeDo2SmartHub ? 2 : 4);
-                /**
-                 * Emits when a rotation sensor is activated.
-                 * @event TachoMotor#rotate
-                 * @type {object}
-                 * @param {number} rotation
-                 */
-                this.notify("rotate", { degrees });
-                break;
-        }
-    }
-
 
     /**
      * Set the braking style of the motor.
@@ -178,11 +194,3 @@ export class TachoMotor extends BasicMotor {
 
 
 }
-
-export enum Mode {
-    ROTATION = 0x02
-}
-
-export const ModeMap: {[event: string]: number} = {
-    "rotate": Mode.ROTATION
-};

@@ -30,8 +30,8 @@ export class TechnicMediumHub extends LPF2Hub {
         );
     }
 
-    constructor (device: IBLEAbstraction) {
-        super(device, PortMap, Consts.HubType.TECHNIC_MEDIUM_HUB);
+    constructor (device: IBLEAbstraction, autoParse: boolean) {
+        super(device, PortMap, Consts.HubType.TECHNIC_MEDIUM_HUB, autoParse);
         debug("Discovered Control+ Hub");
     }
 
