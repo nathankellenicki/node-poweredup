@@ -21,7 +21,7 @@ export class DuploTrainBaseSpeaker extends Device {
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public playSound (sound: Consts.DuploTrainBaseSound) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             this.subscribe(Mode.SOUND);
             this.writeDirect(0x01, Buffer.from([sound]));
             return resolve();

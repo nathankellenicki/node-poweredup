@@ -92,9 +92,9 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
                     return discoverReject(err);
                 }
                 debug("Service/characteristic discovery started");
-                const servicePromises: Promise<null>[] = [];
+                const servicePromises: Promise<void>[] = [];
                 services.forEach((service) => {
-                    servicePromises.push(new Promise((resolve, reject) => {
+                    servicePromises.push(new Promise((resolve) => {
                         service.discoverCharacteristics([], (err, characteristics) => {
                             characteristics.forEach((characteristic) => {
                                 this._characteristics[characteristic.uuid] = characteristic;

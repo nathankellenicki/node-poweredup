@@ -103,7 +103,7 @@ export class TachoMotor extends BasicMotor {
             throw new Error("Motor speed is not available on the WeDo 2.0 Smart Hub");
         }
         this.cancelEventTimer();
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
             this._busy = true;
             if (speed === undefined || speed === null) {
                 speed = 100;
@@ -145,7 +145,7 @@ export class TachoMotor extends BasicMotor {
             throw new Error("Rotation is not available on the WeDo 2.0 Smart Hub");
         }
         this.cancelEventTimer();
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
             this._busy = true;
             if (speed === undefined || speed === null) {
                 speed = 100;

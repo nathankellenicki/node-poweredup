@@ -14,7 +14,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     private _listeners: {[uuid: string]: any} = {};
     private _characteristics: {[uuid: string]: any} = {};
 
-    private _queue: Promise<any> = Promise.resolve();
+    private _queue: Promise<void> = Promise.resolve();
     private _mailbox: Buffer[] = [];
 
     private _connected: boolean = false;
@@ -58,7 +58,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public connect () {
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             this._connected = true;
             return resolve();
         });
@@ -66,7 +66,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public disconnect () {
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             this._webBLEServer.device.gatt.disconnect();
             return resolve();
         });

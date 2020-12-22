@@ -27,7 +27,7 @@ export class Light extends Device {
         if (interrupt) {
             this.cancelEventTimer();
         }
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
             this.writeDirect(0x00, Buffer.from([brightness]));
             return resolve();
         });

@@ -178,7 +178,7 @@ export class ColorDistanceSensor extends Device {
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setColor (color: number | boolean) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             if (color === false) {
                 color = 0;
             }
@@ -186,7 +186,7 @@ export class ColorDistanceSensor extends Device {
                 throw new Error("Setting LED color is not available on the WeDo 2.0 Smart Hub");
             } else {
                 this.subscribe(Mode.LED);
-                this.writeDirect(0x05, Buffer.from([color]));
+                this.writeDirect(0x05, Buffer.from([color as number]));
             }
             return resolve();
         });
