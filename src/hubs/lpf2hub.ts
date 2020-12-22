@@ -25,12 +25,12 @@ export class LPF2Hub extends BaseHub {
         await super.connect();
         await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.LPF2_HUB);
         this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, this._parseMessage.bind(this));
-        await this._requestHubPropertyReports(0x02); // Activate button reports
-        await this._requestHubPropertyValue(0x03); // Request firmware version
-        await this._requestHubPropertyValue(0x04); // Request hardware version
-        await this._requestHubPropertyReports(0x05); // Activate RSSI updates
-        await this._requestHubPropertyReports(0x06); // Activate battery level reports
-        await this._requestHubPropertyValue(0x0d); // Request primary MAC address
+        await this._requestHubPropertyReports(Consts.HubPropertyPayload.BUTTON_STATE);
+        await this._requestHubPropertyValue(Consts.HubPropertyPayload.FW_VERSION);
+        await this._requestHubPropertyValue(Consts.HubPropertyPayload.HW_VERSION);
+        await this._requestHubPropertyReports(Consts.HubPropertyPayload.RSSI);
+        await this._requestHubPropertyReports(Consts.HubPropertyPayload.BATTERY_VOLTAGE);
+        await this._requestHubPropertyValue(Consts.HubPropertyPayload.PRIMARY_MAC_ADDRESS);
         this.emit("connect");
         debug("LPF2Hub connected");
     }
@@ -132,7 +132,7 @@ export class LPF2Hub extends BaseHub {
             debug("Received Message (LPF2_ALL)", message);
 
             switch (message[2]) {
-                case 0x01: {
+                case Consts.MessageType.HUB_PROPERTIES: {
                     const property = message[3];
                     const callback = this._propertyRequestCallbacks[property];
                     if (callback) {
@@ -143,23 +143,23 @@ export class LPF2Hub extends BaseHub {
                     delete this._propertyRequestCallbacks[property];
                     break;
                 }
-                case 0x04: {
+                case Consts.MessageType.HUB_ATTACHED_IO: {
                     this._parsePortMessage(message);
                     break;
                 }
-                case 0x43: {
+                case Consts.MessageType.PORT_INFORMATION: {
                     this._parsePortInformationResponse(message);
                     break;
                 }
-                case 0x44: {
+                case Consts.MessageType.PORT_MODE_INFORMATION: {
                     this._parseModeInformationResponse(message);
                     break;
                 }
-                case 0x45: {
+                case Consts.MessageType.PORT_VALUE_SINGLE: {
                     this._parseSensorMessage(message);
                     break;
                 }
-                case 0x82: {
+                case Consts.MessageType.HUB_ACTIONS: {
                     this._parsePortAction(message);
                     break;
                 }
@@ -174,7 +174,7 @@ export class LPF2Hub extends BaseHub {
 
 
     private _requestHubPropertyValue (property: number) {
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
             this._propertyRequestCallbacks[property] = (message) => {
                 this._parseHubPropertyResponse(message);
                 return resolve();
@@ -190,9 +190,7 @@ export class LPF2Hub extends BaseHub {
 
 
     private _parseHubPropertyResponse (message: Buffer) {
-
-        // Button press reports
-        if (message[3] === 0x02) {
+        if (message[3] === Consts.HubPropertyPayload.BUTTON_STATE) {
             if (message[5] === 1) {
                 /**
                  * Emits when a button is pressed.
@@ -207,29 +205,24 @@ export class LPF2Hub extends BaseHub {
                 return;
             }
 
-        // Firmware version
-        } else if (message[3] === 0x03) {
+        } else if (message[3] === Consts.HubPropertyPayload.FW_VERSION) {
             this._firmwareVersion = decodeVersion(message.readInt32LE(5));
             this._checkFirmware(this._firmwareVersion);
 
-        // Hardware version
-        } else if (message[3] === 0x04) {
+        } else if (message[3] === Consts.HubPropertyPayload.HW_VERSION) {
             this._hardwareVersion = decodeVersion(message.readInt32LE(5));
 
-        // RSSI update
-        } else if (message[3] === 0x05) {
+        } else if (message[3] === Consts.HubPropertyPayload.RSSI) {
             const rssi = message.readInt8(5);
             if (rssi !== 0) {
                 this._rssi = rssi;
                 this.emit("rssi", { rssi: this._rssi });
             }
 
-        // primary MAC Address
-        } else if (message[3] === 0x0d) {
+        } else if (message[3] === Consts.HubPropertyPayload.PRIMARY_MAC_ADDRESS) {
             this._primaryMACAddress = decodeMACAddress(message.slice(5));
 
-        // Battery level reports
-        } else if (message[3] === 0x06) {
+        } else if (message[3] === Consts.HubPropertyPayload.BATTERY_VOLTAGE) {
             const batteryLevel = message[5];
             if (batteryLevel !== this._batteryLevel) {
                 this._batteryLevel = batteryLevel;
@@ -245,8 +238,7 @@ export class LPF2Hub extends BaseHub {
         const event = message[4];
         const deviceType = event ? message.readUInt16LE(5) : 0;
 
-        // Handle device attachments
-        if (event === 0x01) {
+        if (event === Consts.AlertPayload.ATTACHED_IO) {
 
             if (modeInfoDebug.enabled) {
                 const deviceTypeName = Consts.DeviceTypeNames[message[5]] || "Unknown";
@@ -260,8 +252,7 @@ export class LPF2Hub extends BaseHub {
             const device = this._createDevice(deviceType, portId);
             this._attachDevice(device);
 
-        // Handle device detachments
-        } else if (event === 0x00) {
+        } else if (event === Consts.AlertPayload.DETACHED_IO) {
             const device = this._getDeviceByPortId(portId);
             if (device) {
                 this._detachDevice(device);
@@ -274,8 +265,7 @@ export class LPF2Hub extends BaseHub {
                 }
             }
 
-        // Handle virtual port creation
-        } else if (event === 0x02) {
+        } else if (event === Consts.AlertPayload.ATTACHED_VIRTUAL_IO) {
             const firstPortName = this.getPortNameForPortId(message[7]);
             const secondPortName = this.getPortNameForPortId(message[8]);
             // @ts-ignore NK These should never be undefined
@@ -312,12 +302,12 @@ export class LPF2Hub extends BaseHub {
         modeInfoDebug(`Port ${toHex(port)}, total modes ${count}, input modes ${input}, output modes ${output}`);
 
         for (let i = 0; i < count; i++) {
-            await this._sendModeInformationRequest(port, i, 0x00); // Mode Name
-            await this._sendModeInformationRequest(port, i, 0x01); // RAW Range
-            await this._sendModeInformationRequest(port, i, 0x02); // PCT Range
-            await this._sendModeInformationRequest(port, i, 0x03); // SI Range
-            await this._sendModeInformationRequest(port, i, 0x04); // SI Symbol
-            await this._sendModeInformationRequest(port, i, 0x80); // Value Format
+            await this._sendModeInformationRequest(port, i, Consts.ModeInformationType.NAME);
+            await this._sendModeInformationRequest(port, i, Consts.ModeInformationType.RAW);
+            await this._sendModeInformationRequest(port, i, Consts.ModeInformationType.PCT);
+            await this._sendModeInformationRequest(port, i, Consts.ModeInformationType.SI);
+            await this._sendModeInformationRequest(port, i, Consts.ModeInformationType.SYMBOL);
+            await this._sendModeInformationRequest(port, i, Consts.ModeInformationType.VALUE_FORMAT);
         }
     }
 
@@ -332,22 +322,22 @@ export class LPF2Hub extends BaseHub {
         const mode = message[4];
         const type = message[5];
         switch (type) {
-            case 0x00: // Mode Name
+            case Consts.ModeInformationType.NAME:
                 modeInfoDebug(`Port ${port}, mode ${mode}, name ${message.slice(6, message.length).toString()}`);
                 break;
-            case 0x01: // RAW Range
+            case Consts.ModeInformationType.RAW:
                 modeInfoDebug(`Port ${port}, mode ${mode}, RAW min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
                 break;
-            case 0x02: // PCT Range
+            case Consts.ModeInformationType.PCT:
                 modeInfoDebug(`Port ${port}, mode ${mode}, PCT min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
                 break;
-            case 0x03: // SI Range
+            case Consts.ModeInformationType.SI:
                 modeInfoDebug(`Port ${port}, mode ${mode}, SI min ${message.readFloatLE(6)}, max ${message.readFloatLE(10)}`);
                 break;
-            case 0x04: // SI Symbol
+            case Consts.ModeInformationType.SYMBOL:
                 modeInfoDebug(`Port ${port}, mode ${mode}, SI symbol ${message.slice(6, message.length).toString()}`);
                 break;
-            case 0x80: // Value Format
+            case Consts.ModeInformationType.VALUE_FORMAT:
                 const numValues = message[6];
                 const dataType = ["8bit", "16bit", "32bit", "float"][message[7]];
                 const totalFigures = message[8];

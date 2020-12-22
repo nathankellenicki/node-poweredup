@@ -129,7 +129,7 @@ export class PoweredUP extends EventEmitter {
 
 
     private _determineLPF2HubType (device: IBLEAbstraction): Promise<Consts.HubType> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             let buf: Buffer = Buffer.alloc(0);
             device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
                 buf = Buffer.concat([buf, data]);
