@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>node-poweredup Source: hubs/remotecontrol.js</title>
+	<title>node-poweredup Source: devices/mariopantssensor.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,7 +72,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: hubs/remotecontrol.js</h1>
+		<h1 class="page-title">Source: devices/mariopantssensor.js</h1>
     
 <section>
     <article>
@@ -98,45 +98,42 @@ var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.PortMap = exports.RemoteControl = void 0;
-const lpf2hub_1 = require("./lpf2hub");
+exports.ModeMap = exports.Mode = exports.MarioPantsSensor = void 0;
+const device_1 = require("./device");
 const Consts = __importStar(require("../consts"));
-const Debug = require("debug");
-const debug = Debug("remotecontrol");
 /**
- * The RemoteControl is emitted if the discovered device is a Remote Control.
- * @class RemoteControl
- * @extends LPF2Hub
- * @extends BaseHub
+ * @class MarioPantsSensor
+ * @extends Device
  */
-class RemoteControl extends lpf2hub_1.LPF2Hub {
-    static IsRemoteControl(peripheral) {
-        return (peripheral.advertisement &amp;&amp;
-            peripheral.advertisement.serviceUuids &amp;&amp;
-            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &amp;&amp;
-            peripheral.advertisement.manufacturerData &amp;&amp;
-            peripheral.advertisement.manufacturerData.length > 3 &amp;&amp;
-            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.REMOTE_CONTROL_ID);
+class MarioPantsSensor extends device_1.Device {
+    constructor(hub, portId) {
+        super(hub, portId, exports.ModeMap, Consts.DeviceType.MARIO_PANTS_SENSOR);
     }
-    constructor(device) {
-        super(device, exports.PortMap, Consts.HubType.REMOTE_CONTROL);
-        debug("Discovered Powered UP Remote");
-    }
-    async connect() {
-        debug("Connecting to Powered UP Remote");
-        await super.connect();
-        debug("Connect completed");
+    receive(message) {
+        const mode = this._mode;
+        switch (mode) {
+            case Mode.PANTS:
+                /**
+                 * Emits when the user changes the pants on Mario.
+                 * @event MarioPantsSensor#pants
+                 * @type {object}
+                 * @param {number} pants
+                 */
+                const pants = message[4];
+                this.notify("pants", { pants });
+                break;
+        }
     }
 }
-exports.RemoteControl = RemoteControl;
-exports.PortMap = {
-    "LEFT": 0,
-    "RIGHT": 1,
-    "HUB_LED": 52,
-    "VOLTAGE_SENSOR": 59,
-    "REMOTE_CONTROL_RSSI": 60
+exports.MarioPantsSensor = MarioPantsSensor;
+var Mode;
+(function (Mode) {
+    Mode[Mode["PANTS"] = 0] = "PANTS";
+})(Mode = exports.Mode || (exports.Mode = {}));
+exports.ModeMap = {
+    "pants": Mode.PANTS,
 };
-//# sourceMappingURL=remotecontrol.js.map</pre>
+//# sourceMappingURL=mariopantssensor.js.map</pre>
     </article>
 </section>
 
