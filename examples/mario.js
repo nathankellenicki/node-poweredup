@@ -18,8 +18,8 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
         await mario.connect(); // Connect to Mario
         console.log(`Connected to Mario!`);
 
-        mario.on("accel", (_, { x, y, z }) => {
-            console.log("Accelerometer", x, y, z);
+        mario.on("gesture", (_, { gesture }) => {
+            console.log("Gesture", gesture);
         });
 
         mario.on("pants", (_, { pants }) => {

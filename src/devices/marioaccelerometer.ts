@@ -32,15 +32,27 @@ export class MarioAccelerometer extends Device {
                 const z = message[6];
                 this.notify("accel", { x, y, z });
                 break;
+            case Mode.GEST:
+                /**
+                 * Emits when a gesture is detected
+                 * @event MarioAccelerometer#gest
+                 * @type {object}
+                 * @param {number} gesture
+                 */
+                const gesture = message[4];
+                this.notify("gesture", { gesture });
+                break;
         }
     }
 
 }
 
 export enum Mode {
-    ACCEL = 0x00
+    ACCEL = 0x00,
+    GEST = 0x01,
 }
 
 export const ModeMap: {[event: string]: number} = {
-    "accel": Mode.ACCEL
+    "accel": Mode.ACCEL,
+    "gesture": Mode.GEST,
 };
