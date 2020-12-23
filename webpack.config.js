@@ -1,8 +1,14 @@
+const webpack = require('webpack');
 const path = require("path");
 
 module.exports = {
     entry: "./src/index-browser.ts",
     devtool: "source-map",
+    plugins: [
+        new webpack.ProvidePlugin({
+            Buffer: ['buffer', 'Buffer'],
+        })
+    ],
     module: {
         rules: [
             {
@@ -17,6 +23,9 @@ module.exports = {
         "noble-mac": "noble-mac"
     },
     resolve: {
+        alias: {
+            buffer: 'buffer'
+        },
         extensions: [".ts", ".js"]
     },
     output: {
