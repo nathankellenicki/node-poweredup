@@ -18,13 +18,15 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
         await mario.connect(); // Connect to Mario
         console.log(`Connected to Mario!`);
 
-        const pants = await mario.waitForDeviceByType(PoweredUP.Consts.DeviceType.MARIO_PANTS_SENSOR);
-        pants.on("pants", ({ pants }) => {
+        mario.on("accel", (_, { x, y, z }) => {
+            console.log("Accelerometer", x, y, z);
+        });
+
+        mario.on("pants", (_, { pants }) => {
             console.log("Pants detected", pants);
         });
 
-        const barcodeSensor = await mario.waitForDeviceByType(PoweredUP.Consts.DeviceType.MARIO_BARCODE_SENSOR);
-        barcodeSensor.on("barcode", ({ barcode, color }) => {
+        mario.on("barcode", (_, { barcode, color }) => {
             if (color) {
                 console.log("Color detected", color);
             } else if (barcode) {
