@@ -6,12 +6,14 @@
   "main": "dist/node/index-node.js",
   "types": "dist/node/index-node.d.ts",
   "scripts": {
-    "build:node": "tslint -c tslint.json \"./src/**/*.ts\" && tsc",
-    "build:browser": "tslint -c tslint.json \"./src/**/*.ts\" && webpack --mode=production",
-    "build:all": "tslint -c tslint.json \"./src/**/*.ts\" && tsc && webpack --mode=production",
+    "build:node": "tsc",
+    "build:browser": "webpack --mode=production",
+    "build:all": "npm run build:node && npm run build:browser",
+    "lint": "tslint -c tslint.json \"./src/**/*.ts\"",
+    "build": "npm run lint && npm run build:all",
     "docs": "jsdoc -d docs -c jsdoc.conf.json -t ./node_modules/ink-docstrap/template -R README.md dist/node/**/*.js",
-    "all": "npm run build:all && npm run docs",
-    "prepublishOnly": "npm run build:node"
+    "all": "npm run build && npm run docs",
+    "prepublishOnly": "npm run lint && npm run build:node"
   },
   "author": "Nathan Kellenicki <nathan@kellenicki.com>",
   "license": "MIT",
