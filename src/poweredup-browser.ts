@@ -3,6 +3,7 @@ import { WebBLEDevice } from "./webbleabstraction";
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
+import { Mario } from "./hubs/mario";
 import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
@@ -209,6 +210,9 @@ export class PoweredUP extends EventEmitter {
                 break;
             case Consts.HubType.TECHNIC_MEDIUM_HUB:
                 hub = new TechnicMediumHub(device);
+                break;
+            case Consts.HubType.MARIO:
+                hub = new Mario(device);
                 break;
             default:
                 return;
