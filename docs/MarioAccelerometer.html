@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>node-poweredup Class: TechnicForceSensor</title>
+	<title>node-poweredup Class: MarioAccelerometer</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,13 +72,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: TechnicForceSensor</h1>
+	<h1 class="page-title">Class: MarioAccelerometer</h1>
 <section>
 
 <header>
     
         <h2>
-        TechnicForceSensor
+        MarioAccelerometer
         </h2>
         
     
@@ -91,7 +91,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="TechnicForceSensor"><span class="type-signature"></span>new TechnicForceSensor()</h4>
+    <h4 class="name" id="MarioAccelerometer"><span class="type-signature"></span>new MarioAccelerometer()</h4>
     
     
 </dt>
@@ -141,8 +141,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="devices_technicforcesensor.js.html">devices/technicforcesensor.js</a>,
-				 <a href="devices_technicforcesensor.js.html#sunlight-1-line-25">line 25</a>
+				<a href="devices_marioaccelerometer.js.html">devices/marioaccelerometer.js</a>,
+				 <a href="devices_marioaccelerometer.js.html#sunlight-1-line-25">line 25</a>
 			</li>
 		</ul>
 	</dd>
@@ -980,7 +980,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="event:force">force</h4>
+    <h4 class="name" id="event:accel">accel</h4>
     
     
 </dt>
@@ -988,7 +988,7 @@
 
     
     <div class="description">
-        <p>Emits when force is applied.</p>
+        <p>Emits when accelerometer detects movement. Measured in mG.</p>
     </div>
     
 
@@ -1029,7 +1029,7 @@
 
         <tr>
             
-                <td class="name"><code>force</code></td>
+                <td class="name"><code>x</code></td>
             
 
             <td class="type">
@@ -1046,7 +1046,55 @@
 
             
 
-            <td class="description last"><p>Force, in newtons (0-10).</p></td>
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>y</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>z</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
         </tr>
 
     
@@ -1090,8 +1138,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="devices_technicforcesensor.js.html">devices/technicforcesensor.js</a>,
-				 <a href="devices_technicforcesensor.js.html#sunlight-1-line-38">line 38</a>
+				<a href="devices_marioaccelerometer.js.html">devices/marioaccelerometer.js</a>,
+				 <a href="devices_marioaccelerometer.js.html#sunlight-1-line-37">line 37</a>
 			</li>
 		</ul>
 	</dd>
@@ -1124,7 +1172,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="event:tapped">tapped</h4>
+    <h4 class="name" id="event:gest">gest</h4>
     
     
 </dt>
@@ -1132,7 +1180,7 @@
 
     
     <div class="description">
-        <p>Emits when the sensor is tapped.</p>
+        <p>Emits when a gesture is detected</p>
     </div>
     
 
@@ -1173,7 +1221,7 @@
 
         <tr>
             
-                <td class="name"><code>tapped</code></td>
+                <td class="name"><code>gesture</code></td>
             
 
             <td class="type">
@@ -1190,7 +1238,7 @@
 
             
 
-            <td class="description last"><p>How hard the sensor was tapped, from 0-3.</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -1234,152 +1282,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="devices_technicforcesensor.js.html">devices/technicforcesensor.js</a>,
-				 <a href="devices_technicforcesensor.js.html#sunlight-1-line-58">line 58</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="event:touch">touch</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        <p>Emits when the sensor is touched.</p>
-    </div>
-    
-
-    
-
-    
-        <h5>Type: 
-<span class="param-type">object</span>
-
-
-</h5>
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>touch</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"><p>Touched on/off (boolean).</p></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="devices_technicforcesensor.js.html">devices/technicforcesensor.js</a>,
-				 <a href="devices_technicforcesensor.js.html#sunlight-1-line-48">line 48</a>
+				<a href="devices_marioaccelerometer.js.html">devices/marioaccelerometer.js</a>,
+				 <a href="devices_marioaccelerometer.js.html#sunlight-1-line-51">line 51</a>
 			</li>
 		</ul>
 	</dd>

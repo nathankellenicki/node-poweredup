@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>node-poweredup Source: devices/currentsensor.js</title>
+	<title>node-poweredup Source: devices/marioaccelerometer.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -72,7 +72,7 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: devices/currentsensor.js</h1>
+		<h1 class="page-title">Source: devices/marioaccelerometer.js</h1>
     
 <section>
     <article>
@@ -98,63 +98,58 @@ var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeMap = exports.Mode = exports.CurrentSensor = void 0;
+exports.ModeMap = exports.Mode = exports.MarioAccelerometer = void 0;
 const device_1 = require("./device");
 const Consts = __importStar(require("../consts"));
 /**
- * @class CurrentSensor
+ * @class MarioAccelerometer
  * @extends Device
  */
-class CurrentSensor extends device_1.Device {
+class MarioAccelerometer extends device_1.Device {
     constructor(hub, portId) {
-        super(hub, portId, exports.ModeMap, Consts.DeviceType.CURRENT_SENSOR);
+        super(hub, portId, exports.ModeMap, Consts.DeviceType.MARIO_ACCELEROMETER);
     }
     receive(message) {
-        const mode = this.mode;
+        const mode = this._mode;
         switch (mode) {
-            case Mode.CURRENT:
-                if (this.isWeDo2SmartHub) {
-                    const current = message.readInt16LE(2) / 1000;
-                    this.notify("current", { current });
-                }
-                else {
-                    let maxCurrentValue = MaxCurrentValue[this.hub.type];
-                    if (maxCurrentValue === undefined) {
-                        maxCurrentValue = MaxCurrentValue[Consts.HubType.UNKNOWN];
-                    }
-                    let maxCurrentRaw = MaxCurrentRaw[this.hub.type];
-                    if (maxCurrentRaw === undefined) {
-                        maxCurrentRaw = MaxCurrentRaw[Consts.HubType.UNKNOWN];
-                    }
-                    const current = message.readUInt16LE(4) * maxCurrentValue / maxCurrentRaw;
-                    /**
-                     * Emits when a current change is detected.
-                     * @event CurrentSensor#current
-                     * @type {object}
-                     * @param {number} current
-                     */
-                    this.notify("current", { current });
-                }
+            case Mode.ACCEL:
+                /**
+                 * Emits when accelerometer detects movement. Measured in mG.
+                 * @event MarioAccelerometer#accel
+                 * @type {object}
+                 * @param {number} x
+                 * @param {number} y
+                 * @param {number} z
+                 */
+                const x = message[4];
+                const y = message[5];
+                const z = message[6];
+                this.notify("accel", { x, y, z });
+                break;
+            case Mode.GEST:
+                /**
+                 * Emits when a gesture is detected
+                 * @event MarioAccelerometer#gest
+                 * @type {object}
+                 * @param {number} gesture
+                 */
+                const gesture = message[4];
+                this.notify("gesture", { gesture });
                 break;
         }
     }
 }
-exports.CurrentSensor = CurrentSensor;
+exports.MarioAccelerometer = MarioAccelerometer;
 var Mode;
 (function (Mode) {
-    Mode[Mode["CURRENT"] = 0] = "CURRENT";
+    Mode[Mode["ACCEL"] = 0] = "ACCEL";
+    Mode[Mode["GEST"] = 1] = "GEST";
 })(Mode = exports.Mode || (exports.Mode = {}));
 exports.ModeMap = {
-    "current": Mode.CURRENT
+    "accel": Mode.ACCEL,
+    "gesture": Mode.GEST,
 };
-const MaxCurrentValue = {
-    [Consts.HubType.UNKNOWN]: 2444,
-    [Consts.HubType.TECHNIC_MEDIUM_HUB]: 4175,
-};
-const MaxCurrentRaw = {
-    [Consts.HubType.UNKNOWN]: 4095,
-};
-//# sourceMappingURL=currentsensor.js.map</pre>
+//# sourceMappingURL=marioaccelerometer.js.map</pre>
     </article>
 </section>
 
