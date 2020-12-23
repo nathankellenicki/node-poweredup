@@ -39,7 +39,6 @@ export class TechnicMediumHub extends LPF2Hub {
     public async connect () {
         debug("Connecting to Control+ Hub");
         await super.connect();
-        await this.send(Buffer.from([0x41, 0x3d, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL); // Temperature
         debug("Connect completed");
     }
 
