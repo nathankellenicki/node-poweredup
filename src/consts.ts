@@ -85,6 +85,7 @@ export enum DeviceType {
     TECHNIC_COLOR_SENSOR = 61, // Spike Prime
     TECHNIC_DISTANCE_SENSOR = 62, // Spike Prime
     TECHNIC_FORCE_SENSOR = 63, // Spike Prime
+    MARIO_EVENTS = 70,
     MARIO_ACCELEROMETER = 71,
     MARIO_BARCODE_SENSOR = 73,
     MARIO_PANTS_SENSOR = 74,

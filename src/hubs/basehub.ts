@@ -13,6 +13,7 @@ import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer"
 
 import { HubLED } from "../devices/hubled";
 import { Light } from "../devices/light";
+import { MarioEvents } from "../devices/marioevents";
 import { MarioAccelerometer } from "../devices/marioaccelerometer";
 import { MarioBarcodeSensor } from "../devices/mariobarcodesensor";
 import { MarioPantsSensor } from "../devices/mariopantssensor";
@@ -420,6 +421,7 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR]: DuploTrainBaseMotor,
             [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER]: DuploTrainBaseSpeaker,
             [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER]: DuploTrainBaseSpeedometer,
+            [Consts.DeviceType.MARIO_EVENTS]: MarioEvents,
             [Consts.DeviceType.MARIO_ACCELEROMETER]: MarioAccelerometer,
             [Consts.DeviceType.MARIO_BARCODE_SENSOR]: MarioBarcodeSensor,
             [Consts.DeviceType.MARIO_PANTS_SENSOR]: MarioPantsSensor,
