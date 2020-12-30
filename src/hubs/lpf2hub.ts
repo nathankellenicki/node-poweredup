@@ -159,7 +159,7 @@ export class LPF2Hub extends BaseHub {
                     this._parseSensorMessage(message);
                     break;
                 }
-                case Consts.MessageType.HUB_ACTIONS: {
+                case Consts.MessageType.PORT_OUTPUT_COMMAND_FEEDBACK: {
                     this._parsePortAction(message);
                     break;
                 }
