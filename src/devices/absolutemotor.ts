@@ -51,7 +51,6 @@ export class AbsoluteMotor extends TachoMotor {
         }
         this.cancelEventTimer();
         return new Promise<void>((resolve) => {
-            this._busy = true;
             if (speed === undefined || speed === null) {
                 speed = 100;
             }
@@ -65,9 +64,9 @@ export class AbsoluteMotor extends TachoMotor {
                 message.writeInt32LE(normalizeAngle(angle), 4);
             }
             this.send(message);
-            this._finished = () => {
+            this._finishedCallbacks.push(() => {
                 return resolve();
-            };
+            });
         });
     }
 
