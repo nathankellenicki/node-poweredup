@@ -5,6 +5,7 @@ import { PoweredUP } from "./poweredup-browser";
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
+import { Mario } from "./hubs/mario";
 import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
@@ -63,6 +64,7 @@ window.PoweredUP = {
     DuploTrainBaseSpeedometer,
     HubLED,
     Light,
+    Mario,
     MediumLinearMotor,
     MotionSensor,
     MoveHub,

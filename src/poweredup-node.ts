@@ -5,6 +5,7 @@ import { NobleDevice } from "./nobleabstraction";
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
+import { Mario } from "./hubs/mario";
 import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
@@ -169,6 +170,8 @@ export class PoweredUP extends EventEmitter {
             hub = new DuploTrainBase(device);
         } else if (TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
             hub = new TechnicMediumHub(device);
+        } else if (Mario.IsMario(peripheral)) {
+            hub = new Mario(device);
         } else {
             return;
         }

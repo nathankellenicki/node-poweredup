@@ -5,11 +5,20 @@
 
 ### Announcements
 
-*Important*: v6.0.0 is a complete re-architecting of this library. Improvements include proper device and mode support through an external Device object, correct handling of firmware features, and promise-based functionality for interfacing with device attachments. Although many new features were added, existing code will almost surely break upon upgrade.
+* v6.8.0 adds support for LEGO Super Mario.
 
 ### Introduction
 
-LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges - starting with LEGO Education WeDo 2.0 released in 2016, LEGO Boost released in 2017, LEGO Powered Up released in 2018, LEGO Technic CONTROL+ released in 2019, and LEGO Education SPIKE Prime released in 2020. It also includes the 2018 Duplo App-Controlled Train sets.
+LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges, all of which are compatible with each other:
+
+* LEGO Education WeDo 2.0
+* LEGO Boost
+* LEGO Powered Up
+* LEGO Technic CONTROL+
+* LEGO Education SPIKE Prime
+* LEGO Mindstorms Robot Inventor
+
+Other products that speak the Powered Up protocol include the Duplo App-Controlled trains and LEGO Super Mario, both of which are compatible with this library.
 
 This library allows communication and control of Powered Up devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.
 
@@ -23,7 +32,7 @@ npm install node-poweredup --save
 
 node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/abandonware/noble#prerequisites).
 
-Note: node-poweredup has been tested on macOS 10.15 and Debian/Raspbian on the Raspberry Pi 3 Model B.
+Note: node-poweredup has been tested on macOS 11.0 and Debian/Raspbian on the Raspberry Pi 3 Model B.
 
 ### Compatibility
 
@@ -57,6 +66,7 @@ In addition, the Hubs themselves have certain built-in features which this libra
 | Powered Up Remote  | <a href="https://brickset.com/sets/88010-1/">88010</a> | RGB LED<br />Left and Right Control Buttons<br />Button                 | <a href="https://brickset.com/sets/60197-1/">60197</a><br /><a href="https://brickset.com/sets/60198-1/">60198</a> |
 | Duplo Train Base   | 28743 | RGB LED/Headlights<br />Speaker<br />Speedometer<br />Motor<br />Color and Distance Sensor<br />Button | <a href="https://brickset.com/sets/10874-1/">10874</a><br /><a href="https://brickset.com/sets/10875-1/">10875</a> |
 | Control+ Hub     | 22127 | RGB LED<br />Button<br />Tilt Sensor<br />Accelerometer                                                     | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
+| Super Mario     | 71360 | Pants Sensor<br />Barcode and Color Sensor | <a href="https://brickset.com/sets/71360-1/">71360</a> |
 
 ### Known Issues and Limitations
 

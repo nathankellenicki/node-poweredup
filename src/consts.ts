@@ -7,6 +7,7 @@
  * @property {number} POWERED_UP_REMOTE 4
  * @property {number} DUPLO_TRAIN_HUB 5
  * @property {number} CONTROL_PLUS_HUB 6
+ * @property {number} MARIO 7
  */
 export enum HubType {
     UNKNOWN = 0,
@@ -15,7 +16,8 @@ export enum HubType {
     HUB = 3,
     REMOTE_CONTROL = 4,
     DUPLO_TRAIN_BASE = 5,
-    TECHNIC_MEDIUM_HUB = 6
+    TECHNIC_MEDIUM_HUB = 6,
+    MARIO = 7,
 }
 
 
@@ -83,8 +85,11 @@ export enum DeviceType {
     TECHNIC_COLOR_SENSOR = 61, // Spike Prime
     TECHNIC_DISTANCE_SENSOR = 62, // Spike Prime
     TECHNIC_FORCE_SENSOR = 63, // Spike Prime
-    TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY = 75, // Mindstorms
-    TECHNIC_LARGE_ANGULAR_MOTOR_GREY = 76, // Mindstorms
+    MARIO_ACCELEROMETER = 71,
+    MARIO_BARCODE_SENSOR = 73,
+    MARIO_PANTS_SENSOR = 74,
+    TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY = 75, // Technic Control+
+    TECHNIC_LARGE_ANGULAR_MOTOR_GREY = 76, // Technic Control+
 }
 
 
@@ -178,6 +183,7 @@ export enum BLEManufacturerData {
     MOVE_HUB_ID = 64,
     HUB_ID = 65,
     REMOTE_CONTROL_ID = 66,
+    MARIO_ID = 67,
     TECHNIC_MEDIUM_HUB = 128
 }
 
@@ -636,4 +642,43 @@ export enum PortInputFormatSetupSubCommand {
 }
 
 
+/**
+ * @typedef MarioPantsType
+ * @param {number} NONE 0x00
+ * @param {number} PROPELLER 0x06
+ * @param {number} CAT 0x11
+ * @param {number} FIRE 0x12
+ * @param {number} NORMAL 0x21
+ * @param {number} BUILDER 0x22
+ */
+export enum MarioPantsType {
+    NONE = 0x00,
+    PROPELLER = 0x06,
+    CAT = 0x11,
+    FIRE = 0x12,
+    NORMAL = 0x21,
+    BUILDER = 0x22,
+}
 
+
+/**
+ * @typedef MarioColor
+ * @param {number} WHITE 0x1300
+ * @param {number} RED 0x1500
+ * @param {number} BLUE 0x1700
+ * @param {number} YELLOW 0x1800
+ * @param {number} BLACK 0x1a00
+ * @param {number} GREEN 0x2500
+ * @param {number} BROWN 0x6a00
+ * @param {number} CYAN 0x4201
+ */
+export enum MarioColor {
+    WHITE = 0x1300,
+    RED = 0x1500,
+    BLUE = 0x1700,
+    YELLOW = 0x1800,
+    BLACK = 0x1a00,
+    GREEN = 0x2500,
+    BROWN = 0x6a00,
+    CYAN = 0x4201,
+}
