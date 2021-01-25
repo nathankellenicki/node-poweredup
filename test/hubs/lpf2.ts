@@ -1,7 +1,7 @@
-import { equal, ok } from "assert";
+import { strictEqual, ok } from "assert";
 
 import { FakeBLEDevice } from "../utils/fakebledevice";
-import { getAttachMessage } from "../utils/commons";
+import { getAttachMessage, includeMessage } from "../utils/commons";
 
 import { LPF2Hub } from "../../src/hubs/lpf2hub";
 import * as Consts from "../../src/consts";
@@ -44,7 +44,7 @@ export default function lpf2Hub() {
         return () => {
         it("should emit an 'attach' event with device", done => {
             hub.on("attach", device => {
-            equal(device.type, type);
+            strictEqual(device.type, type);
             ok(device instanceof Constructor);
             done();
             });
@@ -55,7 +55,7 @@ export default function lpf2Hub() {
         it("should resolve 'waitForDeviceByType'", done => {
             hub.waitForDeviceByType(type).then((d) => {
             const device = d as Device;
-            equal(device.type, type);
+            strictEqual(device.type, type);
             ok(device instanceof Constructor);
             done();
             });
@@ -77,7 +77,7 @@ export default function lpf2Hub() {
                 await bleDevice.send(getAttachMessage(0, Consts.DeviceType.UNKNOWN));
                 const device = await hub.waitForDeviceAtPort("A") as Device;
 
-                equal(device.type, Consts.DeviceType.UNKNOWN);
+                strictEqual(device.type, Consts.DeviceType.UNKNOWN);
                 ok(device instanceof Device);
                 return;
             });
@@ -85,7 +85,7 @@ export default function lpf2Hub() {
             it("should resolve when device attached", done => {
                 hub.waitForDeviceAtPort("A").then(d=> {
                 const device = d  as Device;
-                equal(device.type, Consts.DeviceType.UNKNOWN);
+                strictEqual(device.type, Consts.DeviceType.UNKNOWN);
                 ok(device instanceof Device);
                 done();
                 });
@@ -130,7 +130,7 @@ export default function lpf2Hub() {
     describe("shutdown", () => {
         it("should send shutdown message", async () => {
             await hub.shutdown();
-            ok((bleDevice.messages[Consts.BLECharacteristic.LPF2_ALL] || []).includes("04000201"))
+            includeMessage(bleDevice, "04000201");
         });
     });
 }

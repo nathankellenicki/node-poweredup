@@ -1,10 +1,7 @@
-import { ok } from "assert";
-
 import { FakeBLEDevice } from "../utils/fakebledevice";
-import {commonsConnectTests } from '../utils/commons';
+import {commonsConnectTests, includeMessage } from '../utils/commons';
 
 import { TechnicMediumHub } from "../../src/hubs/technicmediumhub";
-import * as Consts from "../../src/consts";
 
 export default function technicMediumHub() {
   const state = { connectEvent: false };
@@ -15,7 +12,6 @@ export default function technicMediumHub() {
   describe("connect", () => {
     before(async () => await hub.connect());
     commonsConnectTests(state, hub, bleDevice);
-    it("should have subscribed to temperature updates", () => ok(bleDevice.messages[Consts.BLECharacteristic.LPF2_ALL].includes("0a00413d000a00000001")));
   });
 
 }

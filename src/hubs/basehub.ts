@@ -258,13 +258,13 @@ export class BaseHub extends EventEmitter {
      * @param {number} deviceType The device type to lookup.
      * @returns {Promise} Resolved once a device is attached, or resolved immediately if a device is already attached.
      */
-    public waitForDeviceByType (deviceType: number) {
+    public waitForDeviceByType (deviceType: number): Promise<Device> {
         return new Promise((resolve) => {
             const existingDevices = this.getDevicesByType(deviceType);
             if (existingDevices.length >= 1) {
                 return resolve(existingDevices[0]);
             }
-            this._attachCallbacks.push((device) => {
+            this._attachCallbacks.push((device: Device) => {
                 if (device.type === deviceType) {
                     resolve(device);
                     return true;
