@@ -84,8 +84,8 @@ export class FakeBLEDevice extends EventEmitter implements IBLEAbstraction {
         }
     };
 
-    public async addToCharacteristicMailbox() {};
-    public async readFromCharacteristic() {};
+    public async addToCharacteristicMailbox() { /** TODO */ };
+    public async readFromCharacteristic() { /** TODO */ };
 
     public send(message: Buffer, uuid:string = Consts.BLECharacteristic.LPF2_ALL) {
         message = Buffer.concat([Buffer.from([message.length + 2, 0x00]), message])
@@ -93,7 +93,7 @@ export class FakeBLEDevice extends EventEmitter implements IBLEAbstraction {
             setTimeout(
                 () => {
                     (this._handlers[uuid] || []).forEach(callback => callback(message))
-                    resolve();
+                    resolve(undefined);
                 },
                 10
             )

@@ -9,7 +9,7 @@
     "build:node": "tsc",
     "build:browser": "webpack --mode=production",
     "build:all": "npm run build:node && npm run build:browser",
-    "lint": "tslint -c tslint.json \"./src/**/*.ts\"",
+    "lint": "tslint -c tslint.json \"./src/**/*.ts\" \"./test/**/*.ts\"",
     "build": "npm run lint && npm run build:all",
     "docs": "jsdoc -d docs -c jsdoc.conf.json -t ./node_modules/ink-docstrap/template -R README.md dist/node/**/*.js",
     "all": "npm run build:all && npm run docs",

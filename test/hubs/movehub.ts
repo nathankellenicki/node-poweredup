@@ -14,7 +14,7 @@ export default function moveHub() {
   describe("connect", () => {
     before(async () => await hub.connect());
     it("should reject due to unsupported firmware (<2.0.00.0017)", async () => {
-      let badHub = new MoveHub(new FakeBLEDevice("fakebledevice", "PoweredUp Hub", "2.0.00.0016"));
+      const badHub = new MoveHub(new FakeBLEDevice("fakebledevice", "PoweredUp Hub", "2.0.00.0016"));
       await rejects(
         async () => await badHub.connect(),
         { name: "Error", message: "Your Move Hub's (PoweredUp Hub) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app." }

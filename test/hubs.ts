@@ -1,13 +1,8 @@
-import { FakeBLEDevice } from "./utils/fakebledevice";
-import {commonsConnectTests } from './utils/commons';
-
-import { DuploTrainBase } from "../src/hubs/duplotrainbase";
-
 import moveHub from "./hubs/movehub";
 import technicMediumHub from "./hubs/technicmediumhub";
 import hub from "./hubs/hub";
 import duploTrainBase from "./hubs/duplotrainbase";
-import remoteControl from "./hubs/remoteControl";
+import remoteControl from "./hubs/remotecontrol";
 import lpf2Hub from "./hubs/lpf2";
 
 
