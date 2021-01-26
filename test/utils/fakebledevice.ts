@@ -98,6 +98,6 @@ export class FakeBLEDevice extends EventEmitter implements IBLEAbstraction {
                 10
             )
         })
-    };
+    }
     public get messages() { return this._incommingMessages; }
 };
