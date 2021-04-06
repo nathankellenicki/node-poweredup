@@ -353,10 +353,7 @@ export class LPF2Hub extends BaseHub {
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
-            const finished = (message[4] === 0x0a);
-            if (finished) {
-                device.finish();
-            }
+            device.finish(message[4]);
         }
 
     }

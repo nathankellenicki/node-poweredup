@@ -104,7 +104,6 @@ export class TachoMotor extends BasicMotor {
         }
         this.cancelEventTimer();
         return new Promise<void>((resolve) => {
-            this._busy = true;
             if (speed === undefined || speed === null) {
                 speed = 100;
             }
@@ -124,9 +123,9 @@ export class TachoMotor extends BasicMotor {
                 }
             }
             this.send(message);
-            this._finished = () => {
+            this._finishedCallbacks.push(() => {
                 return resolve();
-            };
+            });
         });
     }
 
@@ -146,7 +145,6 @@ export class TachoMotor extends BasicMotor {
         }
         this.cancelEventTimer();
         return new Promise<void>((resolve) => {
-            this._busy = true;
             if (speed === undefined || speed === null) {
                 speed = 100;
             }
@@ -158,9 +156,9 @@ export class TachoMotor extends BasicMotor {
             }
             message.writeUInt32LE(degrees, 4);
             this.send(message);
-            this._finished = () => {
+            this._finishedCallbacks.push(() => {
                 return resolve();
-            };
+            });
         });
     }
 

@@ -15,7 +15,7 @@ export class Device extends EventEmitter {
 
     protected _mode: number | undefined;
     protected _busy: boolean = false;
-    protected _finished: (() => void) | undefined;
+    protected _finishedCallbacks: (() => void)[] = [];
 
     private _hub: IDeviceInterface;
     private _portId: number;
@@ -167,11 +167,13 @@ export class Device extends EventEmitter {
         this.send(Buffer.from([0x21, this.portId, 0x00]));
     }
 
-    public finish () {
-        this._busy = false;
-        if (this._finished) {
-            this._finished();
-            this._finished = undefined;
+    public finish (message: number) {
+        this._busy = (message & 0x01) === 0x01;
+        while(this._finishedCallbacks.length > Number(this._busy)) {
+            const callback = this._finishedCallbacks.shift();
+            if(callback) {
+                 callback();
+            }
         }
     }
 
