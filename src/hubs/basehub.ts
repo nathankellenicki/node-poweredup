@@ -423,6 +423,8 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.MARIO_ACCELEROMETER]: MarioAccelerometer,
             [Consts.DeviceType.MARIO_BARCODE_SENSOR]: MarioBarcodeSensor,
             [Consts.DeviceType.MARIO_PANTS_SENSOR]: MarioPantsSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY]: TechnicMediumAngularMotor,
+            [Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR_GREY]: TechnicLargeAngularMotor,
         };
 
         constructor = deviceConstructors[deviceType as Consts.DeviceType];

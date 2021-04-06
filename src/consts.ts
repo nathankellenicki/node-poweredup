@@ -88,7 +88,7 @@ export enum DeviceType {
     MARIO_ACCELEROMETER = 71,
     MARIO_BARCODE_SENSOR = 73,
     MARIO_PANTS_SENSOR = 74,
-    TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY = 75, // Technic Control+
+    TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY = 75, // Mindstorms
     TECHNIC_LARGE_ANGULAR_MOTOR_GREY = 76, // Technic Control+
 }
 

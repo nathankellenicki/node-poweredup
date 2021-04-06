@@ -32,7 +32,7 @@ export class Mario extends LPF2Hub {
     }
 
     constructor (device: IBLEAbstraction) {
-        super(device, PortMap, Consts.HubType.MOVE_HUB);
+        super(device, PortMap, Consts.HubType.MARIO);
         debug("Discovered Mario");
     }
 
