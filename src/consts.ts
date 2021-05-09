@@ -445,7 +445,7 @@ export enum AlertPayload {
  * @param {number} ATTACHED_VIRTUAL_IO 0x02
  * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#event
  */
-export enum AlertPayload {
+export enum Event {
     DETACHED_IO = 0x00,
     ATTACHED_IO = 0x01,
     ATTACHED_VIRTUAL_IO = 0x02,
