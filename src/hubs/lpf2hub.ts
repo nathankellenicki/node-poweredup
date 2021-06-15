@@ -238,7 +238,7 @@ export class LPF2Hub extends BaseHub {
         const event = message[4];
         const deviceType = event ? message.readUInt16LE(5) : 0;
 
-        if (event === Consts.AlertPayload.ATTACHED_IO) {
+        if (event === Consts.Event.ATTACHED_IO) {
 
             if (modeInfoDebug.enabled) {
                 const deviceTypeName = Consts.DeviceTypeNames[message[5]] || "Unknown";
@@ -252,7 +252,7 @@ export class LPF2Hub extends BaseHub {
             const device = this._createDevice(deviceType, portId);
             this._attachDevice(device);
 
-        } else if (event === Consts.AlertPayload.DETACHED_IO) {
+        } else if (event === Consts.Event.DETACHED_IO) {
             const device = this._getDeviceByPortId(portId);
             if (device) {
                 this._detachDevice(device);
@@ -265,7 +265,7 @@ export class LPF2Hub extends BaseHub {
                 }
             }
 
-        } else if (event === Consts.AlertPayload.ATTACHED_VIRTUAL_IO) {
+        } else if (event === Consts.Event.ATTACHED_VIRTUAL_IO) {
             const firstPortName = this.getPortNameForPortId(message[7]);
             const secondPortName = this.getPortNameForPortId(message[8]);
             // @ts-ignore NK These should never be undefined
