@@ -1,5 +1,6 @@
 node_modules/
 dist/
+jsdoc-template/
 .vscode/
 *.tgz
 **/.DS_store
