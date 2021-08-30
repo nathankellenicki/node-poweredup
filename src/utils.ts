@@ -88,3 +88,10 @@ export const calculateRamp = (device: Device, fromPower: number, toPower: number
     device.setEventTimer(interval);
     return emitter;
 };
+
+export const parseColor = (color: number) => {
+    if (color === 1 || color === 5) {
+        color = color + 1;
+    }
+    return color;
+}

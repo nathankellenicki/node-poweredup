@@ -3,6 +3,7 @@ import { Device } from "./device";
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
+import { parseColor } from "../utils";
 
 /**
  * @class ColorDistanceSensor
@@ -20,7 +21,7 @@ export class ColorDistanceSensor extends Device {
         switch (mode) {
             case Mode.COLOR:
                 if (message[this.isWeDo2SmartHub ? 2 : 4] <= 10) {
-                    const color = message[this.isWeDo2SmartHub ? 2 : 4];
+                    const color = parseColor(message[this.isWeDo2SmartHub ? 2 : 4]);
 
                     /**
                      * Emits when a color sensor is activated.

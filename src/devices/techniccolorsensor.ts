@@ -3,6 +3,7 @@ import { Device } from "./device";
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
+import { parseColor } from "../utils";
 
 /**
  * @class TechnicColorSensor
@@ -20,7 +21,7 @@ export class TechnicColorSensor extends Device {
         switch (mode) {
             case Mode.COLOR:
                 if (message[4] <= 10) {
-                    const color = message[4];
+                    const color = parseColor(message[4]);
 
                     /**
                      * Emits when a color sensor is activated.
