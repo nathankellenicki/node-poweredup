@@ -1,9 +1,15 @@
 {
     "tags": {
-        "allowUnknownTags": true
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc"]
+    },
+    "source": {
+        "include": [ "README.md", "dist/node" ],
+        "includePattern": ".js$"
     },
     "plugins": ["plugins/markdown"],
     "templates": {
+        "referenceTitle": "node-poweredup Reference",
         "logoFile": "",
         "cleverLinks": false,
         "monospaceLinks": false,
@@ -24,5 +30,12 @@
     "markdown": {
         "parser": "gfm",
         "hardwrap": true
+    },
+    "opts": {
+        "destination": "./docs/",
+        "encoding": "utf8",
+        "private": true,
+        "recurse": true,
+        "template": "./jsdoc-template/braintree"
     }
 }

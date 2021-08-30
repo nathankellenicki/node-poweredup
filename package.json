@@ -11,7 +11,7 @@
     "build:all": "npm run build:node && npm run build:browser",
     "lint": "tslint -c tslint.json \"./src/**/*.ts\"",
     "build": "npm run lint && npm run build:all",
-    "docs": "jsdoc -d docs -c jsdoc.conf.json -t ./jsdoc-template/braintree -R README.md dist/node/**/*.js",
+    "docs": "jsdoc -c .jsdoc.json",
     "all": "npm run build && npm run docs",
     "prepublishOnly": "npm run lint && npm run build:node"
   },
@@ -28,6 +28,7 @@
     "@types/web-bluetooth": "0.0.11",
     "buffer": "^6.0.3",
     "jsdoc": "^3.6.7",
+    "jsdoc-to-markdown": "^7.0.1",
     "ts-loader": "^9.2.5",
     "tslint": "^6.1.3",
     "typescript": "^4.4.2",
