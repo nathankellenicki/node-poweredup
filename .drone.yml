@@ -5,6 +5,7 @@ pipeline:
     commands:
       - apt-get update
       - apt-get install -y bluetooth bluez libbluetooth-dev libudev-dev
+      - git submodule update --init
       - npm install
 
   build:
