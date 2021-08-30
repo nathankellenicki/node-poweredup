@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      devices/hubled.js - Documentation
+      poweredup-node.js - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -81,7 +81,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        devices/hubled.js
+        poweredup-node.js
       </h1>
     
 
@@ -91,88 +91,177 @@
 <section>
   <article>
     <pre class="prettyprint source linenums"><code>"use strict";
-var __createBinding = (this &amp;&amp; this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this &amp;&amp; this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
-    if (mod &amp;&amp; mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" &amp;&amp; Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Mode = exports.HubLED = void 0;
-const device_1 = require("./device");
-const Consts = __importStar(require("../consts"));
-/**
- * @class HubLED
- * @extends Device
- */
-class HubLED extends device_1.Device {
-    constructor(hub, portId) {
-        super(hub, portId, {}, Consts.DeviceType.HUB_LED);
-    }
-    /**
-     * Set the color of the LED on the Hub via a color value.
-     * @method HubLED#setColor
-     * @param {Color} color
-     * @returns {Promise} Resolved upon successful issuance of the command.
-     */
-    setColor(color) {
-        return new Promise((resolve) => {
-            if (typeof color === "boolean") {
-                color = 0;
-            }
-            if (this.isWeDo2SmartHub) {
-                this.send(Buffer.from([0x06, 0x17, 0x01, 0x01]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
-                this.send(Buffer.from([0x06, 0x04, 0x01, color]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            }
-            else {
-                this.subscribe(Mode.COLOR);
-                this.writeDirect(0x00, Buffer.from([color]));
-            }
-            return resolve();
+exports.PoweredUP = void 0;
+const nobleabstraction_1 = require("./nobleabstraction");
+const duplotrainbase_1 = require("./hubs/duplotrainbase");
+const hub_1 = require("./hubs/hub");
+const mario_1 = require("./hubs/mario");
+const movehub_1 = require("./hubs/movehub");
+const remotecontrol_1 = require("./hubs/remotecontrol");
+const technicmediumhub_1 = require("./hubs/technicmediumhub");
+const wedo2smarthub_1 = require("./hubs/wedo2smarthub");
+const events_1 = require("events");
+const Debug = require("debug");
+const debug = Debug("poweredup");
+const noble = require("@abandonware/noble");
+let ready = false;
+let wantScan = false;
+let discoveryEventAttached = false;
+const startScanning = () => {
+    noble.startScanning();
+};
+noble.on("stateChange", (state) => {
+    ready = (state === "poweredOn");
+    if (ready) {
+        if (wantScan) {
+            debug("Scanning started");
+            startScanning();
+        }
+        noble.on('scanStop', () => {
+            setTimeout(() => {
+                startScanning();
+            }, 1000);
         });
     }
+    else {
+        noble.stopScanning();
+    }
+});
+/**
+ * @class PoweredUP
+ * @extends EventEmitter
+ */
+class PoweredUP extends events_1.EventEmitter {
+    constructor() {
+        super();
+        this._connectedHubs = {};
+        this._discoveryEventHandler = this._discoveryEventHandler.bind(this);
+    }
     /**
-     * Set the color of the LED on the Hub via RGB values.
-     * @method HubLED#setRGB
-     * @param {number} red
-     * @param {number} green
-     * @param {number} blue
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * Begin scanning for Powered UP Hub devices.
+     * @method PoweredUP#scan
      */
-    setRGB(red, green, blue) {
-        return new Promise((resolve) => {
-            if (this.isWeDo2SmartHub) {
-                this.send(Buffer.from([0x06, 0x17, 0x01, 0x02]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
-                this.send(Buffer.from([0x06, 0x04, 0x03, red, green, blue]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
-            }
-            else {
-                this.subscribe(Mode.RGB);
-                this.writeDirect(0x01, Buffer.from([red, green, blue]));
-            }
-            return resolve();
+    async scan() {
+        wantScan = true;
+        if (!discoveryEventAttached) {
+            noble.on("discover", this._discoveryEventHandler);
+            discoveryEventAttached = true;
+        }
+        if (ready) {
+            debug("Scanning started");
+            startScanning();
+        }
+        return true;
+    }
+    /**
+     * Stop scanning for Powered UP Hub devices.
+     * @method PoweredUP#stop
+     */
+    stop() {
+        wantScan = false;
+        if (discoveryEventAttached) {
+            noble.removeListener("discover", this._discoveryEventHandler);
+            discoveryEventAttached = false;
+        }
+        noble.stopScanning();
+    }
+    /**
+     * Retrieve a list of Powered UP Hubs.
+     * @method PoweredUP#getHubs
+     * @returns {BaseHub[]}
+     */
+    getHubs() {
+        return Object.values(this._connectedHubs);
+    }
+    /**
+     * Retrieve a Powered UP Hub by UUID.
+     * @method PoweredUP#getHubByUUID
+     * @param {string} uuid
+     * @returns {BaseHub | null}
+     */
+    getHubByUUID(uuid) {
+        return this._connectedHubs[uuid];
+    }
+    /**
+     * Retrieve a Powered UP Hub by primary MAC address.
+     * @method PoweredUP#getHubByPrimaryMACAddress
+     * @param {string} address
+     * @returns {BaseHub}
+     */
+    getHubByPrimaryMACAddress(address) {
+        return Object.values(this._connectedHubs).filter((hub) => hub.primaryMACAddress === address)[0];
+    }
+    /**
+     * Retrieve a list of Powered UP Hub by name.
+     * @method PoweredUP#getHubsByName
+     * @param {string} name
+     * @returns {BaseHub[]}
+     */
+    getHubsByName(name) {
+        return Object.values(this._connectedHubs).filter((hub) => hub.name === name);
+    }
+    /**
+     * Retrieve a list of Powered UP Hub by type.
+     * @method PoweredUP#getHubsByType
+     * @param {string} name
+     * @returns {BaseHub[]}
+     */
+    getHubsByType(hubType) {
+        return Object.values(this._connectedHubs).filter((hub) => hub.type === hubType);
+    }
+    async _discoveryEventHandler(peripheral) {
+        peripheral.removeAllListeners();
+        const device = new nobleabstraction_1.NobleDevice(peripheral);
+        let hub;
+        if (wedo2smarthub_1.WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
+            hub = new wedo2smarthub_1.WeDo2SmartHub(device);
+        }
+        else if (movehub_1.MoveHub.IsMoveHub(peripheral)) {
+            hub = new movehub_1.MoveHub(device);
+        }
+        else if (hub_1.Hub.IsHub(peripheral)) {
+            hub = new hub_1.Hub(device);
+        }
+        else if (remotecontrol_1.RemoteControl.IsRemoteControl(peripheral)) {
+            hub = new remotecontrol_1.RemoteControl(device);
+        }
+        else if (duplotrainbase_1.DuploTrainBase.IsDuploTrainBase(peripheral)) {
+            hub = new duplotrainbase_1.DuploTrainBase(device);
+        }
+        else if (technicmediumhub_1.TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
+            hub = new technicmediumhub_1.TechnicMediumHub(device);
+        }
+        else if (mario_1.Mario.IsMario(peripheral)) {
+            hub = new mario_1.Mario(device);
+        }
+        else {
+            return;
+        }
+        device.on("discoverComplete", () => {
+            hub.on("connect", () => {
+                debug(`Hub ${hub.uuid} connected`);
+                this._connectedHubs[hub.uuid] = hub;
+            });
+            hub.on("disconnect", () => {
+                debug(`Hub ${hub.uuid} disconnected`);
+                delete this._connectedHubs[hub.uuid];
+                if (wantScan) {
+                    startScanning();
+                }
+            });
+            debug(`Hub ${hub.uuid} discovered`);
+            /**
+             * Emits when a Powered UP Hub device is found.
+             * @event PoweredUP#discover
+             * @param {WeDo2SmartHub | MoveHub | TechnicMediumHub | RemoteControl | DuploTrainBase} hub
+             */
+            this.emit("discover", hub);
         });
     }
 }
-exports.HubLED = HubLED;
-var Mode;
-(function (Mode) {
-    Mode[Mode["COLOR"] = 0] = "COLOR";
-    Mode[Mode["RGB"] = 1] = "RGB";
-})(Mode = exports.Mode || (exports.Mode = {}));
-//# sourceMappingURL=hubled.js.map</code></pre>
+exports.PoweredUP = PoweredUP;
+//# sourceMappingURL=poweredup-node.js.map</code></pre>
   </article>
 </section>
 
