@@ -53,5 +53,8 @@ export const PortMap: {[portName: string]: number} = {
     "B": 1,
     "HUB_LED": 49,
     "CURRENT_SENSOR": 59,
-    "VOLTAGE_SENSOR": 60
+    "VOLTAGE_SENSOR": 60,
+    "ACCELEROMETER": 97,
+    "GYRO_SENSOR": 98,
+    "TILT_SENSOR": 99
 };
