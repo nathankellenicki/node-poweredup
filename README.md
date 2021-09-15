@@ -24,9 +24,48 @@ Other products that speak the Powered Up protocol include the Duplo App-Controll
 
 This library allows communication and control of Powered Up devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.
 
+### Sample Usage
+
+```javascript
+const PoweredUP = require("node-poweredup");
+const poweredUP = new PoweredUP.PoweredUP();
+
+poweredUP.on("discover", async (hub) => { // Wait to discover a Hub
+    console.log(`Discovered ${hub.name}!`);
+    await hub.connect(); // Connect to the Hub
+    const motorA = await hub.waitForDeviceAtPort("A"); // Make sure a motor is plugged into port A
+    const motorB = await hub.waitForDeviceAtPort("B"); // Make sure a motor is plugged into port B
+    console.log("Connected");
+
+    while (true) { // Repeat indefinitely
+        console.log("Running motor B at speed 50");
+        motorB.setPower(50); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
+        console.log("Running motor A at speed 100 for 2 seconds");
+        motorA.setPower(100); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
+        await hub.sleep(2000);
+        motorA.brake();
+        await hub.sleep(1000); // Do nothing for 1 second
+        console.log("Running motor A at speed -30 for 1 second");
+        motorA.setPower(-30); // Run a motor attached to port A for 2 seconds at 1/2 speed in reverse (-50) then stop
+        await hub.sleep(2000);
+        motorA.brake();
+        await hub.sleep(1000); // Do nothing for 1 second
+    }
+});
+
+poweredUP.scan(); // Start scanning for Hubs
+console.log("Scanning for Hubs...");
+```
+
+More examples are available in the "examples" directory.
+
+### Documentation
+
+[Full documentation is available here.](https://nathankellenicki.github.io/node-poweredup/)
+
 ### Node.js Installation
 
-Node.js v8.0+ required.
+Node.js v12.0+ required.
 
 ```javascript
 npm install node-poweredup --save
@@ -82,45 +121,6 @@ In addition, the Hubs themselves have certain built-in features which this libra
 * The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython to develop for this Hub using the officially provided tools and software. The SPIKE Essential Hub however is supported, as it uses Bluetooth Low Energy.
 
 * On most Unix systems, you need root permissions to access Bluetooth devices. You may want to [grant the node executable access to the Bluetooth adapter](https://github.com/abandonware/noble#running-without-rootsudo-linux-specific)
-
-### Documentation
-
-[Full documentation is available here.](https://nathankellenicki.github.io/node-poweredup/)
-
-### Node.js Sample Usage
-
-```javascript
-const PoweredUP = require("node-poweredup");
-const poweredUP = new PoweredUP.PoweredUP();
-
-poweredUP.on("discover", async (hub) => { // Wait to discover a Hub
-    console.log(`Discovered ${hub.name}!`);
-    await hub.connect(); // Connect to the Hub
-    const motorA = await hub.waitForDeviceAtPort("A"); // Make sure a motor is plugged into port A
-    const motorB = await hub.waitForDeviceAtPort("B"); // Make sure a motor is plugged into port B
-    console.log("Connected");
-
-    while (true) { // Repeat indefinitely
-        console.log("Running motor B at speed 50");
-        motorB.setPower(50); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
-        console.log("Running motor A at speed 100 for 2 seconds");
-        motorA.setPower(100); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
-        await hub.sleep(2000);
-        motorA.brake();
-        await hub.sleep(1000); // Do nothing for 1 second
-        console.log("Running motor A at speed -30 for 1 second");
-        motorA.setPower(-30); // Run a motor attached to port A for 2 seconds at 1/2 speed in reverse (-50) then stop
-        await hub.sleep(2000);
-        motorA.brake();
-        await hub.sleep(1000); // Do nothing for 1 second
-    }
-});
-
-poweredUP.scan(); // Start scanning for Hubs
-console.log("Scanning for Hubs...");
-```
-
-More examples are available in the "examples" directory.
 
 ### Credits
 
