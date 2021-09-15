@@ -6,7 +6,7 @@
 
 ### Announcements
 
-* v6.8.0 adds support for LEGO Super Mario.
+* v7.1.0 adds support for SPIKE Essential, including the Technic Small Hub, Technic Small Angular Motor, and Technic 3x3 Color Matrix.
 
 ### Introduction
 
@@ -71,7 +71,7 @@ In addition, the Hubs themselves have certain built-in features which this libra
 | Duplo Train Base   | 28743 | RGB LED/Headlights<br />Speaker<br />Speedometer<br />Motor<br />Color and Distance Sensor<br />Button | <a href="https://brickset.com/sets/10874-1/">10874</a><br /><a href="https://brickset.com/sets/10875-1/">10875</a> |
 | Control+ Hub     | 22127 | RGB LED<br />Button<br />Tilt Sensor<br />Accelerometer                                                     | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 | Super Mario     | 71360 | Pants Sensor<br />Barcode and Color Sensor | <a href="https://brickset.com/sets/71360-1/">71360</a> |
-| SPIKE Essential Hub     | 45609 | RGB LED<br />Button<br />Tilt Sensor<br />Accelerometer                                                     | <a href="https://brickset.com/sets/45345-1/
+| SPIKE Essential Hub     | 45609 | RGB LED<br />Button<br />Tilt Sensor<br />Accelerometer                                                     | <a href="https://brickset.com/sets/45345-1/">45345</a> |
 
 ### Known Issues and Limitations
 
