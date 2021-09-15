@@ -15,6 +15,7 @@ import { EventEmitter } from "events";
 
 import Debug = require("debug");
 import { IBLEAbstraction } from "./interfaces";
+import { TechnicSmallHub } from "./hubs/technicsmallhub";
 const debug = Debug("poweredup");
 
 
@@ -151,7 +152,10 @@ export class PoweredUP extends EventEmitter {
                             case Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID:
                                 resolve(Consts.HubType.DUPLO_TRAIN_BASE);
                                 break;
-                            case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB:
+                            case Consts.BLEManufacturerData.TECHNIC_SMALL_HUB_ID:
+                                resolve(Consts.HubType.TECHNIC_SMALL_HUB);
+                                break;
+                            case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB_ID:
                                 resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
                                 break;
                         }
@@ -207,6 +211,9 @@ export class PoweredUP extends EventEmitter {
                 break;
             case Consts.HubType.DUPLO_TRAIN_BASE:
                 hub = new DuploTrainBase(device);
+                break;
+            case Consts.HubType.TECHNIC_SMALL_HUB:
+                hub = new TechnicSmallHub(device);
                 break;
             case Consts.HubType.TECHNIC_MEDIUM_HUB:
                 hub = new TechnicMediumHub(device);

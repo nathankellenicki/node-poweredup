@@ -18,6 +18,7 @@ export enum HubType {
     DUPLO_TRAIN_BASE = 5,
     TECHNIC_MEDIUM_HUB = 6,
     MARIO = 7,
+    TECHNIC_SMALL_HUB = 8,
 }
 
 
@@ -85,6 +86,8 @@ export enum DeviceType {
     TECHNIC_COLOR_SENSOR = 61, // Spike Prime
     TECHNIC_DISTANCE_SENSOR = 62, // Spike Prime
     TECHNIC_FORCE_SENSOR = 63, // Spike Prime
+    TECHNIC_3X3_COLOR_LIGHT_MATRIX = 64, // Spike Essential
+    TECHNIC_SMALL_ANGULAR_MOTOR = 65, // Spike Essential
     MARIO_ACCELEROMETER = 71,
     MARIO_BARCODE_SENSOR = 73,
     MARIO_PANTS_SENSOR = 74,
@@ -184,7 +187,8 @@ export enum BLEManufacturerData {
     HUB_ID = 65,
     REMOTE_CONTROL_ID = 66,
     MARIO_ID = 67,
-    TECHNIC_MEDIUM_HUB = 128
+    TECHNIC_MEDIUM_HUB_ID = 128,
+    TECHNIC_SMALL_HUB_ID = 131
 }
 
 

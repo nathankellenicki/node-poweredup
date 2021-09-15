@@ -32,6 +32,7 @@ import { TechnicDistanceSensor } from "./devices/technicdistancesensor";
 import { TechnicForceSensor } from "./devices/technicforcesensor";
 import { TechnicLargeAngularMotor } from "./devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
+import { TechnicSmallAngularMotor } from "./devices/technicsmallangularmotor";
 import { TechnicMediumAngularMotor } from "./devices/technicmediumangularmotor";
 import { TechnicMediumHubAccelerometerSensor } from "./devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "./devices/technicmediumhubgyrosensor";

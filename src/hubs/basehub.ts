@@ -28,6 +28,7 @@ import { TechnicDistanceSensor } from "../devices/technicdistancesensor";
 import { TechnicForceSensor } from "../devices/technicforcesensor";
 import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
+import { TechnicSmallAngularMotor } from "../devices/technicsmallangularmotor";
 import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor";
 import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
@@ -407,6 +408,7 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: TechnicMediumHubGyroSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: TechnicMediumHubAccelerometerSensor,
             [Consts.DeviceType.MEDIUM_LINEAR_MOTOR]: MediumLinearMotor,
+            [Consts.DeviceType.TECHNIC_SMALL_ANGULAR_MOTOR]: TechnicSmallAngularMotor,
             [Consts.DeviceType.TECHNIC_MEDIUM_ANGULAR_MOTOR]: TechnicMediumAngularMotor,
             [Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR]: TechnicLargeAngularMotor,
             [Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR]: TechnicLargeLinearMotor,

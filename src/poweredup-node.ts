@@ -18,6 +18,7 @@ import { EventEmitter } from "events";
 import Debug = require("debug");
 const debug = Debug("poweredup");
 import noble = require("@abandonware/noble");
+import { TechnicSmallHub } from "./hubs/technicsmallhub";
 
 let ready = false;
 let wantScan = false;
@@ -168,6 +169,8 @@ export class PoweredUP extends EventEmitter {
             hub = new RemoteControl(device);
         } else if (DuploTrainBase.IsDuploTrainBase(peripheral)) {
             hub = new DuploTrainBase(device);
+        } else if (TechnicSmallHub.IsTechnicSmallHub(peripheral)) {
+            hub = new TechnicSmallHub(device);
         } else if (TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
             hub = new TechnicMediumHub(device);
         } else if (Mario.IsMario(peripheral)) {
