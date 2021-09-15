@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      devices/mariobarcodesensor.js - Documentation
+      hubs/technicsmallhub.js - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -81,7 +81,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        devices/mariobarcodesensor.js
+        hubs/technicsmallhub.js
       </h1>
     
 
@@ -111,66 +111,49 @@ var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeMap = exports.Mode = exports.MarioBarcodeSensor = void 0;
-const device_1 = require("./device");
+exports.PortMap = exports.TechnicSmallHub = void 0;
+const lpf2hub_1 = require("./lpf2hub");
 const Consts = __importStar(require("../consts"));
+const Debug = require("debug");
+const debug = Debug("hub");
 /**
- * @class MarioBarcodeSensor
- * @extends Device
+ * The TechnicSmallHub is emitted if the discovered device is a Technic Small Hub.
+ * @class Hub
+ * @extends LPF2Hub
+ * @extends BaseHub
  */
-class MarioBarcodeSensor extends device_1.Device {
-    constructor(hub, portId) {
-        super(hub, portId, exports.ModeMap, Consts.DeviceType.MARIO_BARCODE_SENSOR);
+class TechnicSmallHub extends lpf2hub_1.LPF2Hub {
+    constructor(device) {
+        super(device, exports.PortMap, Consts.HubType.TECHNIC_SMALL_HUB);
+        this._currentPort = 0x3b;
+        debug("Discovered Spike Essential Hub");
     }
-    receive(message) {
-        const mode = this._mode;
-        switch (mode) {
-            case Mode.BARCODE:
-                /**
-                 * Emits when the barcode sensor sees a barcode.
-                 * @event MarioBarcodeSensor#barcode
-                 * @type {object}
-                 * @param {number} id
-                 */
-                const barcode = message.readUInt16LE(4);
-                const color = message.readUInt16LE(6);
-                if (color === 0xffff) {
-                    // This is a barcode
-                    this.notify("barcode", { barcode });
-                }
-                else if (barcode === 0xffff) {
-                    // This is a color
-                    this.notify("barcode", { color });
-                }
-                break;
-            case Mode.RGB:
-                /**
-                 * Emits when the barcode sensor sees a RGB color.
-                 * @event MarioBarcodeSensor#rgb
-                 * @type {object}
-                 * @param {number} r
-                 * @param {number} g
-                 * @param {number} b
-                 */
-                const r = message[4];
-                const g = message[5];
-                const b = message[6];
-                this.notify("rgb", { r, g, b });
-                break;
-        }
+    static IsTechnicSmallHub(peripheral) {
+        return (peripheral.advertisement &amp;&amp;
+            peripheral.advertisement.serviceUuids &amp;&amp;
+            peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &amp;&amp;
+            peripheral.advertisement.manufacturerData &amp;&amp;
+            peripheral.advertisement.manufacturerData.length > 3 &amp;&amp;
+            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.TECHNIC_SMALL_HUB_ID);
+    }
+    async connect() {
+        debug("Connecting to Spike Essential Hub");
+        await super.connect();
+        debug("Connect completed");
     }
 }
-exports.MarioBarcodeSensor = MarioBarcodeSensor;
-var Mode;
-(function (Mode) {
-    Mode[Mode["BARCODE"] = 0] = "BARCODE";
-    Mode[Mode["RGB"] = 1] = "RGB";
-})(Mode = exports.Mode || (exports.Mode = {}));
-exports.ModeMap = {
-    "barcode": Mode.BARCODE,
-    "rgb": Mode.RGB,
+exports.TechnicSmallHub = TechnicSmallHub;
+exports.PortMap = {
+    "A": 0,
+    "B": 1,
+    "HUB_LED": 49,
+    "CURRENT_SENSOR": 59,
+    "VOLTAGE_SENSOR": 60,
+    "ACCELEROMETER": 97,
+    "GYRO_SENSOR": 98,
+    "TILT_SENSOR": 99
 };
-//# sourceMappingURL=mariobarcodesensor.js.map</code></pre>
+//# sourceMappingURL=technicsmallhub.js.map</code></pre>
   </article>
 </section>
 

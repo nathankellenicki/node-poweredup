@@ -17,6 +17,7 @@ LEGO Powered Up is the successor to Power Functions, the system for adding elect
 * LEGO Powered Up
 * LEGO Technic CONTROL+
 * LEGO Education SPIKE Prime
+* LEGO Education SPIKE Essential
 * LEGO Mindstorms Robot Inventor
 
 Other products that speak the Powered Up protocol include the Duplo App-Controlled trains and LEGO Super Mario, both of which are compatible with this library.
@@ -55,6 +56,8 @@ While most Powered Up components and Hubs are compatible with each other, there 
 | SPIKE Prime Color Sensor            | 45678        | Sensor  |       No      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
 | SPIKE Prime Distance Sensor            | 45678        | Sensor  |       No      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
 | SPIKE Prime Force Sensor            | 45678        | Sensor  |       *Partial*      |     Yes    |     Yes    | Yes | <a href="https://brickset.com/sets/45678-1/">45678</a> |
+| SPIKE Essential Small Motor            | 45607        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45345-1/">45345</a> |
+| SPIKE Essential 3x3 Color Matrix            | 45608        | Motor/Sensor  |       *Partial*      |     No    |     Yes    | Yes | <a href="https://brickset.com/sets/45345-1/">45345</a> |
 
 
 In addition, the Hubs themselves have certain built-in features which this library exposes.
@@ -68,6 +71,7 @@ In addition, the Hubs themselves have certain built-in features which this libra
 | Duplo Train Base   | 28743 | RGB LED/Headlights<br />Speaker<br />Speedometer<br />Motor<br />Color and Distance Sensor<br />Button | <a href="https://brickset.com/sets/10874-1/">10874</a><br /><a href="https://brickset.com/sets/10875-1/">10875</a> |
 | Control+ Hub     | 22127 | RGB LED<br />Button<br />Tilt Sensor<br />Accelerometer                                                     | <a href="https://brickset.com/sets/42099-1/">42099</a><br /><a href="https://brickset.com/sets/42100-1/">42100</a> |
 | Super Mario     | 71360 | Pants Sensor<br />Barcode and Color Sensor | <a href="https://brickset.com/sets/71360-1/">71360</a> |
+| SPIKE Essential Hub     | 45609 | RGB LED<br />Button<br />Tilt Sensor<br />Accelerometer                                                     | <a href="https://brickset.com/sets/45345-1/
 
 ### Known Issues and Limitations
 
@@ -75,7 +79,7 @@ In addition, the Hubs themselves have certain built-in features which this libra
 
 * When used with the Boost Move Hub, the Control+ Motors and SPIKE Prime Motors/Sensors do not currently accept commands (This is a known bug which requires a firmware update from Lego to fix)
 
-* The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython to develop for this Hub using the officially provided tools and software.
+* The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython to develop for this Hub using the officially provided tools and software. The SPIKE Essential Hub however is supported, as it uses Bluetooth Low Energy.
 
 * On most Unix systems, you need root permissions to access Bluetooth devices. You may want to [grant the node executable access to the Bluetooth adapter](https://github.com/abandonware/noble#running-without-rootsudo-linux-specific)
 

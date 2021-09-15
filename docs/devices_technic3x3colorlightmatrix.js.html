@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>
-      devices/mariobarcodesensor.js - Documentation
+      devices/technic3x3colorlightmatrix.js - Documentation
   </title>
 
   <link href="https://www.braintreepayments.com/images/favicon-ccda0b14.png" rel="icon" type="image/png">
@@ -81,7 +81,7 @@
   <div id="main">
     
       <h1 class="page-title">
-        devices/mariobarcodesensor.js
+        devices/technic3x3colorlightmatrix.js
       </h1>
     
 
@@ -111,66 +111,62 @@ var __importStar = (this &amp;&amp; this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ModeMap = exports.Mode = exports.MarioBarcodeSensor = void 0;
+exports.Mode = exports.Technic3x3ColorLightMatrix = void 0;
+const color_1 = require("../color");
 const device_1 = require("./device");
 const Consts = __importStar(require("../consts"));
 /**
- * @class MarioBarcodeSensor
+ * @class Technic3x3ColorLightMatrix
  * @extends Device
  */
-class MarioBarcodeSensor extends device_1.Device {
+class Technic3x3ColorLightMatrix extends device_1.Device {
     constructor(hub, portId) {
-        super(hub, portId, exports.ModeMap, Consts.DeviceType.MARIO_BARCODE_SENSOR);
+        super(hub, portId, {}, Consts.DeviceType.TECHNIC_3X3_COLOR_LIGHT_MATRIX);
     }
-    receive(message) {
-        const mode = this._mode;
-        switch (mode) {
-            case Mode.BARCODE:
-                /**
-                 * Emits when the barcode sensor sees a barcode.
-                 * @event MarioBarcodeSensor#barcode
-                 * @type {object}
-                 * @param {number} id
-                 */
-                const barcode = message.readUInt16LE(4);
-                const color = message.readUInt16LE(6);
-                if (color === 0xffff) {
-                    // This is a barcode
-                    this.notify("barcode", { barcode });
+    /**
+     * Set the LED matrix, one color per LED
+     * @method Technic3x3ColorLightMatrix#setMatrix
+     * @param {Color[] | Color} colors Array of 9 colors, 9 Color objects, or a single color
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    setMatrix(colors) {
+        return new Promise((resolve) => {
+            this.subscribe(Mode.PIX_0);
+            const colorArray = new Array(9);
+            for (let i = 0; i &lt; colorArray.length; i++) {
+                if (typeof colors === 'number') {
+                    // @ts-ignore
+                    colorArray[i] = colors + (10 &lt;&lt; 4);
                 }
-                else if (barcode === 0xffff) {
-                    // This is a color
-                    this.notify("barcode", { color });
+                // @ts-ignore
+                if (colors[i] instanceof color_1.Color) {
+                    // @ts-ignore
+                    colorArray[i] = colors[i].toValue();
                 }
-                break;
-            case Mode.RGB:
-                /**
-                 * Emits when the barcode sensor sees a RGB color.
-                 * @event MarioBarcodeSensor#rgb
-                 * @type {object}
-                 * @param {number} r
-                 * @param {number} g
-                 * @param {number} b
-                 */
-                const r = message[4];
-                const g = message[5];
-                const b = message[6];
-                this.notify("rgb", { r, g, b });
-                break;
-        }
+                // @ts-ignore
+                if (colors[i] === Consts.Color.NONE) {
+                    colorArray[i] = Consts.Color.NONE;
+                }
+                // @ts-ignore
+                if (colors[i] &lt;= 10) {
+                    // @ts-ignore
+                    colorArray[i] = colors[i] + (10 &lt;&lt; 4); // If a raw color value, set it to max brightness (10)
+                }
+            }
+            this.writeDirect(Mode.PIX_0, Buffer.from(colorArray));
+            return resolve();
+        });
     }
 }
-exports.MarioBarcodeSensor = MarioBarcodeSensor;
+exports.Technic3x3ColorLightMatrix = Technic3x3ColorLightMatrix;
 var Mode;
 (function (Mode) {
-    Mode[Mode["BARCODE"] = 0] = "BARCODE";
-    Mode[Mode["RGB"] = 1] = "RGB";
+    Mode[Mode["LEV_0"] = 0] = "LEV_0";
+    Mode[Mode["COL_0"] = 1] = "COL_0";
+    Mode[Mode["PIX_0"] = 2] = "PIX_0";
+    Mode[Mode["TRANS"] = 3] = "TRANS";
 })(Mode = exports.Mode || (exports.Mode = {}));
-exports.ModeMap = {
-    "barcode": Mode.BARCODE,
-    "rgb": Mode.RGB,
-};
-//# sourceMappingURL=mariobarcodesensor.js.map</code></pre>
+//# sourceMappingURL=technic3x3colorlightmatrix.js.map</code></pre>
   </article>
 </section>
 

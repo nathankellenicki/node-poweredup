@@ -41,6 +41,7 @@ import { VoltageSensor } from "../devices/voltagesensor";
 import * as Consts from "../consts";
 
 import Debug = require("debug");
+import { Technic3x3ColorLightMatrix } from "../devices/technic3x3colorlightmatrix";
 const debug = Debug("basehub");
 
 
@@ -427,6 +428,7 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.MARIO_PANTS_SENSOR]: MarioPantsSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY]: TechnicMediumAngularMotor,
             [Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR_GREY]: TechnicLargeAngularMotor,
+            [Consts.DeviceType.TECHNIC_3X3_COLOR_LIGHT_MATRIX]: Technic3x3ColorLightMatrix,
         };
 
         constructor = deviceConstructors[deviceType as Consts.DeviceType];

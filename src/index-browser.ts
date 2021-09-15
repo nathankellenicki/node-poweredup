@@ -1,6 +1,7 @@
 import * as Consts from "./consts";
 
 import { PoweredUP } from "./poweredup-browser";
+import { Color } from "./color";
 
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
@@ -38,6 +39,7 @@ import { TechnicMediumHubAccelerometerSensor } from "./devices/technicmediumhuba
 import { TechnicMediumHubGyroSensor } from "./devices/technicmediumhubgyrosensor";
 import { TechnicMediumHubTiltSensor } from "./devices/technicmediumhubtiltsensor";
 import { TechnicXLargeLinearMotor } from "./devices/technicxlargelinearmotor";
+import { Technic3x3ColorLightMatrix } from "./devices/technic3x3colorlightmatrix";
 import { TiltSensor } from "./devices/tiltsensor";
 import { TrainMotor } from "./devices/trainmotor";
 import { VoltageSensor } from "./devices/voltagesensor";
@@ -57,6 +59,7 @@ window.PoweredUP = {
     RemoteControl,
     DuploTrainBase,
     Consts,
+    Color,
     ColorDistanceSensor,
     Device,
     DuploTrainBaseColorSensor,
@@ -80,10 +83,12 @@ window.PoweredUP = {
     TechnicMediumHubAccelerometerSensor,
     TechnicMediumHubGyroSensor,
     TechnicMediumHubTiltSensor,
+    TechnicSmallAngularMotor,
     TechnicMediumAngularMotor,
     TechnicLargeAngularMotor,
     TechnicLargeLinearMotor,
     TechnicXLargeLinearMotor,
+    Technic3x3ColorLightMatrix,
     TiltSensor,
     TrainMotor,
     VoltageSensor,
