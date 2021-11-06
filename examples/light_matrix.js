@@ -22,7 +22,7 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
     // setMatrix accepts an array of 9 items - Either standard color values (number), or Color objects with brightness (brightness values are 0 to 100%)
     // It can also accept just a single color to set all 9 lights to the same color
     matrix.setMatrix([
-        // Red at 100%, green at 20%, red at 200%
+        // Red at 100%, green at 20%, red at 100%
         PoweredUP.Consts.Color.RED, new PoweredUP.Color(PoweredUP.Consts.Color.GREEN, 20), PoweredUP.Consts.Color.RED,
         // Green at 100%, yellow at 100%, green at 100%
         PoweredUP.Consts.Color.GREEN, PoweredUP.Consts.Color.YELLOW, PoweredUP.Consts.Color.GREEN,
