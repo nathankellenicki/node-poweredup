@@ -54,6 +54,74 @@ export class ColorDistanceSensor extends Device {
                 }
                 break;
 
+            case Mode.DISTANCE_COUNT:
+                if (this.isWeDo2SmartHub) {
+                    break;
+                }
+                if (message.length !== 8) {
+                    // if mode of device has not changed to this._mode yet
+                    break;
+                }
+                const count = message.readUInt32LE(4);
+                /**
+                 * Emits when distance is reduced to less than 10 centimeters.
+                 * @event ColorDistanceSensor#distanceCount
+                 * @type {object}
+                 * @param {number} number of distance events.
+                 */
+                this.notify("distanceCount", { count });
+                break;
+
+            case Mode.REFLECT:
+                if (this.isWeDo2SmartHub) {
+                    break;
+                }
+                const reflect = message[4];
+                /**
+                 * Event measuring reflection change, emits when the sensor is activated.
+                 * @event ColorDistanceSensor#reflect
+                 * @type {object}
+                 * @param {number} percentage from 0 to 100.
+                 */
+                this.notify("reflect", { reflect });
+                break;
+
+            case Mode.AMBIENT:
+                if (this.isWeDo2SmartHub) {
+                    break;
+                }
+                const ambient = message[4];
+                /**
+                 * Event measuring abient light change, emits when the sensor is activated.
+                 * @event ColorDistanceSensor#ambient
+                 * @type {object}
+                 * @param {number} percentage from 0 to 100.
+                 */
+                this.notify("ambient", { ambient });
+                break;
+
+            case Mode.RGB_I:
+                if (this.isWeDo2SmartHub) {
+                    break;
+                }
+                if (message.length !== 10) {
+                    // if mode of device has not changed to this._mode yet
+                    break;
+                }
+                const red = message.readUInt16LE(4);
+                const green = message.readUInt16LE(6);
+                const blue = message.readUInt16LE(8);
+                /**
+                 * Emits when a color sensor is activated.
+                 * @event ColorDistanceSensor#rgbIntensity
+                 * @type {object}
+                 * @param {number} red
+                 * @param {number} green
+                 * @param {number} blue
+                 */
+                this.notify("rgbIntensity", { red, green, blue });
+                break;
+
             case Mode.COLOR_AND_DISTANCE:
                 if (this.isWeDo2SmartHub) {
                     break;
@@ -193,18 +261,40 @@ export class ColorDistanceSensor extends Device {
         });
     }
 
+    /**
+     * Set the distance count value.
+     * @method ColorDistanceSensor#setDistanceCount
+     * @param {count} distance count between 0 and 2^32
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public setDistanceCount (count: number) {
+        return new Promise<void>((resolve) => {
+            if (this.isWeDo2SmartHub) {
+                throw new Error("Setting distance count is not available on the WeDo 2.0 Smart Hub");
+            } else {
+		const payload = Buffer.alloc(4);
+		payload.writeUInt32LE(count % 2**32);
+                // no need to subscribe, can be set in different mode
+                this.writeDirect(0x02, payload);
+            }
+            return resolve();
+        });
+    }
 
     private _pfPowerToPWM (power: number) {
         return power & 15;
     }
-
 
 }
 
 export enum Mode {
     COLOR = 0x00,
     DISTANCE = 0x01,
+    DISTANCE_COUNT = 0x02,
+    REFLECT = 0x03,
+    AMBIENT = 0x04,
     LED = 0x05,
+    RGB_I = 0x06,
     PF_IR = 0x07,
     COLOR_AND_DISTANCE = 0x08
 }
@@ -212,6 +302,10 @@ export enum Mode {
 export const ModeMap: {[event: string]: number} = {
     "color": Mode.COLOR,
     "distance": Mode.DISTANCE,
+    "distanceCount": Mode.DISTANCE_COUNT,
+    "reflect": Mode.REFLECT,
+    "ambient": Mode.AMBIENT,
+    "rgbIntensity": Mode.RGB_I,
     "colorAndDistance": Mode.COLOR_AND_DISTANCE
 };
 
