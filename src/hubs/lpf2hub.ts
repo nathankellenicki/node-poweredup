@@ -159,10 +159,14 @@ export class LPF2Hub extends BaseHub {
                     this._parseSensorMessage(message);
                     break;
                 }
+                case Consts.MessageType.PORT_INPUT_FORMAT_SINGLE: {
+                    this._parsePortInputFormatMessage(message);
+		    break;
+		}
                 case Consts.MessageType.PORT_OUTPUT_COMMAND_FEEDBACK: {
                     this._parsePortAction(message);
                     break;
-                }
+		}
             }
 
             if (this._messageBuffer.length > 0) {
@@ -346,7 +350,6 @@ export class LPF2Hub extends BaseHub {
         }
     }
 
-
     private _parsePortAction (message: Buffer) {
         for (let offset = 3; offset < message.length; offset += 2) {
             const device = this._getDeviceByPortId(message[offset]);
@@ -357,17 +360,21 @@ export class LPF2Hub extends BaseHub {
         }
     }
 
-
     private _parseSensorMessage (message: Buffer) {
-
         const portId = message[3];
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
             device.receive(message);
         }
-
     }
 
+    private _parsePortInputFormatMessage (message: Buffer) {
+        const portId = message[3];
+        const device = this._getDeviceByPortId(portId);
 
+        if (device) {
+            device.setMode(message[4]);
+        }
+    }
 }
