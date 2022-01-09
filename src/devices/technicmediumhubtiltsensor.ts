@@ -27,9 +27,17 @@ export class TechnicMediumHubTiltSensor extends Device {
                  * @param {number} y
                  * @param {number} z
                  */
-                const z = -message.readInt16LE(4);
+                let z = -message.readInt16LE(4);
                 const y = message.readInt16LE(6);
                 const x = message.readInt16LE(8);
+
+                // workaround for calibration problem or bug in technicMediumHub firmware 1.1.00.0000
+                if(y === 90 || y === -90) {
+                    z = Math.sign(y)*(z + 180);
+                    if(z > 180) z -= 360;
+                    if(z < -180) z += 360;
+                }
+
                 this.notify("tilt", { x, y, z });
                 break;
         }
