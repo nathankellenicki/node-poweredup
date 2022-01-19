@@ -348,14 +348,13 @@ export class LPF2Hub extends BaseHub {
 
 
     private _parsePortAction (message: Buffer) {
+        for (let offset = 3; offset < message.length; offset += 2) {
+            const device = this._getDeviceByPortId(message[offset]);
 
-        const portId = message[3];
-        const device = this._getDeviceByPortId(portId);
-
-        if (device) {
-            device.finish(message[4]);
+            if (device) {
+                device.finish(message[offset+1]);
+            }
         }
-
     }
 
 
