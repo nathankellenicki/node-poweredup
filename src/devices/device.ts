@@ -168,6 +168,7 @@ export class Device extends EventEmitter {
     }
 
     public finish (message: number) {
+        if((message & 0x10) === 0x10) return; // "busy/full"
         this._busy = (message & 0x01) === 0x01;
         while(this._finishedCallbacks.length > Number(this._busy)) {
             const callback = this._finishedCallbacks.shift();
