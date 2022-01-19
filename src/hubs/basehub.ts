@@ -94,6 +94,24 @@ export class BaseHub extends EventEmitter {
 
     /**
      * @readonly
+     * @property {string} connected Connected status
+     */
+     public get connected () {
+        return this._bleDevice.connected;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} connecting Connecting status
+     */
+     public get connecting () {
+        return this._bleDevice.connecting;
+    }
+
+
+    /**
+     * @readonly
      * @property {string} type Hub type
      */
     public get type () {

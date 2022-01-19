@@ -188,6 +188,20 @@ class BaseHub extends events_1.EventEmitter {
     }
     /**
      * @readonly
+     * @property {string} connected Connected status
+     */
+    get connected() {
+        return this._bleDevice.connected;
+    }
+    /**
+     * @readonly
+     * @property {string} connecting Connecting status
+     */
+    get connecting() {
+        return this._bleDevice.connecting;
+    }
+    /**
+     * @readonly
      * @property {string} type Hub type
      */
     get type() {
