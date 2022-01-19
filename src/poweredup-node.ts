@@ -27,7 +27,9 @@ let discoveryEventAttached = false;
 const startScanning = () => {
     noble.startScanning([
         Consts.BLEService.LPF2_HUB,
-        Consts.BLEService.WEDO2_SMART_HUB
+        Consts.BLEService.LPF2_HUB.replace(/-/g, ""),
+        Consts.BLEService.WEDO2_SMART_HUB,
+        Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, "")
     ]);
 };
 
