@@ -248,6 +248,8 @@ class Device extends events_1.EventEmitter {
         this.send(Buffer.from([0x21, this.portId, 0x00]));
     }
     finish(message) {
+        if ((message &amp; 0x10) === 0x10)
+            return; // "busy/full"
         this._busy = (message &amp; 0x01) === 0x01;
         while (this._finishedCallbacks.length > Number(this._busy)) {
             const callback = this._finishedCallbacks.shift();
