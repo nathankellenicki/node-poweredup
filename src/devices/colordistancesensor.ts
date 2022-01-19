@@ -38,7 +38,7 @@ export class ColorDistanceSensor extends Device {
                     break;
                 }
                 if (message[4] <= 10) {
-                    let distance = Math.floor(message[4] * 25.4);
+                    let distance = Math.floor(message[4] * 25.4) - 20;
 
                     if (distance < 0) {
                         distance = 0;
@@ -131,10 +131,10 @@ export class ColorDistanceSensor extends Device {
                 const partial = message[7];
 
                 if (partial > 0) {
-                    distance = 1.0 / partial;
+                    distance += 1.0 / partial;
                 }
 
-                distance = Math.floor(distance * 25.4);
+                distance = Math.floor(distance * 25.4) - 20;
 
                 /**
                  * A combined color and distance event, emits when the sensor is activated.
