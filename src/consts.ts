@@ -3,11 +3,12 @@
  * @property {number} UNKNOWN 0
  * @property {number} WEDO2_SMART_HUB 1
  * @property {number} MOVE_HUB 2
- * @property {number} POWERED_UP_HUB 3
- * @property {number} POWERED_UP_REMOTE 4
- * @property {number} DUPLO_TRAIN_HUB 5
- * @property {number} CONTROL_PLUS_HUB 6
+ * @property {number} HUB 3
+ * @property {number} REMOTE_CONTROL 4
+ * @property {number} DUPLO_TRAIN_BASE 5
+ * @property {number} TECHNIC_MEDIUM_HUB 6
  * @property {number} MARIO 7
+ * @property {number} TECHNIC_SMALL_HUB 8
  */
 export enum HubType {
     UNKNOWN = 0,
@@ -31,27 +32,42 @@ export const HubTypeNames = HubType;
  * @property {number} UNKNOWN 0
  * @property {number} SIMPLE_MEDIUM_LINEAR_MOTOR 1
  * @property {number} TRAIN_MOTOR 2
- * @property {number} LED_LIGHTS 8
- * @property {number} VOLTAGE 20
- * @property {number} CURRENT 21
- * @property {number} PIEZO_TONE 22
- * @property {number} RGB_LIGHT 23
- * @property {number} WEDO2_TILT 34
- * @property {number} WEDO2_DISTANCE 35
+ * @property {number} LIGHT 8
+ * @property {number} VOLTAGE_SENSOR 20
+ * @property {number} CURRENT_SENSOR 21
+ * @property {number} PIEZO_BUZZER 22
+ * @property {number} HUB_LED 23
+ * @property {number} TILT_SENSOR 34
+ * @property {number} MOTION_SENSOR 35
  * @property {number} COLOR_DISTANCE_SENSOR 37
  * @property {number} MEDIUM_LINEAR_MOTOR 38
  * @property {number} MOVE_HUB_MEDIUM_LINEAR_MOTOR 39
- * @property {number} BOOST_TILT 40
+ * @property {number} MOVE_HUB_TILT_SENSOR 40
  * @property {number} DUPLO_TRAIN_BASE_MOTOR 41
  * @property {number} DUPLO_TRAIN_BASE_SPEAKER 42
- * @property {number} DUPLO_TRAIN_BASE_COLOR 43
+ * @property {number} DUPLO_TRAIN_BASE_COLOR_SENSOR 43
  * @property {number} DUPLO_TRAIN_BASE_SPEEDOMETER 44
- * @property {number} CONTROL_PLUS_LARGE_MOTOR 46
- * @property {number} CONTROL_PLUS_XLARGE_MOTOR 47
- * @property {number} POWERED_UP_REMOTE_BUTTON 55
- * @property {number} RSSI 56
- * @property {number} CONTROL_PLUS_ACCELEROMETER 58
- * @property {number} CONTROL_PLUS_TILT 59
+ * @property {number} TECHNIC_LARGE_LINEAR_MOTOR 46
+ * @property {number} TECHNIC_XLARGE_LINEAR_MOTOR 47
+ * @property {number} TECHNIC_MEDIUM_ANGULAR_MOTOR 48
+ * @property {number} TECHNIC_LARGE_ANGULAR_MOTOR 49
+ * @property {number} TECHNIC_MEDIUM_HUB_GEST_SENSOR 54
+ * @property {number} REMOTE_CONTROL_BUTTON 55
+ * @property {number} REMOTE_CONTROL_RSSI 56
+ * @property {number} TECHNIC_MEDIUM_HUB_ACCELEROMETER 57
+ * @property {number} TECHNIC_MEDIUM_HUB_GYRO_SENSOR 58
+ * @property {number} TECHNIC_MEDIUM_HUB_TILT_SENSOR 59
+ * @property {number} TECHNIC_MEDIUM_HUB_TEMPERATURE_SENSOR 60
+ * @property {number} TECHNIC_COLOR_SENSOR 61
+ * @property {number} TECHNIC_DISTANCE_SENSOR 62
+ * @property {number} TECHNIC_FORCE_SENSOR 63
+ * @property {number} TECHNIC_3X3_COLOR_LIGHT_MATRIX 64
+ * @property {number} TECHNIC_SMALL_ANGULAR_MOTOR 65
+ * @property {number} MARIO_ACCELEROMETER 71
+ * @property {number} MARIO_BARCODE_SENSOR 73
+ * @property {number} MARIO_PANTS_SENSOR 74
+ * @property {number} TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY 75
+ * @property {number} TECHNIC_LARGE_ANGULAR_MOTOR_GREY 76
  */
 export enum DeviceType {
     UNKNOWN = 0,
@@ -137,11 +153,11 @@ export const ColorNames = Color;
 
 /**
  * @typedef ButtonState
- * @property {number} PRESSED 0
- * @property {number} RELEASED 1
- * @property {number} UP 2
- * @property {number} DOWN 3
- * @property {number} STOP 4
+ * @property {number} PRESSED 2
+ * @property {number} RELEASED 0
+ * @property {number} UP 1
+ * @property {number} DOWN 255
+ * @property {number} STOP 127
  */
 export enum ButtonState {
     PRESSED = 2,
@@ -154,6 +170,7 @@ export enum ButtonState {
 
 /**
  * @typedef BrakingStyle
+ * @property {number} FLOAT 0
  * @property {number} HOLD 127
  * @property {number} BRAKE 128
  */
