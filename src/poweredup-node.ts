@@ -22,7 +22,6 @@ import { TechnicSmallHub } from "./hubs/technicsmallhub";
 
 let ready = false;
 let wantScan = false;
-let discoveryEventAttached = false;
 
 const startScanning = () => {
     noble.startScanning([
@@ -72,11 +71,9 @@ export class PoweredUP extends EventEmitter {
      */
     public async scan () {
         wantScan = true;
-
-        if (!discoveryEventAttached) {
-            noble.on("discover", this._discoveryEventHandler);
-            discoveryEventAttached = true;
-        }
+        // @ts-ignore
+        noble.removeAllListeners();
+        noble.on("discover", this._discoveryEventHandler);
 
         if (ready) {
             debug("Scanning started");
@@ -93,12 +90,9 @@ export class PoweredUP extends EventEmitter {
      */
     public stop () {
         wantScan = false;
-
-        if (discoveryEventAttached) {
-            noble.removeListener("discover", this._discoveryEventHandler);
-            discoveryEventAttached = false;
-        }
-
+        // @ts-ignore
+        noble.removeAllListeners();
+        noble.removeListener("discover", this._discoveryEventHandler);
         noble.stopScanning();
     }
 

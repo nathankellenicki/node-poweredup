@@ -128,7 +128,6 @@ const noble = require("@abandonware/noble");
 const technicsmallhub_1 = require("./hubs/technicsmallhub");
 let ready = false;
 let wantScan = false;
-let discoveryEventAttached = false;
 const startScanning = () => {
     noble.startScanning([
         Consts.BLEService.LPF2_HUB,
@@ -170,10 +169,9 @@ class PoweredUP extends events_1.EventEmitter {
      */
     async scan() {
         wantScan = true;
-        if (!discoveryEventAttached) {
-            noble.on("discover", this._discoveryEventHandler);
-            discoveryEventAttached = true;
-        }
+        // @ts-ignore
+        noble.removeAllListeners();
+        noble.on("discover", this._discoveryEventHandler);
         if (ready) {
             debug("Scanning started");
             startScanning();
@@ -186,10 +184,9 @@ class PoweredUP extends events_1.EventEmitter {
      */
     stop() {
         wantScan = false;
-        if (discoveryEventAttached) {
-            noble.removeListener("discover", this._discoveryEventHandler);
-            discoveryEventAttached = false;
-        }
+        // @ts-ignore
+        noble.removeAllListeners();
+        noble.removeListener("discover", this._discoveryEventHandler);
         noble.stopScanning();
     }
     /**
