@@ -72,7 +72,6 @@ export class PoweredUP extends EventEmitter {
     public async scan () {
         wantScan = true;
         // @ts-ignore
-        noble.removeAllListeners();
         noble.on("discover", this._discoveryEventHandler);
 
         if (ready) {
@@ -91,7 +90,6 @@ export class PoweredUP extends EventEmitter {
     public stop () {
         wantScan = false;
         // @ts-ignore
-        noble.removeAllListeners();
         noble.removeListener("discover", this._discoveryEventHandler);
         noble.stopScanning();
     }
