@@ -1,5 +1,5 @@
 {
-  "name": "caf_node-poweredup",
+  "name": "node-poweredup",
   "version": "8.0.5",
   "description": "A Javascript module to interface with LEGO Powered Up components.",
   "homepage": "https://github.com/nathankellenicki/node-poweredup/",
