@@ -66,12 +66,14 @@ export class TachoMotor extends BasicMotor {
      * Set the global acceleration time
      * @method TachoMotor#setAccelerationTime
      * @param {number} time How long acceleration should last (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     * @param {number} profile 0 by default
+     * @param {boolean} interrupt If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
      */
-    public setAccelerationTime (time: number, profile: number = 0x00) {
-        const message = Buffer.from([0x81, this.portId, 0x11, 0x05, 0x00, 0x00, profile]);
-        message.writeUInt16LE(time, 4);
-        this.send(message);
+    public setAccelerationTime (time: number, profile: number = 0x00, interrupt: boolean = false) {
+        const message = Buffer.from([0x05, 0x00, 0x00, profile]);
+        message.writeUInt16LE(time, 1);
+        return this.sendPortOutputCommand(message, interrupt);
     }
 
 
@@ -79,12 +81,14 @@ export class TachoMotor extends BasicMotor {
      * Set the global deceleration time
      * @method TachoMotor#setDecelerationTime
      * @param {number} time How long deceleration should last (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     * @param {number} profile 0 by default
+     * @param {boolean} interrupt If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
      */
-    public setDecelerationTime (time: number, profile: number = 0x00) {
-        const message = Buffer.from([0x81, this.portId, 0x11, 0x06, 0x00, 0x00, profile]);
-        message.writeUInt16LE(time, 4);
-        this.send(message);
+    public setDecelerationTime (time: number, profile: number = 0x00, interrupt: boolean = true) {
+        const message = Buffer.from([0x06, 0x00, 0x00, profile]);
+        message.writeUInt16LE(time, 1);
+        return this.sendPortOutputCommand(message, interrupt);
     }
 
 
@@ -93,40 +97,35 @@ export class TachoMotor extends BasicMotor {
      * @method TachoMotor#setSpeed
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} time How long the motor should run for (in milliseconds).
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @param {boolean} interrupt If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
      */
-    public setSpeed (speed: [number, number] | number, time: number | undefined) {
+    public setSpeed (speed: [number, number] | number, time: number | undefined, interrupt: boolean = false) {
         if (!this.isVirtualPort && speed instanceof Array) {
             throw new Error("Only virtual ports can accept multiple speeds");
         }
         if (this.isWeDo2SmartHub) {
             throw new Error("Motor speed is not available on the WeDo 2.0 Smart Hub");
         }
-        this.cancelEventTimer();
-        return new Promise<void>((resolve) => {
-            if (speed === undefined || speed === null) {
-                speed = 100;
-            }
-            let message;
-            if (time !== undefined) {
-                if (speed instanceof Array) {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x0a, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), this._maxPower, this._brakeStyle, this.useProfile()]);
-                } else {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x09, 0x00, 0x00, mapSpeed(speed), this._maxPower, this._brakeStyle, this.useProfile()]);
-                }
-                message.writeUInt16LE(time, 4);
+        if (speed === undefined || speed === null) {
+            speed = 100;
+        }
+        let message;
+        if (time !== undefined) {
+            if (speed instanceof Array) {
+                message = Buffer.from([0x0a, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), this._maxPower, this._brakeStyle, this.useProfile()]);
             } else {
-                if (speed instanceof Array) {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x08, mapSpeed(speed[0]), mapSpeed(speed[1]), this._maxPower, this.useProfile()]);
-                } else {
-                    message = Buffer.from([0x81, this.portId, 0x11, 0x07, mapSpeed(speed), this._maxPower, this.useProfile()]);
-                }
+                message = Buffer.from([0x09, 0x00, 0x00, mapSpeed(speed), this._maxPower, this._brakeStyle, this.useProfile()]);
             }
-            this.send(message);
-            this._finishedCallbacks.push(() => {
-                return resolve();
-            });
-        });
+            message.writeUInt16LE(time, 1);
+        } else {
+            if (speed instanceof Array) {
+                message = Buffer.from([0x08, mapSpeed(speed[0]), mapSpeed(speed[1]), this._maxPower, this.useProfile()]);
+            } else {
+                message = Buffer.from([0x07, mapSpeed(speed), this._maxPower, this.useProfile()]);
+            }
+        }
+        return this.sendPortOutputCommand(message, interrupt);
     }
 
     /**
@@ -134,32 +133,27 @@ export class TachoMotor extends BasicMotor {
      * @method TachoMotor#rotateByDegrees
      * @param {number} degrees How much the motor should be rotated (in degrees).
      * @param {number} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100.
-     * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
+     * @param {boolean} interrupt If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
      */
-    public rotateByDegrees (degrees: number, speed: [number, number] | number) {
+    public rotateByDegrees (degrees: number, speed: [number, number] | number, interrupt: boolean = false) {
         if (!this.isVirtualPort && speed instanceof Array) {
             throw new Error("Only virtual ports can accept multiple speeds");
         }
         if (this.isWeDo2SmartHub) {
             throw new Error("Rotation is not available on the WeDo 2.0 Smart Hub");
         }
-        this.cancelEventTimer();
-        return new Promise<void>((resolve) => {
-            if (speed === undefined || speed === null) {
-                speed = 100;
-            }
-            let message;
-            if (speed instanceof Array) {
-                message = Buffer.from([0x81, this.portId, 0x11, 0x0c, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), this._maxPower, this._brakeStyle, this.useProfile()]);
-            } else {
-                message = Buffer.from([0x81, this.portId, 0x11, 0x0b, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), this._maxPower, this._brakeStyle, this.useProfile()]);
-            }
-            message.writeUInt32LE(degrees, 4);
-            this.send(message);
-            this._finishedCallbacks.push(() => {
-                return resolve();
-            });
-        });
+        if (speed === undefined || speed === null) {
+            speed = 100;
+        }
+        let message;
+        if (speed instanceof Array) {
+            message = Buffer.from([0x0c, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed[0]), mapSpeed(speed[1]), this._maxPower, this._brakeStyle, this.useProfile()]);
+        } else {
+            message = Buffer.from([0x0b, 0x00, 0x00, 0x00, 0x00, mapSpeed(speed), this._maxPower, this._brakeStyle, this.useProfile()]);
+        }
+        message.writeUInt32LE(degrees, 1);
+        return this.sendPortOutputCommand(message, interrupt);
     }
 
 

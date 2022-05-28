@@ -21,16 +21,12 @@ export class Light extends Device {
      * Set the light brightness.
      * @method Light#setBrightness
      * @param {number} brightness Brightness value between 0-100 (0 is off)
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @param {number} brightness Brightness value between 0-100 (0 is off)
+     * @param {boolean} interrupt If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
-    public setBrightness (brightness: number, interrupt: boolean = true) {
-        if (interrupt) {
-            this.cancelEventTimer();
-        }
-        return new Promise<void>((resolve) => {
-            this.writeDirect(0x00, Buffer.from([brightness]));
-            return resolve();
-        });
+    public setBrightness (brightness: number, interrupt: boolean = false) {
+        return this.writeDirect(0x00, Buffer.from([brightness]), interrupt);
     }
 
 
@@ -40,16 +36,17 @@ export class Light extends Device {
      * @param {number} fromBrightness Brightness value between 0-100 (0 is off)
      * @param {number} toBrightness Brightness value between 0-100 (0 is off)
      * @param {number} time How long the ramp should last (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public rampBrightness (fromBrightness: number, toBrightness: number, time: number) {
-        this.cancelEventTimer();
-        return new Promise((resolve) => {
+        return new Promise<Consts.CommandFeedback>((resolve) => {
             calculateRamp(this, fromBrightness, toBrightness, time)
             .on("changePower", (power) => {
                 this.setBrightness(power, false);
             })
-            .on("finished", resolve);
+            .on("finished", () => {
+                return resolve(Consts.CommandFeedback.FEEDBACK_DISABLED);
+            });
         });
     }
 

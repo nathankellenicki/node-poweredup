@@ -65,10 +65,10 @@ export class TechnicColorSensor extends Device {
      * @param {number} firstSegment First light segment. 0-100 brightness.
      * @param {number} secondSegment Second light segment. 0-100 brightness.
      * @param {number} thirdSegment Third light segment. 0-100 brightness.
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of the command.
      */
     public setBrightness (firstSegment: number, secondSegment: number, thirdSegment: number) {
-        this.writeDirect(0x03, Buffer.from([firstSegment, secondSegment, thirdSegment]));
+        return this.writeDirect(0x03, Buffer.from([firstSegment, secondSegment, thirdSegment]));
     }
 
 }
