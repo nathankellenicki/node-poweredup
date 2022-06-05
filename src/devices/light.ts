@@ -1,7 +1,5 @@
 import { Device } from "./device";
-
 import { IDeviceInterface } from "../interfaces";
-
 import * as Consts from "../consts";
 import { calculateRamp } from "../utils";
 
@@ -39,16 +37,12 @@ export class Light extends Device {
      * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public rampBrightness (fromBrightness: number, toBrightness: number, time: number) {
-        return new Promise<Consts.CommandFeedback>((resolve) => {
-            calculateRamp(this, fromBrightness, toBrightness, time)
-            .on("changePower", (power) => {
-                this.setBrightness(power, false);
-            })
-            .on("finished", () => {
-                return resolve(Consts.CommandFeedback.FEEDBACK_DISABLED);
-            });
+        const powerValues = calculateRamp(fromBrightness, toBrightness, time);
+        powerValues.forEach(value => {
+            this.setBrightness(value);
+            this.addPortOutputSleep(Math.round(time/powerValues.length));
         });
+        return this.setBrightness(toBrightness);
     }
-
 
 }
