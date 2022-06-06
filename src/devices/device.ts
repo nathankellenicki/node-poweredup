@@ -187,6 +187,7 @@ export class Device extends EventEmitter {
                 nextCommand.state = Consts.CommandFeedback.EXECUTION_BUSY;
                 debug("sleep command ", nextCommand.duration);
                 setTimeout(() => {
+                    if(nextCommand.state !== Consts.CommandFeedback.EXECUTION_BUSY) return;
                     const command = this._nextPortOutputCommands.shift();
                     if(command) command.resolve(Consts.CommandFeedback.EXECUTION_COMPLETED);
                     this.transmitNextPortOutputCommand();
@@ -196,13 +197,15 @@ export class Device extends EventEmitter {
         }
         if(this._bufferLength !== this._transmittedPortOutputCommands.length) return;
         if(this._bufferLength < 2 || nextCommand.interrupt) {
-            const command = this._nextPortOutputCommands.shift();
-            if(command) {
-                debug("transmit command ", command.startupAndCompletion, command.data);
-                this.send(Buffer.concat([Buffer.from([0x81, this.portId, command.startupAndCompletion]), command.data]));
-                command.state = Consts.CommandFeedback.TRANSMISSION_BUSY;
-                this._transmittedPortOutputCommands.push(command);
-                this.transmitNextPortOutputCommand(); // if PortOutputSleep this starts timeout
+            if(nextCommand.state === Consts.CommandFeedback.TRANSMISSION_PENDING) {
+                nextCommand.state = Consts.CommandFeedback.TRANSMISSION_BUSY;
+                debug("transmit command ", nextCommand.startupAndCompletion, nextCommand.data);
+                this.send(Buffer.concat([Buffer.from([0x81, this.portId, nextCommand.startupAndCompletion]), nextCommand.data])).then(() => {
+                    if(nextCommand.state !== Consts.CommandFeedback.TRANSMISSION_BUSY) return;
+                    const command = this._nextPortOutputCommands.shift();
+                    if(command instanceof PortOutputCommand) this._transmittedPortOutputCommands.push(command);
+                });
+                this.transmitNextPortOutputCommand(); // if the next command is PortOutputSleep this starts sleep timeout
                 // one could start a timer here to ensure finish function is called
             }
         }
@@ -215,13 +218,15 @@ export class Device extends EventEmitter {
         }
         const command = new PortOutputCommand(data, interrupt);
         if(interrupt) {
-            this._nextPortOutputCommands.forEach(command => command.resolve(Consts.CommandFeedback.TRANSMISSION_DISCARDED));
-            this._nextPortOutputCommands = [ command ];
+            this._nextPortOutputCommands.forEach(command => {
+                if(command.state !== Consts.CommandFeedback.TRANSMISSION_BUSY) {
+                    command.resolve(Consts.CommandFeedback.TRANSMISSION_DISCARDED);
+                }
+            });
+            this._nextPortOutputCommands = this._nextPortOutputCommands.filter(command => command.state === Consts.CommandFeedback.TRANSMISSION_BUSY);
         }
-        else {
-            this._nextPortOutputCommands.push(command);
-        }
-        this.transmitNextPortOutputCommand();
+        this._nextPortOutputCommands.push(command);
+        process.nextTick(() => this.transmitNextPortOutputCommand());
         return command.promise;
     }
 
