@@ -26,7 +26,7 @@ export class TechnicMediumHub extends LPF2Hub {
             peripheral.advertisement.serviceUuids.indexOf(Consts.BLEService.LPF2_HUB.replace(/-/g, "")) >= 0 &&
             peripheral.advertisement.manufacturerData &&
             peripheral.advertisement.manufacturerData.length > 3 &&
-            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB
+            peripheral.advertisement.manufacturerData[3] === Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB_ID
         );
     }
 
@@ -36,14 +36,10 @@ export class TechnicMediumHub extends LPF2Hub {
     }
 
 
-    public connect () {
-        return new Promise(async (resolve, reject) => {
-            debug("Connecting to Control+ Hub");
-            await super.connect();
-            this.send(Buffer.from([0x41, 0x3d, 0x00, 0x0a, 0x00, 0x00, 0x00, 0x01]), Consts.BLECharacteristic.LPF2_ALL); // Temperature
-            debug("Connect completed");
-            return resolve();
-        });
+    public async connect () {
+        debug("Connecting to Control+ Hub");
+        await super.connect();
+        debug("Connect completed");
     }
 
 

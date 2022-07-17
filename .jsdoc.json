@@ -1,0 +1,41 @@
+{
+    "tags": {
+        "allowUnknownTags": true,
+        "dictionaries": ["jsdoc"]
+    },
+    "source": {
+        "include": [ "README.md", "dist/node" ],
+        "includePattern": ".js$"
+    },
+    "plugins": ["plugins/markdown"],
+    "templates": {
+        "referenceTitle": "node-poweredup Reference",
+        "logoFile": "",
+        "cleverLinks": false,
+        "monospaceLinks": false,
+        "dateFormat": "ddd MMM Do YYYY",
+        "outputSourceFiles": true,
+        "outputSourcePath": true,
+        "systemName": "node-poweredup",
+        "footer": "",
+        "copyright": "node-poweredup by Nathan Kellenicki licensed under the MIT license.",
+        "navType": "vertical",
+        "theme": "simplex",
+        "linenums": true,
+        "collapseSymbols": false,
+        "inverseNav": true,
+        "protocol": "html://",
+        "methodHeadingReturns": false
+    },
+    "markdown": {
+        "parser": "gfm",
+        "hardwrap": true
+    },
+    "opts": {
+        "destination": "./docs/",
+        "encoding": "utf8",
+        "private": true,
+        "recurse": true,
+        "template": "./jsdoc-template/braintree"
+    }
+}

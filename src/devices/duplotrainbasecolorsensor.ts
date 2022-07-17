@@ -3,6 +3,7 @@ import { Device } from "./device";
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
+import { parseColor } from "../utils";
 
 /**
  * @class DuploTrainBaseColorSensor
@@ -18,9 +19,21 @@ export class DuploTrainBaseColorSensor extends Device {
         const mode = this._mode;
 
         switch (mode) {
+            case Mode.INTENSITY:
+                const intensity = message[4];
+
+                /**
+                 * Emits when intensity of the color/light changes.
+                 * @event DuploTrainBaseColorSensor#intensity
+                 * @type {object}
+                 * @param {number} intensity
+                 */
+                this.notify("intensity", { intensity });
+                break;
+
             case Mode.COLOR:
                 if (message[4] <= 10) {
-                    const color = message[4];
+                    const color = parseColor(message[4]);
 
                     /**
                      * Emits when a color sensor is activated.
@@ -66,12 +79,14 @@ export class DuploTrainBaseColorSensor extends Device {
 }
 
 export enum Mode {
-    COLOR = 0x00,
+    INTENSITY = 0x00,
+    COLOR = 0x01,
     REFLECTIVITY = 0x02,
     RGB = 0x03
 }
 
 export const ModeMap: {[event: string]: number} = {
+    "intensity": Mode.INTENSITY,
     "color": Mode.COLOR,
     "reflect": Mode.REFLECTIVITY,
     "rgb": Mode.RGB

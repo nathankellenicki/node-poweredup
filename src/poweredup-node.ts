@@ -5,6 +5,7 @@ import { NobleDevice } from "./nobleabstraction";
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
+import { Mario } from "./hubs/mario";
 import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
@@ -17,13 +18,18 @@ import { EventEmitter } from "events";
 import Debug = require("debug");
 const debug = Debug("poweredup");
 import noble = require("@abandonware/noble");
+import { TechnicSmallHub } from "./hubs/technicsmallhub";
 
 let ready = false;
 let wantScan = false;
-let discoveryEventAttached = false;
 
 const startScanning = () => {
-    noble.startScanning();
+    noble.startScanning([
+        Consts.BLEService.LPF2_HUB,
+        Consts.BLEService.LPF2_HUB.replace(/-/g, ""),
+        Consts.BLEService.WEDO2_SMART_HUB,
+        Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, "")
+    ]);
 };
 
 noble.on("stateChange", (state: string) => {
@@ -33,6 +39,11 @@ noble.on("stateChange", (state: string) => {
             debug("Scanning started");
             startScanning();
         }
+        noble.on('scanStop', () => {
+            setTimeout(() => {
+                startScanning();
+            }, 1000);
+        });
     } else {
         noble.stopScanning();
     }
@@ -60,11 +71,8 @@ export class PoweredUP extends EventEmitter {
      */
     public async scan () {
         wantScan = true;
-
-        if (!discoveryEventAttached) {
-            noble.on("discover", this._discoveryEventHandler);
-            discoveryEventAttached = true;
-        }
+        // @ts-ignore
+        noble.on("discover", this._discoveryEventHandler);
 
         if (ready) {
             debug("Scanning started");
@@ -81,12 +89,8 @@ export class PoweredUP extends EventEmitter {
      */
     public stop () {
         wantScan = false;
-
-        if (discoveryEventAttached) {
-            noble.removeListener("discover", this._discoveryEventHandler);
-            discoveryEventAttached = false;
-        }
-
+        // @ts-ignore
+        noble.removeListener("discover", this._discoveryEventHandler);
         noble.stopScanning();
     }
 
@@ -152,18 +156,22 @@ export class PoweredUP extends EventEmitter {
 
         let hub: BaseHub;
 
-        if (await WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
+        if (WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
             hub = new WeDo2SmartHub(device);
-        } else if (await MoveHub.IsMoveHub(peripheral)) {
+        } else if (MoveHub.IsMoveHub(peripheral)) {
             hub = new MoveHub(device);
-        } else if (await Hub.IsHub(peripheral)) {
+        } else if (Hub.IsHub(peripheral)) {
             hub = new Hub(device);
-        } else if (await RemoteControl.IsRemoteControl(peripheral)) {
+        } else if (RemoteControl.IsRemoteControl(peripheral)) {
             hub = new RemoteControl(device);
-        } else if (await DuploTrainBase.IsDuploTrainBase(peripheral)) {
+        } else if (DuploTrainBase.IsDuploTrainBase(peripheral)) {
             hub = new DuploTrainBase(device);
-        } else if (await TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
+        } else if (TechnicSmallHub.IsTechnicSmallHub(peripheral)) {
+            hub = new TechnicSmallHub(device);
+        } else if (TechnicMediumHub.IsTechnicMediumHub(peripheral)) {
             hub = new TechnicMediumHub(device);
+        } else if (Mario.IsMario(peripheral)) {
+            hub = new Mario(device);
         } else {
             return;
         }

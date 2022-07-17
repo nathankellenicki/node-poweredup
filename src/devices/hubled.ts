@@ -23,7 +23,7 @@ export class HubLED extends Device {
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setColor (color: number | boolean) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             if (typeof color === "boolean") {
                 color = 0;
             }
@@ -48,7 +48,7 @@ export class HubLED extends Device {
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setRGB (red: number, green: number, blue: number) {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             if (this.isWeDo2SmartHub) {
                 this.send(Buffer.from([0x06, 0x17, 0x01, 0x02]), Consts.BLECharacteristic.WEDO2_PORT_TYPE_WRITE);
                 this.send(Buffer.from([0x06, 0x04, 0x03, red, green, blue]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);

@@ -15,7 +15,7 @@ export class Device extends EventEmitter {
 
     protected _mode: number | undefined;
     protected _busy: boolean = false;
-    protected _finished: (() => void) | undefined;
+    protected _finishedCallbacks: (() => void)[] = [];
 
     private _hub: IDeviceInterface;
     private _portId: number;
@@ -126,17 +126,17 @@ export class Device extends EventEmitter {
         return this._isVirtualPort;
     }
 
-    public writeDirect (mode: number, data: Buffer, callback?: () => void) {
+    public writeDirect (mode: number, data: Buffer) {
         if (this.isWeDo2SmartHub) {
-            this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+            return this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
         } else {
-            this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL, callback);
+            return this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL);
         }
     }
 
-    public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL, callback?: () => void) {
+    public send (data: Buffer, characteristic: string = Consts.BLECharacteristic.LPF2_ALL) {
         this._ensureConnected();
-        this.hub.send(data, characteristic, callback);
+        return this.hub.send(data, characteristic);
     }
 
     public subscribe (mode: number) {
@@ -163,11 +163,18 @@ export class Device extends EventEmitter {
         }
     }
 
-    public finish () {
-        this._busy = false;
-        if (this._finished) {
-            this._finished();
-            this._finished = undefined;
+    public requestUpdate () {
+        this.send(Buffer.from([0x21, this.portId, 0x00]));
+    }
+
+    public finish (message: number) {
+        if((message & 0x10) === 0x10) return; // "busy/full"
+        this._busy = (message & 0x01) === 0x01;
+        while(this._finishedCallbacks.length > Number(this._busy)) {
+            const callback = this._finishedCallbacks.shift();
+            if(callback) {
+                 callback();
+            }
         }
     }
 

@@ -1,10 +1,12 @@
 import * as Consts from "./consts";
 
 import { PoweredUP } from "./poweredup-browser";
+import { Color } from "./color";
 
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
+import { Mario } from "./hubs/mario";
 import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
@@ -31,14 +33,19 @@ import { TechnicDistanceSensor } from "./devices/technicdistancesensor";
 import { TechnicForceSensor } from "./devices/technicforcesensor";
 import { TechnicLargeAngularMotor } from "./devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "./devices/techniclargelinearmotor";
+import { TechnicSmallAngularMotor } from "./devices/technicsmallangularmotor";
 import { TechnicMediumAngularMotor } from "./devices/technicmediumangularmotor";
 import { TechnicMediumHubAccelerometerSensor } from "./devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "./devices/technicmediumhubgyrosensor";
 import { TechnicMediumHubTiltSensor } from "./devices/technicmediumhubtiltsensor";
 import { TechnicXLargeLinearMotor } from "./devices/technicxlargelinearmotor";
+import { Technic3x3ColorLightMatrix } from "./devices/technic3x3colorlightmatrix";
 import { TiltSensor } from "./devices/tiltsensor";
 import { TrainMotor } from "./devices/trainmotor";
 import { VoltageSensor } from "./devices/voltagesensor";
+import { TachoMotor } from "./devices/tachomotor";
+import { AbsoluteMotor } from "./devices/absolutemotor";
+import { BasicMotor } from "./devices/basicmotor";
 
 import { isWebBluetooth } from "./utils";
 
@@ -52,6 +59,7 @@ window.PoweredUP = {
     RemoteControl,
     DuploTrainBase,
     Consts,
+    Color,
     ColorDistanceSensor,
     Device,
     DuploTrainBaseColorSensor,
@@ -60,6 +68,7 @@ window.PoweredUP = {
     DuploTrainBaseSpeedometer,
     HubLED,
     Light,
+    Mario,
     MediumLinearMotor,
     MotionSensor,
     MoveHub,
@@ -74,14 +83,19 @@ window.PoweredUP = {
     TechnicMediumHubAccelerometerSensor,
     TechnicMediumHubGyroSensor,
     TechnicMediumHubTiltSensor,
+    TechnicSmallAngularMotor,
     TechnicMediumAngularMotor,
     TechnicLargeAngularMotor,
     TechnicLargeLinearMotor,
     TechnicXLargeLinearMotor,
+    Technic3x3ColorLightMatrix,
     TiltSensor,
     TrainMotor,
     VoltageSensor,
     CurrentSensor,
+    TachoMotor,
+    AbsoluteMotor,
+    BasicMotor,
     isWebBluetooth
 };
 

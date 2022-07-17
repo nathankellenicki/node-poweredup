@@ -3,6 +3,7 @@ import { WebBLEDevice } from "./webbleabstraction";
 import { BaseHub } from "./hubs/basehub";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
+import { Mario } from "./hubs/mario";
 import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
@@ -14,6 +15,7 @@ import { EventEmitter } from "events";
 
 import Debug = require("debug");
 import { IBLEAbstraction } from "./interfaces";
+import { TechnicSmallHub } from "./hubs/technicsmallhub";
 const debug = Debug("poweredup");
 
 
@@ -128,35 +130,36 @@ export class PoweredUP extends EventEmitter {
 
 
     private _determineLPF2HubType (device: IBLEAbstraction): Promise<Consts.HubType> {
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             let buf: Buffer = Buffer.alloc(0);
             device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
                 buf = Buffer.concat([buf, data]);
-                const len = buf[0];
-                if (len >= buf.length) {
+                while (buf[0] <= buf.length) {
+                    const len = buf[0];
                     const message = buf.slice(0, len);
                     buf = buf.slice(len);
                     if (message[2] === 0x01 && message[3] === 0x0b) {
-                        process.nextTick(() => {
-                            switch (message[5]) {
-                                case Consts.BLEManufacturerData.REMOTE_CONTROL_ID:
-                                    resolve(Consts.HubType.REMOTE_CONTROL);
-                                    break;
-                                case Consts.BLEManufacturerData.MOVE_HUB_ID:
-                                    resolve(Consts.HubType.MOVE_HUB);
-                                    break;
-                                case Consts.BLEManufacturerData.HUB_ID:
-                                    resolve(Consts.HubType.HUB);
-                                    break;
-                                case Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID:
-                                    resolve(Consts.HubType.DUPLO_TRAIN_BASE);
-                                    break;
-                                case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB:
-                                    resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
-                                    break;
-                            }
-                            debug("Hub type determined");
-                        });
+                        switch (message[5]) {
+                            case Consts.BLEManufacturerData.REMOTE_CONTROL_ID:
+                                resolve(Consts.HubType.REMOTE_CONTROL);
+                                break;
+                            case Consts.BLEManufacturerData.MOVE_HUB_ID:
+                                resolve(Consts.HubType.MOVE_HUB);
+                                break;
+                            case Consts.BLEManufacturerData.HUB_ID:
+                                resolve(Consts.HubType.HUB);
+                                break;
+                            case Consts.BLEManufacturerData.DUPLO_TRAIN_BASE_ID:
+                                resolve(Consts.HubType.DUPLO_TRAIN_BASE);
+                                break;
+                            case Consts.BLEManufacturerData.TECHNIC_SMALL_HUB_ID:
+                                resolve(Consts.HubType.TECHNIC_SMALL_HUB);
+                                break;
+                            case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB_ID:
+                                resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
+                                break;
+                        }
+                        debug("Hub type determined");
                     } else {
                         debug("Stashed in mailbox (LPF2_ALL)", message);
                         device.addToCharacteristicMailbox(Consts.BLECharacteristic.LPF2_ALL, message);
@@ -209,8 +212,14 @@ export class PoweredUP extends EventEmitter {
             case Consts.HubType.DUPLO_TRAIN_BASE:
                 hub = new DuploTrainBase(device);
                 break;
+            case Consts.HubType.TECHNIC_SMALL_HUB:
+                hub = new TechnicSmallHub(device);
+                break;
             case Consts.HubType.TECHNIC_MEDIUM_HUB:
                 hub = new TechnicMediumHub(device);
+                break;
+            case Consts.HubType.MARIO:
+                hub = new Mario(device);
                 break;
             default:
                 return;

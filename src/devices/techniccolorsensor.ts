@@ -3,6 +3,7 @@ import { Device } from "./device";
 import { IDeviceInterface } from "../interfaces";
 
 import * as Consts from "../consts";
+import { parseColor } from "../utils";
 
 /**
  * @class TechnicColorSensor
@@ -20,7 +21,7 @@ export class TechnicColorSensor extends Device {
         switch (mode) {
             case Mode.COLOR:
                 if (message[4] <= 10) {
-                    const color = message[4];
+                    const color = parseColor(message[4]);
 
                     /**
                      * Emits when a color sensor is activated.
@@ -56,6 +57,18 @@ export class TechnicColorSensor extends Device {
                 this.notify("ambient", { ambient });
                 break;
         }
+    }
+
+    /**
+     * Set the brightness (or turn on/off) of the lights around the sensor.
+     * @method TechnicColorSensor#setBrightness
+     * @param {number} firstSegment First light segment. 0-100 brightness.
+     * @param {number} secondSegment Second light segment. 0-100 brightness.
+     * @param {number} thirdSegment Third light segment. 0-100 brightness.
+     * @returns {Promise} Resolved upon successful issuance of the command.
+     */
+    public setBrightness (firstSegment: number, secondSegment: number, thirdSegment: number) {
+        this.writeDirect(0x03, Buffer.from([firstSegment, secondSegment, thirdSegment]));
     }
 
 }

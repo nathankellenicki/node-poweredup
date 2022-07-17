@@ -13,6 +13,9 @@ import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer"
 
 import { HubLED } from "../devices/hubled";
 import { Light } from "../devices/light";
+import { MarioAccelerometer } from "../devices/marioaccelerometer";
+import { MarioBarcodeSensor } from "../devices/mariobarcodesensor";
+import { MarioPantsSensor } from "../devices/mariopantssensor";
 import { MediumLinearMotor } from "../devices/mediumlinearmotor";
 import { MotionSensor } from "../devices/motionsensor";
 import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
@@ -25,6 +28,7 @@ import { TechnicDistanceSensor } from "../devices/technicdistancesensor";
 import { TechnicForceSensor } from "../devices/technicforcesensor";
 import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor";
 import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
+import { TechnicSmallAngularMotor } from "../devices/technicsmallangularmotor";
 import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor";
 import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
 import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
@@ -37,6 +41,7 @@ import { VoltageSensor } from "../devices/voltagesensor";
 import * as Consts from "../consts";
 
 import Debug = require("debug");
+import { Technic3x3ColorLightMatrix } from "../devices/technic3x3colorlightmatrix";
 const debug = Debug("basehub");
 
 
@@ -84,6 +89,24 @@ export class BaseHub extends EventEmitter {
      */
     public get name () {
         return this._bleDevice.name;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} connected Connected status
+     */
+     public get connected () {
+        return this._bleDevice.connected;
+    }
+
+
+    /**
+     * @readonly
+     * @property {string} connecting Connecting status
+     */
+     public get connecting () {
+        return this._bleDevice.connecting;
     }
 
 
@@ -165,16 +188,12 @@ export class BaseHub extends EventEmitter {
      * @returns {Promise} Resolved upon successful connect.
      */
     public connect () {
-        return new Promise(async (connectResolve, connectReject) => {
-            if (this._bleDevice.connecting) {
-                return connectReject("Already connecting");
-            } else if (this._bleDevice.connected) {
-                return connectReject("Already connected");
-            }
-            await this._bleDevice.connect();
-            return connectResolve();
-        });
-
+        if (this._bleDevice.connecting) {
+            throw new Error("Already connecting");
+        } else if (this._bleDevice.connected) {
+            throw new Error("Already connected");
+        }
+        return this._bleDevice.connect();
     }
 
 
@@ -320,10 +339,8 @@ export class BaseHub extends EventEmitter {
     }
 
 
-    public send (message: Buffer, uuid: string, callback?: () => void) {
-        if (callback) {
-            callback();
-        }
+    public send (message: Buffer, uuid: string) {
+        return Promise.resolve();
     }
 
 
@@ -337,8 +354,29 @@ export class BaseHub extends EventEmitter {
     }
 
 
+    public manuallyAttachDevice(deviceType: number, portId: number) {
+        if (!this._attachedDevices[portId]) {
+            debug(`No device attached to portId ${portId}, creating and attaching device type ${deviceType}`);
+            const device = this._createDevice(deviceType, portId);
+            this._attachDevice(device);
+            return device;
+        } else {
+            if (this._attachedDevices[portId].type === deviceType) {
+                debug(`Device of ${deviceType} already attached to portId ${portId}, returning existing device`);
+                return this._attachedDevices[portId];
+            } else {
+                throw new Error(`Already a different type of device attached to portId ${portId}. Only use this method when you are certain what's attached.`);
+            }
+        }
+    }
+
+
     protected _attachDevice (device: Device) {
+        if (this._attachedDevices[device.portId] && this._attachedDevices[device.portId].type === device.type) {
+            return;
+        }
         this._attachedDevices[device.portId] = device;
+
         /**
          * Emits when a device is attached to the Hub.
          * @event Hub#attach
@@ -389,6 +427,7 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_GYRO_SENSOR]: TechnicMediumHubGyroSensor,
             [Consts.DeviceType.TECHNIC_MEDIUM_HUB_ACCELEROMETER]: TechnicMediumHubAccelerometerSensor,
             [Consts.DeviceType.MEDIUM_LINEAR_MOTOR]: MediumLinearMotor,
+            [Consts.DeviceType.TECHNIC_SMALL_ANGULAR_MOTOR]: TechnicSmallAngularMotor,
             [Consts.DeviceType.TECHNIC_MEDIUM_ANGULAR_MOTOR]: TechnicMediumAngularMotor,
             [Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR]: TechnicLargeAngularMotor,
             [Consts.DeviceType.TECHNIC_LARGE_LINEAR_MOTOR]: TechnicLargeLinearMotor,
@@ -401,13 +440,19 @@ export class BaseHub extends EventEmitter {
             [Consts.DeviceType.DUPLO_TRAIN_BASE_COLOR_SENSOR]: DuploTrainBaseColorSensor,
             [Consts.DeviceType.DUPLO_TRAIN_BASE_MOTOR]: DuploTrainBaseMotor,
             [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEAKER]: DuploTrainBaseSpeaker,
-            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER]: DuploTrainBaseSpeedometer
+            [Consts.DeviceType.DUPLO_TRAIN_BASE_SPEEDOMETER]: DuploTrainBaseSpeedometer,
+            [Consts.DeviceType.MARIO_ACCELEROMETER]: MarioAccelerometer,
+            [Consts.DeviceType.MARIO_BARCODE_SENSOR]: MarioBarcodeSensor,
+            [Consts.DeviceType.MARIO_PANTS_SENSOR]: MarioPantsSensor,
+            [Consts.DeviceType.TECHNIC_MEDIUM_ANGULAR_MOTOR_GREY]: TechnicMediumAngularMotor,
+            [Consts.DeviceType.TECHNIC_LARGE_ANGULAR_MOTOR_GREY]: TechnicLargeAngularMotor,
+            [Consts.DeviceType.TECHNIC_3X3_COLOR_LIGHT_MATRIX]: Technic3x3ColorLightMatrix,
         };
 
         constructor = deviceConstructors[deviceType as Consts.DeviceType];
 
         if (constructor) {
-            return new constructor(this, portId);
+            return new constructor(this, portId, undefined, deviceType);
         } else {
             return new Device(this, portId, undefined, deviceType);
         }

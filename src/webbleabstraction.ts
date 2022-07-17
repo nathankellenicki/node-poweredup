@@ -14,7 +14,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     private _listeners: {[uuid: string]: any} = {};
     private _characteristics: {[uuid: string]: any} = {};
 
-    private _queue: Promise<any> = Promise.resolve();
+    private _queue: Promise<void> = Promise.resolve();
     private _mailbox: Buffer[] = [];
 
     private _connected: boolean = false;
@@ -58,7 +58,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public connect () {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             this._connected = true;
             return resolve();
         });
@@ -66,29 +66,22 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
 
 
     public disconnect () {
-        return new Promise((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             this._webBLEServer.device.gatt.disconnect();
+            this._connected = false;
             return resolve();
         });
     }
 
 
-    public discoverCharacteristicsForService (uuid: string) {
-        return new Promise(async (discoverResolve, discoverReject) => {
-            debug("Service/characteristic discovery started");
-            let service;
-            try {
-                service = await this._webBLEServer.getPrimaryService(uuid);
-            } catch (err) {
-                return discoverReject(err);
-            }
-            const characteristics = await service.getCharacteristics();
-            for (const characteristic of characteristics) {
-                this._characteristics[characteristic.uuid] = characteristic;
-            }
-            debug("Service/characteristic discovery finished");
-            return discoverResolve();
-        });
+    public async discoverCharacteristicsForService (uuid: string) {
+        debug("Service/characteristic discovery started");
+        const service = await this._webBLEServer.getPrimaryService(uuid);
+        const characteristics = await service.getCharacteristics();
+        for (const characteristic of characteristics) {
+            this._characteristics[characteristic.uuid] = characteristic;
+        }
+        debug("Service/characteristic discovery finished");
     }
 
 
@@ -107,11 +100,14 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
             return callback(buf);
         };
         this._characteristics[uuid].addEventListener("characteristicvaluechanged", this._listeners[uuid]);
-        for (const data of this._mailbox) {
+
+        const mailbox = Array.from(this._mailbox);
+        this._mailbox = [];
+        for (const data of mailbox) {
             debug("Replayed from mailbox (LPF2_ALL)", data);
             callback(data);
         }
-        this._mailbox = [];
+
         this._characteristics[uuid].startNotifications();
     }
 
@@ -134,12 +130,8 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public writeToCharacteristic (uuid: string, data: Buffer, callback?: () => void) {
-        this._queue = this._queue.then(() => this._characteristics[uuid].writeValue(data)).then(() => {
-            if (callback) {
-                callback();
-            }
-        });
+    public writeToCharacteristic (uuid: string, data: Buffer) {
+        return this._queue = this._queue.then(() => this._characteristics[uuid].writeValueWithoutResponse(data));
     }
 
 
