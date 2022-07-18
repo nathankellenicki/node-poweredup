@@ -4,6 +4,7 @@ import { PoweredUP } from "./poweredup-node";
 import { Color } from "./color";
 
 import { BaseHub } from "./hubs/basehub";
+import { CircuitCube } from "./hubs/circuitcube";
 import { DuploTrainBase } from "./hubs/duplotrainbase";
 import { Hub } from "./hubs/hub";
 import { Mario } from "./hubs/mario";
@@ -58,6 +59,7 @@ export {
     Hub,
     RemoteControl,
     DuploTrainBase,
+    CircuitCube,
     Consts,
     Color,
     ColorDistanceSensor,

@@ -5,7 +5,6 @@ import { EventEmitter } from "events";
 import { IBLEAbstraction } from "./interfaces";
 const debug = Debug("bledevice");
 
-
 export class NobleDevice extends EventEmitter implements IBLEAbstraction {
 
     private _noblePeripheral: Peripheral;
@@ -90,6 +89,7 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
         return new Promise<void>(async (discoverResolve, discoverReject) => {
             uuid = this._sanitizeUUID(uuid);
             this._noblePeripheral.discoverServices([uuid], (err: string, services: Service[]) => {
+            // this._noblePeripheral.discoverAllServicesAndCharacteristics((err: string, services: Service[]) => {
                 if (err) {
                     return discoverReject(err);
                 }
@@ -141,10 +141,10 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public writeToCharacteristic (uuid: string, data: Buffer) {
+    public writeToCharacteristic (uuid: string, data: Buffer, writeWithoutReponse = false) {
         return new Promise<void>((resolve, reject) => {
             uuid = this._sanitizeUUID(uuid);
-            this._characteristics[uuid].write(data, false, (error) => {
+            this._characteristics[uuid].write(data, writeWithoutReponse, (error) => {
                 if(error) {
                     return reject(error);
                 }
