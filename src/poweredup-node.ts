@@ -19,6 +19,7 @@ import Debug = require("debug");
 const debug = Debug("poweredup");
 import noble = require("@abandonware/noble");
 import { TechnicSmallHub } from "./hubs/technicsmallhub";
+import { CircuitCube } from "./hubs/circuitcube";
 
 let ready = false;
 let wantScan = false;
@@ -28,7 +29,8 @@ const startScanning = () => {
         Consts.BLEService.LPF2_HUB,
         Consts.BLEService.LPF2_HUB.replace(/-/g, ""),
         Consts.BLEService.WEDO2_SMART_HUB,
-        Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, "")
+        Consts.BLEService.WEDO2_SMART_HUB.replace(/-/g, ""),
+        Consts.BLEService.CIRCUIT_CUBE_1
     ]);
 };
 
@@ -56,7 +58,7 @@ noble.on("stateChange", (state: string) => {
 export class PoweredUP extends EventEmitter {
 
 
-    private _connectedHubs: {[uuid: string]: BaseHub} = {};
+    private _connectedHubs: {[uuid: string]: BaseHub|CircuitCube} = {};
 
 
     constructor () {
@@ -123,7 +125,7 @@ export class PoweredUP extends EventEmitter {
      * @returns {BaseHub}
      */
     public getHubByPrimaryMACAddress (address: string) {
-        return Object.values(this._connectedHubs).filter((hub) => hub.primaryMACAddress === address)[0];
+        return Object.values(this._connectedHubs).filter((hub) => 'primaryMACAddress' in hub && hub.primaryMACAddress === address)[0];
     }
 
 
@@ -154,7 +156,7 @@ export class PoweredUP extends EventEmitter {
         peripheral.removeAllListeners();
         const device = new NobleDevice(peripheral);
 
-        let hub: BaseHub;
+        let hub: BaseHub | CircuitCube;
 
         if (WeDo2SmartHub.IsWeDo2SmartHub(peripheral)) {
             hub = new WeDo2SmartHub(device);
@@ -172,6 +174,8 @@ export class PoweredUP extends EventEmitter {
             hub = new TechnicMediumHub(device);
         } else if (Mario.IsMario(peripheral)) {
             hub = new Mario(device);
+        } else if (CircuitCube.IsCircuitCube(peripheral)) {
+            hub = new CircuitCube(device);
         } else {
             return;
         }

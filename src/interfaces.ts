@@ -13,7 +13,7 @@ export interface IBLEAbstraction extends EventEmitter {
     subscribeToCharacteristic: (uuid: string, callback: (data: Buffer) => void) => void;
     addToCharacteristicMailbox: (uuid: string, data: Buffer) => void;
     readFromCharacteristic: (uuid: string, callback: (err: string | null, data: Buffer | null) => void) => void;
-    writeToCharacteristic: (uuid: string, data: Buffer) => Promise<void>;
+    writeToCharacteristic: (uuid: string, data: Buffer, writeWithoutResponse?: boolean) => Promise<void>;
 }
 
 export interface IDeviceInterface extends EventEmitter {
