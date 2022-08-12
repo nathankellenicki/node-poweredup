@@ -20,7 +20,8 @@
   "dependencies": {
     "@abandonware/noble": "1.9.2-15",
     "compare-versions": "^4.1.3",
-    "debug": "^4.3.3"
+    "debug": "^4.3.3",
+    "@pybricks/mpy-cross-v6": "^2.0.0"
   },
   "devDependencies": {
     "@types/debug": "4.1.7",

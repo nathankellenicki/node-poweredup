@@ -9,6 +9,7 @@
  * @property {number} TECHNIC_MEDIUM_HUB 6
  * @property {number} MARIO 7
  * @property {number} TECHNIC_SMALL_HUB 8
+ * @property {number} PYBRICKS_HUB 100
  */
 export enum HubType {
     UNKNOWN = 0,
@@ -20,6 +21,7 @@ export enum HubType {
     TECHNIC_MEDIUM_HUB = 6,
     MARIO = 7,
     TECHNIC_SMALL_HUB = 8,
+    PYBRICKS_HUB = 100,
 }
 
 
@@ -215,7 +217,9 @@ export enum BLEService {
     WEDO2_SMART_HUB_3 = "2a19",
     WEDO2_SMART_HUB_4 = "180f",
     WEDO2_SMART_HUB_5 = "180a",
-    LPF2_HUB = "00001623-1212-efde-1623-785feabcd123"
+    LPF2_HUB = "00001623-1212-efde-1623-785feabcd123",
+    PYBRICKS_HUB = "c5f50001-8280-46da-89f4-6d8051e4aeef",
+    PYBRICKS_NUS = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"
 }
 
 
@@ -233,7 +237,10 @@ export enum BLECharacteristic {
     WEDO2_PORT_TYPE_WRITE = "00001563-1212-efde-1523-785feabcd123", // "1563"
     WEDO2_MOTOR_VALUE_WRITE = "00001565-1212-efde-1523-785feabcd123", // "1565"
     WEDO2_NAME_ID = "00001524-1212-efde-1523-785feabcd123", // "1524"
-    LPF2_ALL = "00001624-1212-efde-1623-785feabcd123"
+    LPF2_ALL = "00001624-1212-efde-1623-785feabcd123",
+    PYBRICKS_CONTROL = "c5f50002-8280-46da-89f4-6d8051e4aeef",
+    PYBRICKS_NUS_RX = "6e400002-b5a3-f393-e0a9-e50e24dcca9e",
+    PYBRICKS_NUS_TX = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
 }
 
 
