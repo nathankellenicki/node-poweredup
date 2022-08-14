@@ -158,6 +158,9 @@ export class PoweredUP extends EventEmitter {
                             case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB_ID:
                                 resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
                                 break;
+                            case Consts.BLEManufacturerData.MARIO_ID:
+                                resolve(Consts.HubType.MARIO);
+                                break;
                         }
                         debug("Hub type determined");
                     } else {
