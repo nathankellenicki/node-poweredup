@@ -20,7 +20,7 @@ export class Light extends Device {
      * @method Light#setBrightness
      * @param {number} brightness Brightness value between 0-100 (0 is off)
      * @param {number} brightness Brightness value between 0-100 (0 is off)
-     * @param {boolean} interrupt If true, previous commands are discarded.
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
      * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public setBrightness (brightness: number, interrupt: boolean = false) {

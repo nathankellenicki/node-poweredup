@@ -67,8 +67,8 @@ export class TachoMotor extends BasicMotor {
      * @method TachoMotor#setAccelerationTime
      * @param {number} time How long acceleration should last (in milliseconds).
      * @param {number} profile 0 by default
-     * @param {boolean} interrupt If true, previous commands are discarded.
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the motor is finished).
      */
     public setAccelerationTime (time: number, profile: number = 0x00, interrupt: boolean = false) {
         const message = Buffer.from([0x05, 0x00, 0x00, profile]);
@@ -82,8 +82,8 @@ export class TachoMotor extends BasicMotor {
      * @method TachoMotor#setDecelerationTime
      * @param {number} time How long deceleration should last (in milliseconds).
      * @param {number} profile 0 by default
-     * @param {boolean} interrupt If true, previous commands are discarded.
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the motor is finished).
      */
     public setDecelerationTime (time: number, profile: number = 0x00, interrupt: boolean = true) {
         const message = Buffer.from([0x06, 0x00, 0x00, profile]);
@@ -97,8 +97,8 @@ export class TachoMotor extends BasicMotor {
      * @method TachoMotor#setSpeed
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} time How long the motor should run for (in milliseconds).
-     * @param {boolean} interrupt If true, previous commands are discarded.
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the motor is finished).
      */
     public setSpeed (speed: [number, number] | number, time: number | undefined, interrupt: boolean = false) {
         if (!this.isVirtualPort && speed instanceof Array) {
@@ -133,8 +133,8 @@ export class TachoMotor extends BasicMotor {
      * @method TachoMotor#rotateByDegrees
      * @param {number} degrees How much the motor should be rotated (in degrees).
      * @param {number} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100.
-     * @param {boolean} interrupt If true, previous commands are discarded.
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the motor is finished).
      */
     public rotateByDegrees (degrees: number, speed: [number, number] | number, interrupt: boolean = false) {
         if (!this.isVirtualPort && speed instanceof Array) {

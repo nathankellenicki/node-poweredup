@@ -21,7 +21,7 @@ export class PiezoBuzzer extends Device {
      * @method PiezoBuzzer#playTone
      * @param {number} frequency
      * @param {number} time How long the tone should play for (in milliseconds).
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the tone has finished playing).
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the tone has finished playing).
      */
     public playTone (frequency: number, time: number) {
         return new Promise<Consts.CommandFeedback>((resolve) => {

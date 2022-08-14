@@ -40,8 +40,8 @@ export class AbsoluteMotor extends TachoMotor {
      * @method AbsoluteMotor#gotoAngle
      * @param {number} angle Absolute position the motor should go to (degrees from 0).
      * @param {number} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100.
-     * @param {boolean} interrupt If true, previous commands are discarded.
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the motor is finished).
      */
     public gotoAngle (angle: [number, number] | number, speed: number = 100, interrupt: boolean = false) {
         if (!this.isVirtualPort && angle instanceof Array) {
@@ -72,7 +72,7 @@ export class AbsoluteMotor extends TachoMotor {
      * Real zero is marked on Technic angular motors (SPIKE Prime). It is also available on Technic linear motors (Control+) but is unmarked.
      * @method AbsoluteMotor#gotoRealZero
      * @param {number} [speed=100] Speed between 1 - 100. Note that this will always take the shortest path to zero.
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the motor is finished).
      */
     public gotoRealZero (speed: number = 100) {
         return new Promise<Consts.CommandFeedback>((resolve) => {
@@ -101,8 +101,8 @@ export class AbsoluteMotor extends TachoMotor {
     /**
      * Reset zero to current position
      * @method AbsoluteMotor#resetZero
-     * @param {boolean} interrupt If true, previous commands are discarded.
-     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (ie. once the motor is finished).
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command (i.e. once the motor is finished).
      */
     public resetZero (interrupt: boolean = false) {
         const data = Buffer.from([0x51, 0x02, 0x00, 0x00, 0x00, 0x00]);
