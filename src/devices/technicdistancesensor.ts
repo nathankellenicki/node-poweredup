@@ -51,7 +51,7 @@ export class TechnicDistanceSensor extends Device {
      * @param {number} bottomLeft Bottom left quadrant (below left eye). 0-100 brightness.
      * @param {number} topRight Top right quadrant (above right eye). 0-100 brightness.
      * @param {number} bottomRight Bottom right quadrant (below right eye). 0-100 brightness.
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of the command.
      */
     public setBrightness (topLeft: number, bottomLeft: number, topRight: number, bottomRight: number) {
         this.writeDirect(0x05, Buffer.from([topLeft, topRight, bottomLeft, bottomRight]));

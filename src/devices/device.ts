@@ -1,8 +1,13 @@
 import { EventEmitter } from "events";
 
 import { IDeviceInterface } from "../interfaces";
+import { PortOutputCommand } from "../portoutputcommand";
+import { PortOutputSleep } from "../portoutputsleep";
 
 import * as Consts from "../consts";
+
+import Debug = require("debug");
+const debug = Debug("device");
 
 /**
  * @class Device
@@ -14,8 +19,9 @@ export class Device extends EventEmitter {
     public values: {[event: string]: any} = {};
 
     protected _mode: number | undefined;
-    protected _busy: boolean = false;
-    protected _finishedCallbacks: (() => void)[] = [];
+    protected _bufferLength: number = 0;
+    protected _nextPortOutputCommands: (PortOutputCommand | PortOutputSleep)[] = [];
+    protected _transmittedPortOutputCommands: PortOutputCommand[] = [];
 
     private _hub: IDeviceInterface;
     private _portId: number;
@@ -25,7 +31,6 @@ export class Device extends EventEmitter {
 
     private _isWeDo2SmartHub: boolean;
     private _isVirtualPort: boolean = false;
-    private _eventTimer: NodeJS.Timer | null = null;
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
@@ -126,11 +131,11 @@ export class Device extends EventEmitter {
         return this._isVirtualPort;
     }
 
-    public writeDirect (mode: number, data: Buffer) {
+    public writeDirect (mode: number, data: Buffer, interrupt: boolean = false) {
         if (this.isWeDo2SmartHub) {
-            return this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE);
+            return this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE).then(() => { return Consts.CommandFeedback.FEEDBACK_DISABLED; });
         } else {
-            return this.send(Buffer.concat([Buffer.from([0x81, this.portId, 0x11, 0x51, mode]), data]), Consts.BLECharacteristic.LPF2_ALL);
+            return this.sendPortOutputCommand(Buffer.concat([Buffer.from([0x51, mode]), data]), interrupt);
         }
     }
 
@@ -167,26 +172,175 @@ export class Device extends EventEmitter {
         this.send(Buffer.from([0x21, this.portId, 0x00]));
     }
 
-    public finish (message: number) {
-        if((message & 0x10) === 0x10) return; // "busy/full"
-        this._busy = (message & 0x01) === 0x01;
-        while(this._finishedCallbacks.length > Number(this._busy)) {
-            const callback = this._finishedCallbacks.shift();
-            if(callback) {
-                 callback();
+    protected transmitNextPortOutputCommand() {
+        if(!this.connected) {
+            this._transmittedPortOutputCommands.forEach(command => command.resolve(Consts.CommandFeedback.FEEDBACK_MISSING));
+            this._transmittedPortOutputCommands = [];
+            this._nextPortOutputCommands.forEach(command => command.resolve(Consts.CommandFeedback.TRANSMISSION_DISCARDED));
+            this._nextPortOutputCommands = [];
+            return;
+        }
+        if(!this._nextPortOutputCommands.length) return;
+        const nextCommand = this._nextPortOutputCommands[0];
+        if(nextCommand instanceof PortOutputSleep) {
+            if(nextCommand.state === Consts.CommandFeedback.EXECUTION_PENDING) {
+                nextCommand.state = Consts.CommandFeedback.EXECUTION_BUSY;
+                debug("sleep command ", nextCommand.duration);
+                setTimeout(() => {
+                    if(nextCommand.state !== Consts.CommandFeedback.EXECUTION_BUSY) return;
+                    const command = this._nextPortOutputCommands.shift();
+                    if(command) command.resolve(Consts.CommandFeedback.EXECUTION_COMPLETED);
+                    this.transmitNextPortOutputCommand();
+                }, nextCommand.duration);
+            }
+            return;
+        }
+        if(this._bufferLength !== this._transmittedPortOutputCommands.length) return;
+        if(this._bufferLength < 2 || nextCommand.interrupt) {
+            if(nextCommand.state === Consts.CommandFeedback.TRANSMISSION_PENDING) {
+                nextCommand.state = Consts.CommandFeedback.TRANSMISSION_BUSY;
+                debug("transmit command ", nextCommand.startupAndCompletion, nextCommand.data);
+                this.send(Buffer.concat([Buffer.from([0x81, this.portId, nextCommand.startupAndCompletion]), nextCommand.data])).then(() => {
+                    if(nextCommand.state !== Consts.CommandFeedback.TRANSMISSION_BUSY) return;
+                    const command = this._nextPortOutputCommands.shift();
+                    if(command instanceof PortOutputCommand) this._transmittedPortOutputCommands.push(command);
+                });
+                this.transmitNextPortOutputCommand(); // if the next command is PortOutputSleep this starts sleep timeout
+                // one could start a timer here to ensure finish function is called
             }
         }
     }
 
-    public setEventTimer (timer: NodeJS.Timer) {
-        this._eventTimer = timer;
+    public sendPortOutputCommand(data: Buffer, interrupt: boolean = false) {
+        if (this.isWeDo2SmartHub) {
+            throw new Error("PortOutputCommands are not available on the WeDo 2.0 Smart Hub");
+            return;
+        }
+        const command = new PortOutputCommand(data, interrupt);
+        if(interrupt) {
+            this._nextPortOutputCommands.forEach(command => {
+                if(command.state !== Consts.CommandFeedback.TRANSMISSION_BUSY) {
+                    command.resolve(Consts.CommandFeedback.TRANSMISSION_DISCARDED);
+                }
+            });
+            this._nextPortOutputCommands = this._nextPortOutputCommands.filter(command => command.state === Consts.CommandFeedback.TRANSMISSION_BUSY);
+        }
+        this._nextPortOutputCommands.push(command);
+        process.nextTick(() => this.transmitNextPortOutputCommand());
+        return command.promise;
     }
 
-    public cancelEventTimer () {
-        if (this._eventTimer) {
-            clearTimeout(this._eventTimer);
-            this._eventTimer = null;
+    public addPortOutputSleep(duration: number) {
+        const command = new PortOutputSleep(duration);
+        this._nextPortOutputCommands.push(command);
+        return command.promise;
+    }
+
+    public finish (message: number) {
+        debug("recieved command feedback ", message);
+        if((message & 0x08) === 0x08) this._bufferLength = 0;
+        else if((message & 0x01) === 0x01) this._bufferLength = 1;
+        else if((message & 0x10) === 0x10) this._bufferLength = 2;
+        const completed = ((message & 0x02) === 0x02);
+        const discarded = ((message & 0x04) === 0x04);
+
+        switch(this._transmittedPortOutputCommands.length) {
+            case 0:
+                break;
+            case 1:
+                if(!this._bufferLength && completed && !discarded) {
+                    this._complete();
+                }
+                else if(!this._bufferLength && !completed && discarded) {
+                    this._discard();
+                }
+                else if(this._bufferLength && !completed && !discarded) {
+                    this._busy();
+                }
+                else {
+                    this._missing();
+                }
+                break;
+            case 2:
+                if(!this._bufferLength && completed && discarded) {
+                    this._discard();
+                    this._complete();
+                }
+                else if(!this._bufferLength && completed && !discarded) {
+                    this._complete();
+                    this._complete();
+                }
+                else if(!this._bufferLength && !completed && discarded) {
+                    this._discard();
+                    this._discard();
+                }
+                else if(this._bufferLength === 1 && completed && !discarded) {
+                    this._complete();
+                    this._busy();
+                }
+                else if(this._bufferLength === 1 && !completed && discarded) {
+                    this._discard();
+                    this._busy();
+                }
+                else if(this._bufferLength === 1 && completed && discarded) {
+                    this._missing();
+                    this._busy();
+                }
+                else if(this._bufferLength === 2 && !completed && !discarded) {
+                    this._busy();
+                    this._pending();
+                }
+                else {
+                    this._missing();
+                    this._missing();
+                }
+                break;
+            case 3:
+                if(!this._bufferLength && completed && discarded) {
+                    this._discard();
+                    this._discard();
+                    this._complete();
+                }
+                else if(!this._bufferLength && completed && !discarded) {
+                    this._complete();
+                    this._complete();
+                    this._complete();
+                }
+                else if(!this._bufferLength && !completed && discarded) {
+                    this._discard();
+                    this._discard();
+                    this._discard();
+                }
+                else if(this._bufferLength === 1 && completed && discarded) {
+                    this._discard();
+                    this._complete();
+                    this._busy();
+                }
+                else if(this._bufferLength === 1 && completed && !discarded) {
+                    this._complete();
+                    this._complete();
+                    this._busy();
+                }
+                else if(this._bufferLength === 1 && !completed && discarded) {
+                    this._discard();
+                    this._discard();
+                    this._busy();
+                }
+                else if(this._bufferLength === 1 && !completed && !discarded) {
+                    this._missing();
+                    this._missing();
+                    this._busy();
+                }
+                // third command can only be interrupt, if this._bufferLength === 2 it was queued
+                else {
+                    this._missing();
+                    this._missing();
+                    this._missing();
+                }
+                break;
         }
+
+        this.transmitNextPortOutputCommand();
     }
 
     private _ensureConnected () {
@@ -195,4 +349,24 @@ export class Device extends EventEmitter {
         }
     }
 
+    private _complete () {
+        const command = this._transmittedPortOutputCommands.shift();
+        if(command) command.resolve(Consts.CommandFeedback.EXECUTION_COMPLETED);
+    }
+    private _discard () {
+        const command = this._transmittedPortOutputCommands.shift();
+        if(command) command.resolve(Consts.CommandFeedback.EXECUTION_DISCARDED);
+    }
+    private _missing () {
+        const command = this._transmittedPortOutputCommands.shift();
+        if(command) command.resolve(Consts.CommandFeedback.FEEDBACK_MISSING);
+    }
+    private _busy () {
+        const command = this._transmittedPortOutputCommands[0];
+        if(command) command.state = Consts.CommandFeedback.EXECUTION_BUSY;
+    }
+    private _pending () {
+        const command = this._transmittedPortOutputCommands[1];
+        if(command) command.state = Consts.CommandFeedback.EXECUTION_PENDING;
+    }
 }
