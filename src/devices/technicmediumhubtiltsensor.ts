@@ -57,7 +57,7 @@ export class TechnicMediumHubTiltSensor extends Device {
                  * @type {object}
                  * @param {number} number of impact events.
                  */
-                this.notify("tiltCount", { count });
+                this.notify("impactCount", { count });
                 break;
         }
     }
