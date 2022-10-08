@@ -703,3 +703,47 @@ export enum MarioColor {
     BROWN = 0x6a00,
     CYAN = 0x4201,
 }
+
+
+/**
+ * @typedef TiltDirection
+ * @param {number} NEUTRAL 0
+ * @param {number} BACKWARD 3
+ * @param {number} RIGHT 5
+ * @param {number} LEFT 7
+ * @param {number} FORWARD 9
+ * @param {number} UNKNOWN 10
+ */
+export enum TiltDirection {
+    NEUTRAL = 0,
+    BACKWARD = 3,
+    RIGHT = 5,
+    LEFT = 7,
+    FORWARD = 9,
+    UNKNOWN = 10,
+}
+
+
+/**
+ * @typedef CommandFeedback
+ * @param {number} TRANSMISSION_PENDING 0x00 waiting for previous commands to complete transmission or execution
+ * @param {number} TRANSMISSION_BUSY 0x10 waiting for device to acknowledge reception
+ * @param {number} TRANSMISSION_DISCARDED 0x44 interrupt command has been recieved or device disconnected
+ * @param {number} EXECUTION_PENDING 0x20 device is waiting for previous command to complete
+ * @param {number} EXECUTION_BUSY 0x21 device is executing the command
+ * @param {number} EXECUTION_DISCARDED 0x24 device discarded the command e.g. due to interrupt
+ * @param {number} EXECUTION_COMPLETED 0x22 device reported successful completion of command
+ * @param {number} FEEDBACK_MISSING 0x66 device disconnected or failed to report feedback
+ * @param {number} FEEDBACK_DISABLED 0x26 feedback not implemented for this command
+ */
+export enum CommandFeedback {
+    TRANSMISSION_PENDING = 0x00,
+    TRANSMISSION_BUSY = 0x10,
+    TRANSMISSION_DISCARDED = 0x44,
+    EXECUTION_PENDING = 0x20,
+    EXECUTION_BUSY = 0x21,
+    EXECUTION_DISCARDED = 0x24,
+    EXECUTION_COMPLETED = 0x22,
+    FEEDBACK_MISSING = 0x66,
+    FEEDBACK_DISABLED = 0x26,
+}
