@@ -19,14 +19,19 @@ poweredUP.on("discover", async (hub) => { // Wait to discover hubs
         // If the hub transmits something, show it in the console
         hub.on("recieve", (data) => { console.log(data.toString()) });
 
-        hub.stopUserProgram(); // Stop any running user program
-        // The hub is now waiting for a user program to be uploaded which will then get executed
+        // Stop any running user program
+        await hub.stopUserProgram();
 
-        hub.startUserProgram(`
+        // Compiles the python code and uploads it as __main__
+        await hub.uploadUserProgram(`
 from pybricks.hubs import InventorHub
 hub = InventorHub() # We assume the connected hub is an Inventor hub
 hub.display.text("Hello node-poweredup!") # Show on the led matrix of the hub
 print("finished") # Transmit via bluetooth to the laptop
         `);
+
+        // Run the user program that was uploaded on the hub
+        // Alternatively the user program can be started by pressing the button on the hub
+        await hub.startUserProgram();
     }
 });
