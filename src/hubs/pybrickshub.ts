@@ -1,4 +1,5 @@
 import { Peripheral } from "@abandonware/noble";
+import compareVersion from "compare-versions";
 import { compile } from "@pybricks/mpy-cross-v6";
 import { IBLEAbstraction } from "../interfaces";
 import { BaseHub } from "./basehub";
@@ -39,18 +40,34 @@ export class PybricksHub extends BaseHub {
             await super.connect();
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.PYBRICKS_HUB);
             await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.PYBRICKS_NUS);
-            await this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.PYBRICKS_CAPABILITIES, (err, data) => {
-              if (data) {
-                this._maxCharSize = data.readUInt16LE(0);
-                this._maxUserProgramSize = data.readUInt32LE(6);
-                debug("Recieved capabilities ", data, " maxCharSize: ", this._maxCharSize, " maxUserProgramSize: ", this._maxUserProgramSize);
-              }
-            });
-            this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.PYBRICKS_NUS_TX, this._parseMessage.bind(this));
+            await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.STANDARD_DEVICE_INFORMATION);
+            await new Promise<void>(async (resolve) => this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.STANDARD_FIRMWARE_REVISION, (err, data) => {
+                if (data) {
+                    this._firmwareVersion = data.toString();
+		    this._checkFirmware(this._firmwareVersion);
+                    debug("Firmware version ", this._firmwareVersion);
+		    return resolve();
+	        }
+	    }));
+            await new Promise<void>(async (resolve) => this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.PYBRICKS_CAPABILITIES, (err, data) => {
+                if (data) {
+                    this._maxCharSize = data.readUInt16LE(0);
+                    this._maxUserProgramSize = data.readUInt32LE(6);
+                    debug("Recieved capabilities ", data, " maxCharSize: ", this._maxCharSize, " maxUserProgramSize: ", this._maxUserProgramSize);
+		    return resolve();
+                }
+            }));
+            await this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.PYBRICKS_NUS_TX, this._parseMessage.bind(this));
             debug("Connect completed");
             this.emit("connect");
             resolve();
         });
+    }
+
+    protected _checkFirmware (version: string) {
+        if (compareVersion.validate(version) && compareVersion('3.2.0', version) === 1) {
+            throw new Error(`Your Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Pybricks website.`);
+        }
     }
 
     private _parseMessage (data?: Buffer) {
