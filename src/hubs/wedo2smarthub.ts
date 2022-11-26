@@ -49,7 +49,7 @@ export class WeDo2SmartHub extends BaseHub {
             if (!isWebBluetooth) {
                 await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_3);
                 await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_4);
-                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.WEDO2_SMART_HUB_5);
+                await this._bleDevice.discoverCharacteristicsForService(Consts.BLEService.STANDARD_DEVICE_INFORMATION);
             } else {
                 await this._bleDevice.discoverCharacteristicsForService("battery_service");
                 await this._bleDevice.discoverCharacteristicsForService("device_information");
@@ -61,8 +61,8 @@ export class WeDo2SmartHub extends BaseHub {
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_SENSOR_VALUE, this._parseSensorMessage.bind(this));
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BUTTON, this._parseSensorMessage.bind(this));
             if (!isWebBluetooth) {
-                this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, this._parseBatteryMessage.bind(this));
-                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_BATTERY, (err, data) => {
+                this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.STANDARD_BATTERY, this._parseBatteryMessage.bind(this));
+                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.STANDARD_BATTERY, (err, data) => {
                     if (data) {
                         this._parseBatteryMessage(data);
                     }
@@ -77,7 +77,7 @@ export class WeDo2SmartHub extends BaseHub {
             }
             this._bleDevice.subscribeToCharacteristic(Consts.BLECharacteristic.WEDO2_HIGH_CURRENT_ALERT, this._parseHighCurrentAlert.bind(this));
             if (!isWebBluetooth) {
-                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.WEDO2_FIRMWARE_REVISION, (err, data) => {
+                this._bleDevice.readFromCharacteristic(Consts.BLECharacteristic.STANDARD_FIRMWARE_REVISION, (err, data) => {
                     if (data) {
                         this._parseFirmwareRevisionString(data);
                     }

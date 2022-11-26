@@ -216,7 +216,7 @@ export enum BLEService {
     WEDO2_SMART_HUB_2 = "00004f0e-1212-efde-1523-785feabcd123",
     WEDO2_SMART_HUB_3 = "2a19",
     WEDO2_SMART_HUB_4 = "180f",
-    WEDO2_SMART_HUB_5 = "180a",
+    STANDARD_DEVICE_INFORMATION = "180a",
     LPF2_HUB = "00001623-1212-efde-1623-785feabcd123",
     PYBRICKS_HUB = "c5f50001-8280-46da-89f4-6d8051e4aeef",
     PYBRICKS_NUS = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"
@@ -224,8 +224,8 @@ export enum BLEService {
 
 
 export enum BLECharacteristic {
-    WEDO2_BATTERY = "2a19",
-    WEDO2_FIRMWARE_REVISION = "2a26",
+    STANDARD_BATTERY = "2a19",
+    STANDARD_FIRMWARE_REVISION = "2a26",
     WEDO2_BUTTON = "00001526-1212-efde-1523-785feabcd123", // "1526"
     WEDO2_PORT_TYPE = "00001527-1212-efde-1523-785feabcd123", // "1527" // Handles plugging and unplugging of devices on WeDo 2.0 Smart Hub
     WEDO2_LOW_VOLTAGE_ALERT = "00001528-1212-efde-1523-785feabcd123", // "1528"
