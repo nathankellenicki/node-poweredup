@@ -10,6 +10,7 @@ import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
 import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
+import { PybricksHub } from "./hubs/pybrickshub";
 
 import * as Consts from "./consts";
 
@@ -25,6 +26,8 @@ let wantScan = false;
 
 const startScanning = () => {
     noble.startScanning([
+        Consts.BLEService.PYBRICKS_HUB,
+        Consts.BLEService.PYBRICKS_HUB.replace(/-/g, ""),
         Consts.BLEService.LPF2_HUB,
         Consts.BLEService.LPF2_HUB.replace(/-/g, ""),
         Consts.BLEService.WEDO2_SMART_HUB,
@@ -172,6 +175,8 @@ export class PoweredUP extends EventEmitter {
             hub = new TechnicMediumHub(device);
         } else if (Mario.IsMario(peripheral)) {
             hub = new Mario(device);
+        } else if (PybricksHub.IsPybricksHub(peripheral)) {
+            hub = new PybricksHub(device);
         } else {
             return;
         }

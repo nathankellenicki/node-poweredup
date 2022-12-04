@@ -11,6 +11,7 @@ import { MoveHub } from "./hubs/movehub";
 import { RemoteControl } from "./hubs/remotecontrol";
 import { TechnicMediumHub } from "./hubs/technicmediumhub";
 import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
+import { PybricksHub } from "./hubs/pybrickshub";
 
 import { ColorDistanceSensor } from "./devices/colordistancesensor";
 import { CurrentSensor } from "./devices/currentsensor";
@@ -58,6 +59,7 @@ export {
     Hub,
     RemoteControl,
     DuploTrainBase,
+    PybricksHub,
     Consts,
     Color,
     ColorDistanceSensor,
