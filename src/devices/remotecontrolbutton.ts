@@ -21,7 +21,7 @@ export class RemoteControlButton extends Device {
             case Mode.BUTTON_EVENTS:
                 /**
                  * Emits when a button on the remote is pressed or released.
-                 * @event RemoteControlButton#button
+                 * @event RemoteControlButton#remoteButton
                  * @type {object}
                  * @param {number} event
                  */
