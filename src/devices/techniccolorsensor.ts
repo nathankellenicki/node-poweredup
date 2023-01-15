@@ -85,7 +85,7 @@ export class TechnicColorSensor extends Device {
                 intensity = message.readUInt16LE(10);
                 /**
                  * Emits when a color sensor is activated. Measured with light on.
-                 * @event ColorDistanceSensor#rgbIntensity
+                 * @event TechnicColorSensor#rgbIntensity
                  * @type {object}
                  * @param {number} red
                  * @param {number} green
@@ -108,7 +108,7 @@ export class TechnicColorSensor extends Device {
                 value = message.readUInt16LE(8);
                 /**
                  * Emits when a color sensor is activated. Measured with light on.
-                 * @event ColorDistanceSensor#hsvIntensity
+                 * @event TechnicColorSensor#hsvIntensity
                  * @type {object}
                  * @param {number} hue
                  * @param {number} saturation
@@ -131,7 +131,7 @@ export class TechnicColorSensor extends Device {
                 intensity = message.readUInt16LE(10);
                 /**
                  * Emits when a color sensor is activated. Measured with light off.
-                 * @event ColorDistanceSensor#hsvAmbient
+                 * @event TechnicColorSensor#hsvAmbient
                  * @type {object}
                  * @param {number} hue
                  * @param {number} saturation
