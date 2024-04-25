@@ -1,5 +1,5 @@
 import { Peripheral } from "@abandonware/noble";
-import compareVersion from "compare-versions";
+import { compareVersions } from "compare-versions";
 
 import { IBLEAbstraction } from "../interfaces";
 
@@ -45,7 +45,7 @@ export class MoveHub extends LPF2Hub {
 
 
     protected _checkFirmware (version: string) {
-        if (compareVersion("2.0.00.0017", version) === 1) {
+        if (compareVersions("2.0.00.0017", version) === 1) {
             throw new Error(`Your Move Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
         }
     }

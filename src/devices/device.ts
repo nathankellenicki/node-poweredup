@@ -25,7 +25,7 @@ export class Device extends EventEmitter {
 
     private _isWeDo2SmartHub: boolean;
     private _isVirtualPort: boolean = false;
-    private _eventTimer: NodeJS.Timer | null = null;
+    private _eventTimer: NodeJS.Timeout | null = null;
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
@@ -178,7 +178,7 @@ export class Device extends EventEmitter {
         }
     }
 
-    public setEventTimer (timer: NodeJS.Timer) {
+    public setEventTimer (timer: NodeJS.Timeout) {
         this._eventTimer = timer;
     }
 
