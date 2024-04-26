@@ -85,7 +85,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public subscribeToCharacteristic (uuid: string, callback: (data: Buffer) => void) {
+    public subscribeToCharacteristic (uuid: string, callback: (data: Buffer) => void): Promise<any> {
         if (this._listeners[uuid]) {
             this._characteristics[uuid].removeEventListener("characteristicvaluechanged", this._listeners[uuid]);
         }
@@ -108,7 +108,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
             callback(data);
         }
 
-        this._characteristics[uuid].startNotifications();
+        return this._characteristics[uuid].startNotifications();
     }
 
 
