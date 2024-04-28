@@ -66,44 +66,35 @@ export class TechnicMediumHubTiltSensor extends Device {
      * Set the impact count value.
      * @method TechnicMediumHubTiltSensor#setImpactCount
      * @param {count} impact count between 0 and 2^32
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of the command.
      */
     public setImpactCount (count: number) {
-        return new Promise<void>((resolve) => {
-            const payload = Buffer.alloc(4);
-	    payload.writeUInt32LE(count % 2**32);
-            // no need to subscribe, can be set in different mode
-            this.writeDirect(0x01, payload);
-            return resolve();
-        });
+        const payload = Buffer.alloc(4);
+        payload.writeUInt32LE(count % 2**32);
+        // no need to subscribe, can be set in different mode
+        return this.writeDirect(0x01, payload);
     }
 
     /**
      * Set the impact threshold.
      * @method TechnicMediumHubTiltSensor#setImpactThreshold
      * @param {threshold} value between 1 and 127
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of the command.
      */
     public setImpactThreshold (threshold: number) {
         this._impactThreshold = threshold;
-        return new Promise<void>((resolve) => {
-            this.writeDirect(0x02, Buffer.from([this._impactThreshold, this._impactHoldoff]));
-            return resolve();
-        });
+        return this.writeDirect(0x02, Buffer.from([this._impactThreshold, this._impactHoldoff]));
     }
 
     /**
      * Set the impact holdoff time.
      * @method TechnicMediumHubTiltSensor#setImpactHoldoff
      * @param {holdoff} value between 1 and 127
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of the command.
      */
     public setImpactHoldoff (holdoff: number) {
         this._impactHoldoff = holdoff;
-        return new Promise<void>((resolve) => {
-            this.writeDirect(0x02, Buffer.from([this._impactThreshold, this._impactHoldoff]));
-            return resolve();
-        });
+        return this.writeDirect(0x02, Buffer.from([this._impactThreshold, this._impactHoldoff]));
     }
 }
 

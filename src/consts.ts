@@ -703,3 +703,27 @@ export enum MarioColor {
     BROWN = 0x6a00,
     CYAN = 0x4201,
 }
+
+/**
+ * @typedef CommandFeedback
+ * @param {number} TRANSMISSION_PENDING 0x00 waiting for previous commands to complete transmission or execution
+ * @param {number} TRANSMISSION_BUSY 0x10 waiting for device to acknowledge reception
+ * @param {number} TRANSMISSION_DISCARDED 0x44 interrupt command has been recieved or device disconnected
+ * @param {number} EXECUTION_PENDING 0x20 device is waiting for previous command to complete
+ * @param {number} EXECUTION_BUSY 0x21 device is executing the command
+ * @param {number} EXECUTION_DISCARDED 0x24 device discarded the command e.g. due to interrupt
+ * @param {number} EXECUTION_COMPLETED 0x22 device reported successful completion of command
+ * @param {number} FEEDBACK_MISSING 0x66 device disconnected or failed to report feedback
+ * @param {number} FEEDBACK_DISABLED 0x26 feedback not implemented for this command
+ */
+export enum CommandFeedback {
+    TRANSMISSION_PENDING = 0x00,
+    TRANSMISSION_BUSY = 0x10,
+    TRANSMISSION_DISCARDED = 0x44,
+    EXECUTION_PENDING = 0x20,
+    EXECUTION_BUSY = 0x21,
+    EXECUTION_DISCARDED = 0x24,
+    EXECUTION_COMPLETED = 0x22,
+    FEEDBACK_MISSING = 0x66,
+    FEEDBACK_DISABLED = 0x26,
+}
