@@ -360,13 +360,17 @@ export class BaseHub extends EventEmitter {
             const device = this._createDevice(deviceType, portId);
             this._attachDevice(device);
             return device;
-        } else {
+        }
+        else if (deviceType) {
             if (this._attachedDevices[portId].type === deviceType) {
                 debug(`Device of ${deviceType} already attached to portId ${portId}, returning existing device`);
                 return this._attachedDevices[portId];
             } else {
                 throw new Error(`Already a different type of device attached to portId ${portId}. Only use this method when you are certain what's attached.`);
             }
+        }
+        else {
+            this._detachDevice(this._attachedDevices[portId]);
         }
     }
 
