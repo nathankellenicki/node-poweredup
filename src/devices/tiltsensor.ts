@@ -70,12 +70,31 @@ export class TiltSensor extends Device {
                     // if mode of device has not changed to this._mode yet
                     break;
                 }
-                const ax = message.readInt8(this.isWeDo2SmartHub ? 2 : 4)*Math.PI/180;
-                const ay = message.readInt8(this.isWeDo2SmartHub ? 3 : 5)*Math.PI/180;
-                const az = message.readInt8(this.isWeDo2SmartHub ? 4 : 6)*Math.PI/180;
-                x = Math.round(1000*Math.sqrt(2)*Math.sin(ax)*Math.cos(ay)*Math.cos(az))
-                y = Math.round(1000*Math.sqrt(2)*Math.cos(ax)*Math.sin(ay)*Math.cos(az))
-                z = Math.round(1000*Math.sqrt(2)*Math.cos(ax)*Math.cos(ay)*Math.sin(az))
+                const ax = message.readInt8(this.isWeDo2SmartHub ? 2 : 4);
+                const ay = message.readInt8(this.isWeDo2SmartHub ? 3 : 5);
+                const az = message.readInt8(this.isWeDo2SmartHub ? 4 : 6);
+		const con = 1000/(45*Math.sqrt(2)); // convert to mG
+		x = con*ax;
+		y = con*ay;
+		z = con*az;
+                if(ax === 45) {
+                    x = con*Math.sqrt(2*45**2 - ay**2 - az**2);
+                }
+		else if(ax === -45) {
+                    x = -con*Math.sqrt(2*45**2 - ay**2 - az**2);
+                }
+		if(ay === 45) {
+                    y = con*Math.sqrt(2*45**2 - ax**2 - az**2);
+                }
+		else if(ay === -45) {
+                    y = -con*Math.sqrt(2*45**2 - ax**2 - az**2);
+                }
+		if(az === 45) {
+                    z = con*Math.sqrt(2*45**2 - ax**2 - ay**2);
+                }
+		else if(az === -45) {
+                    z = -con*Math.sqrt(2*45**2 - ax**2 - ay**2);
+                }
                 /**
                  * Emits when tilt sensor detects acceleration. Measured in mG.
                  * @event TiltSensor#accel
