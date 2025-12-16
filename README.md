@@ -6,7 +6,7 @@
 
 ### Announcements
 
-* v7.1.0 adds support for SPIKE Essential, including the Technic Small Hub, Technic Small Angular Motor, and Technic 3x3 Color Matrix.
+* v10.0.0 brings node-poweredup up to date! Libraries updated, new ES style syntax, and more.
 
 ### Introduction
 
@@ -27,8 +27,8 @@ This library allows communication and control of Powered Up devices and peripher
 ### Sample Usage
 
 ```javascript
-const PoweredUP = require("node-poweredup");
-const poweredUP = new PoweredUP.PoweredUP();
+import { PoweredUP } from "node-poweredup";
+const poweredUP = new PoweredUP();
 
 poweredUP.on("discover", async (hub) => { // Wait to discover a Hub
     console.log(`Discovered ${hub.name}!`);
@@ -65,15 +65,13 @@ More examples are available in the "examples" directory.
 
 ### Node.js Installation
 
-Node.js v12.0+ required.
+Node.js v18.0+ required.
 
 ```javascript
 npm install node-poweredup --save
 ```
 
-node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are [certain dependencies which may need installed first](https://github.com/abandonware/noble#prerequisites).
-
-Note: node-poweredup has been tested on macOS 11.0 and Debian/Raspbian on the Raspberry Pi 3 Model B.
+`node-poweredup` relies on the `@stoprocent/noble` library. Ensure any prerequisites [documented here](https://github.com/stoprocent/noble?tab=readme-ov-file#prerequisites) are satisfied.
 
 ### Compatibility
 
@@ -120,7 +118,7 @@ In addition, the Hubs themselves have certain built-in features which this libra
 
 * The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython to develop for this Hub using the officially provided tools and software. The SPIKE Essential Hub however is supported, as it uses Bluetooth Low Energy.
 
-* On most Unix systems, you need root permissions to access Bluetooth devices. You may want to [grant the node executable access to the Bluetooth adapter](https://github.com/abandonware/noble#running-without-rootsudo-linux-specific)
+* On most Unix systems, you need root permissions to access Bluetooth devices. You may want to [grant the node executable access to the Bluetooth adapter](https://github.com/stoprocent/noble?tab=readme-ov-file#running-without-rootsudo-linux-specific)
 
 ### Credits
 
