@@ -4,9 +4,9 @@
  *
  */
 
-const PoweredUP = require("..");
+import { PoweredUP } from "../dist/index-node.js";
 
-const poweredUP = new PoweredUP.PoweredUP();
+const poweredUP = new PoweredUP();
 poweredUP.scan(); // Start scanning
 
 console.log("Looking for Vernie...");
@@ -79,7 +79,7 @@ poweredUP.on("discover", async (vernie) => { // Wait to discover Vernie
 
         await vernie.connect();
         console.log("Connected to Vernie!");
-        vernie.setLEDColor(PoweredUP.Consts.Color.BLUE);
+        vernie.setLEDColor(Color.BLUE);
         await vernie.sleep(1000);
         vernie.setMotorSpeed("AB", 50); // Start moving!
 

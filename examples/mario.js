@@ -4,16 +4,16 @@
  *
  */
 
-const PoweredUP = require("..");
+import { PoweredUP, Mario } from "../dist/index-node.js";
 
-const poweredUP = new PoweredUP.PoweredUP();
+const poweredUP = new PoweredUP();
 poweredUP.scan(); // Start scanning for hubs
 
 console.log("Looking for Mario...");
 
 poweredUP.on("discover", async (hub) => { // Wait to discover hubs
 
-    if (hub instanceof PoweredUP.Mario) {
+    if (hub instanceof Mario) {
         const mario = hub;
         await mario.connect(); // Connect to Mario
         console.log(`Connected to Mario!`);

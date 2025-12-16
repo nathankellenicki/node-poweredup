@@ -4,9 +4,9 @@
  *
  */
 
-const PoweredUP = require("..");
+import { PoweredUP, DeviceType } from "../dist/index-node.js";
 
-const poweredUP = new PoweredUP.PoweredUP();
+const poweredUP = new PoweredUP();
 poweredUP.scan(); // Start scanning for hubs
 
 console.log("Looking for Hubs...");
@@ -27,7 +27,7 @@ setInterval(() => {
 
     const hubs = poweredUP.getHubs(); // Get an array of all connected hubs
     hubs.forEach(async (hub) => {
-        const led = await hub.waitForDeviceByType(PoweredUP.Consts.DeviceType.HUB_LED);
+        const led = await hub.waitForDeviceByType(DeviceType.HUB_LED);
         led.setColor(color); // Set the color
     })
     color++;
