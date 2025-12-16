@@ -1,9 +1,9 @@
-import { TachoMotor } from "./tachomotor";
+import { TachoMotor } from "./tachomotor.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
-import { mapSpeed, normalizeAngle, roundAngleToNearest90 } from "../utils";
+import * as Consts from "../consts.js";
+import { mapSpeed, normalizeAngle, roundAngleToNearest90 } from "../utils.js";
 
 /**
  * @class AbsoluteMotor

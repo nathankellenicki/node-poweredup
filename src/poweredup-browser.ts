@@ -1,21 +1,23 @@
-import { WebBLEDevice } from "./webbleabstraction";
+/// <reference types="web-bluetooth" />
 
-import { BaseHub } from "./hubs/basehub";
-import { DuploTrainBase } from "./hubs/duplotrainbase";
-import { Hub } from "./hubs/hub";
-import { Mario } from "./hubs/mario";
-import { MoveHub } from "./hubs/movehub";
-import { RemoteControl } from "./hubs/remotecontrol";
-import { TechnicMediumHub } from "./hubs/technicmediumhub";
-import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
+import { WebBLEDevice } from "./webbleabstraction.js";
 
-import * as Consts from "./consts";
+import { BaseHub } from "./hubs/basehub.js";
+import { DuploTrainBase } from "./hubs/duplotrainbase.js";
+import { Hub } from "./hubs/hub.js";
+import { Mario } from "./hubs/mario.js";
+import { MoveHub } from "./hubs/movehub.js";
+import { RemoteControl } from "./hubs/remotecontrol.js";
+import { TechnicMediumHub } from "./hubs/technicmediumhub.js";
+import { WeDo2SmartHub } from "./hubs/wedo2smarthub.js";
+
+import * as Consts from "./consts.js";
 
 import { EventEmitter } from "events";
 
-import Debug = require("debug");
-import { IBLEAbstraction } from "./interfaces";
-import { TechnicSmallHub } from "./hubs/technicsmallhub";
+import Debug from "debug";
+import { IBLEAbstraction } from "./interfaces.js";
+import { TechnicSmallHub } from "./hubs/technicsmallhub.js";
 const debug = Debug("poweredup");
 
 

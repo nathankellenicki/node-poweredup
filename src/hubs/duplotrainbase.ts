@@ -1,11 +1,11 @@
-import { Peripheral } from "@abandonware/noble";
+import { Peripheral } from "@stoprocent/noble";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./lpf2hub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import Debug = require("debug");
-import { IBLEAbstraction } from "../interfaces";
+import Debug from "debug";
+import { IBLEAbstraction } from "../interfaces.js";
 const debug = Debug("duplotrainbase");
 
 

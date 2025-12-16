@@ -1,5 +1,5 @@
 import { EventEmitter } from "events";
-import { Device } from "./devices/device";
+import { Device } from "./devices/device.js";
 
 // @ts-ignore
 export const isWebBluetooth = !!(typeof navigator !== "undefined" && navigator && navigator.bluetooth);

@@ -1,9 +1,9 @@
-import { BasicMotor } from "./basicmotor";
+import { BasicMotor } from "./basicmotor.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
-import { mapSpeed } from "../utils";
+import * as Consts from "../consts.js";
+import { mapSpeed } from "../utils.js";
 
 /**
  * @class TachoMotor

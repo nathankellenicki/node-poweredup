@@ -1,10 +1,10 @@
-import { BaseHub } from "./basehub";
+import { BaseHub } from "./basehub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils";
+import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils.js";
 
-import Debug = require("debug");
+import Debug from "debug";
 const debug = Debug("lpf2hub");
 const modeInfoDebug = Debug("lpf2hubmodeinfo");
 

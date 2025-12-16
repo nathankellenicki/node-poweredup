@@ -1,8 +1,8 @@
-import { Characteristic, Peripheral, Service } from "@abandonware/noble";
+import { Characteristic, Peripheral, Service } from "@stoprocent/noble";
 
-import Debug = require("debug");
+import Debug from "debug";
 import { EventEmitter } from "events";
-import { IBLEAbstraction } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces.js";
 const debug = Debug("bledevice");
 
 
@@ -63,7 +63,7 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
     public connect () {
         return new Promise<void>((resolve, reject) => {
             this._connecting = true;
-            this._noblePeripheral.connect((err: string) => {
+            this._noblePeripheral.connect((err: Error | undefined) => {
                 if(err) {
                     return reject(err);
                 }
@@ -89,7 +89,7 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
     public discoverCharacteristicsForService (uuid: string) {
         return new Promise<void>(async (discoverResolve, discoverReject) => {
             uuid = this._sanitizeUUID(uuid);
-            this._noblePeripheral.discoverServices([uuid], (err: string, services: Service[]) => {
+            this._noblePeripheral.discoverServices([uuid], (err: Error | undefined, services: Service[]) => {
                 if (err) {
                     return discoverReject(err);
                 }
@@ -120,9 +120,9 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
         this._characteristics[uuid].on("data", (data: Buffer) => {
             return callback(data);
         });
-        this._characteristics[uuid].subscribe((err) => {
+        this._characteristics[uuid].subscribe((err: Error | undefined) => {
             if (err) {
-                throw new Error(err);
+                throw err;
             }
         });
     }
@@ -133,10 +133,10 @@ export class NobleDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public readFromCharacteristic (uuid: string, callback: (err: string | null, data: Buffer | null) => void) {
+    public readFromCharacteristic (uuid: string, callback: (err: Error | null, data: Buffer | null) => void) {
         uuid = this._sanitizeUUID(uuid);
-        this._characteristics[uuid].read((err: string, data: Buffer) => {
-            return callback(err, data);
+        this._characteristics[uuid].read((err: Error | undefined, data: Buffer) => {
+            return callback(err ?? null, data);
         });
     }
 

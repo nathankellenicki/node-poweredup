@@ -1,8 +1,8 @@
 import { EventEmitter } from "events";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class Device

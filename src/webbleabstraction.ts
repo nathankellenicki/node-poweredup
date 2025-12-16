@@ -1,6 +1,6 @@
-import Debug = require("debug");
+import Debug from "debug";
 import { EventEmitter } from "events";
-import { IBLEAbstraction } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces.js";
 const debug = Debug("bledevice");
 
 
@@ -117,7 +117,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public readFromCharacteristic (uuid: string, callback: (err: string | null, data: Buffer | null) => void) {
+    public readFromCharacteristic (uuid: string, callback: (err: Error | null, data: Buffer | null) => void) {
         // @ts-ignore
         this._characteristics[uuid].readValue().then((data) => {
             const buf = Buffer.alloc(data.buffer.byteLength);

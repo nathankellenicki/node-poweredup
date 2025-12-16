@@ -1,15 +1,15 @@
-import { Peripheral } from "@abandonware/noble";
+import { Peripheral } from "@stoprocent/noble";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction } from "../interfaces.js";
 
-import { BaseHub } from "./basehub";
+import { BaseHub } from "./basehub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import { isWebBluetooth } from "../utils";
+import { isWebBluetooth } from "../utils.js";
 
-import Debug = require("debug");
-import { HubLED } from "../devices/hubled";
+import Debug from "debug";
+import { HubLED } from "../devices/hubled.js";
 const debug = Debug("wedo2smarthub");
 
 

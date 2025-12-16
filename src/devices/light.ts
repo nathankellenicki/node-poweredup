@@ -1,9 +1,9 @@
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
-import { calculateRamp } from "../utils";
+import * as Consts from "../consts.js";
+import { calculateRamp } from "../utils.js";
 
 /**
  * @class Light

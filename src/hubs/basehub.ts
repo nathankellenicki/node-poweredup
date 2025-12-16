@@ -1,47 +1,47 @@
 import { EventEmitter } from "events";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction } from "../interfaces.js";
 
-import { ColorDistanceSensor } from "../devices/colordistancesensor";
-import { CurrentSensor } from "../devices/currentsensor";
-import { Device } from "../devices/device";
+import { ColorDistanceSensor } from "../devices/colordistancesensor.js";
+import { CurrentSensor } from "../devices/currentsensor.js";
+import { Device } from "../devices/device.js";
 
-import { DuploTrainBaseColorSensor } from "../devices/duplotrainbasecolorsensor";
-import { DuploTrainBaseMotor } from "../devices/duplotrainbasemotor";
-import { DuploTrainBaseSpeaker } from "../devices/duplotrainbasespeaker";
-import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer";
+import { DuploTrainBaseColorSensor } from "../devices/duplotrainbasecolorsensor.js";
+import { DuploTrainBaseMotor } from "../devices/duplotrainbasemotor.js";
+import { DuploTrainBaseSpeaker } from "../devices/duplotrainbasespeaker.js";
+import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer.js";
 
-import { HubLED } from "../devices/hubled";
-import { Light } from "../devices/light";
-import { MarioAccelerometer } from "../devices/marioaccelerometer";
-import { MarioBarcodeSensor } from "../devices/mariobarcodesensor";
-import { MarioPantsSensor } from "../devices/mariopantssensor";
-import { MediumLinearMotor } from "../devices/mediumlinearmotor";
-import { MotionSensor } from "../devices/motionsensor";
-import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
-import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
-import { PiezoBuzzer } from "../devices/piezobuzzer";
-import { RemoteControlButton } from "../devices/remotecontrolbutton";
-import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
-import { TechnicColorSensor } from "../devices/techniccolorsensor";
-import { TechnicDistanceSensor } from "../devices/technicdistancesensor";
-import { TechnicForceSensor } from "../devices/technicforcesensor";
-import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor";
-import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
-import { TechnicSmallAngularMotor } from "../devices/technicsmallangularmotor";
-import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor";
-import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
-import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
-import { TechnicMediumHubTiltSensor } from "../devices/technicmediumhubtiltsensor";
-import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor";
-import { TiltSensor } from "../devices/tiltsensor";
-import { TrainMotor } from "../devices/trainmotor";
-import { VoltageSensor } from "../devices/voltagesensor";
+import { HubLED } from "../devices/hubled.js";
+import { Light } from "../devices/light.js";
+import { MarioAccelerometer } from "../devices/marioaccelerometer.js";
+import { MarioBarcodeSensor } from "../devices/mariobarcodesensor.js";
+import { MarioPantsSensor } from "../devices/mariopantssensor.js";
+import { MediumLinearMotor } from "../devices/mediumlinearmotor.js";
+import { MotionSensor } from "../devices/motionsensor.js";
+import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor.js";
+import { MoveHubTiltSensor } from "../devices/movehubtiltsensor.js";
+import { PiezoBuzzer } from "../devices/piezobuzzer.js";
+import { RemoteControlButton } from "../devices/remotecontrolbutton.js";
+import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor.js";
+import { TechnicColorSensor } from "../devices/techniccolorsensor.js";
+import { TechnicDistanceSensor } from "../devices/technicdistancesensor.js";
+import { TechnicForceSensor } from "../devices/technicforcesensor.js";
+import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor.js";
+import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor.js";
+import { TechnicSmallAngularMotor } from "../devices/technicsmallangularmotor.js";
+import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor.js";
+import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor.js";
+import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor.js";
+import { TechnicMediumHubTiltSensor } from "../devices/technicmediumhubtiltsensor.js";
+import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor.js";
+import { TiltSensor } from "../devices/tiltsensor.js";
+import { TrainMotor } from "../devices/trainmotor.js";
+import { VoltageSensor } from "../devices/voltagesensor.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import Debug = require("debug");
-import { Technic3x3ColorLightMatrix } from "../devices/technic3x3colorlightmatrix";
+import Debug from "debug";
+import { Technic3x3ColorLightMatrix } from "../devices/technic3x3colorlightmatrix.js";
 const debug = Debug("basehub");
 
 
