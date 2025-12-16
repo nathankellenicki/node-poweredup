@@ -95,7 +95,6 @@ export class WeDo2SmartHub extends BaseHub {
 
     /**
      * Shutdown the Hub.
-     * @method WeDo2SmartHub#shutdown
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public shutdown () {
@@ -105,7 +104,6 @@ export class WeDo2SmartHub extends BaseHub {
 
     /**
      * Set the name of the Hub.
-     * @method WeDo2SmartHub#setName
      * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */

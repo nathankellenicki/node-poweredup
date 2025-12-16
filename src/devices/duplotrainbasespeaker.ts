@@ -16,7 +16,6 @@ export class DuploTrainBaseSpeaker extends Device {
 
     /**
      * Play a built-in train sound.
-     * @method DuploTrainBaseSpeaker#playSound
      * @param {DuploTrainBaseSound} sound
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
@@ -30,7 +29,6 @@ export class DuploTrainBaseSpeaker extends Device {
 
     /**
      * Play a built-in system tone.
-     * @method DuploTrainBaseSpeaker#playTone
      * @param {number} tone
      * @returns {Promise} Resolved upon successful issuance of the command.
      */

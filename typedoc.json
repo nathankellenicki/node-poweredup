@@ -1,0 +1,14 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": ["src/index-node.ts"],
+  "out": "docs",
+  "name": "node-poweredup",
+  "readme": "README.md",
+  "excludePrivate": true,
+  "excludeProtected": true,
+  "excludeInternal": true,
+  "intentionallyNotExported": ["IDeviceInterface", "IBLEAbstraction", "Output"],
+  "navigationLinks": {
+    "GitHub": "https://github.com/nathankellenicki/node-poweredup"
+  }
+}

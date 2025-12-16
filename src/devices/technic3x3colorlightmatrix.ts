@@ -20,7 +20,6 @@ export class Technic3x3ColorLightMatrix extends Device {
 
     /**
      * Set the LED matrix, one color per LED
-     * @method Technic3x3ColorLightMatrix#setMatrix
      * @param {Color[] | Color} colors Array of 9 colors, 9 Color objects, or a single color
      * @returns {Promise} Resolved upon successful issuance of the command.
      */

@@ -42,7 +42,6 @@ export class TachoMotor extends BasicMotor {
      * Set the braking style of the motor.
      *
      * Note: This applies to setSpeed, rotateByDegrees, and gotoAngle.
-     * @method TachoMotor#setBrakingStyle
      * @param {number} style Either BRAKE or HOLD
      */
     public setBrakingStyle (style: Consts.BrakingStyle) {
@@ -54,8 +53,7 @@ export class TachoMotor extends BasicMotor {
      * Set the max power of the motor.
      *
      * Note: This applies to setSpeed, rotateByDegrees, and gotoAngle.
-     * @method TachoMotor#setMaxPower
-     * @param {number} style Either BRAKE or HOLD
+     * @param {number} maxPower Maximum power level (0-100)
      */
     public setMaxPower (maxPower: number) {
         this._maxPower = maxPower;
@@ -64,7 +62,6 @@ export class TachoMotor extends BasicMotor {
 
     /**
      * Set the global acceleration time
-     * @method TachoMotor#setAccelerationTime
      * @param {number} time How long acceleration should last (in milliseconds).
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
@@ -77,7 +74,6 @@ export class TachoMotor extends BasicMotor {
 
     /**
      * Set the global deceleration time
-     * @method TachoMotor#setDecelerationTime
      * @param {number} time How long deceleration should last (in milliseconds).
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).
      */
@@ -90,7 +86,6 @@ export class TachoMotor extends BasicMotor {
 
     /**
      * Set the motor speed.
-     * @method TachoMotor#setSpeed
      * @param {number} speed For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} time How long the motor should run for (in milliseconds).
      * @returns {Promise} Resolved upon successful issuance of the command.
@@ -131,7 +126,6 @@ export class TachoMotor extends BasicMotor {
 
     /**
      * Rotate a motor by a given amount of degrees.
-     * @method TachoMotor#rotateByDegrees
      * @param {number} degrees How much the motor should be rotated (in degrees).
      * @param {number} [speed=100] For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100.
      * @returns {Promise} Resolved upon successful completion of command (ie. once the motor is finished).

@@ -67,7 +67,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Begin scanning for Powered UP Hub devices.
-     * @method PoweredUP#scan
      */
     public async scan () {
         wantScan = true;
@@ -85,7 +84,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Stop scanning for Powered UP Hub devices.
-     * @method PoweredUP#stop
      */
     public stop () {
         wantScan = false;
@@ -97,7 +95,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a list of Powered UP Hubs.
-     * @method PoweredUP#getHubs
      * @returns {BaseHub[]}
      */
     public getHubs () {
@@ -107,7 +104,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a Powered UP Hub by UUID.
-     * @method PoweredUP#getHubByUUID
      * @param {string} uuid
      * @returns {BaseHub | null}
      */
@@ -118,7 +114,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a Powered UP Hub by primary MAC address.
-     * @method PoweredUP#getHubByPrimaryMACAddress
      * @param {string} address
      * @returns {BaseHub}
      */
@@ -129,7 +124,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a list of Powered UP Hub by name.
-     * @method PoweredUP#getHubsByName
      * @param {string} name
      * @returns {BaseHub[]}
      */
@@ -140,8 +134,7 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a list of Powered UP Hub by type.
-     * @method PoweredUP#getHubsByType
-     * @param {string} name
+     * @param {number} hubType
      * @returns {BaseHub[]}
      */
     public getHubsByType (hubType: number) {

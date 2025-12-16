@@ -9,6 +9,7 @@
   "scripts": {
     "build": "tsc -b",
     "clean": "rimraf dist",
+    "docs": "typedoc",
     "prepare": "npm run build",
     "prepublishOnly": "npm run build && npm run test"
   },
@@ -25,6 +26,7 @@
     "@types/web-bluetooth": "^0.0.21",
     "rimraf": "^6.1.2",
     "ts-node": "^10.9.2",
+    "typedoc": "^0.28.15",
     "typescript": "^5.9.3"
   }
 }

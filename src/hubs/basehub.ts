@@ -184,7 +184,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Connect to the Hub.
-     * @method Hub#connect
      * @returns {Promise} Resolved upon successful connect.
      */
     public connect () {
@@ -199,7 +198,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Disconnect the Hub.
-     * @method Hub#disconnect
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public disconnect () {
@@ -209,7 +207,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Retrieves the device attached to a given port.
-     * @method Hub#getDeviceAtPort
      * @param {string} portName The name of the port to retrieve the device from.
      * @returns {Device | undefined} The device attached to the port.
      */
@@ -227,7 +224,6 @@ export class BaseHub extends EventEmitter {
      * Retrieves the device attached to a given port, waiting until one is attached if there isn't one.
      *
      * Note: If a device is never attached, the returned promise may never resolve.
-     * @method Hub#waitForDeviceAtPort
      * @param {string} portName The name of the port to retrieve the device from.
      * @returns {Promise} Resolved once a device is attached, or resolved immediately if a device is already attached.
      */
@@ -251,7 +247,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Retrieves all attached devices.
-     * @method Hub#getDevices
      * @returns {Device[]} Array of all attached devices.
      */
     public getDevices () {
@@ -261,7 +256,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Retrieves an array of devices of the specified type.
-     * @method Hub#getDevicesByType
      * @param {number} deviceType The device type to lookup.
      * @returns {Device[]} Array of all devices of the specified type.
      */
@@ -274,7 +268,6 @@ export class BaseHub extends EventEmitter {
      * Retrieves the first device attached of the specified type, waiting until one is attached if there isn't one.
      *
      * Note: If a device is never attached, the returned promise may never resolve.
-     * @method Hub#waitForDeviceByType
      * @param {number} deviceType The device type to lookup.
      * @returns {Promise} Resolved once a device is attached, or resolved immediately if a device is already attached.
      */
@@ -315,7 +308,6 @@ export class BaseHub extends EventEmitter {
      * Sleep a given amount of time.
      *
      * Note: This is a helper method to make it easier to add delays into a chain of commands.
-     * @method Hub#sleep
      * @param {number} delay How long to sleep (in milliseconds).
      * @returns {Promise} Resolved after the delay is finished.
      */
@@ -330,7 +322,6 @@ export class BaseHub extends EventEmitter {
      * Wait until a given list of concurrently running commands are complete.
      *
      * Note: This is a helper method to make it easier to wait for concurrent commands to complete.
-     * @method Hub#wait
      * @param {Array<Promise<any>>} commands Array of executing commands.
      * @returns {Promise} Resolved after the commands are finished.
      */

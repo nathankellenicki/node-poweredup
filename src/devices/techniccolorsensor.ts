@@ -61,7 +61,6 @@ export class TechnicColorSensor extends Device {
 
     /**
      * Set the brightness (or turn on/off) of the lights around the sensor.
-     * @method TechnicColorSensor#setBrightness
      * @param {number} firstSegment First light segment. 0-100 brightness.
      * @param {number} secondSegment Second light segment. 0-100 brightness.
      * @param {number} thirdSegment Third light segment. 0-100 brightness.

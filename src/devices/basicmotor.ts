@@ -20,7 +20,6 @@ export class BasicMotor extends Device {
 
     /**
      * Set the motor power.
-     * @method BasicMotor#setPower
      * @param {number} power For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
@@ -34,7 +33,6 @@ export class BasicMotor extends Device {
 
     /**
      * Ramp the motor power.
-     * @method BasicMotor#rampPower
      * @param {number} fromPower For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} toPower For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} time How long the ramp should last (in milliseconds).
@@ -54,7 +52,6 @@ export class BasicMotor extends Device {
 
     /**
      * Stop the motor.
-     * @method BasicMotor#stop
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public stop () {
@@ -65,7 +62,6 @@ export class BasicMotor extends Device {
 
     /**
      * Brake the motor.
-     * @method BasicMotor#brake
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public brake () {

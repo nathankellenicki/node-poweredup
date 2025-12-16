@@ -64,8 +64,7 @@ export class TechnicMediumHubTiltSensor extends Device {
 
     /**
      * Set the impact count value.
-     * @method TechnicMediumHubTiltSensor#setImpactCount
-     * @param {count} impact count between 0 and 2^32
+     * @param {number} count impact count between 0 and 2^32
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setImpactCount (count: number) {
@@ -80,8 +79,7 @@ export class TechnicMediumHubTiltSensor extends Device {
 
     /**
      * Set the impact threshold.
-     * @method TechnicMediumHubTiltSensor#setImpactThreshold
-     * @param {threshold} value between 1 and 127
+     * @param {number} threshold value between 1 and 127
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setImpactThreshold (threshold: number) {
@@ -94,8 +92,7 @@ export class TechnicMediumHubTiltSensor extends Device {
 
     /**
      * Set the impact holdoff time.
-     * @method TechnicMediumHubTiltSensor#setImpactHoldoff
-     * @param {holdoff} value between 1 and 127
+     * @param {number} holdoff value between 1 and 127
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
     public setImpactHoldoff (holdoff: number) {

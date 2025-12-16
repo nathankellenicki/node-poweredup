@@ -18,7 +18,6 @@ export class PiezoBuzzer extends Device {
 
     /**
      * Play a tone on the Hub's in-built buzzer
-     * @method PiezoBuzzer#playTone
      * @param {number} frequency
      * @param {number} time How long the tone should play for (in milliseconds).
      * @returns {Promise} Resolved upon successful completion of command (ie. once the tone has finished playing).

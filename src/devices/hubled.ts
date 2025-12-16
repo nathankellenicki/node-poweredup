@@ -18,7 +18,6 @@ export class HubLED extends Device {
 
     /**
      * Set the color of the LED on the Hub via a color value.
-     * @method HubLED#setColor
      * @param {Color} color
      * @returns {Promise} Resolved upon successful issuance of the command.
      */
@@ -41,7 +40,6 @@ export class HubLED extends Device {
 
     /**
      * Set the color of the LED on the Hub via RGB values.
-     * @method HubLED#setRGB
      * @param {number} red
      * @param {number} green
      * @param {number} blue
