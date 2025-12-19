@@ -1,15 +1,15 @@
-import { Peripheral } from "@abandonware/noble";
+import { Peripheral } from "@stoprocent/noble";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction } from "../interfaces.js";
 
-import { BaseHub } from "./basehub";
+import { BaseHub } from "./basehub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import { isWebBluetooth } from "../utils";
+import { isWebBluetooth } from "../utils.js";
 
-import Debug = require("debug");
-import { HubLED } from "../devices/hubled";
+import Debug from "debug";
+import { HubLED } from "../devices/hubled.js";
 const debug = Debug("wedo2smarthub");
 
 
@@ -95,7 +95,6 @@ export class WeDo2SmartHub extends BaseHub {
 
     /**
      * Shutdown the Hub.
-     * @method WeDo2SmartHub#shutdown
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public shutdown () {
@@ -105,7 +104,6 @@ export class WeDo2SmartHub extends BaseHub {
 
     /**
      * Set the name of the Hub.
-     * @method WeDo2SmartHub#setName
      * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */

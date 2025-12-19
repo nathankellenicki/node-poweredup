@@ -1,6 +1,6 @@
-import Debug = require("debug");
+import Debug from "debug";
 import { EventEmitter } from "events";
-import { IBLEAbstraction } from "./interfaces";
+import { IBLEAbstraction } from "./interfaces.js";
 const debug = Debug("bledevice");
 
 
@@ -85,7 +85,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public subscribeToCharacteristic (uuid: string, callback: (data: Buffer) => void) {
+    public subscribeToCharacteristic (uuid: string, callback: (data: Buffer) => void): Promise<any> {
         if (this._listeners[uuid]) {
             this._characteristics[uuid].removeEventListener("characteristicvaluechanged", this._listeners[uuid]);
         }
@@ -108,7 +108,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
             callback(data);
         }
 
-        this._characteristics[uuid].startNotifications();
+        return this._characteristics[uuid].startNotifications();
     }
 
 
@@ -117,7 +117,7 @@ export class WebBLEDevice extends EventEmitter implements IBLEAbstraction {
     }
 
 
-    public readFromCharacteristic (uuid: string, callback: (err: string | null, data: Buffer | null) => void) {
+    public readFromCharacteristic (uuid: string, callback: (err: Error | null, data: Buffer | null) => void) {
         // @ts-ignore
         this._characteristics[uuid].readValue().then((data) => {
             const buf = Buffer.alloc(data.buffer.byteLength);

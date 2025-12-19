@@ -4,9 +4,9 @@
  *
  */
 
-const PoweredUP = require("..");
+import { PoweredUP, DeviceType } from "../dist/index-node.js";
 
-const poweredUP = new PoweredUP.PoweredUP();
+const poweredUP = new PoweredUP();
 poweredUP.scan();
 
 console.log("Looking for Powered UP Hubs...");

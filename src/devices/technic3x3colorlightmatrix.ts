@@ -1,10 +1,10 @@
-import { Color } from "../color";
+import { Color } from "../color.js";
 
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class Technic3x3ColorLightMatrix
@@ -20,37 +20,33 @@ export class Technic3x3ColorLightMatrix extends Device {
 
     /**
      * Set the LED matrix, one color per LED
-     * @method Technic3x3ColorLightMatrix#setMatrix
      * @param {Color[] | Color} colors Array of 9 colors, 9 Color objects, or a single color
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public setMatrix (colors: number[] | number) {
-        return new Promise<void>((resolve) => {
-            this.subscribe(Mode.PIX_0);
-            const colorArray = new Array(9);
-            for (let i = 0; i < colorArray.length; i++) {
-                if (typeof colors ===  'number') {
-                    // @ts-ignore
-                    colorArray[i] = colors + (10 << 4);
-                }
+        this.subscribe(Mode.PIX_0);
+        const colorArray = new Array(9);
+        for (let i = 0; i < colorArray.length; i++) {
+            if (typeof colors ===  'number') {
                 // @ts-ignore
-                if (colors[i] instanceof Color) {
-                    // @ts-ignore
-                    colorArray[i] = colors[i].toValue();
-                }
-                // @ts-ignore
-                if (colors[i] === Consts.Color.NONE) {
-                    colorArray[i] = Consts.Color.NONE;
-                }
-                // @ts-ignore
-                if (colors[i] <= 10) {
-                    // @ts-ignore
-                    colorArray[i] = colors[i] + (10 << 4); // If a raw color value, set it to max brightness (10)
-                }
+                colorArray[i] = colors + (10 << 4);
             }
-            this.writeDirect(Mode.PIX_0, Buffer.from(colorArray));
-            return resolve();
-        });
+            // @ts-ignore
+            if (colors[i] instanceof Color) {
+                // @ts-ignore
+                colorArray[i] = colors[i].toValue();
+            }
+            // @ts-ignore
+            if (colors[i] === Consts.Color.NONE) {
+                colorArray[i] = Consts.Color.NONE;
+            }
+            // @ts-ignore
+            if (colors[i] <= 10) {
+                // @ts-ignore
+                colorArray[i] = colors[i] + (10 << 4); // If a raw color value, set it to max brightness (10)
+            }
+        }
+        return this.writeDirect(Mode.PIX_0, Buffer.from(colorArray));
     }
 
 

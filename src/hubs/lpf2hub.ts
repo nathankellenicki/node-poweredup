@@ -1,10 +1,10 @@
-import { BaseHub } from "./basehub";
+import { BaseHub } from "./basehub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils";
+import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils.js";
 
-import Debug = require("debug");
+import Debug from "debug";
 const debug = Debug("lpf2hub");
 const modeInfoDebug = Debug("lpf2hubmodeinfo");
 
@@ -38,7 +38,6 @@ export class LPF2Hub extends BaseHub {
 
     /**
      * Shutdown the Hub.
-     * @method LPF2Hub#shutdown
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public shutdown () {
@@ -48,7 +47,6 @@ export class LPF2Hub extends BaseHub {
 
     /**
      * Set the name of the Hub.
-     * @method LPF2Hub#setName
      * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */
@@ -87,7 +85,6 @@ export class LPF2Hub extends BaseHub {
      * Combines two ports with into a single virtual port.
      *
      * Note: The devices attached to the ports must be of the same device type.
-     * @method LPF2Hub#createVirtualPort
      * @param {string} firstPortName First port name
      * @param {string} secondPortName Second port name
      * @returns {Promise} Resolved upon successful issuance of command.
@@ -159,10 +156,14 @@ export class LPF2Hub extends BaseHub {
                     this._parseSensorMessage(message);
                     break;
                 }
+                case Consts.MessageType.PORT_INPUT_FORMAT_SINGLE: {
+                    this._parsePortInputFormatMessage(message);
+		    break;
+		}
                 case Consts.MessageType.PORT_OUTPUT_COMMAND_FEEDBACK: {
                     this._parsePortAction(message);
                     break;
-                }
+		}
             }
 
             if (this._messageBuffer.length > 0) {
@@ -346,7 +347,6 @@ export class LPF2Hub extends BaseHub {
         }
     }
 
-
     private _parsePortAction (message: Buffer) {
         for (let offset = 3; offset < message.length; offset += 2) {
             const device = this._getDeviceByPortId(message[offset]);
@@ -357,17 +357,21 @@ export class LPF2Hub extends BaseHub {
         }
     }
 
-
     private _parseSensorMessage (message: Buffer) {
-
         const portId = message[3];
         const device = this._getDeviceByPortId(portId);
 
         if (device) {
             device.receive(message);
         }
-
     }
 
+    private _parsePortInputFormatMessage (message: Buffer) {
+        const portId = message[3];
+        const device = this._getDeviceByPortId(portId);
 
+        if (device) {
+            device.setMode(message[4]);
+        }
+    }
 }

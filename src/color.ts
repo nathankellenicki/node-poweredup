@@ -1,4 +1,4 @@
-import * as Consts from "./consts";
+import * as Consts from "./consts.js";
 
 export class Color {
 

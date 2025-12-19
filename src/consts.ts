@@ -262,7 +262,7 @@ export enum BLECharacteristic {
  * @property {number} VIRTUAL_PORT_SETUP 0x61
  * @property {number} PORT_OUTPUT_COMMAND 0x81
  * @property {number} PORT_OUTPUT_COMMAND_FEEDBACK 0x82
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#message-types
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#message-types
  */
 export enum MessageType {
     HUB_PROPERTIES = 0x01,
@@ -308,7 +308,7 @@ export enum MessageType {
  * @param {number} PRIMARY_MAC_ADDRESS 0x0D
  * @param {number} SECONDARY_MAC_ADDRESS 0x0E
  * @param {number} HARDWARE_NETWORK_FAMILY 0x0F
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
  */
 export enum HubPropertyReference {
     ADVERTISING_NAME = 0x01,
@@ -337,7 +337,7 @@ export enum HubPropertyReference {
  * @param {number} RESET_DOWNSTREAM 0x04
  * @param {number} REQUEST_UPDATE_DOWNSTREAM 0x05
  * @param {number} UPDATE_UPSTREAM 0x06
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
  */
 export enum HubPropertyOperation {
     SET_DOWNSTREAM = 0x01,
@@ -366,7 +366,7 @@ export enum HubPropertyOperation {
  * @param {number} PRIMARY_MAC_ADDRESS 0x0D
  * @param {number} SECONDARY_MAC_ADDRESS 0x0E
  * @param {number} HW_NETWORK_FAMILY 0x0F
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#hub-property-reference
  */
 export enum HubPropertyPayload {
     ADVERTISING_NAME = 0x01,
@@ -399,7 +399,7 @@ export enum HubPropertyPayload {
  * @param {number} HUB_WILL_SWITCH_OFF 0x30
  * @param {number} HUB_WILL_DISCONNECT 0x31
  * @param {number} HUB_WILL_GO_INTO_BOOT_MODE 0x32
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#action-types
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#action-types
  */
 export enum ActionType {
     SWITCH_OFF_HUB = 0x01,
@@ -421,7 +421,7 @@ export enum ActionType {
  * @param {number} HIGH_CURRENT 0x02
  * @param {number} LOW_SIGNAL_STRENGTH 0x03
  * @param {number} OVER_POWER_CONDITION 0x04
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-type
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-type
  */
 export enum AlertType {
     LOW_VOLTAGE = 0x01,
@@ -437,7 +437,7 @@ export enum AlertType {
  * @param {number} DISABLE_UPDATE 0x02
  * @param {number} REQUEST_UPDATE 0x03
  * @param {number} UPDATE 0x04
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-operation
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-operation
  */
 export enum AlertOperation {
     LOW_VOLTAGE = 0x01,
@@ -451,7 +451,7 @@ export enum AlertOperation {
  * @typedef AlertPayload
  * @param {number} STATUS_OK 0x00
  * @param {number} ALERT 0xFF
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-payload
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#alert-payload
  */
 export enum AlertPayload {
     STATUS_OK = 0x00,
@@ -464,7 +464,7 @@ export enum AlertPayload {
  * @param {number} DETACHED_IO 0x00
  * @param {number} ATTACHED_IO 0x01
  * @param {number} ATTACHED_VIRTUAL_IO 0x02
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#event
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#event
  */
 export enum Event {
     DETACHED_IO = 0x00,
@@ -489,7 +489,7 @@ export enum Event {
  * @param {number} EXTERNAL_MOTOR 0x0026
  * @param {number} INTERNAL_MOTOR 0x0027
  * @param {number} INTERNAL_TILT 0x0028
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#io-type-id
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#io-type-id
  */
 export enum IOTypeID {
     MOTOR = 0x0001,
@@ -519,7 +519,7 @@ export enum IOTypeID {
  * @param {number} INVALID_USE 0x06
  * @param {number} OVERCURRENT 0x07
  * @param {number} INTERNAL_ERROR 0x08
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#error-codes
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#error-codes
  */
 export enum ErrorCode {
     ACK = 0x01,
@@ -548,7 +548,7 @@ export enum ErrorCode {
  * @param {number} EXTENDED_FAMILY 0x0C
  * @param {number} EXTENDED_FAMILY_SET 0x0D
  * @param {number} RESET_LONG_PRESS_TIMING 0x0E
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-command-type
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-command-type
  */
 export enum HWNetWorkCommandType {
     CONNECTION_REQUEST = 0x02,
@@ -578,7 +578,7 @@ export enum HWNetWorkCommandType {
  * @param {number} TEAL 0x07
  * @param {number} PINK 0x08
  * @param {number} WHITE 0x00
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-family
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-family
  */
 export enum HWNetworkFamily {
     GREEN = 0x01,
@@ -602,7 +602,7 @@ export enum HWNetworkFamily {
  * @param {number} FIVE_FLASHES 0x05
  * @param {number} SIX_FLASHES 0x06
  * @param {number} SEVEN_FLASHES 0x07
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-sub-family
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#h-w-network-sub-family
  */
 export enum HWNetworkSubFamily {
     ONE_FLASH = 0x01,
@@ -627,7 +627,7 @@ export enum HWNetworkSubFamily {
  * @param {number} MOTOR_BIAS 0x07
  * @param {number} CAPABILITY_BITS 0x08
  * @param {number} VALUE_FORMAT 0x80
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#mode-information-types
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#mode-information-types
  */
 export enum ModeInformationType {
     NAME = 0x00,
@@ -651,7 +651,7 @@ export enum ModeInformationType {
  * @param {number} UNLOCKANDSTARTWITHMULTIUPDATEDISABLED 0x04
  * @param {number} NOT_USED 0x05
  * @param {number} RESET_SENSOR 0x06
- * @description https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#port-input-format-setup-sub-commands
+ * @see https://lego.github.io/lego-ble-wireless-protocol-docs/index.html#port-input-format-setup-sub-commands
  */
 export enum PortInputFormatSetupSubCommand {
     SET_MODEANDDATASET_COMBINATIONS = 0x01,
@@ -702,4 +702,48 @@ export enum MarioColor {
     GREEN = 0x2500,
     BROWN = 0x6a00,
     CYAN = 0x4201,
+}
+
+
+/**
+ * @typedef TiltDirection
+ * @param {number} NEUTRAL 0
+ * @param {number} BACKWARD 3
+ * @param {number} RIGHT 5
+ * @param {number} LEFT 7
+ * @param {number} FORWARD 9
+ * @param {number} UNKNOWN 10
+ */
+export enum TiltDirection {
+    NEUTRAL = 0,
+    BACKWARD = 3,
+    RIGHT = 5,
+    LEFT = 7,
+    FORWARD = 9,
+    UNKNOWN = 10,
+}
+
+
+/**
+ * @typedef CommandFeedback
+ * @param {number} TRANSMISSION_PENDING 0x00 waiting for previous commands to complete transmission or execution
+ * @param {number} TRANSMISSION_BUSY 0x10 waiting for device to acknowledge reception
+ * @param {number} TRANSMISSION_DISCARDED 0x44 interrupt command has been recieved or device disconnected
+ * @param {number} EXECUTION_PENDING 0x20 device is waiting for previous command to complete
+ * @param {number} EXECUTION_BUSY 0x21 device is executing the command
+ * @param {number} EXECUTION_DISCARDED 0x24 device discarded the command e.g. due to interrupt
+ * @param {number} EXECUTION_COMPLETED 0x22 device reported successful completion of command
+ * @param {number} FEEDBACK_MISSING 0x66 device disconnected or failed to report feedback
+ * @param {number} FEEDBACK_DISABLED 0x26 feedback not implemented for this command
+ */
+export enum CommandFeedback {
+    TRANSMISSION_PENDING = 0x00,
+    TRANSMISSION_BUSY = 0x10,
+    TRANSMISSION_DISCARDED = 0x44,
+    EXECUTION_PENDING = 0x20,
+    EXECUTION_BUSY = 0x21,
+    EXECUTION_DISCARDED = 0x24,
+    EXECUTION_COMPLETED = 0x22,
+    FEEDBACK_MISSING = 0x66,
+    FEEDBACK_DISABLED = 0x26,
 }

@@ -1,9 +1,9 @@
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
-import { parseColor } from "../utils";
+import * as Consts from "../consts.js";
+import { parseColor } from "../utils.js";
 
 /**
  * @class TechnicColorSensor
@@ -145,11 +145,10 @@ export class TechnicColorSensor extends Device {
 
     /**
      * Set the brightness (or turn on/off) of the lights around the sensor.
-     * @method TechnicColorSensor#setBrightness
      * @param {number} firstSegment First light segment. 0-100 brightness.
      * @param {number} secondSegment Second light segment. 0-100 brightness.
      * @param {number} thirdSegment Third light segment. 0-100 brightness.
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of the command.
      */
     public setBrightness (firstSegment: number, secondSegment: number, thirdSegment: number) {
         this.subscribe(Mode.LIGHT); // other modes use different light setting

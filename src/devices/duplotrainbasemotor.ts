@@ -1,8 +1,8 @@
-import { BasicMotor } from "./basicmotor";
+import { BasicMotor } from "./basicmotor.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class DuploTrainBaseMotor

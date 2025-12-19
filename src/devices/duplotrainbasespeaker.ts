@@ -1,8 +1,8 @@
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class DuploTrainBaseSpeaker
@@ -16,27 +16,22 @@ export class DuploTrainBaseSpeaker extends Device {
 
     /**
      * Play a built-in train sound.
-     * @method DuploTrainBaseSpeaker#playSound
      * @param {DuploTrainBaseSound} sound
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public playSound (sound: Consts.DuploTrainBaseSound) {
-        return new Promise<void>((resolve) => {
-            this.subscribe(Mode.SOUND);
-            this.writeDirect(0x01, Buffer.from([sound]));
-            return resolve();
-        });
+        this.subscribe(Mode.SOUND);
+        return this.writeDirect(0x01, Buffer.from([sound]));
     }
 
     /**
      * Play a built-in system tone.
-     * @method DuploTrainBaseSpeaker#playTone
      * @param {number} tone
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public playTone (tone: number) {
         this.subscribe(Mode.TONE);
-        this.writeDirect(0x02, Buffer.from([tone]));
+        return this.writeDirect(0x02, Buffer.from([tone]));
     }
 
 }

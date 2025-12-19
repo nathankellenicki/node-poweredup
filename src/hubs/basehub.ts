@@ -1,47 +1,47 @@
 import { EventEmitter } from "events";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction } from "../interfaces.js";
 
-import { ColorDistanceSensor } from "../devices/colordistancesensor";
-import { CurrentSensor } from "../devices/currentsensor";
-import { Device } from "../devices/device";
+import { ColorDistanceSensor } from "../devices/colordistancesensor.js";
+import { CurrentSensor } from "../devices/currentsensor.js";
+import { Device } from "../devices/device.js";
 
-import { DuploTrainBaseColorSensor } from "../devices/duplotrainbasecolorsensor";
-import { DuploTrainBaseMotor } from "../devices/duplotrainbasemotor";
-import { DuploTrainBaseSpeaker } from "../devices/duplotrainbasespeaker";
-import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer";
+import { DuploTrainBaseColorSensor } from "../devices/duplotrainbasecolorsensor.js";
+import { DuploTrainBaseMotor } from "../devices/duplotrainbasemotor.js";
+import { DuploTrainBaseSpeaker } from "../devices/duplotrainbasespeaker.js";
+import { DuploTrainBaseSpeedometer } from "../devices/duplotrainbasespeedometer.js";
 
-import { HubLED } from "../devices/hubled";
-import { Light } from "../devices/light";
-import { MarioAccelerometer } from "../devices/marioaccelerometer";
-import { MarioBarcodeSensor } from "../devices/mariobarcodesensor";
-import { MarioPantsSensor } from "../devices/mariopantssensor";
-import { MediumLinearMotor } from "../devices/mediumlinearmotor";
-import { MotionSensor } from "../devices/motionsensor";
-import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor";
-import { MoveHubTiltSensor } from "../devices/movehubtiltsensor";
-import { PiezoBuzzer } from "../devices/piezobuzzer";
-import { RemoteControlButton } from "../devices/remotecontrolbutton";
-import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor";
-import { TechnicColorSensor } from "../devices/techniccolorsensor";
-import { TechnicDistanceSensor } from "../devices/technicdistancesensor";
-import { TechnicForceSensor } from "../devices/technicforcesensor";
-import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor";
-import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor";
-import { TechnicSmallAngularMotor } from "../devices/technicsmallangularmotor";
-import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor";
-import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor";
-import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor";
-import { TechnicMediumHubTiltSensor } from "../devices/technicmediumhubtiltsensor";
-import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor";
-import { TiltSensor } from "../devices/tiltsensor";
-import { TrainMotor } from "../devices/trainmotor";
-import { VoltageSensor } from "../devices/voltagesensor";
+import { HubLED } from "../devices/hubled.js";
+import { Light } from "../devices/light.js";
+import { MarioAccelerometer } from "../devices/marioaccelerometer.js";
+import { MarioBarcodeSensor } from "../devices/mariobarcodesensor.js";
+import { MarioPantsSensor } from "../devices/mariopantssensor.js";
+import { MediumLinearMotor } from "../devices/mediumlinearmotor.js";
+import { MotionSensor } from "../devices/motionsensor.js";
+import { MoveHubMediumLinearMotor } from "../devices/movehubmediumlinearmotor.js";
+import { MoveHubTiltSensor } from "../devices/movehubtiltsensor.js";
+import { PiezoBuzzer } from "../devices/piezobuzzer.js";
+import { RemoteControlButton } from "../devices/remotecontrolbutton.js";
+import { SimpleMediumLinearMotor } from "../devices/simplemediumlinearmotor.js";
+import { TechnicColorSensor } from "../devices/techniccolorsensor.js";
+import { TechnicDistanceSensor } from "../devices/technicdistancesensor.js";
+import { TechnicForceSensor } from "../devices/technicforcesensor.js";
+import { TechnicLargeAngularMotor } from "../devices/techniclargeangularmotor.js";
+import { TechnicLargeLinearMotor } from "../devices/techniclargelinearmotor.js";
+import { TechnicSmallAngularMotor } from "../devices/technicsmallangularmotor.js";
+import { TechnicMediumAngularMotor } from "../devices/technicmediumangularmotor.js";
+import { TechnicMediumHubAccelerometerSensor } from "../devices/technicmediumhubaccelerometersensor.js";
+import { TechnicMediumHubGyroSensor } from "../devices/technicmediumhubgyrosensor.js";
+import { TechnicMediumHubTiltSensor } from "../devices/technicmediumhubtiltsensor.js";
+import { TechnicXLargeLinearMotor } from "../devices/technicxlargelinearmotor.js";
+import { TiltSensor } from "../devices/tiltsensor.js";
+import { TrainMotor } from "../devices/trainmotor.js";
+import { VoltageSensor } from "../devices/voltagesensor.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import Debug = require("debug");
-import { Technic3x3ColorLightMatrix } from "../devices/technic3x3colorlightmatrix";
+import Debug from "debug";
+import { Technic3x3ColorLightMatrix } from "../devices/technic3x3colorlightmatrix.js";
 const debug = Debug("basehub");
 
 
@@ -184,7 +184,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Connect to the Hub.
-     * @method Hub#connect
      * @returns {Promise} Resolved upon successful connect.
      */
     public connect () {
@@ -199,7 +198,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Disconnect the Hub.
-     * @method Hub#disconnect
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public disconnect () {
@@ -209,7 +207,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Retrieves the device attached to a given port.
-     * @method Hub#getDeviceAtPort
      * @param {string} portName The name of the port to retrieve the device from.
      * @returns {Device | undefined} The device attached to the port.
      */
@@ -227,7 +224,6 @@ export class BaseHub extends EventEmitter {
      * Retrieves the device attached to a given port, waiting until one is attached if there isn't one.
      *
      * Note: If a device is never attached, the returned promise may never resolve.
-     * @method Hub#waitForDeviceAtPort
      * @param {string} portName The name of the port to retrieve the device from.
      * @returns {Promise} Resolved once a device is attached, or resolved immediately if a device is already attached.
      */
@@ -251,7 +247,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Retrieves all attached devices.
-     * @method Hub#getDevices
      * @returns {Device[]} Array of all attached devices.
      */
     public getDevices () {
@@ -261,7 +256,6 @@ export class BaseHub extends EventEmitter {
 
     /**
      * Retrieves an array of devices of the specified type.
-     * @method Hub#getDevicesByType
      * @param {number} deviceType The device type to lookup.
      * @returns {Device[]} Array of all devices of the specified type.
      */
@@ -274,7 +268,6 @@ export class BaseHub extends EventEmitter {
      * Retrieves the first device attached of the specified type, waiting until one is attached if there isn't one.
      *
      * Note: If a device is never attached, the returned promise may never resolve.
-     * @method Hub#waitForDeviceByType
      * @param {number} deviceType The device type to lookup.
      * @returns {Promise} Resolved once a device is attached, or resolved immediately if a device is already attached.
      */
@@ -315,7 +308,6 @@ export class BaseHub extends EventEmitter {
      * Sleep a given amount of time.
      *
      * Note: This is a helper method to make it easier to add delays into a chain of commands.
-     * @method Hub#sleep
      * @param {number} delay How long to sleep (in milliseconds).
      * @returns {Promise} Resolved after the delay is finished.
      */
@@ -330,7 +322,6 @@ export class BaseHub extends EventEmitter {
      * Wait until a given list of concurrently running commands are complete.
      *
      * Note: This is a helper method to make it easier to wait for concurrent commands to complete.
-     * @method Hub#wait
      * @param {Array<Promise<any>>} commands Array of executing commands.
      * @returns {Promise} Resolved after the commands are finished.
      */

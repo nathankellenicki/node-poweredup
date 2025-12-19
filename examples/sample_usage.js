@@ -1,5 +1,6 @@
-const PoweredUP = require("..");
-const poweredUP = new PoweredUP.PoweredUP();
+import { PoweredUP } from "../dist/index-node.js";
+
+const poweredUP = new PoweredUP();
 
 poweredUP.on("discover", async (hub) => { // Wait to discover a Hub
     console.log(`Discovered ${hub.name}!`);

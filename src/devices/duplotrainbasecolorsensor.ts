@@ -1,9 +1,9 @@
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
-import { parseColor } from "../utils";
+import * as Consts from "../consts.js";
+import { parseColor } from "../utils.js";
 
 /**
  * @class DuploTrainBaseColorSensor
