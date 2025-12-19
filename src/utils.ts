@@ -60,18 +60,28 @@ export const roundAngleToNearest90 = (angle: number) => {
 };
 
 export const calculateRamp = (fromPower: number, toPower: number, time: number) => {
-    const emitter = new EventEmitter();
     const steps = Math.abs(toPower - fromPower);
+    if (steps === 0 || time <= 0) {
+        return [toPower];
+    }
     let delay = time / steps;
     let increment = 1;
-    if (delay < 50 && steps > 0) {
+    if (delay < 50) {
         increment = 50 / delay;
         delay = 50;
     }
     if (fromPower > toPower) {
         increment = -increment;
     }
-    return Array(Math.round(time/delay)).fill(0).map((element, index) => fromPower + index*increment);
+    return Array(Math.round(time / delay)).fill(0).map((element, index) => {
+        let value = Math.round(fromPower + (index + 1) * increment);
+        if (toPower > fromPower && value > toPower) {
+            value = toPower;
+        } else if (fromPower > toPower && value < toPower) {
+            value = toPower;
+        }
+        return value;
+    });
 };
 
 export const parseColor = (color: number) => {

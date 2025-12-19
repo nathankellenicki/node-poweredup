@@ -233,6 +233,7 @@ export class Device extends EventEmitter {
     public addPortOutputSleep(duration: number) {
         const command = new PortOutputSleep(duration);
         this._nextPortOutputCommands.push(command);
+        process.nextTick(() => this.transmitNextPortOutputCommand());
         return command.promise;
     }
 
