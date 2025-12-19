@@ -704,6 +704,26 @@ export enum MarioColor {
     CYAN = 0x4201,
 }
 
+
+/**
+ * @typedef TiltDirection
+ * @param {number} NEUTRAL 0
+ * @param {number} BACKWARD 3
+ * @param {number} RIGHT 5
+ * @param {number} LEFT 7
+ * @param {number} FORWARD 9
+ * @param {number} UNKNOWN 10
+ */
+export enum TiltDirection {
+    NEUTRAL = 0,
+    BACKWARD = 3,
+    RIGHT = 5,
+    LEFT = 7,
+    FORWARD = 9,
+    UNKNOWN = 10,
+}
+
+
 /**
  * @typedef CommandFeedback
  * @param {number} TRANSMISSION_PENDING 0x00 waiting for previous commands to complete transmission or execution
