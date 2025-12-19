@@ -59,7 +59,7 @@ export const roundAngleToNearest90 = (angle: number) => {
     return -180;
 };
 
-export const calculateRamp = (device: Device, fromPower: number, toPower: number, time: number) => {
+export const calculateRamp = (fromPower: number, toPower: number, time: number) => {
     const emitter = new EventEmitter();
     const steps = Math.abs(toPower - fromPower);
     let delay = time / steps;
@@ -71,22 +71,7 @@ export const calculateRamp = (device: Device, fromPower: number, toPower: number
     if (fromPower > toPower) {
         increment = -increment;
     }
-    let i = 0;
-    const interval = setInterval(() => {
-        let power = Math.round(fromPower + (++i * increment));
-        if (toPower > fromPower && power > toPower) {
-            power = toPower;
-        } else if (fromPower > toPower && power < toPower) {
-            power = toPower;
-        }
-        emitter.emit("changePower", power);
-        if (power === toPower) {
-            clearInterval(interval);
-            emitter.emit("finished");
-        }
-    }, delay);
-    device.setEventTimer(interval);
-    return emitter;
+    return Array(Math.round(time/delay)).fill(0).map((element, index) => fromPower + index*increment);
 };
 
 export const parseColor = (color: number) => {

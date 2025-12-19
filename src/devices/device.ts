@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 
 import { IDeviceInterface } from "../interfaces.js";
 import { PortOutputCommand } from "../portoutputcommand.js";
+import { PortOutputSleep } from "../portoutputsleep.js";
 
 import * as Consts from "../consts.js";
 
@@ -19,7 +20,7 @@ export class Device extends EventEmitter {
 
     protected _mode: number | undefined;
     protected _bufferLength: number = 0;
-    protected _nextPortOutputCommands: PortOutputCommand[] = [];
+    protected _nextPortOutputCommands: (PortOutputCommand | PortOutputSleep)[] = [];
     protected _transmittedPortOutputCommands: PortOutputCommand[] = [];
 
     private _hub: IDeviceInterface;
@@ -30,7 +31,6 @@ export class Device extends EventEmitter {
 
     private _isWeDo2SmartHub: boolean;
     private _isVirtualPort: boolean = false;
-    private _eventTimer: NodeJS.Timeout | null = null;
 
     constructor (hub: IDeviceInterface, portId: number, modeMap: {[event: string]: number} = {}, type: Consts.DeviceType = Consts.DeviceType.UNKNOWN) {
         super();
@@ -132,9 +132,6 @@ export class Device extends EventEmitter {
     }
 
     public writeDirect (mode: number, data: Buffer, interrupt: boolean = false) {
-        if (interrupt) {
-            this.cancelEventTimer();
-        }
         if (this.isWeDo2SmartHub) {
             return this.send(Buffer.concat([Buffer.from([this.portId, 0x01, 0x02]), data]), Consts.BLECharacteristic.WEDO2_MOTOR_VALUE_WRITE).then(() => { return Consts.CommandFeedback.FEEDBACK_DISABLED; });
         } else {
@@ -183,15 +180,29 @@ export class Device extends EventEmitter {
             this._nextPortOutputCommands = [];
             return;
         }
-        if(this._bufferLength !== this._transmittedPortOutputCommands.length) return;
         if(!this._nextPortOutputCommands.length) return;
-        if(this._bufferLength < 2 || this._nextPortOutputCommands[0].interrupt) {
+        const nextCommand = this._nextPortOutputCommands[0];
+        if(nextCommand instanceof PortOutputSleep) {
+            if(nextCommand.state === Consts.CommandFeedback.EXECUTION_PENDING) {
+                nextCommand.state = Consts.CommandFeedback.EXECUTION_BUSY;
+                debug("sleep command ", nextCommand.duration);
+                setTimeout(() => {
+                    const command = this._nextPortOutputCommands.shift();
+                    if(command) command.resolve(Consts.CommandFeedback.EXECUTION_COMPLETED);
+                    this.transmitNextPortOutputCommand();
+                }, nextCommand.duration);
+            }
+            return;
+        }
+        if(this._bufferLength !== this._transmittedPortOutputCommands.length) return;
+        if(this._bufferLength < 2 || nextCommand.interrupt) {
             const command = this._nextPortOutputCommands.shift();
             if(command) {
                 debug("transmit command ", command.startupAndCompletion, command.data);
                 this.send(Buffer.concat([Buffer.from([0x81, this.portId, command.startupAndCompletion]), command.data]));
                 command.state = Consts.CommandFeedback.TRANSMISSION_BUSY;
                 this._transmittedPortOutputCommands.push(command);
+                this.transmitNextPortOutputCommand(); // if PortOutputSleep this starts timeout
                 // one could start a timer here to ensure finish function is called
             }
         }
@@ -211,6 +222,12 @@ export class Device extends EventEmitter {
             this._nextPortOutputCommands.push(command);
         }
         this.transmitNextPortOutputCommand();
+        return command.promise;
+    }
+
+    public addPortOutputSleep(duration: number) {
+        const command = new PortOutputSleep(duration);
+        this._nextPortOutputCommands.push(command);
         return command.promise;
     }
 
@@ -309,7 +326,7 @@ export class Device extends EventEmitter {
                     this._missing();
                     this._busy();
                 }
-                // third command can only be interrupt, if busy === 2 it was queued
+                // third command can only be interrupt, if this._bufferLength === 2 it was queued
                 else {
                     this._missing();
                     this._missing();
@@ -319,17 +336,6 @@ export class Device extends EventEmitter {
         }
 
         this.transmitNextPortOutputCommand();
-    }
-
-    public setEventTimer (timer: NodeJS.Timeout) {
-        this._eventTimer = timer;
-    }
-
-    public cancelEventTimer () {
-        if (this._eventTimer) {
-            clearTimeout(this._eventTimer);
-            this._eventTimer = null;
-        }
     }
 
     private _ensureConnected () {

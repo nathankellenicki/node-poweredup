@@ -37,15 +37,12 @@ export class BasicMotor extends Device {
      * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public rampPower (fromPower: number, toPower: number, time: number) {
-        return new Promise<Consts.CommandFeedback>((resolve) => {
-            calculateRamp(this, fromPower, toPower, time)
-            .on("changePower", (power) => {
-                this.setPower(power, false);
-            })
-            .on("finished", () => {
-                return resolve(Consts.CommandFeedback.FEEDBACK_DISABLED);
-            })
+        const powerValues = calculateRamp(fromPower, toPower, time);
+        powerValues.forEach(value => {
+            this.setPower(value);
+            this.addPortOutputSleep(Math.round(time/powerValues.length));
         });
+        return this.setPower(toPower);
     }
 
 
