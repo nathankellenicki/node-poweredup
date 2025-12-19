@@ -1,21 +1,23 @@
-import { WebBLEDevice } from "./webbleabstraction";
+/// <reference types="web-bluetooth" />
 
-import { BaseHub } from "./hubs/basehub";
-import { DuploTrainBase } from "./hubs/duplotrainbase";
-import { Hub } from "./hubs/hub";
-import { Mario } from "./hubs/mario";
-import { MoveHub } from "./hubs/movehub";
-import { RemoteControl } from "./hubs/remotecontrol";
-import { TechnicMediumHub } from "./hubs/technicmediumhub";
-import { WeDo2SmartHub } from "./hubs/wedo2smarthub";
+import { WebBLEDevice } from "./webbleabstraction.js";
 
-import * as Consts from "./consts";
+import { BaseHub } from "./hubs/basehub.js";
+import { DuploTrainBase } from "./hubs/duplotrainbase.js";
+import { Hub } from "./hubs/hub.js";
+import { Mario } from "./hubs/mario.js";
+import { MoveHub } from "./hubs/movehub.js";
+import { RemoteControl } from "./hubs/remotecontrol.js";
+import { TechnicMediumHub } from "./hubs/technicmediumhub.js";
+import { WeDo2SmartHub } from "./hubs/wedo2smarthub.js";
+
+import * as Consts from "./consts.js";
 
 import { EventEmitter } from "events";
 
-import Debug = require("debug");
-import { IBLEAbstraction } from "./interfaces";
-import { TechnicSmallHub } from "./hubs/technicsmallhub";
+import Debug from "debug";
+import { IBLEAbstraction } from "./interfaces.js";
+import { TechnicSmallHub } from "./hubs/technicsmallhub.js";
 const debug = Debug("poweredup");
 
 
@@ -37,7 +39,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Begin scanning for Powered UP Hub devices.
-     * @method PoweredUP#scan
      */
     public async scan () {
 
@@ -77,7 +78,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a list of Powered UP Hubs.
-     * @method PoweredUP#getHubs
      * @returns {BaseHub[]}
      */
     public getHubs () {
@@ -87,7 +87,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a Powered UP Hub by UUID.
-     * @method PoweredUP#getHubByUUID
      * @param {string} uuid
      * @returns {BaseHub | null}
      */
@@ -98,7 +97,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a Powered UP Hub by primary MAC address.
-     * @method PoweredUP#getHubByPrimaryMACAddress
      * @param {string} address
      * @returns {BaseHub}
      */
@@ -109,7 +107,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a list of Powered UP Hub by name.
-     * @method PoweredUP#getHubsByName
      * @param {string} name
      * @returns {BaseHub[]}
      */
@@ -120,7 +117,6 @@ export class PoweredUP extends EventEmitter {
 
     /**
      * Retrieve a list of Powered UP Hub by type.
-     * @method PoweredUP#getHubsByType
      * @param {string} name
      * @returns {BaseHub[]}
      */
@@ -130,9 +126,9 @@ export class PoweredUP extends EventEmitter {
 
 
     private _determineLPF2HubType (device: IBLEAbstraction): Promise<Consts.HubType> {
-        return new Promise((resolve) => {
+        return new Promise(async (resolve) => {
             let buf: Buffer = Buffer.alloc(0);
-            device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
+            await device.subscribeToCharacteristic(Consts.BLECharacteristic.LPF2_ALL, (data: Buffer) => {
                 buf = Buffer.concat([buf, data]);
                 while (buf[0] <= buf.length) {
                     const len = buf[0];
@@ -157,6 +153,9 @@ export class PoweredUP extends EventEmitter {
                                 break;
                             case Consts.BLEManufacturerData.TECHNIC_MEDIUM_HUB_ID:
                                 resolve(Consts.HubType.TECHNIC_MEDIUM_HUB);
+                                break;
+                            case Consts.BLEManufacturerData.MARIO_ID:
+                                resolve(Consts.HubType.MARIO);
                                 break;
                         }
                         debug("Hub type determined");

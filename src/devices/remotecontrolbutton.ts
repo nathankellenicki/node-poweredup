@@ -1,8 +1,8 @@
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class RemoteControlButton
@@ -21,7 +21,7 @@ export class RemoteControlButton extends Device {
             case Mode.BUTTON_EVENTS:
                 /**
                  * Emits when a button on the remote is pressed or released.
-                 * @event RemoteControlButton#button
+                 * @event RemoteControlButton#remoteButton
                  * @type {object}
                  * @param {number} event
                  */

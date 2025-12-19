@@ -1,8 +1,8 @@
-import { TachoMotor } from "./tachomotor";
+import { TachoMotor } from "./tachomotor.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class MediumLinearMotor

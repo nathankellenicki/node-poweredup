@@ -1,8 +1,8 @@
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class TechnicDistanceSensor
@@ -46,12 +46,11 @@ export class TechnicDistanceSensor extends Device {
 
     /**
      * Set the brightness (or turn on/off) of the lights around the eyes.
-     * @method TechnicDistanceSensor#setBrightness
      * @param {number} topLeft Top left quadrant (above left eye). 0-100 brightness.
      * @param {number} bottomLeft Bottom left quadrant (below left eye). 0-100 brightness.
      * @param {number} topRight Top right quadrant (above right eye). 0-100 brightness.
      * @param {number} bottomRight Bottom right quadrant (below right eye). 0-100 brightness.
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of the command.
      */
     public setBrightness (topLeft: number, bottomLeft: number, topRight: number, bottomRight: number) {
         this.writeDirect(0x05, Buffer.from([topLeft, topRight, bottomLeft, bottomRight]));

@@ -1,13 +1,13 @@
-import { Peripheral } from "@abandonware/noble";
-import compareVersion from "compare-versions";
+import { Peripheral } from "@stoprocent/noble";
+import { compareVersions } from "compare-versions";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction } from "../interfaces.js";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./lpf2hub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import Debug = require("debug");
+import Debug from "debug";
 const debug = Debug("hub");
 
 
@@ -47,7 +47,7 @@ export class Hub extends LPF2Hub {
 
 
     protected _checkFirmware (version: string) {
-        if (compareVersion("1.1.00.0004", version) === 1) {
+        if (compareVersions("1.1.00.0004", version) === 1) {
             throw new Error(`Your Powered Up Hub's (${this.name}) firmware is out of date and unsupported by this library. Please update it via the official Powered Up app.`);
         }
     }
