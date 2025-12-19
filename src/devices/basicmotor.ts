@@ -21,13 +21,11 @@ export class BasicMotor extends Device {
     /**
      * Set the motor power.
      * @param {number} power For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
-    public setPower (power: number, interrupt: boolean = true) {
-        if (interrupt) {
-            this.cancelEventTimer();
-        }
-        return this.writeDirect(0x00, Buffer.from([mapSpeed(power)]));
+    public setPower (power: number, interrupt: boolean = false) {
+        return this.writeDirect(0x00, Buffer.from([mapSpeed(power)]), interrupt);
     }
 
 
@@ -36,37 +34,33 @@ export class BasicMotor extends Device {
      * @param {number} fromPower For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} toPower For forward, a value between 1 - 100 should be set. For reverse, a value between -1 to -100. Stop is 0.
      * @param {number} time How long the ramp should last (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public rampPower (fromPower: number, toPower: number, time: number) {
-        this.cancelEventTimer();
-        return new Promise((resolve) => {
-            calculateRamp(this, fromPower, toPower, time)
-            .on("changePower", (power) => {
-                this.setPower(power, false);
-            })
-            .on("finished", resolve);
+        const powerValues = calculateRamp(fromPower, toPower, time);
+        powerValues.forEach(value => {
+            this.setPower(value);
+            this.addPortOutputSleep(Math.round(time/powerValues.length));
         });
+        return this.setPower(toPower);
     }
 
 
     /**
-     * Stop the motor.
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * Stop the motor. Previous commands that have not completed are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public stop () {
-        this.cancelEventTimer();
-        return this.setPower(0);
+        return this.setPower(0, true);
     }
 
 
     /**
-     * Brake the motor.
-     * @returns {Promise} Resolved upon successful issuance of the command.
+     * Brake the motor. Previous commands that have not completed are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public brake () {
-        this.cancelEventTimer();
-        return this.setPower(Consts.BrakingStyle.BRAKE);
+        return this.setPower(Consts.BrakingStyle.BRAKE, true);
     }
 
 
