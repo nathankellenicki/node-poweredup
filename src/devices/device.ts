@@ -147,7 +147,6 @@ export class Device extends EventEmitter {
     public subscribe (mode: number) {
         this._ensureConnected();
         if (mode !== this._mode) {
-            this._mode = mode;
             this.hub.subscribe(this.portId, this.type, mode);
         }
     }
@@ -170,6 +169,10 @@ export class Device extends EventEmitter {
 
     public requestUpdate () {
         this.send(Buffer.from([0x21, this.portId, 0x00]));
+    }
+
+    public setMode (mode: number) {
+        this._mode = mode;
     }
 
     protected transmitNextPortOutputCommand() {
