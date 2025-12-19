@@ -1,12 +1,12 @@
-import { Peripheral } from "@abandonware/noble";
+import { Peripheral } from "@stoprocent/noble";
 
-import { IBLEAbstraction } from "../interfaces";
+import { IBLEAbstraction } from "../interfaces.js";
 
-import { LPF2Hub } from "./lpf2hub";
+import { LPF2Hub } from "./lpf2hub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import Debug = require("debug");
+import Debug from "debug";
 const debug = Debug("technicmediumhub");
 
 

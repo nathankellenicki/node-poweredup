@@ -1,8 +1,8 @@
-import { AbsoluteMotor } from "./absolutemotor";
+import { AbsoluteMotor } from "./absolutemotor.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
 /**
  * @class TechnicLargeLinearMotor

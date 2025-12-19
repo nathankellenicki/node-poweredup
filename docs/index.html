@@ -1,58 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>JSDoc: Home</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
-</head>
-
-<body>
-
-<div id="main">
-
-    <h1 class="page-title">Home</h1>
-
-    
-
-
-
-    
-
-
-    <h3> </h3>
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-    <section>
-        <article><p><a href="https://drone.kellenicki.com/nkellenicki/node-poweredup"><img src="https://drone.kellenicki.com/api/badges/nkellenicki/node-poweredup/status.svg" alt="Drone"></a><br>
-<a href="https://www.npmjs.com/package/node-poweredup"><img src="https://img.shields.io/npm/v/node-poweredup.svg?style=flat" alt="NPM Version"></a><br>
+<!DOCTYPE html><html class="default" lang="en" data-base="./"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>node-poweredup</title><meta name="description" content="Documentation for node-poweredup"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script><script async src="assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><a href="index.html" class="title">node-poweredup</a><div id="tsd-toolbar-links"><a href="https://github.com/nathankellenicki/node-poweredup">GitHub</a></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/><ul role="listbox" id="tsd-search-results"></ul><div id="tsd-search-status" aria-live="polite" aria-atomic="true"><div>Preparing search index...</div></div></dialog><a href="#" class="tsd-widget menu" id="tsd-toolbar-menu-trigger" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h1>node-poweredup</h1></div><div class="tsd-panel tsd-typography"><p><a href="https://drone.kellenicki.com/nkellenicki/node-poweredup"><img src="https://drone.kellenicki.com/api/badges/nkellenicki/node-poweredup/status.svg" alt="Drone"></a>
+<a href="https://www.npmjs.com/package/node-poweredup"><img src="https://img.shields.io/npm/v/node-poweredup.svg?style=flat" alt="NPM Version"></a>
 <a href="https://nathan.kellenicki.com/node-poweredup/"><img src="https://img.shields.io/badge/docs-start%20here-yellowgreen.svg" alt="Docs"></a></p>
-<h1><strong>node-poweredup</strong> - A Javascript module to interface with LEGO Powered Up components.</h1>
-<h3>Announcements</h3>
-<ul>
-<li>v7.1.0 adds support for SPIKE Essential, including the Technic Small Hub, Technic Small Angular Motor, and Technic 3x3 Color Matrix.</li>
+<h1 id="node-poweredup-a-javascript-module-to-interface-with-lego-powered-up-components" class="tsd-anchor-link"><strong>node-poweredup</strong> - A Javascript module to interface with LEGO Powered Up components.<a href="#node-poweredup-a-javascript-module-to-interface-with-lego-powered-up-components" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><h3 id="announcements" class="tsd-anchor-link">Announcements<a href="#announcements" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>v10.0.0 brings node-poweredup up to date! Libraries updated, new ES style syntax, and more.</li>
 </ul>
-<h3>Introduction</h3>
-<p>LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges, all of which are compatible with each other:</p>
+<h3 id="introduction" class="tsd-anchor-link">Introduction<a href="#introduction" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>LEGO Powered Up is the successor to Power Functions, the system for adding electronics to LEGO models. Powered Up is a collection of ranges, all of which are compatible with each other:</p>
 <ul>
 <li>LEGO Education WeDo 2.0</li>
 <li>LEGO Boost</li>
@@ -64,47 +16,17 @@
 </ul>
 <p>Other products that speak the Powered Up protocol include the Duplo App-Controlled trains and LEGO Super Mario, both of which are compatible with this library.</p>
 <p>This library allows communication and control of Powered Up devices and peripherals via Javascript, both from Node.js and from the browser using Web Bluetooth.</p>
-<h3>Sample Usage</h3>
-<pre class="prettyprint source lang-javascript"><code>const PoweredUP = require(&quot;node-poweredup&quot;);
-const poweredUP = new PoweredUP.PoweredUP();
+<h3 id="sample-usage" class="tsd-anchor-link">Sample Usage<a href="#sample-usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><pre><code class="javascript"><span class="hl-0">import</span><span class="hl-1"> { </span><span class="hl-2">PoweredUP</span><span class="hl-1"> } </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&quot;node-poweredup&quot;</span><span class="hl-1">;</span><br/><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">poweredUP</span><span class="hl-1"> = </span><span class="hl-4">new</span><span class="hl-1"> </span><span class="hl-6">PoweredUP</span><span class="hl-1">();</span><br/><br/><span class="hl-2">poweredUP</span><span class="hl-1">.</span><span class="hl-6">on</span><span class="hl-1">(</span><span class="hl-3">&quot;discover&quot;</span><span class="hl-1">, </span><span class="hl-4">async</span><span class="hl-1"> (</span><span class="hl-2">hub</span><span class="hl-1">) </span><span class="hl-4">=&gt;</span><span class="hl-1"> { </span><span class="hl-7">// Wait to discover a Hub</span><br/><span class="hl-1">    </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-3">`Discovered </span><span class="hl-4">${</span><span class="hl-2">hub</span><span class="hl-8">.</span><span class="hl-2">name</span><span class="hl-4">}</span><span class="hl-3">!`</span><span class="hl-1">);</span><br/><span class="hl-1">    </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">hub</span><span class="hl-1">.</span><span class="hl-6">connect</span><span class="hl-1">(); </span><span class="hl-7">// Connect to the Hub</span><br/><span class="hl-1">    </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">motorA</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">hub</span><span class="hl-1">.</span><span class="hl-6">waitForDeviceAtPort</span><span class="hl-1">(</span><span class="hl-3">&quot;A&quot;</span><span class="hl-1">); </span><span class="hl-7">// Make sure a motor is plugged into port A</span><br/><span class="hl-1">    </span><span class="hl-4">const</span><span class="hl-1"> </span><span class="hl-5">motorB</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">hub</span><span class="hl-1">.</span><span class="hl-6">waitForDeviceAtPort</span><span class="hl-1">(</span><span class="hl-3">&quot;B&quot;</span><span class="hl-1">); </span><span class="hl-7">// Make sure a motor is plugged into port B</span><br/><span class="hl-1">    </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-3">&quot;Connected&quot;</span><span class="hl-1">);</span><br/><br/><span class="hl-1">    </span><span class="hl-0">while</span><span class="hl-1"> (</span><span class="hl-4">true</span><span class="hl-1">) { </span><span class="hl-7">// Repeat indefinitely</span><br/><span class="hl-1">        </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-3">&quot;Running motor B at speed 50&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">        </span><span class="hl-2">motorB</span><span class="hl-1">.</span><span class="hl-6">setPower</span><span class="hl-1">(</span><span class="hl-9">50</span><span class="hl-1">); </span><span class="hl-7">// Start a motor attached to port B to run a 3/4 speed (75) indefinitely</span><br/><span class="hl-1">        </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-3">&quot;Running motor A at speed 100 for 2 seconds&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">        </span><span class="hl-2">motorA</span><span class="hl-1">.</span><span class="hl-6">setPower</span><span class="hl-1">(</span><span class="hl-9">100</span><span class="hl-1">); </span><span class="hl-7">// Run a motor attached to port A for 2 seconds at maximum speed (100) then stop</span><br/><span class="hl-1">        </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">hub</span><span class="hl-1">.</span><span class="hl-6">sleep</span><span class="hl-1">(</span><span class="hl-9">2000</span><span class="hl-1">);</span><br/><span class="hl-1">        </span><span class="hl-2">motorA</span><span class="hl-1">.</span><span class="hl-6">brake</span><span class="hl-1">();</span><br/><span class="hl-1">        </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">hub</span><span class="hl-1">.</span><span class="hl-6">sleep</span><span class="hl-1">(</span><span class="hl-9">1000</span><span class="hl-1">); </span><span class="hl-7">// Do nothing for 1 second</span><br/><span class="hl-1">        </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-3">&quot;Running motor A at speed -30 for 1 second&quot;</span><span class="hl-1">);</span><br/><span class="hl-1">        </span><span class="hl-2">motorA</span><span class="hl-1">.</span><span class="hl-6">setPower</span><span class="hl-1">(-</span><span class="hl-9">30</span><span class="hl-1">); </span><span class="hl-7">// Run a motor attached to port A for 2 seconds at 1/2 speed in reverse (-50) then stop</span><br/><span class="hl-1">        </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">hub</span><span class="hl-1">.</span><span class="hl-6">sleep</span><span class="hl-1">(</span><span class="hl-9">2000</span><span class="hl-1">);</span><br/><span class="hl-1">        </span><span class="hl-2">motorA</span><span class="hl-1">.</span><span class="hl-6">brake</span><span class="hl-1">();</span><br/><span class="hl-1">        </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-2">hub</span><span class="hl-1">.</span><span class="hl-6">sleep</span><span class="hl-1">(</span><span class="hl-9">1000</span><span class="hl-1">); </span><span class="hl-7">// Do nothing for 1 second</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-2">poweredUP</span><span class="hl-1">.</span><span class="hl-6">scan</span><span class="hl-1">(); </span><span class="hl-7">// Start scanning for Hubs</span><br/><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-6">log</span><span class="hl-1">(</span><span class="hl-3">&quot;Scanning for Hubs...&quot;</span><span class="hl-1">);</span>
+</code><button type="button">Copy</button></pre>
 
-poweredUP.on(&quot;discover&quot;, async (hub) => { // Wait to discover a Hub
-    console.log(`Discovered ${hub.name}!`);
-    await hub.connect(); // Connect to the Hub
-    const motorA = await hub.waitForDeviceAtPort(&quot;A&quot;); // Make sure a motor is plugged into port A
-    const motorB = await hub.waitForDeviceAtPort(&quot;B&quot;); // Make sure a motor is plugged into port B
-    console.log(&quot;Connected&quot;);
-
-    while (true) { // Repeat indefinitely
-        console.log(&quot;Running motor B at speed 50&quot;);
-        motorB.setPower(50); // Start a motor attached to port B to run a 3/4 speed (75) indefinitely
-        console.log(&quot;Running motor A at speed 100 for 2 seconds&quot;);
-        motorA.setPower(100); // Run a motor attached to port A for 2 seconds at maximum speed (100) then stop
-        await hub.sleep(2000);
-        motorA.brake();
-        await hub.sleep(1000); // Do nothing for 1 second
-        console.log(&quot;Running motor A at speed -30 for 1 second&quot;);
-        motorA.setPower(-30); // Run a motor attached to port A for 2 seconds at 1/2 speed in reverse (-50) then stop
-        await hub.sleep(2000);
-        motorA.brake();
-        await hub.sleep(1000); // Do nothing for 1 second
-    }
-});
-
-poweredUP.scan(); // Start scanning for Hubs
-console.log(&quot;Scanning for Hubs...&quot;);
-</code></pre>
 <p>More examples are available in the &quot;examples&quot; directory.</p>
-<h3>Documentation</h3>
-<p><a href="https://nathankellenicki.github.io/node-poweredup/">Full documentation is available here.</a></p>
-<h3>Node.js Installation</h3>
-<p>Node.js v12.0+ required.</p>
-<pre class="prettyprint source lang-javascript"><code>npm install node-poweredup --save
-</code></pre>
-<p>node-poweredup uses the Noble BLE library by Sandeep Mistry. On macOS everything should function out of the box. On Linux and Windows there are <a href="https://github.com/abandonware/noble#prerequisites">certain dependencies which may need installed first</a>.</p>
-<p>Note: node-poweredup has been tested on macOS 11.0 and Debian/Raspbian on the Raspberry Pi 3 Model B.</p>
-<h3>Compatibility</h3>
-<p>While most Powered Up components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.</p>
+<h3 id="documentation" class="tsd-anchor-link">Documentation<a href="#documentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p><a href="https://nathankellenicki.github.io/node-poweredup/">Full documentation is available here.</a></p>
+<h3 id="nodejs-installation" class="tsd-anchor-link">Node.js Installation<a href="#nodejs-installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Node.js v18.0+ required.</p>
+<pre><code class="javascript"><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">node</span><span class="hl-1">-</span><span class="hl-2">poweredup</span><span class="hl-1"> --</span><span class="hl-2">save</span>
+</code><button type="button">Copy</button></pre>
+
+<p><code>node-poweredup</code> relies on the <code>@stoprocent/noble</code> library. Ensure any prerequisites <a href="https://github.com/stoprocent/noble?tab=readme-ov-file#prerequisites">documented here</a> are satisfied.</p>
+<h3 id="compatibility" class="tsd-anchor-link">Compatibility<a href="#compatibility" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>While most Powered Up components and Hubs are compatible with each other, there are exceptions. For example, there is limited backwards compatibility between newer components and the WeDo 2.0 Smart Hub. However WeDo 2.0 components are fully forwards compatible with newer Hubs.</p>
 <table>
 <thead>
 <tr>
@@ -342,8 +264,7 @@ console.log(&quot;Scanning for Hubs...&quot;);
 </tr>
 </tbody>
 </table>
-<h3>Known Issues and Limitations</h3>
-<ul>
+<h3 id="known-issues-and-limitations" class="tsd-anchor-link">Known Issues and Limitations<a href="#known-issues-and-limitations" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
 <li>
 <p>The WeDo 2.0 Smart Hub uses an older firmware which is no longer being updated. As a result, only certain motors and sensors work with it. See the table above.</p>
 </li>
@@ -354,31 +275,8 @@ console.log(&quot;Scanning for Hubs...&quot;);
 <p>The SPIKE Prime Hub does not use Bluetooth Low Energy, so is not supported via this library. It is recommended you use MicroPython to develop for this Hub using the officially provided tools and software. The SPIKE Essential Hub however is supported, as it uses Bluetooth Low Energy.</p>
 </li>
 <li>
-<p>On most Unix systems, you need root permissions to access Bluetooth devices. You may want to <a href="https://github.com/abandonware/noble#running-without-rootsudo-linux-specific">grant the node executable access to the Bluetooth adapter</a></p>
+<p>On most Unix systems, you need root permissions to access Bluetooth devices. You may want to <a href="https://github.com/stoprocent/noble?tab=readme-ov-file#running-without-rootsudo-linux-specific">grant the node executable access to the Bluetooth adapter</a></p>
 </li>
 </ul>
-<h3>Credits</h3>
-<p>Thanks go to Jorge Pereira (<a href="https://github.com/JorgePe">@JorgePe</a>), Sebastian Raff (<a href="https://github.com/hobbyquaker">@hobbyquaker</a>), Valentin Heun (<a href="https://github.com/vheun">@vheun</a>), Johan Korten (<a href="https://github.com/jakorten">@jakorten</a>), and Andrey Pokhilko (<a href="https://github.com/undera">@undera</a>) for their various works, contributions, and assistance on figuring out the LEGO Boost, WeDo 2.0, and Powered Up protocols.</p></article>
-    </section>
-
-
-
-
-
-
-</div>
-
-<nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AbsoluteMotor.html">AbsoluteMotor</a></li><li><a href="BaseHub.html">BaseHub</a></li><li><a href="BasicMotor.html">BasicMotor</a></li><li><a href="ColorDistanceSensor.html">ColorDistanceSensor</a></li><li><a href="CurrentSensor.html">CurrentSensor</a></li><li><a href="Device.html">Device</a></li><li><a href="DuploTrainBase.html">DuploTrainBase</a></li><li><a href="DuploTrainBaseColorSensor.html">DuploTrainBaseColorSensor</a></li><li><a href="DuploTrainBaseMotor.html">DuploTrainBaseMotor</a></li><li><a href="DuploTrainBaseSpeaker.html">DuploTrainBaseSpeaker</a></li><li><a href="DuploTraniBaseSpeedometer.html">DuploTraniBaseSpeedometer</a></li><li><a href="Hub.html">Hub</a></li><li><a href="HubLED.html">HubLED</a></li><li><a href="LPF2Hub.html">LPF2Hub</a></li><li><a href="Light.html">Light</a></li><li><a href="Mario.html">Mario</a></li><li><a href="MarioAccelerometer.html">MarioAccelerometer</a></li><li><a href="MarioBarcodeSensor.html">MarioBarcodeSensor</a></li><li><a href="MarioPantsSensor.html">MarioPantsSensor</a></li><li><a href="MediumLinearMotor.html">MediumLinearMotor</a></li><li><a href="MotionSensor.html">MotionSensor</a></li><li><a href="MoveHub.html">MoveHub</a></li><li><a href="MoveHubMediumLinearMotor.html">MoveHubMediumLinearMotor</a></li><li><a href="MoveHubTiltSensor.html">MoveHubTiltSensor</a></li><li><a href="PiezoBuzzer.html">PiezoBuzzer</a></li><li><a href="PoweredUP.html">PoweredUP</a></li><li><a href="RemoteControl.html">RemoteControl</a></li><li><a href="RemoteControlButton.html">RemoteControlButton</a></li><li><a href="SimpleMediumLinearMotor.html">SimpleMediumLinearMotor</a></li><li><a href="TachoMotor.html">TachoMotor</a></li><li><a href="Technic3x3ColorLightMatrix.html">Technic3x3ColorLightMatrix</a></li><li><a href="TechnicColorSensor.html">TechnicColorSensor</a></li><li><a href="TechnicDistanceSensor.html">TechnicDistanceSensor</a></li><li><a href="TechnicForceSensor.html">TechnicForceSensor</a></li><li><a href="TechnicLargeAngularMotor.html">TechnicLargeAngularMotor</a></li><li><a href="TechnicLargeLinearMotor.html">TechnicLargeLinearMotor</a></li><li><a href="TechnicMediumAngularMotor.html">TechnicMediumAngularMotor</a></li><li><a href="TechnicMediumHub.html">TechnicMediumHub</a></li><li><a href="TechnicMediumHubAccelerometerSensor.html">TechnicMediumHubAccelerometerSensor</a></li><li><a href="TechnicMediumHubGyroSensor.html">TechnicMediumHubGyroSensor</a></li><li><a href="TechnicMediumHubTiltSensor.html">TechnicMediumHubTiltSensor</a></li><li><a href="TechnicSmallAngularMotor.html">TechnicSmallAngularMotor</a></li><li><a href="TechnicXLargeLinearMotor.html">TechnicXLargeLinearMotor</a></li><li><a href="TiltSensor.html">TiltSensor</a></li><li><a href="TrainMotor.html">TrainMotor</a></li><li><a href="VoltageSensor.html">VoltageSensor</a></li><li><a href="WeDo2SmartHub.html">WeDo2SmartHub</a></li></ul><h3>Events</h3><ul><li><a href="AbsoluteMotor.html#event:absolute">absolute</a></li><li><a href="AbsoluteMotor.html#event:rotate">rotate</a></li><li><a href="ColorDistanceSensor.html#event:ambient">ambient</a></li><li><a href="ColorDistanceSensor.html#event:color">color</a></li><li><a href="ColorDistanceSensor.html#event:colorAndDistance">colorAndDistance</a></li><li><a href="ColorDistanceSensor.html#event:distance">distance</a></li><li><a href="ColorDistanceSensor.html#event:distanceCount">distanceCount</a></li><li><a href="ColorDistanceSensor.html#event:reflect">reflect</a></li><li><a href="ColorDistanceSensor.html#event:rgbIntensity">rgbIntensity</a></li><li><a href="CurrentSensor.html#event:current">current</a></li><li><a href="DuploTrainBase.html#event:button">button</a></li><li><a href="DuploTrainBaseColorSensor.html#event:color">color</a></li><li><a href="DuploTrainBaseColorSensor.html#event:intensity">intensity</a></li><li><a href="DuploTrainBaseColorSensor.html#event:reflect">reflect</a></li><li><a href="DuploTrainBaseColorSensor.html#event:rgb">rgb</a></li><li><a href="DuploTrainBaseSpeedometer.html#event:speed">speed</a></li><li><a href="Hub.html#event:attach">attach</a></li><li><a href="Hub.html#event:button">button</a></li><li><a href="Hub.html#event:detach">detach</a></li><li><a href="Hub.html#event:disconnect">disconnect</a></li><li><a href="LPF2Hub.html#event:button">button</a></li><li><a href="Mario.html#event:button">button</a></li><li><a href="MarioAccelerometer.html#event:accel">accel</a></li><li><a href="MarioAccelerometer.html#event:gest">gest</a></li><li><a href="MarioBarcodeSensor.html#event:barcode">barcode</a></li><li><a href="MarioBarcodeSensor.html#event:rgb">rgb</a></li><li><a href="MarioPantsSensor.html#event:pants">pants</a></li><li><a href="MediumLinearMotor.html#event:rotate">rotate</a></li><li><a href="MotionSensor.html#event:distance">distance</a></li><li><a href="MoveHub.html#event:button">button</a></li><li><a href="MoveHubMediumLinearMotor.html#event:rotate">rotate</a></li><li><a href="MoveHubTiltSensor.html#event:tilt">tilt</a></li><li><a href="PoweredUP.html#event:discover">discover</a></li><li><a href="RemoteControl.html#event:button">button</a></li><li><a href="RemoteControlButton.html#event:button">button</a></li><li><a href="TachoMotor.html#event:rotate">rotate</a></li><li><a href="TechnicColorSensor.html#event:ambient">ambient</a></li><li><a href="TechnicColorSensor.html#event:color">color</a></li><li><a href="TechnicColorSensor.html#event:reflect">reflect</a></li><li><a href="TechnicDistanceSensor.html#event:distance">distance</a></li><li><a href="TechnicDistanceSensor.html#event:fastDistance">fastDistance</a></li><li><a href="TechnicForceSensor.html#event:force">force</a></li><li><a href="TechnicForceSensor.html#event:tapped">tapped</a></li><li><a href="TechnicForceSensor.html#event:touch">touch</a></li><li><a href="TechnicLargeAngularMotor.html#event:absolute">absolute</a></li><li><a href="TechnicLargeAngularMotor.html#event:rotate">rotate</a></li><li><a href="TechnicLargeLinearMotor.html#event:absolute">absolute</a></li><li><a href="TechnicLargeLinearMotor.html#event:rotate">rotate</a></li><li><a href="TechnicMediumAngularMotor.html#event:absolute">absolute</a></li><li><a href="TechnicMediumAngularMotor.html#event:rotate">rotate</a></li><li><a href="TechnicMediumHub.html#event:button">button</a></li><li><a href="TechnicMediumHubAccelerometerSensor.html#event:accel">accel</a></li><li><a href="TechnicMediumHubGyroSensor.html#event:gyro">gyro</a></li><li><a href="TechnicMediumHubTiltSensor.html#event:impactCount">impactCount</a></li><li><a href="TechnicMediumHubTiltSensor.html#event:tilt">tilt</a></li><li><a href="TechnicSmallAngularMotor.html#event:absolute">absolute</a></li><li><a href="TechnicSmallAngularMotor.html#event:rotate">rotate</a></li><li><a href="TechnicXLargeLinearMotor.html#event:absolute">absolute</a></li><li><a href="TechnicXLargeLinearMotor.html#event:rotate">rotate</a></li><li><a href="TiltSensor.html#event:tilt">tilt</a></li><li><a href="VoltageSensor.html#event:voltage">voltage</a></li><li><a href="WeDo2SmartHub.html#event:button">button</a></li></ul><h3><a href="global.html">Global</a></h3>
-</nav>
-
-<br class="clear">
-
-<footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Apr 25 2024 16:38:07 GMT-0700 (Pacific Daylight Time)
-</footer>
-
-<script> prettyPrint(); </script>
-<script src="scripts/linenumber.js"> </script>
-</body>
-</html>
+<h3 id="credits" class="tsd-anchor-link">Credits<a href="#credits" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Thanks go to Jorge Pereira (<a href="https://github.com/JorgePe">@JorgePe</a>), Sebastian Raff (<a href="https://github.com/hobbyquaker">@hobbyquaker</a>), Valentin Heun (<a href="https://github.com/vheun">@vheun</a>), Johan Korten (<a href="https://github.com/jakorten">@jakorten</a>), and Andrey Pokhilko (<a href="https://github.com/undera">@undera</a>) for their various works, contributions, and assistance on figuring out the LEGO Boost, WeDo 2.0, and Powered Up protocols.</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="assets/icons.svg#icon-chevronDown"></use></svg><h3>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#node-poweredup-a-javascript-module-to-interface-with-lego-powered-up-components"><span>node-<wbr/>poweredup -<wbr/> <wbr/>A <wbr/>Javascript module to interface with <wbr/>LEGO <wbr/>Powered <wbr/>Up components.</span></a><ul><li><a href="#announcements"><span>Announcements</span></a></li><li><a href="#introduction"><span>Introduction</span></a></li><li><a href="#sample-usage"><span>Sample <wbr/>Usage</span></a></li><li><a href="#documentation"><span>Documentation</span></a></li><li><a href="#nodejs-installation"><span>Node.js <wbr/>Installation</span></a></li><li><a href="#compatibility"><span>Compatibility</span></a></li><li><a href="#known-issues-and-limitations"><span>Known <wbr/>Issues and <wbr/>Limitations</span></a></li><li><a href="#credits"><span>Credits</span></a></li></ul></div></details></div><div class="site-menu"><nav id="tsd-sidebar-links" class="tsd-navigation"><a href="https://github.com/nathankellenicki/node-poweredup" class="tsd-nav-link">GitHub</a></nav><nav class="tsd-navigation"><a href="modules.html">node-poweredup</a><ul class="tsd-small-nested-navigation" id="tsd-nav-container"><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>

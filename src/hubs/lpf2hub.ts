@@ -1,10 +1,10 @@
-import { BaseHub } from "./basehub";
+import { BaseHub } from "./basehub.js";
 
-import * as Consts from "../consts";
+import * as Consts from "../consts.js";
 
-import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils";
+import { decodeMACAddress, decodeVersion, toBin, toHex } from "../utils.js";
 
-import Debug = require("debug");
+import Debug from "debug";
 const debug = Debug("lpf2hub");
 const modeInfoDebug = Debug("lpf2hubmodeinfo");
 
@@ -38,7 +38,6 @@ export class LPF2Hub extends BaseHub {
 
     /**
      * Shutdown the Hub.
-     * @method LPF2Hub#shutdown
      * @returns {Promise} Resolved upon successful disconnect.
      */
     public shutdown () {
@@ -48,7 +47,6 @@ export class LPF2Hub extends BaseHub {
 
     /**
      * Set the name of the Hub.
-     * @method LPF2Hub#setName
      * @param {string} name New name of the hub (14 characters or less, ASCII only).
      * @returns {Promise} Resolved upon successful issuance of command.
      */
@@ -87,7 +85,6 @@ export class LPF2Hub extends BaseHub {
      * Combines two ports with into a single virtual port.
      *
      * Note: The devices attached to the ports must be of the same device type.
-     * @method LPF2Hub#createVirtualPort
      * @param {string} firstPortName First port name
      * @param {string} secondPortName Second port name
      * @returns {Promise} Resolved upon successful issuance of command.

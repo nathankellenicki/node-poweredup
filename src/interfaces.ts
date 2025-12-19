@@ -1,6 +1,6 @@
 import { EventEmitter } from "events";
 
-import * as Consts from "./consts";
+import * as Consts from "./consts.js";
 
 export interface IBLEAbstraction extends EventEmitter {
     uuid: string;
@@ -12,7 +12,7 @@ export interface IBLEAbstraction extends EventEmitter {
     discoverCharacteristicsForService: (uuid: string) => Promise<void>;
     subscribeToCharacteristic: (uuid: string, callback: (data: Buffer) => void) => void;
     addToCharacteristicMailbox: (uuid: string, data: Buffer) => void;
-    readFromCharacteristic: (uuid: string, callback: (err: string | null, data: Buffer | null) => void) => void;
+    readFromCharacteristic: (uuid: string, callback: (err: Error | null, data: Buffer | null) => void) => void;
     writeToCharacteristic: (uuid: string, data: Buffer) => Promise<void>;
 }
 

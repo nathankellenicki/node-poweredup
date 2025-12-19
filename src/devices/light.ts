@@ -1,9 +1,9 @@
-import { Device } from "./device";
+import { Device } from "./device.js";
 
-import { IDeviceInterface } from "../interfaces";
+import { IDeviceInterface } from "../interfaces.js";
 
-import * as Consts from "../consts";
-import { calculateRamp } from "../utils";
+import * as Consts from "../consts.js";
+import { calculateRamp } from "../utils.js";
 
 /**
  * @class Light
@@ -19,39 +19,30 @@ export class Light extends Device {
 
     /**
      * Set the light brightness.
-     * @method Light#setBrightness
      * @param {number} brightness Brightness value between 0-100 (0 is off)
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @param {number} brightness Brightness value between 0-100 (0 is off)
+     * @param {boolean} [interrupt=false] If true, previous commands are discarded.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
-    public setBrightness (brightness: number, interrupt: boolean = true) {
-        if (interrupt) {
-            this.cancelEventTimer();
-        }
-        return new Promise<void>((resolve) => {
-            this.writeDirect(0x00, Buffer.from([brightness]));
-            return resolve();
-        });
+    public setBrightness (brightness: number, interrupt: boolean = false) {
+        return this.writeDirect(0x00, Buffer.from([brightness]), interrupt);
     }
 
 
     /**
      * Ramp the light brightness.
-     * @method Light#rampBrightness
      * @param {number} fromBrightness Brightness value between 0-100 (0 is off)
      * @param {number} toBrightness Brightness value between 0-100 (0 is off)
      * @param {number} time How long the ramp should last (in milliseconds).
-     * @returns {Promise} Resolved upon successful completion of command.
+     * @returns {Promise<CommandFeedback>} Resolved upon completion of command.
      */
     public rampBrightness (fromBrightness: number, toBrightness: number, time: number) {
-        this.cancelEventTimer();
-        return new Promise((resolve) => {
-            calculateRamp(this, fromBrightness, toBrightness, time)
-            .on("changePower", (power) => {
-                this.setBrightness(power, false);
-            })
-            .on("finished", resolve);
+        const powerValues = calculateRamp(fromBrightness, toBrightness, time);
+        powerValues.forEach(value => {
+            this.setBrightness(value);
+            this.addPortOutputSleep(Math.round(time/powerValues.length));
         });
+        return this.setBrightness(toBrightness);
     }
-
 
 }
