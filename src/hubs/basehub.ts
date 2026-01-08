@@ -361,6 +361,24 @@ export class BaseHub extends EventEmitter {
         }
     }
 
+    public manuallyDetachDevice(portId: number) {
+        const device = this._attachedDevices[portId];
+        if (!device) {
+            debug(`No device attached to portId ${portId}, nothing to detach`);
+            return;
+        }
+        debug(`Detaching device type ${device.type} from portId ${portId}`);
+        this._detachDevice(device);
+        if (this.isPortVirtual(portId)) {
+            const portName = this.getPortNameForPortId(portId);
+            if (portName) {
+                delete this._portMap[portName];
+            }
+            this._virtualPorts = this._virtualPorts.filter((virtualPortId) => virtualPortId !== portId);
+        }
+        return device;
+    }
+
 
     protected _attachDevice (device: Device) {
         if (this._attachedDevices[device.portId] && this._attachedDevices[device.portId].type === device.type) {

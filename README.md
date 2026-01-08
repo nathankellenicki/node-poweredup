@@ -1,4 +1,3 @@
-[![Drone](https://drone.kellenicki.com/api/badges/nkellenicki/node-poweredup/status.svg)](https://drone.kellenicki.com/nkellenicki/node-poweredup)
 [![NPM Version](https://img.shields.io/npm/v/node-poweredup.svg?style=flat)](https://www.npmjs.com/package/node-poweredup)
 [![Docs](https://img.shields.io/badge/docs-start%20here-yellowgreen.svg)](https://nathan.kellenicki.com/node-poweredup/)
 
