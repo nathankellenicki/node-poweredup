@@ -6,6 +6,8 @@ import { BaseHub } from "./hubs/basehub.js";
 import { DuploTrainBase } from "./hubs/duplotrainbase.js";
 import { Hub } from "./hubs/hub.js";
 import { Mario } from "./hubs/mario.js";
+import { Luigi } from "./hubs/luigi.js";
+import { Peach } from "./hubs/peach.js";
 import { MoveHub } from "./hubs/movehub.js";
 import { RemoteControl } from "./hubs/remotecontrol.js";
 import { TechnicMediumHub } from "./hubs/technicmediumhub.js";
@@ -165,6 +167,10 @@ export class PoweredUP extends EventEmitter {
             hub = new TechnicMediumHub(device);
         } else if (Mario.IsMario(peripheral)) {
             hub = new Mario(device);
+        } else if (Luigi.IsLuigi(peripheral)) {
+            hub = new Luigi(device);
+        } else if (Peach.IsPeach(peripheral)) {
+            hub = new Peach(device);
         } else {
             return;
         }

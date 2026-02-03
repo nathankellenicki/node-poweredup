@@ -6,6 +6,8 @@ import { BaseHub } from "./hubs/basehub.js";
 import { DuploTrainBase } from "./hubs/duplotrainbase.js";
 import { Hub } from "./hubs/hub.js";
 import { Mario } from "./hubs/mario.js";
+import { Luigi } from "./hubs/luigi.js";
+import { Peach } from "./hubs/peach.js";
 import { MoveHub } from "./hubs/movehub.js";
 import { RemoteControl } from "./hubs/remotecontrol.js";
 import { TechnicMediumHub } from "./hubs/technicmediumhub.js";
@@ -157,6 +159,12 @@ export class PoweredUP extends EventEmitter {
                             case Consts.BLEManufacturerData.MARIO_ID:
                                 resolve(Consts.HubType.MARIO);
                                 break;
+                            case Consts.BLEManufacturerData.LUIGI_ID:
+                                resolve(Consts.HubType.LUIGI);
+                                break;
+                            case Consts.BLEManufacturerData.PEACH_ID:
+                                resolve(Consts.HubType.PEACH);
+                                break;
                         }
                         debug("Hub type determined");
                     } else {
@@ -219,6 +227,12 @@ export class PoweredUP extends EventEmitter {
                 break;
             case Consts.HubType.MARIO:
                 hub = new Mario(device);
+                break;
+            case Consts.HubType.LUIGI:
+                hub = new Luigi(device);
+                break;
+            case Consts.HubType.PEACH:
+                hub = new Peach(device);
                 break;
             default:
                 return;

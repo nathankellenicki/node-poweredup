@@ -9,6 +9,8 @@
  * @property {number} TECHNIC_MEDIUM_HUB 6
  * @property {number} MARIO 7
  * @property {number} TECHNIC_SMALL_HUB 8
+ * @property {number} LUIGI 9
+ * @property {number} PEACH 10
  */
 export enum HubType {
     UNKNOWN = 0,
@@ -20,6 +22,8 @@ export enum HubType {
     TECHNIC_MEDIUM_HUB = 6,
     MARIO = 7,
     TECHNIC_SMALL_HUB = 8,
+    LUIGI = 9,
+    PEACH = 10,
 }
 
 
@@ -204,6 +208,8 @@ export enum BLEManufacturerData {
     HUB_ID = 65,
     REMOTE_CONTROL_ID = 66,
     MARIO_ID = 67,
+    LUIGI_ID = 68,
+    PEACH_ID = 69,
     TECHNIC_MEDIUM_HUB_ID = 128,
     TECHNIC_SMALL_HUB_ID = 131
 }

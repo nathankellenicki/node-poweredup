@@ -7,6 +7,8 @@ import { BaseHub } from "./hubs/basehub.js";
 import { DuploTrainBase } from "./hubs/duplotrainbase.js";
 import { Hub } from "./hubs/hub.js";
 import { Mario } from "./hubs/mario.js";
+import { Luigi } from "./hubs/luigi.js";
+import { Peach } from "./hubs/peach.js";
 import { MoveHub } from "./hubs/movehub.js";
 import { RemoteControl } from "./hubs/remotecontrol.js";
 import { TechnicMediumHub } from "./hubs/technicmediumhub.js";
@@ -69,6 +71,8 @@ window.PoweredUP = {
     HubLED,
     Light,
     Mario,
+    Luigi,
+    Peach,
     MediumLinearMotor,
     MotionSensor,
     MoveHub,
@@ -98,4 +102,3 @@ window.PoweredUP = {
     BasicMotor,
     isWebBluetooth
 };
-
